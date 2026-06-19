@@ -5,3 +5,4 @@ pandas>=1.4.0
 numpy>=1.23.0
 scipy>=1.10.0
 pyarrow>=7.0.0
+python-dotenv>=1.0.0

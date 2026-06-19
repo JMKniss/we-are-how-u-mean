@@ -1,7 +1,8 @@
 """
 ESPN data layer — fetches and caches all league data.
-Cache is stored as parquet files in data/cache/<season>/.
+Cache is stored as pickle files in data/cache/<season>/.
 Call invalidate_cache(season) to force a fresh pull.
+Credentials are loaded automatically from config (via .env).
 """
 import os
 import pickle
@@ -10,6 +11,7 @@ from typing import Optional
 
 import pandas as pd
 from espn_api.football import League
+from config import ESPN_S2, SWID
 
 CACHE_DIR = Path(__file__).parent / "cache"
 
@@ -45,20 +47,22 @@ def get_league(season: int, espn_s2: str = None, swid: str = None) -> League:
     cached = _load(season, "league")
     if cached is not None:
         return cached
+    s2 = espn_s2 or ESPN_S2
+    sw = swid or SWID
     kwargs = {"league_id": 722346, "year": season}
-    if espn_s2 and swid:
-        kwargs["espn_s2"] = espn_s2
-        kwargs["swid"] = swid
+    if s2 and sw:
+        kwargs["espn_s2"] = s2
+        kwargs["swid"] = sw
     league = League(**kwargs)
     _save(season, "league", league)
     return league
 
 
-def get_matchups_df(season: int, espn_s2: str = None, swid: str = None) -> pd.DataFrame:
+def get_matchups_df(season: int) -> pd.DataFrame:
     cached = _load(season, "matchups_df")
     if cached is not None:
         return cached
-    league = get_league(season, espn_s2, swid)
+    league = get_league(season)
     rows = []
     for team in league.teams:
         for week_idx, (opp, score, outcome) in enumerate(
@@ -89,12 +93,12 @@ def get_matchups_df(season: int, espn_s2: str = None, swid: str = None) -> pd.Da
     return df
 
 
-def get_boxscores_df(season: int, espn_s2: str = None, swid: str = None) -> pd.DataFrame:
+def get_boxscores_df(season: int) -> pd.DataFrame:
     """Player-level box score data for all played weeks."""
     cached = _load(season, "boxscores_df")
     if cached is not None:
         return cached
-    league = get_league(season, espn_s2, swid)
+    league = get_league(season)
     rows = []
     max_week = min(league.current_week, 17)
     for week in range(1, max_week + 1):
@@ -133,11 +137,11 @@ def get_boxscores_df(season: int, espn_s2: str = None, swid: str = None) -> pd.D
     return df
 
 
-def get_draft_df(season: int, espn_s2: str = None, swid: str = None) -> pd.DataFrame:
+def get_draft_df(season: int) -> pd.DataFrame:
     cached = _load(season, "draft_df")
     if cached is not None:
         return cached
-    league = get_league(season, espn_s2, swid)
+    league = get_league(season)
     rows = []
     for pick in league.draft:
         rows.append({
@@ -155,11 +159,11 @@ def get_draft_df(season: int, espn_s2: str = None, swid: str = None) -> pd.DataF
     return df
 
 
-def get_standings_df(season: int, espn_s2: str = None, swid: str = None) -> pd.DataFrame:
+def get_standings_df(season: int) -> pd.DataFrame:
     cached = _load(season, "standings_df")
     if cached is not None:
         return cached
-    league = get_league(season, espn_s2, swid)
+    league = get_league(season)
     rows = []
     for team in league.teams:
         rows.append({
