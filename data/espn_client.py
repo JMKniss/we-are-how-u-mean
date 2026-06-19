@@ -85,11 +85,44 @@ def get_matchups_df(season: int) -> pd.DataFrame:
                 "opp_id": opp.team_id,
                 "opp_name": opp.team_name.strip(),
                 "opp_score": opp_score,
-                "outcome": outcome,  # 'W', 'L', 'T', or 'U' (unplayed)
+                "outcome": outcome,
             })
     df = pd.DataFrame(rows)
     df = df[df["outcome"] != "U"].copy()
+    df = _fix_cumulative_playoff_scores(df)
     _save(season, "matchups_df", df)
+    return df
+
+
+def _fix_cumulative_playoff_scores(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    ESPN accumulates scores across multi-week playoff matchups. When the same
+    two teams face each other in consecutive playoff weeks (e.g. W14+W15 or
+    W16+W17), the later week's score is the running total, not that week alone.
+    This function detects those pairs and subtracts the prior week so every
+    row represents a single week's individual performance.
+    """
+    df = df.copy().sort_values(["team_id", "week"]).reset_index(drop=True)
+    playoff_week_pairs = [(15, 14), (17, 16)]  # (cumulative week, prior week)
+
+    for cum_week, prior_week in playoff_week_pairs:
+        cum_rows = df[df["week"] == cum_week]
+        prior_rows = df[df["week"] == prior_week].set_index("team_id")
+
+        for idx, row in cum_rows.iterrows():
+            tid = row["team_id"]
+            if tid not in prior_rows.index:
+                continue
+            prior = prior_rows.loc[tid]
+            # Only fix if same opponent in both weeks (true 2-week matchup)
+            if prior["opp_id"] != row["opp_id"]:
+                continue
+            prior_score = prior["score"]
+            prior_opp_score = prior["opp_score"]
+            # Subtract to recover the individual week score
+            df.loc[idx, "score"] = round(row["score"] - prior_score, 2)
+            df.loc[idx, "opp_score"] = round(row["opp_score"] - prior_opp_score, 2)
+
     return df
 
 

@@ -61,16 +61,14 @@ else:
 st.divider()
 
 # --- Quick stats row ---
-col1, col2, col3, col4 = st.columns(4)
-teams = played_df["team_name"].nunique()
-total_games = len(played_df) // 2
+col1, col2, col3 = st.columns(3)
+weeks_played = played_df["week"].nunique()
 avg_score = played_df["score"].mean()
 high_score = played_df.loc[played_df["score"].idxmax()]
 
-col1.metric("Teams", teams)
-col2.metric("Games Played", total_games)
-col3.metric("League Avg Score", f"{avg_score:.1f}")
-col4.metric("Season High", f"{high_score['score']:.2f}", delta=high_score["team_name"])
+col1.metric("Weeks Played", weeks_played)
+col2.metric("League Avg Score", f"{avg_score:.1f}")
+col3.metric("Season High", f"{high_score['score']:.2f}", delta=high_score["team_name"])
 
 st.divider()
 
