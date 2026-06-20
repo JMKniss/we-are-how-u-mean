@@ -141,6 +141,19 @@ from a normal distribution for each remaining game. 10,000 sims by default.
 **3-week vs 4-week playoff format detection:** `len(pw) == 3` identifies the 2022 format.
 All playoff display logic (page 6) and validation (espn_client.py) branch on this.
 
+## Page-level implementation notes
+
+### pages/3_Scoring.py — Weekly Trends tab
+Tab order: Individual Manager Trend (top) → divider → All Teams chart → Score Range band chart.
+
+**Individual Manager Trend chart:**
+- Dropdown includes all manager names plus `"— League Median —"` as the first option.
+- When a manager is selected: plots their weekly scores (blue) + league average (light gray dotted) + season trendline (blue dashed) + last-5 trendline (orange dashed).
+- When League Median is selected: plots weekly median (purple) + season trendline (purple dashed) + last-5 trendline (orange dashed). League Average line is hidden (redundant).
+- Last-5 trendline only appears once the subject has 6+ weeks of data (active-season guard).
+- Slope values (`+X.X pts/wk`) displayed as `st.metric` chips below the chart — not as on-chart annotations — to avoid overlap with the legend.
+- X-axis is capped at the last week played (`range=[0.5, max_week + 0.5]`).
+
 ## Analysis modules
 
 ### standings.py
