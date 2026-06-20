@@ -94,8 +94,8 @@ with tab1:
         st.subheader("Head-to-Head Standings")
         df = h2h_standings(matchups_df)
         display = prep_display(df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "wins", "losses", "ties", "points_for", "points_against", "avg_score", "win_pct"],
-                               headers=["Team", "W", "L", "T", "PF", "PA", "Avg Score", "Win%"])
+                               cols=["team_name", "wins", "losses", "points_for", "points_against", "avg_score", "win_pct"],
+                               headers=["Team", "W", "L", "PF", "PA", "Avg Score", "Win%"])
         display["PF"] = display["PF"].round(1)
         display["PA"] = display["PA"].round(1)
         display["Avg Score"] = display["Avg Score"].round(1)
@@ -152,8 +152,8 @@ with tab3:
         st.caption("Two games per week: one H2H matchup win/loss, one vs-median win/loss.")
         df = combined_standings(matchups_df)
         display = prep_display(df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "wins", "median_wins", "total_wins", "total_losses", "total_win_pct", "points_for"],
-                               headers=["Team", "H2H W", "Median W", "Total W", "Total L", "Win%", "PF"])
+                               cols=["team_name", "wins", "median_wins", "total_wins", "total_losses", "total_win_pct"],
+                               headers=["Team", "H2H W", "Median W", "Total W", "Total L", "Win%"])
         display["Win%"] = display["Win%"].round(3)
         display["PF"] = display["PF"].round(1)
         st.dataframe(display, use_container_width=True, hide_index=True)
