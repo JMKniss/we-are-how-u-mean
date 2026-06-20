@@ -114,9 +114,10 @@ with tab2:
     st.subheader("Vs-Median Standings")
     st.caption("Each week, beating the league median score counts as an additional win.")
     df = median_standings(matchups_df)
+    df["median_win_pct"] = (df["median_wins"] / (df["median_wins"] + df["median_losses"]).replace(0, float("nan"))).round(3)
     display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "median_wins", "median_losses"],
-                           headers=["Team", "Median Wins", "Median Losses"])
+                           cols=["team_name", "median_wins", "median_losses", "median_win_pct"],
+                           headers=["Team", "W", "L", "Win%"])
     st.dataframe(display, use_container_width=True, hide_index=True)
 
     df["label"] = chart_label(df, manager_map, show_mgr, show_team)
