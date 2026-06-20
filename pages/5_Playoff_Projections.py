@@ -7,38 +7,50 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-from data.espn_client import get_matchups_df, invalidate_cache
+from data.espn_client import get_matchups_df, get_manager_map, invalidate_cache
 from analysis.standings import h2h_standings
 from analysis.projections import simulate_playoffs
 from config import SEASONS, DEFAULT_SEASON, season_config
+from display_utils import sidebar_display_prefs, prep_display, chart_label
 
 st.set_page_config(page_title="Playoff Projections", page_icon="🏆", layout="wide")
 st.title("🏆 Playoff Projections")
 
-season = st.sidebar.selectbox("Season", SEASONS, index=SEASONS.index(DEFAULT_SEASON))
+if "selected_season" not in st.session_state:
+    st.session_state["selected_season"] = DEFAULT_SEASON
+season = st.sidebar.selectbox(
+    "Season", SEASONS,
+    index=SEASONS.index(st.session_state["selected_season"])
+)
+st.session_state["selected_season"] = season
 if st.sidebar.button("🔄 Refresh Data"):
     invalidate_cache(season)
     st.cache_data.clear()
     st.rerun()
+show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
 def load(season):
-    return get_matchups_df(season)
+    return get_matchups_df(season), get_manager_map(season)
 
 with st.spinner("Loading..."):
-    matchups_df = load(season)
+    matchups_df, manager_map = load(season)
 
 cfg = season_config(season)
-reg_df = matchups_df[matchups_df["week"] <= cfg["reg_season_end"]]
+reg_season_weeks = cfg["reg_season_end"]
+reg_df = matchups_df[matchups_df["week"] <= reg_season_weeks]
 weeks_played = reg_df["week"].nunique()
-weeks_remaining = max(0, REG_SEASON_WEEKS - weeks_played)
+weeks_remaining = max(0, reg_season_weeks - weeks_played)
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Regular Season Weeks", REG_SEASON_WEEKS)
+col1.metric("Regular Season Weeks", reg_season_weeks)
 col2.metric("Weeks Played", weeks_played)
 col3.metric("Weeks Remaining", weeks_remaining)
 
 st.divider()
+
+# team_name → team_id lookup for tables without team_id
+tid_by_name = matchups_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
 
 tab1, tab2, tab3 = st.tabs(["Playoff Odds", "Score Distribution", "Magic Numbers"])
 
@@ -58,14 +70,16 @@ with tab1:
             playoff_spots=playoff_spots, n_simulations=n_sims
         )
 
-    display = sim_df[["team_name", "current_wins", "current_losses", "playoff_pct"]].copy()
-    display.columns = ["Team", "Current W", "Current L", "Playoff Odds %"]
+    display = prep_display(sim_df, manager_map, show_mgr, show_team,
+                           cols=["team_name", "current_wins", "current_losses", "playoff_pct"],
+                           headers=["Team", "Current W", "Current L", "Playoff Odds %"])
     st.dataframe(display, use_container_width=True, hide_index=True)
 
+    sim_df["label"] = chart_label(sim_df, manager_map, show_mgr, show_team)
     colors = ["#2ecc71" if p >= 50 else "#e74c3c" if p < 20 else "#f39c12"
               for p in sim_df["playoff_pct"]]
     fig = go.Figure(go.Bar(
-        x=sim_df["team_name"],
+        x=sim_df["label"],
         y=sim_df["playoff_pct"],
         marker_color=colors,
         text=[f"{p}%" for p in sim_df["playoff_pct"]],
@@ -83,8 +97,16 @@ with tab2:
     team_params = []
     for team in reg_df["team_name"].unique():
         scores = reg_df[reg_df["team_name"] == team]["score"].values
+        tid = tid_by_name.get(team)
+        mgr = manager_map.get(tid, "?") if tid is not None else "?"
+        if show_mgr and show_team:
+            lbl = f"{mgr} — {team}"
+        elif show_mgr:
+            lbl = mgr
+        else:
+            lbl = team
         team_params.append({
-            "Team": team,
+            "Team": lbl,
             "Mean": round(scores.mean(), 2),
             "Std Dev": round(scores.std(), 2),
             "Min": round(scores.min(), 2),
@@ -108,18 +130,16 @@ with tab3:
         st.info("Regular season complete.")
     else:
         standings = h2h_standings(reg_df)
-        n_teams = len(standings)
-        # The cutoff win total = wins of the (playoff_spots+1)th place team
         cutoff_wins = standings.iloc[playoff_spots]["wins"] if len(standings) > playoff_spots else 0
         standings["magic_number"] = (cutoff_wins + 1 - standings["wins"]).clip(lower=0)
         standings["games_left"] = weeks_remaining
 
-        magic = standings[["team_name", "wins", "losses", "magic_number", "games_left"]].copy()
-        magic.columns = ["Team", "W", "L", "Magic Number", "Games Left"]
-        magic["Clinched"] = magic["Magic Number"] == 0
-        st.dataframe(magic, use_container_width=True, hide_index=True)
+        magic_disp = prep_display(standings, manager_map, show_mgr, show_team,
+                                  cols=["team_name", "wins", "losses", "magic_number", "games_left"],
+                                  headers=["Team", "W", "L", "Magic Number", "Games Left"])
+        magic_disp["Clinched"] = standings["magic_number"].values == 0
+        st.dataframe(magic_disp, use_container_width=True, hide_index=True)
 
-        # Elimination check
         standings["max_possible_wins"] = standings["wins"] + weeks_remaining
         standings["eliminated"] = standings["max_possible_wins"] < cutoff_wins + 1
         elim = standings[standings["eliminated"]]["team_name"].tolist()
