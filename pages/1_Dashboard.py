@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from data.espn_client import get_league, get_matchups_df, invalidate_cache
 from analysis.standings import h2h_standings, luck_index
-from config import SEASONS, DEFAULT_SEASON, REG_SEASON_WEEKS
+from config import SEASONS, DEFAULT_SEASON, season_config
 
 st.set_page_config(page_title="Dashboard", page_icon="🏈", layout="wide")
 st.title("🏈 Dashboard")

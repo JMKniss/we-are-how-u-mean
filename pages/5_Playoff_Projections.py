@@ -10,7 +10,7 @@ import numpy as np
 from data.espn_client import get_matchups_df, invalidate_cache
 from analysis.standings import h2h_standings
 from analysis.projections import simulate_playoffs
-from config import SEASONS, DEFAULT_SEASON, REG_SEASON_WEEKS
+from config import SEASONS, DEFAULT_SEASON, season_config
 
 st.set_page_config(page_title="Playoff Projections", page_icon="🏆", layout="wide")
 st.title("🏆 Playoff Projections")
@@ -28,7 +28,8 @@ def load(season):
 with st.spinner("Loading..."):
     matchups_df = load(season)
 
-reg_df = matchups_df[matchups_df["week"] <= REG_SEASON_WEEKS]
+cfg = season_config(season)
+reg_df = matchups_df[matchups_df["week"] <= cfg["reg_season_end"]]
 weeks_played = reg_df["week"].nunique()
 weeks_remaining = max(0, REG_SEASON_WEEKS - weeks_played)
 
@@ -53,7 +54,7 @@ with tab1:
 
     with st.spinner("Simulating..."):
         sim_df = simulate_playoffs(
-            reg_df, reg_season_weeks=REG_SEASON_WEEKS,
+            reg_df, reg_season_weeks=cfg["reg_season_end"],
             playoff_spots=playoff_spots, n_simulations=n_sims
         )
 

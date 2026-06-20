@@ -11,7 +11,7 @@ from typing import Optional
 
 import pandas as pd
 from espn_api.football import League
-from config import ESPN_S2, SWID
+from config import ESPN_S2, SWID, season_config
 
 CACHE_DIR = Path(__file__).parent / "cache"
 
@@ -58,10 +58,6 @@ def get_league(season: int, espn_s2: str = None, swid: str = None) -> League:
     return league
 
 
-PLAYOFF_WEEKS = [14, 15, 16, 17]
-REG_SEASON_END = 13
-
-
 def _active_player_sum(lineup) -> float:
     """Sum points for all active (non-bench, non-IR) players."""
     return round(sum(p.points for p in lineup if p.lineupSlot not in ("BE", "IR")), 2)
@@ -84,6 +80,9 @@ def get_matchups_df(season: int) -> pd.DataFrame:
         return cached
 
     league = get_league(season)
+    cfg = season_config(season)
+    reg_season_end = cfg["reg_season_end"]
+    playoff_weeks = cfg["playoff_weeks"]
     rows = []
 
     # --- Regular season: use team-level schedule/scores ---
@@ -91,7 +90,7 @@ def get_matchups_df(season: int) -> pd.DataFrame:
         for week_idx, (opp, score, outcome) in enumerate(
             zip(team.schedule, team.scores, team.outcomes), start=1
         ):
-            if week_idx > REG_SEASON_END:
+            if week_idx > reg_season_end:
                 break
             if outcome == "U":
                 continue
@@ -115,8 +114,8 @@ def get_matchups_df(season: int) -> pd.DataFrame:
             })
 
     # --- Playoff weeks: sum active player points per week ---
-    max_week = min(league.current_week, 17)
-    for week in PLAYOFF_WEEKS:
+    max_week = min(league.current_week, cfg["total_weeks"])
+    for week in playoff_weeks:
         if week > max_week:
             break
         try:
