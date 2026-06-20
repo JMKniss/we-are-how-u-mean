@@ -5,3 +5,5 @@ pandas>=1.4.0
 numpy>=1.23.0
 scipy>=1.10.0
 pyarrow>=7.0.0
+python-dotenv>=1.0.0
+nfl-data-py  # 2016-2017 player stats (install with --no-deps to avoid pandas rebuild)

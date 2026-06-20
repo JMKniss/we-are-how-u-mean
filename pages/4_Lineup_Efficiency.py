@@ -5,30 +5,50 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
-from data.espn_client import get_boxscores_df, invalidate_cache
+from data.espn_client import get_boxscores_df, get_manager_map, invalidate_cache
 from analysis.efficiency import lineup_efficiency, top_players, projected_vs_actual
 from config import SEASONS, DEFAULT_SEASON
+from display_utils import sidebar_display_prefs, prep_display, chart_label
 
 st.set_page_config(page_title="Lineup Efficiency", page_icon="🎯", layout="wide")
 st.title("🎯 Lineup Efficiency")
 st.caption("How well did each manager set their lineup? Optimal score = best possible lineup from their roster.")
 
-season = st.sidebar.selectbox("Season", SEASONS, index=SEASONS.index(DEFAULT_SEASON))
+if "selected_season" not in st.session_state:
+    st.session_state["selected_season"] = DEFAULT_SEASON
+season = st.sidebar.selectbox(
+    "Season", SEASONS,
+    index=SEASONS.index(st.session_state["selected_season"])
+)
+st.session_state["selected_season"] = season
 if st.sidebar.button("🔄 Refresh Data"):
     invalidate_cache(season)
     st.cache_data.clear()
     st.rerun()
+show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
 def load(season):
-    return get_boxscores_df(season)
+    return get_boxscores_df(season), get_manager_map(season)
 
 with st.spinner("Loading player-level data (first load may take a minute)..."):
-    box_df = load(season)
+    box_df, manager_map = load(season)
 
 if box_df.empty:
     st.warning("No box score data available yet.")
     st.stop()
+
+if season < 2018:
+    st.info(f"Player data for {season} may not be 100% accurate. But I'm still counting it against you.")
+
+# team_name → team_id lookup from box_df
+tid_by_name = box_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
+def label_for(tname: str) -> str:
+    tid = tid_by_name.get(tname)
+    mgr = manager_map.get(tid, "?") if tid is not None else "?"
+    if show_mgr and show_team:
+        return f"{mgr} — {tname}"
+    return mgr if show_mgr else tname
 
 summary, weekly = lineup_efficiency(box_df)
 
@@ -36,15 +56,17 @@ tab1, tab2, tab3, tab4 = st.tabs(["Season Summary", "Weekly Efficiency", "Top Pl
 
 with tab1:
     st.subheader("Season Efficiency Summary")
-    display = summary[["team_name", "avg_actual", "avg_optimal", "avg_efficiency",
-                        "avg_bench", "avg_left_on_bench", "total_left_on_bench"]].copy()
-    display.columns = ["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
-                        "Avg Bench Pts", "Avg Left on Bench", "Total Left on Bench"]
+    display = prep_display(summary, manager_map, show_mgr, show_team,
+                           cols=["team_name", "avg_actual", "avg_optimal", "avg_efficiency",
+                                 "avg_bench", "avg_left_on_bench", "total_left_on_bench"],
+                           headers=["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
+                                    "Avg Bench Pts", "Avg Left on Bench", "Total Left on Bench"])
     st.dataframe(display, use_container_width=True)
 
-    fig = px.bar(summary.sort_values("avg_efficiency"), x="avg_efficiency", y="team_name",
+    summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
+    fig = px.bar(summary.sort_values("avg_efficiency"), x="avg_efficiency", y="label",
                  orientation="h", title="Average Lineup Efficiency %",
-                 labels={"avg_efficiency": "Efficiency %", "team_name": "Team"},
+                 labels={"avg_efficiency": "Efficiency %", "label": ""},
                  color="avg_efficiency", color_continuous_scale="RdYlGn",
                  range_color=[summary["avg_efficiency"].min() - 2, 100])
     fig.add_vline(x=summary["avg_efficiency"].mean(), line_dash="dash", line_color="gray",
@@ -55,16 +77,16 @@ with tab1:
     col1, col2 = st.columns(2)
     with col1:
         fig2 = px.bar(summary.sort_values("total_left_on_bench", ascending=False),
-                      x="team_name", y="total_left_on_bench",
+                      x="label", y="total_left_on_bench",
                       title="Total Points Left on Bench (Season)",
-                      labels={"team_name": "Team", "total_left_on_bench": "Points"},
+                      labels={"label": "", "total_left_on_bench": "Points"},
                       color="total_left_on_bench", color_continuous_scale="Reds")
         fig2.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
         st.plotly_chart(fig2, use_container_width=True)
 
     with col2:
         fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
-                          text="team_name", title="Actual Score vs Efficiency",
+                          text="label", title="Actual Score vs Efficiency",
                           labels={"avg_actual": "Avg Actual Score", "avg_efficiency": "Efficiency %"})
         fig3.update_traces(textposition="top center")
         st.plotly_chart(fig3, use_container_width=True)
@@ -75,19 +97,21 @@ with tab2:
     selected_team = st.selectbox("Select Team", ["All Teams"] + teams)
 
     if selected_team == "All Teams":
+        weekly["label"] = chart_label(weekly, manager_map, show_mgr, show_team)
         fig = px.line(weekly.sort_values("week"), x="week", y="efficiency_pct",
-                      color="team_name", markers=True,
+                      color="label", markers=True,
                       title="Lineup Efficiency % by Week",
-                      labels={"week": "Week", "efficiency_pct": "Efficiency %", "team_name": "Team"})
+                      labels={"week": "Week", "efficiency_pct": "Efficiency %", "label": "Team"})
         fig.add_hline(y=100, line_dash="dash", line_color="gray", annotation_text="Perfect")
     else:
         tdf = weekly[weekly["team_name"] == selected_team].sort_values("week")
+        lbl = label_for(selected_team)
         fig = go.Figure()
         fig.add_trace(go.Bar(x=tdf["week"], y=tdf["actual_score"], name="Actual", marker_color="#3498db"))
         fig.add_trace(go.Bar(x=tdf["week"], y=tdf["optimal_score"], name="Optimal", marker_color="#2ecc71"))
         fig.add_trace(go.Scatter(x=tdf["week"], y=tdf["bench_points"], name="Bench Pts",
                                  mode="lines+markers", line=dict(color="orange")))
-        fig.update_layout(barmode="group", title=f"{selected_team} — Actual vs Optimal by Week",
+        fig.update_layout(barmode="group", title=f"{lbl} — Actual vs Optimal by Week",
                           xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
     st.plotly_chart(fig, use_container_width=True)
 
@@ -114,14 +138,16 @@ with tab4:
     st.subheader("Projected vs Actual Scoring")
     st.caption("Did teams consistently outscore or underperform their ESPN projections?")
     proj_df = projected_vs_actual(box_df)
-    display = proj_df[["team_name", "times_beat_proj", "total_weeks", "beat_proj_pct", "avg_proj_diff"]].copy()
-    display.columns = ["Team", "Times Beat Proj", "Weeks", "Beat Proj %", "Avg Diff"]
+    display = prep_display(proj_df, manager_map, show_mgr, show_team,
+                           cols=["team_name", "times_beat_proj", "total_weeks", "beat_proj_pct", "avg_proj_diff"],
+                           headers=["Team", "Times Beat Proj", "Weeks", "Beat Proj %", "Avg Diff"])
     display["Avg Diff"] = display["Avg Diff"].round(2)
     st.dataframe(display, use_container_width=True, hide_index=True)
 
-    fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="team_name",
+    proj_df["label"] = chart_label(proj_df, manager_map, show_mgr, show_team)
+    fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
                  orientation="h", title="Average Points Above/Below ESPN Projection",
-                 labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "team_name": "Team"},
+                 labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "label": ""},
                  color="avg_proj_diff", color_continuous_scale="RdYlGn")
     fig.add_vline(x=0, line_dash="dash", line_color="gray")
     fig.update_layout(coloraxis_showscale=False)
