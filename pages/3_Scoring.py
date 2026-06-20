@@ -139,8 +139,8 @@ with tab3:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("**Top 10 Individual Scores**")
-        top_scores = df_tagged.nlargest(10, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
+        st.markdown("**Top 5 Individual Scores**")
+        top_scores = df_tagged.nlargest(5, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
         top_scores[["score", "opp_score"]] = top_scores[["score", "opp_score"]].round(2)
         disp = prep_display(top_scores, manager_map, show_mgr, show_team,
                             cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
@@ -148,23 +148,27 @@ with tab3:
         st.dataframe(disp, use_container_width=True, hide_index=True)
 
     with col2:
-        st.markdown("**10 Lowest Individual Scores**")
-        low_scores = df_tagged.nsmallest(10, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
+        st.markdown("**5 Lowest Individual Scores**")
+        low_scores = df_tagged.nsmallest(5, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
         low_scores[["score", "opp_score"]] = low_scores[["score", "opp_score"]].round(2)
         disp = prep_display(low_scores, manager_map, show_mgr, show_team,
                             cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
                             headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
         st.dataframe(disp, use_container_width=True, hide_index=True)
 
-    st.markdown("**Highest-Scoring Matchups**")
-    matchup_totals = df_tagged.merge(
-        df_tagged[["week", "team_id", "score"]].rename(columns={"team_id": "opp_id", "score": "opp_score_check"}),
-        on=["week", "opp_id"], how="left"
+    st.markdown("**Top 5 Highest-Scoring Matchups**")
+    # Build a canonical pair key (lower team_id first) so each matchup only appears once
+    df_tagged["pair_key"] = df_tagged.apply(
+        lambda r: (min(r["team_id"], r["opp_id"]), max(r["team_id"], r["opp_id"])), axis=1
     )
-    matchup_totals["matchup_total"] = matchup_totals["score"] + matchup_totals["opp_score"]
-    top_matchups = matchup_totals.drop_duplicates(subset=["week", "opp_id"]).nlargest(10, "matchup_total")[
-        ["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "matchup_total"]
-    ].copy()
+    df_tagged["matchup_total"] = df_tagged["score"] + df_tagged["opp_score"]
+    top_matchups = (
+        df_tagged.sort_values("matchup_total", ascending=False)
+        .drop_duplicates(subset=["week", "pair_key"])
+        .head(5)
+        [["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "matchup_total"]]
+        .copy()
+    )
     top_matchups[["score", "opp_score", "matchup_total"]] = top_matchups[["score", "opp_score", "matchup_total"]].round(2)
     disp = prep_display(top_matchups, manager_map, show_mgr, show_team,
                         cols=["team_name", "week_label", "score", "opp_name", "opp_score", "matchup_total"],
