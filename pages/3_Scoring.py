@@ -123,39 +123,51 @@ with tab2:
 
 with tab3:
     st.subheader("Season Records")
+
+    from config import season_config
+    cfg = season_config(season)
+
+    # Tag each row so users know whether a score came from a regular season or playoff week
+    def week_label(row):
+        if row["week"] > cfg["reg_season_end"]:
+            return f"Wk {row['week']} (playoffs)"
+        return f"Wk {row['week']}"
+
+    df_tagged = df.copy()
+    df_tagged["week_label"] = df_tagged.apply(week_label, axis=1)
+
     col1, col2 = st.columns(2)
 
     with col1:
         st.markdown("**Top 10 Individual Scores**")
-        top_scores = df.nlargest(10, "score")[["team_id", "week", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
+        top_scores = df_tagged.nlargest(10, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
         top_scores[["score", "opp_score"]] = top_scores[["score", "opp_score"]].round(2)
         disp = prep_display(top_scores, manager_map, show_mgr, show_team,
-                            cols=["team_name", "week", "score", "opp_name", "opp_score", "outcome"],
+                            cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
                             headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
         st.dataframe(disp, use_container_width=True, hide_index=True)
 
     with col2:
         st.markdown("**10 Lowest Individual Scores**")
-        low_scores = df.nsmallest(10, "score")[["team_id", "week", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
+        low_scores = df_tagged.nsmallest(10, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
         low_scores[["score", "opp_score"]] = low_scores[["score", "opp_score"]].round(2)
         disp = prep_display(low_scores, manager_map, show_mgr, show_team,
-                            cols=["team_name", "week", "score", "opp_name", "opp_score", "outcome"],
+                            cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
                             headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
         st.dataframe(disp, use_container_width=True, hide_index=True)
 
     st.markdown("**Highest-Scoring Matchups**")
-    df_m = df.copy()
-    matchup_totals = df_m.merge(
-        df_m[["week", "team_id", "score"]].rename(columns={"team_id": "opp_id", "score": "opp_score_check"}),
+    matchup_totals = df_tagged.merge(
+        df_tagged[["week", "team_id", "score"]].rename(columns={"team_id": "opp_id", "score": "opp_score_check"}),
         on=["week", "opp_id"], how="left"
     )
     matchup_totals["matchup_total"] = matchup_totals["score"] + matchup_totals["opp_score"]
     top_matchups = matchup_totals.drop_duplicates(subset=["week", "opp_id"]).nlargest(10, "matchup_total")[
-        ["team_id", "week", "team_name", "score", "opp_name", "opp_score", "matchup_total"]
+        ["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "matchup_total"]
     ].copy()
     top_matchups[["score", "opp_score", "matchup_total"]] = top_matchups[["score", "opp_score", "matchup_total"]].round(2)
     disp = prep_display(top_matchups, manager_map, show_mgr, show_team,
-                        cols=["team_name", "week", "score", "opp_name", "opp_score", "matchup_total"],
+                        cols=["team_name", "week_label", "score", "opp_name", "opp_score", "matchup_total"],
                         headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Total"])
     st.dataframe(disp, use_container_width=True, hide_index=True)
 

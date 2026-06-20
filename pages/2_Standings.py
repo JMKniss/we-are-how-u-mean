@@ -146,12 +146,15 @@ with tab6:
     h2h = h2h_standings(matchups_df).set_index("team_name")["wins"]
     df["actual_wins"] = df["team_name"].map(h2h)
     fig = go.Figure()
-    fig.add_trace(go.Bar(name="Actual Wins", x=df["label"], y=df["actual_wins"], marker_color="#3498db"))
     n_teams = matchups_df["team_id"].nunique()
     weeks_played = matchups_df["week"].nunique()
-    scale = weeks_played / (n_teams - 1) if n_teams > 1 else 1
-    fig.add_trace(go.Bar(name="Alt Wins (scaled)", x=df["label"],
+    actual_games = weeks_played
+    alt_games_per_week = n_teams - 1
+    # Scale alt wins to the same total game count as actual wins for fair comparison
+    scale = actual_games / (alt_games_per_week * weeks_played) if weeks_played > 0 else 1
+    fig.add_trace(go.Bar(name="Actual Wins", x=df["label"], y=df["actual_wins"], marker_color="#3498db"))
+    fig.add_trace(go.Bar(name="Alt Win Rate (scaled to actual games)", x=df["label"],
                          y=(df["alt_wins"] * scale).round(1), marker_color="#e67e22"))
     fig.update_layout(barmode="group", xaxis_tickangle=-30,
-                      title="Actual vs Alternate Schedule Wins (alt wins scaled to same game count)")
+                      title="Actual Wins vs Alternate Schedule Win Rate")
     st.plotly_chart(fig, use_container_width=True)
