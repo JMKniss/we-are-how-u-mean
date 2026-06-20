@@ -162,11 +162,18 @@ with tab4:
     st.subheader("Strength of Schedule")
     st.caption("Average score of opponents faced. Higher = harder schedule.")
     df = strength_of_schedule(matchups_df)
+    # Add team's own scoring stats to compare alongside opponent stats
+    own = matchups_df.groupby(["team_id", "team_name"])["score"].agg(
+        avg_score="mean", total_score="sum"
+    ).reset_index()
+    df = df.merge(own[["team_id", "avg_score", "total_score"]], on="team_id", how="left")
     display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "avg_opp_score", "total_opp_score", "games"],
-                           headers=["Team", "Avg Opp Score", "Total Opp Score", "Games Played"])
-    display["Avg Opp Score"] = display["Avg Opp Score"].round(2)
-    display["Total Opp Score"] = display["Total Opp Score"].round(1)
+                           cols=["team_name", "avg_opp_score", "avg_score", "total_opp_score", "total_score"],
+                           headers=["Team", "Avg Opp Score", "Avg Score", "Total Opp Score", "Total Score"])
+    for col in ["Avg Opp Score", "Avg Score"]:
+        display[col] = display[col].round(2)
+    for col in ["Total Opp Score", "Total Score"]:
+        display[col] = display[col].round(1)
     st.dataframe(display, use_container_width=True, hide_index=True)
 
     df["label"] = chart_label(df, manager_map, show_mgr, show_team)
@@ -183,11 +190,10 @@ with tab5:
     st.caption("Luck = Actual Wins − Expected Wins (based on weekly score percentile). Positive = lucky, negative = unlucky.")
     df = luck_index(matchups_df)
     display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "actual_wins", "expected_wins", "luck_score", "points_for"],
-                           headers=["Team", "Actual W", "Expected W", "Luck Score", "PF"])
+                           cols=["team_name", "actual_wins", "expected_wins", "luck_score"],
+                           headers=["Team", "Actual W", "Expected W", "Luck Score"])
     display["Expected W"] = display["Expected W"].round(1)
     display["Luck Score"] = display["Luck Score"].round(2)
-    display["PF"] = display["PF"].round(1)
     st.dataframe(display, use_container_width=True, hide_index=True)
 
     df["label"] = chart_label(df, manager_map, show_mgr, show_team)
