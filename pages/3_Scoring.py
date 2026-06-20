@@ -88,6 +88,69 @@ with tab1:
                        xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
     st.plotly_chart(fig2, use_container_width=True)
 
+    st.divider()
+    st.subheader("Individual Manager Trend")
+
+    # Build manager → team_name lookup for the dropdown
+    mgr_to_team = {
+        manager_map.get(tid_by_name.get(t), t): t for t in teams
+    }
+    selected_mgr = st.selectbox("Select manager", sorted(mgr_to_team.keys()), key="indiv_mgr")
+    selected_team = mgr_to_team[selected_mgr]
+    tdf = df[df["team_name"] == selected_team].sort_values("week")
+
+    weeks = tdf["week"].values.astype(float)
+    scores = tdf["score"].values.astype(float)
+    weekly_med = df.groupby("week")["score"].median()
+    weekly_avg = df.groupby("week")["score"].mean()
+    all_weeks = weekly_med.index.values.astype(float)
+
+    fig3 = go.Figure()
+
+    # Manager's actual weekly scores
+    fig3.add_trace(go.Scatter(
+        x=weeks, y=scores, mode="lines+markers",
+        name=selected_mgr, line=dict(color="#3498db", width=2),
+        hovertemplate="Week %{x:.0f}: %{y:.2f} pts<extra></extra>",
+    ))
+
+    # League median and average
+    fig3.add_trace(go.Scatter(
+        x=all_weeks, y=weekly_med.values, mode="lines",
+        name="League Median", line=dict(dash="dash", color="gray", width=1.5),
+    ))
+    fig3.add_trace(go.Scatter(
+        x=all_weeks, y=weekly_avg.values, mode="lines",
+        name="League Average", line=dict(dash="dot", color="lightgray", width=1.5),
+    ))
+
+    # Season-long trendline (linear regression over all weeks played)
+    if len(weeks) >= 2:
+        m_full, b_full = np.polyfit(weeks, scores, 1)
+        trend_full = m_full * all_weeks + b_full
+        fig3.add_trace(go.Scatter(
+            x=all_weeks, y=trend_full, mode="lines",
+            name="Season trend", line=dict(color="#3498db", dash="dash", width=1.5),
+        ))
+
+    # Last-5-games trendline
+    if len(weeks) >= 5:
+        last5_weeks = weeks[-5:]
+        last5_scores = scores[-5:]
+        m_l5, b_l5 = np.polyfit(last5_weeks, last5_scores, 1)
+        trend_l5 = m_l5 * last5_weeks + b_l5
+        fig3.add_trace(go.Scatter(
+            x=last5_weeks, y=trend_l5, mode="lines",
+            name="Last 5 trend", line=dict(color="#e67e22", dash="dash", width=2),
+        ))
+
+    fig3.update_layout(
+        height=420, xaxis_title="Week", yaxis_title="Points",
+        hovermode="x unified", xaxis=dict(dtick=1),
+        title=f"{selected_mgr} — Weekly Scoring with Trendlines",
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+
 with tab2:
     st.subheader("Score Distributions")
     col1, col2 = st.columns(2)
