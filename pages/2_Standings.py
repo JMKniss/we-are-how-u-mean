@@ -155,7 +155,6 @@ with tab3:
                                cols=["team_name", "wins", "median_wins", "total_wins", "total_losses", "total_win_pct"],
                                headers=["Team", "H2H W", "Median W", "Total W", "Total L", "Win%"])
         display["Win%"] = display["Win%"].round(3)
-        display["PF"] = display["PF"].round(1)
         st.dataframe(display, use_container_width=True, hide_index=True)
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
