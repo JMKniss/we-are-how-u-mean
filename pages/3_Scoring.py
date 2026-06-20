@@ -177,10 +177,10 @@ with tab3:
 
 with tab4:
     st.subheader("Season H2H Record Matrix")
-    labels = [label_for(t) for t in teams]
-    matrix = pd.DataFrame(index=labels, columns=labels, data="-")
-    for team, lbl in zip(teams, labels):
-        for opp, opp_lbl in zip(teams, labels):
+    mgr_labels = [manager_map.get(tid_by_name.get(t), t) for t in teams]
+    matrix = pd.DataFrame(index=mgr_labels, columns=mgr_labels, data="-")
+    for team, lbl in zip(teams, mgr_labels):
+        for opp, opp_lbl in zip(teams, mgr_labels):
             if team == opp:
                 continue
             rows = df[(df["team_name"] == team) & (df["opp_name"] == opp)]
