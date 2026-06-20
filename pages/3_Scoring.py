@@ -177,8 +177,10 @@ with tab3:
 
 with tab4:
     st.subheader("Season H2H Record Matrix")
+    st.caption("Each cell shows the **row** manager's W-L record against the **column** manager.")
     mgr_labels = [manager_map.get(tid_by_name.get(t), t) for t in teams]
     matrix = pd.DataFrame(index=mgr_labels, columns=mgr_labels, data="-")
+    matrix.index.name = "↓ row vs col →"
     for team, lbl in zip(teams, mgr_labels):
         for opp, opp_lbl in zip(teams, mgr_labels):
             if team == opp:
