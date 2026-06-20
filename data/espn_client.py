@@ -58,17 +58,42 @@ def get_league(season: int, espn_s2: str = None, swid: str = None) -> League:
     return league
 
 
+PLAYOFF_WEEKS = [14, 15, 16, 17]
+REG_SEASON_END = 13
+
+
+def _active_player_sum(lineup) -> float:
+    """Sum points for all active (non-bench, non-IR) players."""
+    return round(sum(p.points for p in lineup if p.lineupSlot not in ("BE", "IR")), 2)
+
+
 def get_matchups_df(season: int) -> pd.DataFrame:
+    """
+    Build a row-per-team-per-week DataFrame with true individual weekly scores.
+
+    Regular season (weeks 1-13): uses team.schedule/scores/outcomes — each
+    matchup is one week so ESPN's data is accurate.
+
+    Playoff weeks (14-17): ESPN accumulates scores across 2-week matchup
+    windows (W14+15, W16+17) so team.scores is useless for individual weeks.
+    Instead we pull box_scores(week=N) and sum each team's active player
+    points — player stats are always tracked per scoring period individually.
+    """
     cached = _load(season, "matchups_df")
     if cached is not None:
         return cached
+
     league = get_league(season)
     rows = []
+
+    # --- Regular season: use team-level schedule/scores ---
     for team in league.teams:
         for week_idx, (opp, score, outcome) in enumerate(
             zip(team.schedule, team.scores, team.outcomes), start=1
         ):
-            if score == 0 and week_idx > league.current_week:
+            if week_idx > REG_SEASON_END:
+                break
+            if outcome == "U":
                 continue
             opp_score = 0.0
             for o in league.teams:
@@ -86,43 +111,43 @@ def get_matchups_df(season: int) -> pd.DataFrame:
                 "opp_name": opp.team_name.strip(),
                 "opp_score": opp_score,
                 "outcome": outcome,
+                "is_playoff": False,
             })
+
+    # --- Playoff weeks: sum active player points per week ---
+    max_week = min(league.current_week, 17)
+    for week in PLAYOFF_WEEKS:
+        if week > max_week:
+            break
+        try:
+            boxes = league.box_scores(week=week)
+        except Exception:
+            continue
+        for box in boxes:
+            home_score = _active_player_sum(box.home_lineup)
+            away_score = _active_player_sum(box.away_lineup)
+            # Individual week outcome (not the 2-week matchup outcome)
+            home_outcome = "W" if home_score > away_score else ("T" if home_score == away_score else "L")
+            away_outcome = "L" if home_outcome == "W" else ("T" if home_outcome == "T" else "W")
+            for team, score, opp, opp_score, outcome in [
+                (box.home_team, home_score, box.away_team, away_score, home_outcome),
+                (box.away_team, away_score, box.home_team, home_score, away_outcome),
+            ]:
+                rows.append({
+                    "season": season,
+                    "week": week,
+                    "team_id": team.team_id,
+                    "team_name": team.team_name.strip(),
+                    "score": score,
+                    "opp_id": opp.team_id,
+                    "opp_name": opp.team_name.strip(),
+                    "opp_score": opp_score,
+                    "outcome": outcome,
+                    "is_playoff": True,
+                })
+
     df = pd.DataFrame(rows)
-    df = df[df["outcome"] != "U"].copy()
-    df = _fix_cumulative_playoff_scores(df)
     _save(season, "matchups_df", df)
-    return df
-
-
-def _fix_cumulative_playoff_scores(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    ESPN accumulates scores across multi-week playoff matchups. When the same
-    two teams face each other in consecutive playoff weeks (e.g. W14+W15 or
-    W16+W17), the later week's score is the running total, not that week alone.
-    This function detects those pairs and subtracts the prior week so every
-    row represents a single week's individual performance.
-    """
-    df = df.copy().sort_values(["team_id", "week"]).reset_index(drop=True)
-    playoff_week_pairs = [(15, 14), (17, 16)]  # (cumulative week, prior week)
-
-    for cum_week, prior_week in playoff_week_pairs:
-        cum_rows = df[df["week"] == cum_week]
-        prior_rows = df[df["week"] == prior_week].set_index("team_id")
-
-        for idx, row in cum_rows.iterrows():
-            tid = row["team_id"]
-            if tid not in prior_rows.index:
-                continue
-            prior = prior_rows.loc[tid]
-            # Only fix if same opponent in both weeks (true 2-week matchup)
-            if prior["opp_id"] != row["opp_id"]:
-                continue
-            prior_score = prior["score"]
-            prior_opp_score = prior["opp_score"]
-            # Subtract to recover the individual week score
-            df.loc[idx, "score"] = round(row["score"] - prior_score, 2)
-            df.loc[idx, "opp_score"] = round(row["opp_score"] - prior_opp_score, 2)
-
     return df
 
 
@@ -140,17 +165,19 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
         except Exception:
             continue
         for box in boxes:
-            for side, lineup, score, proj in [
-                (box.home_team, box.home_lineup, box.home_score, box.home_projected),
-                (box.away_team, box.away_lineup, box.away_score, box.away_projected),
+            for side, lineup, proj in [
+                (box.home_team, box.home_lineup, box.home_projected),
+                (box.away_team, box.away_lineup, box.away_projected),
             ]:
+                # Use player sum for team score — accurate for all weeks including playoffs
+                true_score = _active_player_sum(lineup)
                 for player in lineup:
                     rows.append({
                         "season": season,
                         "week": week,
                         "team_id": side.team_id,
                         "team_name": side.team_name.strip(),
-                        "team_score": score,
+                        "team_score": true_score,
                         "team_projected": proj,
                         "player_id": player.playerId,
                         "player_name": player.name,
