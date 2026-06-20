@@ -176,44 +176,8 @@ with tab3:
     st.dataframe(disp, use_container_width=True, hide_index=True)
 
 with tab4:
-    st.subheader("Head-to-Head Score Comparison")
-    col1, col2 = st.columns(2)
-    with col1:
-        team_a = st.selectbox("Team A", teams, key="h2h_a")
-    with col2:
-        team_b = st.selectbox("Team B", [t for t in teams if t != team_a], key="h2h_b")
-
-    matchups_between = df[
-        ((df["team_name"] == team_a) & (df["opp_name"] == team_b)) |
-        ((df["team_name"] == team_b) & (df["opp_name"] == team_a))
-    ]
-
-    if matchups_between.empty:
-        st.info("These two teams haven't played each other yet.")
-    else:
-        a_rows = matchups_between[matchups_between["team_name"] == team_a]
-        b_rows = matchups_between[matchups_between["team_name"] == team_b]
-        a_wins = (a_rows["outcome"] == "W").sum()
-        b_wins = (b_rows["outcome"] == "W").sum()
-        lbl_a, lbl_b = label_for(team_a), label_for(team_b)
-        col1, col2, col3 = st.columns(3)
-        col1.metric(lbl_a, a_wins)
-        col2.metric(lbl_b, b_wins)
-        col3.metric("Matchups", len(a_rows))
-
-        fig = go.Figure()
-        fig.add_trace(go.Bar(name=lbl_a, x=a_rows["week"].astype(str), y=a_rows["score"],
-                             marker_color="#3498db"))
-        fig.add_trace(go.Bar(name=lbl_b, x=b_rows["week"].astype(str), y=b_rows["score"],
-                             marker_color="#e74c3c"))
-        fig.update_layout(barmode="group", xaxis_title="Week", yaxis_title="Score",
-                          title=f"{lbl_a} vs {lbl_b} — Head to Head")
-        st.plotly_chart(fig, use_container_width=True)
-
-    # Full H2H matrix — rows/cols use display labels
-    st.subheader("All-Time H2H Record Matrix")
+    st.subheader("Season H2H Record Matrix")
     labels = [label_for(t) for t in teams]
-    name_to_label = dict(zip(teams, labels))
     matrix = pd.DataFrame(index=labels, columns=labels, data="-")
     for team, lbl in zip(teams, labels):
         for opp, opp_lbl in zip(teams, labels):
