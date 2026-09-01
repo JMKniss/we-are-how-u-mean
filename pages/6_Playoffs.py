@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 from data.espn_client import get_league, get_matchups_df, get_manager_map, invalidate_cache
-from analysis.standings import h2h_standings
+from analysis.standings import h2h_standings, combined_standings
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import sidebar_display_prefs, prep_display, chart_label
 
@@ -55,7 +55,8 @@ reg_df = matchups_df[matchups_df["week"] <= reg_end]
 playoff_df = matchups_df[matchups_df["is_playoff"]].copy()
 
 # ── Seedings from regular season standings ────────────────────────────────────
-standings = h2h_standings(reg_df).reset_index(drop=True)
+# 2025+: official seeding uses combined (H2H + median) standings
+standings = (combined_standings(reg_df) if season >= 2025 else h2h_standings(reg_df)).reset_index(drop=True)
 standings.insert(0, "seed", range(1, len(standings) + 1))
 seed_map = dict(zip(standings["team_id"], standings["seed"]))
 name_map = dict(zip(standings["team_id"], standings["team_name"]))
@@ -213,9 +214,14 @@ def show_match(t1, t2, weeks):
 
 # ── Regular season seedings table ─────────────────────────────────────────────
 st.subheader(f"{season} Regular Season Final Standings")
-seed_disp = prep_display(standings, manager_map, show_mgr, show_team,
-                         cols=["team_name", "seed", "wins", "losses", "points_for"],
-                         headers=["Team", "Seed", "W", "L", "PF"])
+if season >= 2025:
+    seed_disp = prep_display(standings, manager_map, show_mgr, show_team,
+                             cols=["team_name", "seed", "total_wins", "total_losses", "points_for"],
+                             headers=["Team", "Seed", "W", "L", "PF"])
+else:
+    seed_disp = prep_display(standings, manager_map, show_mgr, show_team,
+                             cols=["team_name", "seed", "wins", "losses", "points_for"],
+                             headers=["Team", "Seed", "W", "L", "PF"])
 seed_disp["PF"] = seed_disp["PF"].round(1)
 st.dataframe(seed_disp, hide_index=True, use_container_width=True)
 

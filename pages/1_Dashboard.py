@@ -6,7 +6,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from data.espn_client import get_league, get_matchups_df, get_manager_map, invalidate_cache
-from analysis.standings import h2h_standings, luck_index
+from analysis.standings import h2h_standings, combined_standings, luck_index
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import sidebar_display_prefs, prep_display, chart_label
 
@@ -103,20 +103,28 @@ col_left, col_right = st.columns(2)
 
 with col_left:
     st.subheader("Regular Season Standings")
-    df = h2h_standings(reg_df)
-    display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "wins", "losses", "points_for", "avg_score"],
-                           headers=["Team", "W", "L", "PF", "Avg"])
+    if season >= 2025:
+        df = combined_standings(reg_df)
+        display = prep_display(df, manager_map, show_mgr, show_team,
+                               cols=["team_name", "total_wins", "total_losses", "points_for", "points_against", "avg_score"],
+                               headers=["Team", "W", "L", "PF", "PA", "Avg"])
+    else:
+        df = h2h_standings(reg_df)
+        display = prep_display(df, manager_map, show_mgr, show_team,
+                               cols=["team_name", "wins", "losses", "points_for", "points_against", "avg_score"],
+                               headers=["Team", "W", "L", "PF", "PA", "Avg"])
     display["PF"] = display["PF"].round(1)
+    display["PA"] = display["PA"].round(1)
     display["Avg"] = display["Avg"].round(1)
     st.dataframe(display, use_container_width=True, hide_index=True)
 
 with col_right:
     st.subheader("Luck Index")
     df = luck_index(reg_df)
+    actual_w_label = "H2H W" if season >= 2025 else "Actual W"
     display = prep_display(df, manager_map, show_mgr, show_team,
                            cols=["team_name", "actual_wins", "expected_wins", "luck_score"],
-                           headers=["Team", "Actual W", "Expected W", "Luck Score"])
+                           headers=["Team", actual_w_label, "Expected W", "Luck Score"])
     display["Expected W"] = display["Expected W"].round(1)
     display["Luck Score"] = display["Luck Score"].round(2)
     st.dataframe(display, use_container_width=True, hide_index=True)

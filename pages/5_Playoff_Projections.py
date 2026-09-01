@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 from data.espn_client import get_matchups_df, get_manager_map, invalidate_cache
-from analysis.standings import h2h_standings
+from analysis.standings import h2h_standings, combined_standings
 from analysis.projections import simulate_playoffs
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import sidebar_display_prefs, prep_display, chart_label
@@ -129,18 +129,29 @@ with tab3:
     if weeks_remaining == 0:
         st.info("Regular season complete.")
     else:
-        standings = h2h_standings(reg_df)
-        cutoff_wins = standings.iloc[playoff_spots]["wins"] if len(standings) > playoff_spots else 0
-        standings["magic_number"] = (cutoff_wins + 1 - standings["wins"]).clip(lower=0)
-        standings["games_left"] = weeks_remaining
+        if season >= 2025:
+            standings = combined_standings(reg_df)
+            wins_col = "total_wins"
+            losses_col = "total_losses"
+            # Each remaining week offers 2 possible combined wins (H2H + median)
+            wins_per_week = 2
+        else:
+            standings = h2h_standings(reg_df)
+            wins_col = "wins"
+            losses_col = "losses"
+            wins_per_week = 1
+
+        cutoff_wins = standings.iloc[playoff_spots][wins_col] if len(standings) > playoff_spots else 0
+        standings["magic_number"] = (cutoff_wins + 1 - standings[wins_col]).clip(lower=0)
+        standings["games_left"] = weeks_remaining * wins_per_week
 
         magic_disp = prep_display(standings, manager_map, show_mgr, show_team,
-                                  cols=["team_name", "wins", "losses", "magic_number", "games_left"],
-                                  headers=["Team", "W", "L", "Magic Number", "Games Left"])
+                                  cols=["team_name", wins_col, losses_col, "magic_number", "games_left"],
+                                  headers=["Team", "W", "L", "Magic Number", "Wins Left"])
         magic_disp["Clinched"] = standings["magic_number"].values == 0
         st.dataframe(magic_disp, use_container_width=True, hide_index=True)
 
-        standings["max_possible_wins"] = standings["wins"] + weeks_remaining
+        standings["max_possible_wins"] = standings[wins_col] + weeks_remaining * wins_per_week
         standings["eliminated"] = standings["max_possible_wins"] < cutoff_wins + 1
         elim = standings[standings["eliminated"]]["team_name"].tolist()
         if elim:
