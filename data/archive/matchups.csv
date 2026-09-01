@@ -1,0 +1,1651 @@
+season,week,team_id,team_name,score,opp_id,opp_name,opp_score,outcome,is_playoff
+2016,1,2,I have the tin chicken,88.0,10,ALL DAY Johnnys,71.0,W,False
+2016,1,10,ALL DAY Johnnys,71.0,2,I have the tin chicken,88.0,L,False
+2016,1,1,Tin Chicken Lives Matter,113.0,4,Prestige Worldwide,96.0,W,False
+2016,1,4,Prestige Worldwide,96.0,1,Tin Chicken Lives Matter,113.0,L,False
+2016,1,8,Shiver Me Tin Chickens,80.0,7,The NFL Team Owners,90.0,L,False
+2016,1,7,The NFL Team Owners,90.0,8,Shiver Me Tin Chickens,80.0,W,False
+2016,1,5,they got tin chken n philly?,120.0,3,Jet Fuel Can't Melt Tin Chickn,82.0,W,False
+2016,1,3,Jet Fuel Can't Melt Tin Chickn,82.0,5,they got tin chken n philly?,120.0,L,False
+2016,1,9,Parm Farty Tin Chickens,106.0,6,TINder Chicken Draft Date,111.0,L,False
+2016,1,6,TINder Chicken Draft Date,111.0,9,Parm Farty Tin Chickens,106.0,W,False
+2016,2,4,Prestige Worldwide,79.0,7,The NFL Team Owners,74.0,W,False
+2016,2,7,The NFL Team Owners,74.0,4,Prestige Worldwide,79.0,L,False
+2016,2,3,Jet Fuel Can't Melt Tin Chickn,140.0,2,I have the tin chicken,69.0,W,False
+2016,2,2,I have the tin chicken,69.0,3,Jet Fuel Can't Melt Tin Chickn,140.0,L,False
+2016,2,6,TINder Chicken Draft Date,112.0,10,ALL DAY Johnnys,76.0,W,False
+2016,2,10,ALL DAY Johnnys,76.0,6,TINder Chicken Draft Date,112.0,L,False
+2016,2,5,they got tin chken n philly?,94.0,1,Tin Chicken Lives Matter,72.0,W,False
+2016,2,1,Tin Chicken Lives Matter,72.0,5,they got tin chken n philly?,94.0,L,False
+2016,2,9,Parm Farty Tin Chickens,87.0,8,Shiver Me Tin Chickens,60.0,W,False
+2016,2,8,Shiver Me Tin Chickens,60.0,9,Parm Farty Tin Chickens,87.0,L,False
+2016,3,3,Jet Fuel Can't Melt Tin Chickn,81.0,6,TINder Chicken Draft Date,59.0,W,False
+2016,3,6,TINder Chicken Draft Date,59.0,3,Jet Fuel Can't Melt Tin Chickn,81.0,L,False
+2016,3,4,Prestige Worldwide,82.0,5,they got tin chken n philly?,124.0,L,False
+2016,3,5,they got tin chken n philly?,124.0,4,Prestige Worldwide,82.0,W,False
+2016,3,7,The NFL Team Owners,106.0,9,Parm Farty Tin Chickens,101.0,W,False
+2016,3,9,Parm Farty Tin Chickens,101.0,7,The NFL Team Owners,106.0,L,False
+2016,3,2,I have the tin chicken,86.0,1,Tin Chicken Lives Matter,102.0,L,False
+2016,3,1,Tin Chicken Lives Matter,102.0,2,I have the tin chicken,86.0,W,False
+2016,3,10,ALL DAY Johnnys,41.0,8,Shiver Me Tin Chickens,77.0,L,False
+2016,3,8,Shiver Me Tin Chickens,77.0,10,ALL DAY Johnnys,41.0,W,False
+2016,4,5,they got tin chken n philly?,80.0,9,Parm Farty Tin Chickens,68.0,W,False
+2016,4,9,Parm Farty Tin Chickens,68.0,5,they got tin chken n philly?,80.0,L,False
+2016,4,1,Tin Chicken Lives Matter,77.0,3,Jet Fuel Can't Melt Tin Chickn,88.0,L,False
+2016,4,3,Jet Fuel Can't Melt Tin Chickn,88.0,1,Tin Chicken Lives Matter,77.0,W,False
+2016,4,8,Shiver Me Tin Chickens,80.0,6,TINder Chicken Draft Date,91.0,L,False
+2016,4,6,TINder Chicken Draft Date,91.0,8,Shiver Me Tin Chickens,80.0,W,False
+2016,4,2,I have the tin chicken,91.0,4,Prestige Worldwide,78.0,W,False
+2016,4,4,Prestige Worldwide,78.0,2,I have the tin chicken,91.0,L,False
+2016,4,10,ALL DAY Johnnys,97.0,7,The NFL Team Owners,107.0,L,False
+2016,4,7,The NFL Team Owners,107.0,10,ALL DAY Johnnys,97.0,W,False
+2016,5,1,Tin Chicken Lives Matter,126.0,8,Shiver Me Tin Chickens,90.0,W,False
+2016,5,8,Shiver Me Tin Chickens,90.0,1,Tin Chicken Lives Matter,126.0,L,False
+2016,5,5,they got tin chken n philly?,147.0,2,I have the tin chicken,77.0,W,False
+2016,5,2,I have the tin chicken,77.0,5,they got tin chken n philly?,147.0,L,False
+2016,5,9,Parm Farty Tin Chickens,71.0,10,ALL DAY Johnnys,96.0,L,False
+2016,5,10,ALL DAY Johnnys,96.0,9,Parm Farty Tin Chickens,71.0,W,False
+2016,5,3,Jet Fuel Can't Melt Tin Chickn,121.0,4,Prestige Worldwide,85.0,W,False
+2016,5,4,Prestige Worldwide,85.0,3,Jet Fuel Can't Melt Tin Chickn,121.0,L,False
+2016,5,6,TINder Chicken Draft Date,63.0,7,The NFL Team Owners,63.0,T,False
+2016,5,7,The NFL Team Owners,63.0,6,TINder Chicken Draft Date,63.0,T,False
+2016,6,10,ALL DAY Johnnys,100.0,4,Prestige Worldwide,77.0,W,False
+2016,6,4,Prestige Worldwide,77.0,10,ALL DAY Johnnys,100.0,L,False
+2016,6,7,The NFL Team Owners,101.0,3,Jet Fuel Can't Melt Tin Chickn,93.0,W,False
+2016,6,3,Jet Fuel Can't Melt Tin Chickn,93.0,7,The NFL Team Owners,101.0,L,False
+2016,6,6,TINder Chicken Draft Date,72.0,5,they got tin chken n philly?,116.0,L,False
+2016,6,5,they got tin chken n philly?,116.0,6,TINder Chicken Draft Date,72.0,W,False
+2016,6,9,Parm Farty Tin Chickens,123.0,1,Tin Chicken Lives Matter,67.0,W,False
+2016,6,1,Tin Chicken Lives Matter,67.0,9,Parm Farty Tin Chickens,123.0,L,False
+2016,6,8,Shiver Me Tin Chickens,90.0,2,I have the tin chicken,44.0,W,False
+2016,6,2,I have the tin chicken,44.0,8,Shiver Me Tin Chickens,90.0,L,False
+2016,7,3,Jet Fuel Can't Melt Tin Chickn,104.0,10,ALL DAY Johnnys,81.0,W,False
+2016,7,10,ALL DAY Johnnys,81.0,3,Jet Fuel Can't Melt Tin Chickn,104.0,L,False
+2016,7,5,they got tin chken n philly?,110.0,7,The NFL Team Owners,95.0,W,False
+2016,7,7,The NFL Team Owners,95.0,5,they got tin chken n philly?,110.0,L,False
+2016,7,1,Tin Chicken Lives Matter,91.0,6,TINder Chicken Draft Date,104.0,L,False
+2016,7,6,TINder Chicken Draft Date,104.0,1,Tin Chicken Lives Matter,91.0,W,False
+2016,7,2,I have the tin chicken,61.0,9,Parm Farty Tin Chickens,81.0,L,False
+2016,7,9,Parm Farty Tin Chickens,81.0,2,I have the tin chicken,61.0,W,False
+2016,7,4,Prestige Worldwide,88.0,8,Shiver Me Tin Chickens,92.0,L,False
+2016,7,8,Shiver Me Tin Chickens,92.0,4,Prestige Worldwide,88.0,W,False
+2016,8,10,ALL DAY Johnnys,64.0,5,they got tin chken n philly?,82.0,L,False
+2016,8,5,they got tin chken n philly?,82.0,10,ALL DAY Johnnys,64.0,W,False
+2016,8,7,The NFL Team Owners,95.0,1,Tin Chicken Lives Matter,80.0,W,False
+2016,8,1,Tin Chicken Lives Matter,80.0,7,The NFL Team Owners,95.0,L,False
+2016,8,6,TINder Chicken Draft Date,88.0,2,I have the tin chicken,107.0,L,False
+2016,8,2,I have the tin chicken,107.0,6,TINder Chicken Draft Date,88.0,W,False
+2016,8,9,Parm Farty Tin Chickens,106.0,4,Prestige Worldwide,92.0,W,False
+2016,8,4,Prestige Worldwide,92.0,9,Parm Farty Tin Chickens,106.0,L,False
+2016,8,8,Shiver Me Tin Chickens,99.0,3,Jet Fuel Can't Melt Tin Chickn,80.0,W,False
+2016,8,3,Jet Fuel Can't Melt Tin Chickn,80.0,8,Shiver Me Tin Chickens,99.0,L,False
+2016,9,1,Tin Chicken Lives Matter,120.0,10,ALL DAY Johnnys,108.0,W,False
+2016,9,10,ALL DAY Johnnys,108.0,1,Tin Chicken Lives Matter,120.0,L,False
+2016,9,2,I have the tin chicken,72.0,5,they got tin chken n philly?,80.0,L,False
+2016,9,5,they got tin chken n philly?,80.0,2,I have the tin chicken,72.0,W,False
+2016,9,7,The NFL Team Owners,151.0,8,Shiver Me Tin Chickens,41.0,W,False
+2016,9,8,Shiver Me Tin Chickens,41.0,7,The NFL Team Owners,151.0,L,False
+2016,9,4,Prestige Worldwide,94.0,3,Jet Fuel Can't Melt Tin Chickn,121.0,L,False
+2016,9,3,Jet Fuel Can't Melt Tin Chickn,121.0,4,Prestige Worldwide,94.0,W,False
+2016,9,6,TINder Chicken Draft Date,80.0,9,Parm Farty Tin Chickens,67.0,W,False
+2016,9,9,Parm Farty Tin Chickens,67.0,6,TINder Chicken Draft Date,80.0,L,False
+2016,10,2,I have the tin chicken,68.0,7,The NFL Team Owners,101.0,L,False
+2016,10,7,The NFL Team Owners,101.0,2,I have the tin chicken,68.0,W,False
+2016,10,4,Prestige Worldwide,139.0,1,Tin Chicken Lives Matter,82.0,W,False
+2016,10,1,Tin Chicken Lives Matter,82.0,4,Prestige Worldwide,139.0,L,False
+2016,10,10,ALL DAY Johnnys,111.0,6,TINder Chicken Draft Date,111.0,T,False
+2016,10,6,TINder Chicken Draft Date,111.0,10,ALL DAY Johnnys,111.0,T,False
+2016,10,3,Jet Fuel Can't Melt Tin Chickn,107.0,5,they got tin chken n philly?,97.0,W,False
+2016,10,5,they got tin chken n philly?,97.0,3,Jet Fuel Can't Melt Tin Chickn,107.0,L,False
+2016,10,8,Shiver Me Tin Chickens,76.0,9,Parm Farty Tin Chickens,83.0,L,False
+2016,10,9,Parm Farty Tin Chickens,83.0,8,Shiver Me Tin Chickens,76.0,W,False
+2016,11,4,Prestige Worldwide,96.0,6,TINder Chicken Draft Date,70.0,W,False
+2016,11,6,TINder Chicken Draft Date,70.0,4,Prestige Worldwide,96.0,L,False
+2016,11,2,I have the tin chicken,97.0,3,Jet Fuel Can't Melt Tin Chickn,89.0,W,False
+2016,11,3,Jet Fuel Can't Melt Tin Chickn,89.0,2,I have the tin chicken,97.0,L,False
+2016,11,9,Parm Farty Tin Chickens,80.0,7,The NFL Team Owners,94.0,L,False
+2016,11,7,The NFL Team Owners,94.0,9,Parm Farty Tin Chickens,80.0,W,False
+2016,11,1,Tin Chicken Lives Matter,81.0,5,they got tin chken n philly?,99.0,L,False
+2016,11,5,they got tin chken n philly?,99.0,1,Tin Chicken Lives Matter,81.0,W,False
+2016,11,8,Shiver Me Tin Chickens,84.0,10,ALL DAY Johnnys,94.0,L,False
+2016,11,10,ALL DAY Johnnys,94.0,8,Shiver Me Tin Chickens,84.0,W,False
+2016,12,3,Jet Fuel Can't Melt Tin Chickn,91.0,9,Parm Farty Tin Chickens,101.0,L,False
+2016,12,9,Parm Farty Tin Chickens,101.0,3,Jet Fuel Can't Melt Tin Chickn,91.0,W,False
+2016,12,5,they got tin chken n philly?,118.0,4,Prestige Worldwide,77.0,W,False
+2016,12,4,Prestige Worldwide,77.0,5,they got tin chken n philly?,118.0,L,False
+2016,12,6,TINder Chicken Draft Date,78.0,8,Shiver Me Tin Chickens,58.0,W,False
+2016,12,8,Shiver Me Tin Chickens,58.0,6,TINder Chicken Draft Date,78.0,L,False
+2016,12,1,Tin Chicken Lives Matter,95.0,2,I have the tin chicken,80.0,W,False
+2016,12,2,I have the tin chicken,80.0,1,Tin Chicken Lives Matter,95.0,L,False
+2016,12,7,The NFL Team Owners,78.0,10,ALL DAY Johnnys,106.0,L,False
+2016,12,10,ALL DAY Johnnys,106.0,7,The NFL Team Owners,78.0,W,False
+2016,13,5,they got tin chken n philly?,94.0,8,Shiver Me Tin Chickens,68.0,W,True
+2016,13,8,Shiver Me Tin Chickens,68.0,5,they got tin chken n philly?,94.0,L,True
+2016,13,3,Jet Fuel Can't Melt Tin Chickn,82.0,1,Tin Chicken Lives Matter,73.0,W,True
+2016,13,1,Tin Chicken Lives Matter,73.0,3,Jet Fuel Can't Melt Tin Chickn,82.0,L,True
+2016,13,10,ALL DAY Johnnys,91.0,9,Parm Farty Tin Chickens,103.0,L,True
+2016,13,9,Parm Farty Tin Chickens,103.0,10,ALL DAY Johnnys,91.0,W,True
+2016,13,4,Prestige Worldwide,102.0,2,I have the tin chicken,78.0,W,True
+2016,13,2,I have the tin chicken,78.0,4,Prestige Worldwide,102.0,L,True
+2016,13,7,The NFL Team Owners,111.0,6,TINder Chicken Draft Date,91.0,W,True
+2016,13,6,TINder Chicken Draft Date,91.0,7,The NFL Team Owners,111.0,L,True
+2016,14,5,they got tin chken n philly?,44.0,9,Parm Farty Tin Chickens,67.0,L,True
+2016,14,9,Parm Farty Tin Chickens,67.0,5,they got tin chken n philly?,44.0,W,True
+2016,14,7,The NFL Team Owners,68.0,3,Jet Fuel Can't Melt Tin Chickn,142.0,L,True
+2016,14,3,Jet Fuel Can't Melt Tin Chickn,142.0,7,The NFL Team Owners,68.0,W,True
+2016,14,6,TINder Chicken Draft Date,69.0,1,Tin Chicken Lives Matter,77.0,L,True
+2016,14,1,Tin Chicken Lives Matter,77.0,6,TINder Chicken Draft Date,69.0,W,True
+2016,14,10,ALL DAY Johnnys,87.0,4,Prestige Worldwide,63.0,W,True
+2016,14,4,Prestige Worldwide,63.0,10,ALL DAY Johnnys,87.0,L,True
+2016,14,2,I have the tin chicken,73.0,8,Shiver Me Tin Chickens,84.0,L,True
+2016,14,8,Shiver Me Tin Chickens,84.0,2,I have the tin chicken,73.0,W,True
+2016,15,5,they got tin chken n philly?,122.0,9,Parm Farty Tin Chickens,90.0,W,True
+2016,15,9,Parm Farty Tin Chickens,90.0,5,they got tin chken n philly?,122.0,L,True
+2016,15,7,The NFL Team Owners,80.0,3,Jet Fuel Can't Melt Tin Chickn,122.0,L,True
+2016,15,3,Jet Fuel Can't Melt Tin Chickn,122.0,7,The NFL Team Owners,80.0,W,True
+2016,15,6,TINder Chicken Draft Date,54.0,1,Tin Chicken Lives Matter,57.0,L,True
+2016,15,1,Tin Chicken Lives Matter,57.0,6,TINder Chicken Draft Date,54.0,W,True
+2016,15,10,ALL DAY Johnnys,68.0,4,Prestige Worldwide,111.0,L,True
+2016,15,4,Prestige Worldwide,111.0,10,ALL DAY Johnnys,68.0,W,True
+2016,15,2,I have the tin chicken,98.0,8,Shiver Me Tin Chickens,48.0,W,True
+2016,15,8,Shiver Me Tin Chickens,48.0,2,I have the tin chicken,98.0,L,True
+2016,16,5,they got tin chken n philly?,83.0,3,Jet Fuel Can't Melt Tin Chickn,131.0,L,True
+2016,16,3,Jet Fuel Can't Melt Tin Chickn,131.0,5,they got tin chken n philly?,83.0,W,True
+2016,16,7,The NFL Team Owners,137.0,9,Parm Farty Tin Chickens,82.0,W,True
+2016,16,9,Parm Farty Tin Chickens,82.0,7,The NFL Team Owners,137.0,L,True
+2016,16,1,Tin Chicken Lives Matter,92.0,4,Prestige Worldwide,89.0,W,True
+2016,16,4,Prestige Worldwide,89.0,1,Tin Chicken Lives Matter,92.0,L,True
+2016,16,6,TINder Chicken Draft Date,62.0,2,I have the tin chicken,59.0,W,True
+2016,16,2,I have the tin chicken,59.0,6,TINder Chicken Draft Date,62.0,L,True
+2016,16,10,ALL DAY Johnnys,75.0,8,Shiver Me Tin Chickens,89.0,L,True
+2016,16,8,Shiver Me Tin Chickens,89.0,10,ALL DAY Johnnys,75.0,W,True
+2017,1,2,Honey Funches  Of Oats,68.0,10,ALL DAY Johnnys,76.0,L,False
+2017,1,10,ALL DAY Johnnys,76.0,2,Honey Funches  Of Oats,68.0,W,False
+2017,1,1,Triple Crown Affirmed,65.0,4,Give me the hotdog baby,71.0,L,False
+2017,1,4,Give me the hotdog baby,71.0,1,Triple Crown Affirmed,65.0,W,False
+2017,1,8,Josh N Brian's Excellent Team,125.0,7,Dontrelle Inman and the Necks,60.0,W,False
+2017,1,7,Dontrelle Inman and the Necks,60.0,8,Josh N Brian's Excellent Team,125.0,L,False
+2017,1,5,they got tin chken n philly?,64.0,3,Jet Fuel Can't Melt Tin Chickn,84.0,L,False
+2017,1,3,Jet Fuel Can't Melt Tin Chickn,84.0,5,they got tin chken n philly?,64.0,W,False
+2017,1,9,On the 2nd Year He Ressurected,102.0,6,Travis Kelce And the Boys,72.0,W,False
+2017,1,6,Travis Kelce And the Boys,72.0,9,On the 2nd Year He Ressurected,102.0,L,False
+2017,2,4,Give me the hotdog baby,78.0,7,Dontrelle Inman and the Necks,80.0,L,False
+2017,2,7,Dontrelle Inman and the Necks,80.0,4,Give me the hotdog baby,78.0,W,False
+2017,2,3,Jet Fuel Can't Melt Tin Chickn,97.0,2,Honey Funches  Of Oats,77.0,W,False
+2017,2,2,Honey Funches  Of Oats,77.0,3,Jet Fuel Can't Melt Tin Chickn,97.0,L,False
+2017,2,6,Travis Kelce And the Boys,75.0,10,ALL DAY Johnnys,114.0,L,False
+2017,2,10,ALL DAY Johnnys,114.0,6,Travis Kelce And the Boys,75.0,W,False
+2017,2,5,they got tin chken n philly?,68.0,1,Triple Crown Affirmed,110.0,L,False
+2017,2,1,Triple Crown Affirmed,110.0,5,they got tin chken n philly?,68.0,W,False
+2017,2,9,On the 2nd Year He Ressurected,86.0,8,Josh N Brian's Excellent Team,63.0,W,False
+2017,2,8,Josh N Brian's Excellent Team,63.0,9,On the 2nd Year He Ressurected,86.0,L,False
+2017,3,3,Jet Fuel Can't Melt Tin Chickn,84.0,6,Travis Kelce And the Boys,59.0,W,False
+2017,3,6,Travis Kelce And the Boys,59.0,3,Jet Fuel Can't Melt Tin Chickn,84.0,L,False
+2017,3,4,Give me the hotdog baby,97.0,5,they got tin chken n philly?,89.0,W,False
+2017,3,5,they got tin chken n philly?,89.0,4,Give me the hotdog baby,97.0,L,False
+2017,3,7,Dontrelle Inman and the Necks,100.0,9,On the 2nd Year He Ressurected,103.0,L,False
+2017,3,9,On the 2nd Year He Ressurected,103.0,7,Dontrelle Inman and the Necks,100.0,W,False
+2017,3,2,Honey Funches  Of Oats,74.0,1,Triple Crown Affirmed,91.0,L,False
+2017,3,1,Triple Crown Affirmed,91.0,2,Honey Funches  Of Oats,74.0,W,False
+2017,3,10,ALL DAY Johnnys,64.0,8,Josh N Brian's Excellent Team,129.0,L,False
+2017,3,8,Josh N Brian's Excellent Team,129.0,10,ALL DAY Johnnys,64.0,W,False
+2017,4,5,they got tin chken n philly?,78.0,9,On the 2nd Year He Ressurected,67.0,W,False
+2017,4,9,On the 2nd Year He Ressurected,67.0,5,they got tin chken n philly?,78.0,L,False
+2017,4,1,Triple Crown Affirmed,93.0,3,Jet Fuel Can't Melt Tin Chickn,104.0,L,False
+2017,4,3,Jet Fuel Can't Melt Tin Chickn,104.0,1,Triple Crown Affirmed,93.0,W,False
+2017,4,8,Josh N Brian's Excellent Team,82.0,6,Travis Kelce And the Boys,81.0,W,False
+2017,4,6,Travis Kelce And the Boys,81.0,8,Josh N Brian's Excellent Team,82.0,L,False
+2017,4,2,Honey Funches  Of Oats,118.0,4,Give me the hotdog baby,62.0,W,False
+2017,4,4,Give me the hotdog baby,62.0,2,Honey Funches  Of Oats,118.0,L,False
+2017,4,10,ALL DAY Johnnys,79.0,7,Dontrelle Inman and the Necks,83.0,L,False
+2017,4,7,Dontrelle Inman and the Necks,83.0,10,ALL DAY Johnnys,79.0,W,False
+2017,5,1,Triple Crown Affirmed,65.0,8,Josh N Brian's Excellent Team,106.0,L,False
+2017,5,8,Josh N Brian's Excellent Team,106.0,1,Triple Crown Affirmed,65.0,W,False
+2017,5,5,they got tin chken n philly?,88.0,2,Honey Funches  Of Oats,68.0,W,False
+2017,5,2,Honey Funches  Of Oats,68.0,5,they got tin chken n philly?,88.0,L,False
+2017,5,9,On the 2nd Year He Ressurected,68.0,10,ALL DAY Johnnys,73.0,L,False
+2017,5,10,ALL DAY Johnnys,73.0,9,On the 2nd Year He Ressurected,68.0,W,False
+2017,5,3,Jet Fuel Can't Melt Tin Chickn,126.0,4,Give me the hotdog baby,57.0,W,False
+2017,5,4,Give me the hotdog baby,57.0,3,Jet Fuel Can't Melt Tin Chickn,126.0,L,False
+2017,5,6,Travis Kelce And the Boys,97.0,7,Dontrelle Inman and the Necks,94.0,W,False
+2017,5,7,Dontrelle Inman and the Necks,94.0,6,Travis Kelce And the Boys,97.0,L,False
+2017,6,10,ALL DAY Johnnys,83.0,4,Give me the hotdog baby,89.0,L,False
+2017,6,4,Give me the hotdog baby,89.0,10,ALL DAY Johnnys,83.0,W,False
+2017,6,7,Dontrelle Inman and the Necks,70.0,3,Jet Fuel Can't Melt Tin Chickn,105.0,L,False
+2017,6,3,Jet Fuel Can't Melt Tin Chickn,105.0,7,Dontrelle Inman and the Necks,70.0,W,False
+2017,6,6,Travis Kelce And the Boys,91.0,5,they got tin chken n philly?,71.0,W,False
+2017,6,5,they got tin chken n philly?,71.0,6,Travis Kelce And the Boys,91.0,L,False
+2017,6,9,On the 2nd Year He Ressurected,84.0,1,Triple Crown Affirmed,103.0,L,False
+2017,6,1,Triple Crown Affirmed,103.0,9,On the 2nd Year He Ressurected,84.0,W,False
+2017,6,8,Josh N Brian's Excellent Team,73.0,2,Honey Funches  Of Oats,120.0,L,False
+2017,6,2,Honey Funches  Of Oats,120.0,8,Josh N Brian's Excellent Team,73.0,W,False
+2017,7,3,Jet Fuel Can't Melt Tin Chickn,128.0,10,ALL DAY Johnnys,81.0,W,False
+2017,7,10,ALL DAY Johnnys,81.0,3,Jet Fuel Can't Melt Tin Chickn,128.0,L,False
+2017,7,5,they got tin chken n philly?,63.0,7,Dontrelle Inman and the Necks,69.0,L,False
+2017,7,7,Dontrelle Inman and the Necks,69.0,5,they got tin chken n philly?,63.0,W,False
+2017,7,1,Triple Crown Affirmed,98.0,6,Travis Kelce And the Boys,77.0,W,False
+2017,7,6,Travis Kelce And the Boys,77.0,1,Triple Crown Affirmed,98.0,L,False
+2017,7,2,Honey Funches  Of Oats,95.0,9,On the 2nd Year He Ressurected,103.0,L,False
+2017,7,9,On the 2nd Year He Ressurected,103.0,2,Honey Funches  Of Oats,95.0,W,False
+2017,7,4,Give me the hotdog baby,60.0,8,Josh N Brian's Excellent Team,77.0,L,False
+2017,7,8,Josh N Brian's Excellent Team,77.0,4,Give me the hotdog baby,60.0,W,False
+2017,8,10,ALL DAY Johnnys,66.0,5,they got tin chken n philly?,92.0,L,False
+2017,8,5,they got tin chken n philly?,92.0,10,ALL DAY Johnnys,66.0,W,False
+2017,8,7,Dontrelle Inman and the Necks,121.0,1,Triple Crown Affirmed,73.0,W,False
+2017,8,1,Triple Crown Affirmed,73.0,7,Dontrelle Inman and the Necks,121.0,L,False
+2017,8,6,Travis Kelce And the Boys,100.0,2,Honey Funches  Of Oats,94.0,W,False
+2017,8,2,Honey Funches  Of Oats,94.0,6,Travis Kelce And the Boys,100.0,L,False
+2017,8,9,On the 2nd Year He Ressurected,92.0,4,Give me the hotdog baby,94.0,L,False
+2017,8,4,Give me the hotdog baby,94.0,9,On the 2nd Year He Ressurected,92.0,W,False
+2017,8,8,Josh N Brian's Excellent Team,58.0,3,Jet Fuel Can't Melt Tin Chickn,98.0,L,False
+2017,8,3,Jet Fuel Can't Melt Tin Chickn,98.0,8,Josh N Brian's Excellent Team,58.0,W,False
+2017,9,1,Triple Crown Affirmed,64.0,10,ALL DAY Johnnys,83.0,L,False
+2017,9,10,ALL DAY Johnnys,83.0,1,Triple Crown Affirmed,64.0,W,False
+2017,9,2,Honey Funches  Of Oats,78.0,5,they got tin chken n philly?,105.0,L,False
+2017,9,5,they got tin chken n philly?,105.0,2,Honey Funches  Of Oats,78.0,W,False
+2017,9,7,Dontrelle Inman and the Necks,92.0,8,Josh N Brian's Excellent Team,61.0,W,False
+2017,9,8,Josh N Brian's Excellent Team,61.0,7,Dontrelle Inman and the Necks,92.0,L,False
+2017,9,4,Give me the hotdog baby,93.0,3,Jet Fuel Can't Melt Tin Chickn,64.0,W,False
+2017,9,3,Jet Fuel Can't Melt Tin Chickn,64.0,4,Give me the hotdog baby,93.0,L,False
+2017,9,6,Travis Kelce And the Boys,96.0,9,On the 2nd Year He Ressurected,94.0,W,False
+2017,9,9,On the 2nd Year He Ressurected,94.0,6,Travis Kelce And the Boys,96.0,L,False
+2017,10,2,Honey Funches  Of Oats,97.0,7,Dontrelle Inman and the Necks,126.0,L,False
+2017,10,7,Dontrelle Inman and the Necks,126.0,2,Honey Funches  Of Oats,97.0,W,False
+2017,10,4,Give me the hotdog baby,93.0,1,Triple Crown Affirmed,73.0,W,False
+2017,10,1,Triple Crown Affirmed,73.0,4,Give me the hotdog baby,93.0,L,False
+2017,10,10,ALL DAY Johnnys,72.0,6,Travis Kelce And the Boys,102.0,L,False
+2017,10,6,Travis Kelce And the Boys,102.0,10,ALL DAY Johnnys,72.0,W,False
+2017,10,3,Jet Fuel Can't Melt Tin Chickn,65.0,5,they got tin chken n philly?,77.0,L,False
+2017,10,5,they got tin chken n philly?,77.0,3,Jet Fuel Can't Melt Tin Chickn,65.0,W,False
+2017,10,8,Josh N Brian's Excellent Team,80.0,9,On the 2nd Year He Ressurected,98.0,L,False
+2017,10,9,On the 2nd Year He Ressurected,98.0,8,Josh N Brian's Excellent Team,80.0,W,False
+2017,11,4,Give me the hotdog baby,82.0,6,Travis Kelce And the Boys,107.0,L,False
+2017,11,6,Travis Kelce And the Boys,107.0,4,Give me the hotdog baby,82.0,W,False
+2017,11,2,Honey Funches  Of Oats,88.0,3,Jet Fuel Can't Melt Tin Chickn,61.0,W,False
+2017,11,3,Jet Fuel Can't Melt Tin Chickn,61.0,2,Honey Funches  Of Oats,88.0,L,False
+2017,11,9,On the 2nd Year He Ressurected,134.0,7,Dontrelle Inman and the Necks,71.0,W,False
+2017,11,7,Dontrelle Inman and the Necks,71.0,9,On the 2nd Year He Ressurected,134.0,L,False
+2017,11,1,Triple Crown Affirmed,73.0,5,they got tin chken n philly?,125.0,L,False
+2017,11,5,they got tin chken n philly?,125.0,1,Triple Crown Affirmed,73.0,W,False
+2017,11,8,Josh N Brian's Excellent Team,74.0,10,ALL DAY Johnnys,88.0,L,False
+2017,11,10,ALL DAY Johnnys,88.0,8,Josh N Brian's Excellent Team,74.0,W,False
+2017,12,3,Jet Fuel Can't Melt Tin Chickn,88.0,9,On the 2nd Year He Ressurected,134.0,L,False
+2017,12,9,On the 2nd Year He Ressurected,134.0,3,Jet Fuel Can't Melt Tin Chickn,88.0,W,False
+2017,12,5,they got tin chken n philly?,109.0,4,Give me the hotdog baby,96.0,W,False
+2017,12,4,Give me the hotdog baby,96.0,5,they got tin chken n philly?,109.0,L,False
+2017,12,6,Travis Kelce And the Boys,74.0,8,Josh N Brian's Excellent Team,68.0,W,False
+2017,12,8,Josh N Brian's Excellent Team,68.0,6,Travis Kelce And the Boys,74.0,L,False
+2017,12,1,Triple Crown Affirmed,92.0,2,Honey Funches  Of Oats,111.0,L,False
+2017,12,2,Honey Funches  Of Oats,111.0,1,Triple Crown Affirmed,92.0,W,False
+2017,12,7,Dontrelle Inman and the Necks,83.0,10,ALL DAY Johnnys,107.0,L,False
+2017,12,10,ALL DAY Johnnys,107.0,7,Dontrelle Inman and the Necks,83.0,W,False
+2017,13,3,Jet Fuel Can't Melt Tin Chickn,100.0,5,they got tin chken n philly?,79.0,W,True
+2017,13,5,they got tin chken n philly?,79.0,3,Jet Fuel Can't Melt Tin Chickn,100.0,L,True
+2017,13,9,On the 2nd Year He Ressurected,114.0,6,Travis Kelce And the Boys,115.0,L,True
+2017,13,6,Travis Kelce And the Boys,115.0,9,On the 2nd Year He Ressurected,114.0,W,True
+2017,13,7,Dontrelle Inman and the Necks,72.0,10,ALL DAY Johnnys,82.0,L,True
+2017,13,10,ALL DAY Johnnys,82.0,7,Dontrelle Inman and the Necks,72.0,W,True
+2017,13,4,Give me the hotdog baby,65.0,8,Josh N Brian's Excellent Team,60.0,W,True
+2017,13,8,Josh N Brian's Excellent Team,60.0,4,Give me the hotdog baby,65.0,L,True
+2017,13,2,Honey Funches  Of Oats,113.0,1,Triple Crown Affirmed,99.0,W,True
+2017,13,1,Triple Crown Affirmed,99.0,2,Honey Funches  Of Oats,113.0,L,True
+2017,14,3,Jet Fuel Can't Melt Tin Chickn,121.0,5,they got tin chken n philly?,62.0,W,True
+2017,14,5,they got tin chken n philly?,62.0,3,Jet Fuel Can't Melt Tin Chickn,121.0,L,True
+2017,14,9,On the 2nd Year He Ressurected,79.0,6,Travis Kelce And the Boys,71.0,W,True
+2017,14,6,Travis Kelce And the Boys,71.0,9,On the 2nd Year He Ressurected,79.0,L,True
+2017,14,7,Dontrelle Inman and the Necks,102.0,10,ALL DAY Johnnys,81.0,W,True
+2017,14,10,ALL DAY Johnnys,81.0,7,Dontrelle Inman and the Necks,102.0,L,True
+2017,14,4,Give me the hotdog baby,96.0,8,Josh N Brian's Excellent Team,88.0,W,True
+2017,14,8,Josh N Brian's Excellent Team,88.0,4,Give me the hotdog baby,96.0,L,True
+2017,14,2,Honey Funches  Of Oats,80.0,1,Triple Crown Affirmed,67.0,W,True
+2017,14,1,Triple Crown Affirmed,67.0,2,Honey Funches  Of Oats,80.0,L,True
+2017,15,3,Jet Fuel Can't Melt Tin Chickn,110.0,9,On the 2nd Year He Ressurected,68.0,W,True
+2017,15,9,On the 2nd Year He Ressurected,68.0,3,Jet Fuel Can't Melt Tin Chickn,110.0,L,True
+2017,15,6,Travis Kelce And the Boys,81.0,5,they got tin chken n philly?,58.0,W,True
+2017,15,5,they got tin chken n philly?,58.0,6,Travis Kelce And the Boys,81.0,L,True
+2017,15,7,Dontrelle Inman and the Necks,94.0,4,Give me the hotdog baby,45.0,W,True
+2017,15,4,Give me the hotdog baby,45.0,7,Dontrelle Inman and the Necks,94.0,L,True
+2017,15,10,ALL DAY Johnnys,95.0,2,Honey Funches  Of Oats,89.0,W,True
+2017,15,2,Honey Funches  Of Oats,89.0,10,ALL DAY Johnnys,95.0,L,True
+2017,15,8,Josh N Brian's Excellent Team,82.0,1,Triple Crown Affirmed,76.0,W,True
+2017,15,1,Triple Crown Affirmed,76.0,8,Josh N Brian's Excellent Team,82.0,L,True
+2017,16,3,Jet Fuel Can't Melt Tin Chickn,139.0,9,On the 2nd Year He Ressurected,76.0,W,True
+2017,16,9,On the 2nd Year He Ressurected,76.0,3,Jet Fuel Can't Melt Tin Chickn,139.0,L,True
+2017,16,6,Travis Kelce And the Boys,83.0,5,they got tin chken n philly?,64.0,W,True
+2017,16,5,they got tin chken n philly?,64.0,6,Travis Kelce And the Boys,83.0,L,True
+2017,16,7,Dontrelle Inman and the Necks,57.0,4,Give me the hotdog baby,66.0,L,True
+2017,16,4,Give me the hotdog baby,66.0,7,Dontrelle Inman and the Necks,57.0,W,True
+2017,16,10,ALL DAY Johnnys,61.0,2,Honey Funches  Of Oats,108.0,L,True
+2017,16,2,Honey Funches  Of Oats,108.0,10,ALL DAY Johnnys,61.0,W,True
+2017,16,8,Josh N Brian's Excellent Team,95.0,1,Triple Crown Affirmed,106.0,L,True
+2017,16,1,Triple Crown Affirmed,106.0,8,Josh N Brian's Excellent Team,95.0,W,True
+2018,1,2,UuHhhh myYyy gICEEE,108.24,10,ALL DAY Johnnys,108.58,L,False
+2018,1,10,ALL DAY Johnnys,108.58,2,UuHhhh myYyy gICEEE,108.24,W,False
+2018,1,1,Ice In My Veins,58.84,4,Give me the hotdog baby,120.26,L,False
+2018,1,4,Give me the hotdog baby,120.26,1,Ice In My Veins,58.84,W,False
+2018,1,8,Behind Blue Ice,99.84,7,smirn office,119.86,L,False
+2018,1,7,smirn office,119.86,8,Behind Blue Ice,99.84,W,False
+2018,1,5,the iceman cometh,127.12,3,Jet Fuel Can't Evaporate Ice,75.4,W,False
+2018,1,3,Jet Fuel Can't Evaporate Ice,75.4,5,the iceman cometh,127.12,L,False
+2018,1,9,Antonio Cromarties Kids,74.74,6,Travis Kelce And the Boys,100.74,L,False
+2018,1,6,Travis Kelce And the Boys,100.74,9,Antonio Cromarties Kids,74.74,W,False
+2018,2,4,Give me the hotdog baby,69.56,7,smirn office,99.54,L,False
+2018,2,7,smirn office,99.54,4,Give me the hotdog baby,69.56,W,False
+2018,2,3,Jet Fuel Can't Evaporate Ice,59.34,2,UuHhhh myYyy gICEEE,135.04,L,False
+2018,2,2,UuHhhh myYyy gICEEE,135.04,3,Jet Fuel Can't Evaporate Ice,59.34,W,False
+2018,2,6,Travis Kelce And the Boys,89.7,10,ALL DAY Johnnys,83.86,W,False
+2018,2,10,ALL DAY Johnnys,83.86,6,Travis Kelce And the Boys,89.7,L,False
+2018,2,5,the iceman cometh,114.24,1,Ice In My Veins,90.0,W,False
+2018,2,1,Ice In My Veins,90.0,5,the iceman cometh,114.24,L,False
+2018,2,9,Antonio Cromarties Kids,94.38,8,Behind Blue Ice,122.68,L,False
+2018,2,8,Behind Blue Ice,122.68,9,Antonio Cromarties Kids,94.38,W,False
+2018,3,3,Jet Fuel Can't Evaporate Ice,100.42,6,Travis Kelce And the Boys,80.44,W,False
+2018,3,6,Travis Kelce And the Boys,80.44,3,Jet Fuel Can't Evaporate Ice,100.42,L,False
+2018,3,4,Give me the hotdog baby,68.26,5,the iceman cometh,94.58,L,False
+2018,3,5,the iceman cometh,94.58,4,Give me the hotdog baby,68.26,W,False
+2018,3,7,smirn office,110.74,9,Antonio Cromarties Kids,88.18,W,False
+2018,3,9,Antonio Cromarties Kids,88.18,7,smirn office,110.74,L,False
+2018,3,2,UuHhhh myYyy gICEEE,76.96,1,Ice In My Veins,87.0,L,False
+2018,3,1,Ice In My Veins,87.0,2,UuHhhh myYyy gICEEE,76.96,W,False
+2018,3,10,ALL DAY Johnnys,91.52,8,Behind Blue Ice,92.0,L,False
+2018,3,8,Behind Blue Ice,92.0,10,ALL DAY Johnnys,91.52,W,False
+2018,4,5,the iceman cometh,122.7,9,Antonio Cromarties Kids,131.88,L,False
+2018,4,9,Antonio Cromarties Kids,131.88,5,the iceman cometh,122.7,W,False
+2018,4,1,Ice In My Veins,140.1,3,Jet Fuel Can't Evaporate Ice,104.36,W,False
+2018,4,3,Jet Fuel Can't Evaporate Ice,104.36,1,Ice In My Veins,140.1,L,False
+2018,4,8,Behind Blue Ice,128.56,6,Travis Kelce And the Boys,114.48,W,False
+2018,4,6,Travis Kelce And the Boys,114.48,8,Behind Blue Ice,128.56,L,False
+2018,4,2,UuHhhh myYyy gICEEE,97.56,4,Give me the hotdog baby,109.06,L,False
+2018,4,4,Give me the hotdog baby,109.06,2,UuHhhh myYyy gICEEE,97.56,W,False
+2018,4,10,ALL DAY Johnnys,90.12,7,smirn office,88.58,W,False
+2018,4,7,smirn office,88.58,10,ALL DAY Johnnys,90.12,L,False
+2018,5,1,Ice In My Veins,97.8,8,Behind Blue Ice,74.8,W,False
+2018,5,8,Behind Blue Ice,74.8,1,Ice In My Veins,97.8,L,False
+2018,5,5,the iceman cometh,99.56,2,UuHhhh myYyy gICEEE,109.26,L,False
+2018,5,2,UuHhhh myYyy gICEEE,109.26,5,the iceman cometh,99.56,W,False
+2018,5,9,Antonio Cromarties Kids,73.42,10,ALL DAY Johnnys,119.34,L,False
+2018,5,10,ALL DAY Johnnys,119.34,9,Antonio Cromarties Kids,73.42,W,False
+2018,5,3,Jet Fuel Can't Evaporate Ice,114.1,4,Give me the hotdog baby,97.1,W,False
+2018,5,4,Give me the hotdog baby,97.1,3,Jet Fuel Can't Evaporate Ice,114.1,L,False
+2018,5,6,Travis Kelce And the Boys,78.34,7,smirn office,118.22,L,False
+2018,5,7,smirn office,118.22,6,Travis Kelce And the Boys,78.34,W,False
+2018,6,10,ALL DAY Johnnys,99.7,4,Give me the hotdog baby,98.74,W,False
+2018,6,4,Give me the hotdog baby,98.74,10,ALL DAY Johnnys,99.7,L,False
+2018,6,7,smirn office,106.26,3,Jet Fuel Can't Evaporate Ice,116.46,L,False
+2018,6,3,Jet Fuel Can't Evaporate Ice,116.46,7,smirn office,106.26,W,False
+2018,6,6,Travis Kelce And the Boys,104.02,5,the iceman cometh,113.88,L,False
+2018,6,5,the iceman cometh,113.88,6,Travis Kelce And the Boys,104.02,W,False
+2018,6,9,Antonio Cromarties Kids,136.7,1,Ice In My Veins,85.28,W,False
+2018,6,1,Ice In My Veins,85.28,9,Antonio Cromarties Kids,136.7,L,False
+2018,6,8,Behind Blue Ice,67.2,2,UuHhhh myYyy gICEEE,94.88,L,False
+2018,6,2,UuHhhh myYyy gICEEE,94.88,8,Behind Blue Ice,67.2,W,False
+2018,7,3,Jet Fuel Can't Evaporate Ice,97.48,10,ALL DAY Johnnys,114.18,L,False
+2018,7,10,ALL DAY Johnnys,114.18,3,Jet Fuel Can't Evaporate Ice,97.48,W,False
+2018,7,5,the iceman cometh,109.64,7,smirn office,78.78,W,False
+2018,7,7,smirn office,78.78,5,the iceman cometh,109.64,L,False
+2018,7,1,Ice In My Veins,70.72,6,Travis Kelce And the Boys,99.24,L,False
+2018,7,6,Travis Kelce And the Boys,99.24,1,Ice In My Veins,70.72,W,False
+2018,7,2,UuHhhh myYyy gICEEE,118.92,9,Antonio Cromarties Kids,101.0,W,False
+2018,7,9,Antonio Cromarties Kids,101.0,2,UuHhhh myYyy gICEEE,118.92,L,False
+2018,7,4,Give me the hotdog baby,96.66,8,Behind Blue Ice,113.06,L,False
+2018,7,8,Behind Blue Ice,113.06,4,Give me the hotdog baby,96.66,W,False
+2018,8,10,ALL DAY Johnnys,99.76,5,the iceman cometh,102.12,L,False
+2018,8,5,the iceman cometh,102.12,10,ALL DAY Johnnys,99.76,W,False
+2018,8,7,smirn office,74.1,1,Ice In My Veins,138.9,L,False
+2018,8,1,Ice In My Veins,138.9,7,smirn office,74.1,W,False
+2018,8,6,Travis Kelce And the Boys,97.06,2,UuHhhh myYyy gICEEE,90.12,W,False
+2018,8,2,UuHhhh myYyy gICEEE,90.12,6,Travis Kelce And the Boys,97.06,L,False
+2018,8,9,Antonio Cromarties Kids,68.34,4,Give me the hotdog baby,86.66,L,False
+2018,8,4,Give me the hotdog baby,86.66,9,Antonio Cromarties Kids,68.34,W,False
+2018,8,8,Behind Blue Ice,108.94,3,Jet Fuel Can't Evaporate Ice,152.8,L,False
+2018,8,3,Jet Fuel Can't Evaporate Ice,152.8,8,Behind Blue Ice,108.94,W,False
+2018,9,1,Ice In My Veins,121.32,10,ALL DAY Johnnys,114.46,W,False
+2018,9,10,ALL DAY Johnnys,114.46,1,Ice In My Veins,121.32,L,False
+2018,9,2,UuHhhh myYyy gICEEE,115.3,5,the iceman cometh,74.82,W,False
+2018,9,5,the iceman cometh,74.82,2,UuHhhh myYyy gICEEE,115.3,L,False
+2018,9,7,smirn office,80.24,8,Behind Blue Ice,119.1,L,False
+2018,9,8,Behind Blue Ice,119.1,7,smirn office,80.24,W,False
+2018,9,4,Give me the hotdog baby,68.18,3,Jet Fuel Can't Evaporate Ice,123.16,L,False
+2018,9,3,Jet Fuel Can't Evaporate Ice,123.16,4,Give me the hotdog baby,68.18,W,False
+2018,9,6,Travis Kelce And the Boys,86.54,9,Antonio Cromarties Kids,105.52,L,False
+2018,9,9,Antonio Cromarties Kids,105.52,6,Travis Kelce And the Boys,86.54,W,False
+2018,10,2,UuHhhh myYyy gICEEE,110.06,7,smirn office,93.9,W,False
+2018,10,7,smirn office,93.9,2,UuHhhh myYyy gICEEE,110.06,L,False
+2018,10,4,Give me the hotdog baby,98.24,1,Ice In My Veins,135.0,L,False
+2018,10,1,Ice In My Veins,135.0,4,Give me the hotdog baby,98.24,W,False
+2018,10,10,ALL DAY Johnnys,114.36,6,Travis Kelce And the Boys,79.66,W,False
+2018,10,6,Travis Kelce And the Boys,79.66,10,ALL DAY Johnnys,114.36,L,False
+2018,10,3,Jet Fuel Can't Evaporate Ice,99.66,5,the iceman cometh,142.82,L,False
+2018,10,5,the iceman cometh,142.82,3,Jet Fuel Can't Evaporate Ice,99.66,W,False
+2018,10,8,Behind Blue Ice,78.4,9,Antonio Cromarties Kids,119.54,L,False
+2018,10,9,Antonio Cromarties Kids,119.54,8,Behind Blue Ice,78.4,W,False
+2018,11,4,Give me the hotdog baby,139.58,6,Travis Kelce And the Boys,51.5,W,False
+2018,11,6,Travis Kelce And the Boys,51.5,4,Give me the hotdog baby,139.58,L,False
+2018,11,2,UuHhhh myYyy gICEEE,122.02,3,Jet Fuel Can't Evaporate Ice,100.48,W,False
+2018,11,3,Jet Fuel Can't Evaporate Ice,100.48,2,UuHhhh myYyy gICEEE,122.02,L,False
+2018,11,9,Antonio Cromarties Kids,117.82,7,smirn office,130.02,L,False
+2018,11,7,smirn office,130.02,9,Antonio Cromarties Kids,117.82,W,False
+2018,11,1,Ice In My Veins,73.22,5,the iceman cometh,144.5,L,False
+2018,11,5,the iceman cometh,144.5,1,Ice In My Veins,73.22,W,False
+2018,11,8,Behind Blue Ice,64.04,10,ALL DAY Johnnys,87.26,L,False
+2018,11,10,ALL DAY Johnnys,87.26,8,Behind Blue Ice,64.04,W,False
+2018,12,3,Jet Fuel Can't Evaporate Ice,109.82,9,Antonio Cromarties Kids,115.32,L,False
+2018,12,9,Antonio Cromarties Kids,115.32,3,Jet Fuel Can't Evaporate Ice,109.82,W,False
+2018,12,5,the iceman cometh,72.96,4,Give me the hotdog baby,103.52,L,False
+2018,12,4,Give me the hotdog baby,103.52,5,the iceman cometh,72.96,W,False
+2018,12,6,Travis Kelce And the Boys,99.88,8,Behind Blue Ice,68.68,W,False
+2018,12,8,Behind Blue Ice,68.68,6,Travis Kelce And the Boys,99.88,L,False
+2018,12,1,Ice In My Veins,119.5,2,UuHhhh myYyy gICEEE,111.44,W,False
+2018,12,2,UuHhhh myYyy gICEEE,111.44,1,Ice In My Veins,119.5,L,False
+2018,12,7,smirn office,119.26,10,ALL DAY Johnnys,98.12,W,False
+2018,12,10,ALL DAY Johnnys,98.12,7,smirn office,119.26,L,False
+2018,13,5,the iceman cometh,99.8,1,Ice In My Veins,69.56,W,True
+2018,13,1,Ice In My Veins,69.56,5,the iceman cometh,99.8,L,True
+2018,13,10,ALL DAY Johnnys,94.64,2,UuHhhh myYyy gICEEE,89.96,W,True
+2018,13,2,UuHhhh myYyy gICEEE,89.96,10,ALL DAY Johnnys,94.64,L,True
+2018,13,7,smirn office,134.92,3,Jet Fuel Can't Evaporate Ice,91.52,W,True
+2018,13,3,Jet Fuel Can't Evaporate Ice,91.52,7,smirn office,134.92,L,True
+2018,13,9,Antonio Cromarties Kids,102.28,4,Give me the hotdog baby,103.72,L,True
+2018,13,4,Give me the hotdog baby,103.72,9,Antonio Cromarties Kids,102.28,W,True
+2018,13,8,Behind Blue Ice,64.54,6,Travis Kelce And the Boys,60.14,W,True
+2018,13,6,Travis Kelce And the Boys,60.14,8,Behind Blue Ice,64.54,L,True
+2018,14,5,the iceman cometh,82.7,1,Ice In My Veins,85.2,L,True
+2018,14,1,Ice In My Veins,85.2,5,the iceman cometh,82.7,W,True
+2018,14,10,ALL DAY Johnnys,84.02,2,UuHhhh myYyy gICEEE,86.68,L,True
+2018,14,2,UuHhhh myYyy gICEEE,86.68,10,ALL DAY Johnnys,84.02,W,True
+2018,14,7,smirn office,91.04,3,Jet Fuel Can't Evaporate Ice,115.84,L,True
+2018,14,3,Jet Fuel Can't Evaporate Ice,115.84,7,smirn office,91.04,W,True
+2018,14,9,Antonio Cromarties Kids,101.5,4,Give me the hotdog baby,84.76,W,True
+2018,14,4,Give me the hotdog baby,84.76,9,Antonio Cromarties Kids,101.5,L,True
+2018,14,8,Behind Blue Ice,107.18,6,Travis Kelce And the Boys,79.22,W,True
+2018,14,6,Travis Kelce And the Boys,79.22,8,Behind Blue Ice,107.18,L,True
+2018,15,5,the iceman cometh,84.88,10,ALL DAY Johnnys,70.86,W,True
+2018,15,10,ALL DAY Johnnys,70.86,5,the iceman cometh,84.88,L,True
+2018,15,2,UuHhhh myYyy gICEEE,94.82,1,Ice In My Veins,127.56,L,True
+2018,15,1,Ice In My Veins,127.56,2,UuHhhh myYyy gICEEE,94.82,W,True
+2018,15,7,smirn office,73.42,9,Antonio Cromarties Kids,72.66,W,True
+2018,15,9,Antonio Cromarties Kids,72.66,7,smirn office,73.42,L,True
+2018,15,3,Jet Fuel Can't Evaporate Ice,95.86,8,Behind Blue Ice,73.14,W,True
+2018,15,8,Behind Blue Ice,73.14,3,Jet Fuel Can't Evaporate Ice,95.86,L,True
+2018,15,4,Give me the hotdog baby,65.48,6,Travis Kelce And the Boys,70.68,L,True
+2018,15,6,Travis Kelce And the Boys,70.68,4,Give me the hotdog baby,65.48,W,True
+2018,16,5,the iceman cometh,130.64,10,ALL DAY Johnnys,112.24,W,True
+2018,16,10,ALL DAY Johnnys,112.24,5,the iceman cometh,130.64,L,True
+2018,16,2,UuHhhh myYyy gICEEE,104.22,1,Ice In My Veins,127.46,L,True
+2018,16,1,Ice In My Veins,127.46,2,UuHhhh myYyy gICEEE,104.22,W,True
+2018,16,7,smirn office,107.04,9,Antonio Cromarties Kids,99.84,W,True
+2018,16,9,Antonio Cromarties Kids,99.84,7,smirn office,107.04,L,True
+2018,16,3,Jet Fuel Can't Evaporate Ice,97.8,8,Behind Blue Ice,70.28,W,True
+2018,16,8,Behind Blue Ice,70.28,3,Jet Fuel Can't Evaporate Ice,97.8,L,True
+2018,16,4,Give me the hotdog baby,85.48,6,Travis Kelce And the Boys,97.74,L,True
+2018,16,6,Travis Kelce And the Boys,97.74,4,Give me the hotdog baby,85.48,W,True
+2019,1,2,Claw and Order Spec Seltz Unit,91.92,10,ALL DAY Johnnys,104.32,L,False
+2019,1,10,ALL DAY Johnnys,104.32,2,Claw and Order Spec Seltz Unit,91.92,W,False
+2019,1,1,Luck of  The Claw,98.96,4,Give me the hotdog baby,84.7,W,False
+2019,1,4,Give me the hotdog baby,84.7,1,Luck of  The Claw,98.96,L,False
+2019,1,8,Morty! I'm White Claw Rick,126.44,7,Black Claws matter,106.88,W,False
+2019,1,7,Black Claws matter,106.88,8,Morty! I'm White Claw Rick,126.44,L,False
+2019,1,5,No One is Above The Claw,83.94,3,Jet Fuel Can't Melt White Claw,117.56,L,False
+2019,1,3,Jet Fuel Can't Melt White Claw,117.56,5,No One is Above The Claw,83.94,W,False
+2019,1,9,Mr. Krab's Klaws,123.66,6,Monday Night CLAW,122.02,W,False
+2019,1,6,Monday Night CLAW,122.02,9,Mr. Krab's Klaws,123.66,L,False
+2019,2,4,Give me the hotdog baby,85.36,7,Black Claws matter,68.72,W,False
+2019,2,7,Black Claws matter,68.72,4,Give me the hotdog baby,85.36,L,False
+2019,2,3,Jet Fuel Can't Melt White Claw,91.98,2,Claw and Order Spec Seltz Unit,74.84,W,False
+2019,2,2,Claw and Order Spec Seltz Unit,74.84,3,Jet Fuel Can't Melt White Claw,91.98,L,False
+2019,2,6,Monday Night CLAW,73.66,10,ALL DAY Johnnys,132.02,L,False
+2019,2,10,ALL DAY Johnnys,132.02,6,Monday Night CLAW,73.66,W,False
+2019,2,5,No One is Above The Claw,92.76,1,Luck of  The Claw,102.6,L,False
+2019,2,1,Luck of  The Claw,102.6,5,No One is Above The Claw,92.76,W,False
+2019,2,9,Mr. Krab's Klaws,98.4,8,Morty! I'm White Claw Rick,99.8,L,False
+2019,2,8,Morty! I'm White Claw Rick,99.8,9,Mr. Krab's Klaws,98.4,W,False
+2019,3,3,Jet Fuel Can't Melt White Claw,80.48,6,Monday Night CLAW,145.24,L,False
+2019,3,6,Monday Night CLAW,145.24,3,Jet Fuel Can't Melt White Claw,80.48,W,False
+2019,3,4,Give me the hotdog baby,110.54,5,No One is Above The Claw,95.54,W,False
+2019,3,5,No One is Above The Claw,95.54,4,Give me the hotdog baby,110.54,L,False
+2019,3,7,Black Claws matter,82.02,9,Mr. Krab's Klaws,122.66,L,False
+2019,3,9,Mr. Krab's Klaws,122.66,7,Black Claws matter,82.02,W,False
+2019,3,2,Claw and Order Spec Seltz Unit,131.02,1,Luck of  The Claw,95.6,W,False
+2019,3,1,Luck of  The Claw,95.6,2,Claw and Order Spec Seltz Unit,131.02,L,False
+2019,3,10,ALL DAY Johnnys,97.06,8,Morty! I'm White Claw Rick,118.34,L,False
+2019,3,8,Morty! I'm White Claw Rick,118.34,10,ALL DAY Johnnys,97.06,W,False
+2019,4,5,No One is Above The Claw,78.0,9,Mr. Krab's Klaws,99.3,L,False
+2019,4,9,Mr. Krab's Klaws,99.3,5,No One is Above The Claw,78.0,W,False
+2019,4,1,Luck of  The Claw,99.8,3,Jet Fuel Can't Melt White Claw,144.18,L,False
+2019,4,3,Jet Fuel Can't Melt White Claw,144.18,1,Luck of  The Claw,99.8,W,False
+2019,4,8,Morty! I'm White Claw Rick,92.6,6,Monday Night CLAW,78.3,W,False
+2019,4,6,Monday Night CLAW,78.3,8,Morty! I'm White Claw Rick,92.6,L,False
+2019,4,2,Claw and Order Spec Seltz Unit,95.6,4,Give me the hotdog baby,74.22,W,False
+2019,4,4,Give me the hotdog baby,74.22,2,Claw and Order Spec Seltz Unit,95.6,L,False
+2019,4,10,ALL DAY Johnnys,91.2,7,Black Claws matter,93.88,L,False
+2019,4,7,Black Claws matter,93.88,10,ALL DAY Johnnys,91.2,W,False
+2019,5,1,Luck of  The Claw,79.26,8,Morty! I'm White Claw Rick,130.32,L,False
+2019,5,8,Morty! I'm White Claw Rick,130.32,1,Luck of  The Claw,79.26,W,False
+2019,5,5,No One is Above The Claw,104.32,2,Claw and Order Spec Seltz Unit,73.48,W,False
+2019,5,2,Claw and Order Spec Seltz Unit,73.48,5,No One is Above The Claw,104.32,L,False
+2019,5,9,Mr. Krab's Klaws,130.6,10,ALL DAY Johnnys,142.04,L,False
+2019,5,10,ALL DAY Johnnys,142.04,9,Mr. Krab's Klaws,130.6,W,False
+2019,5,3,Jet Fuel Can't Melt White Claw,90.54,4,Give me the hotdog baby,109.42,L,False
+2019,5,4,Give me the hotdog baby,109.42,3,Jet Fuel Can't Melt White Claw,90.54,W,False
+2019,5,6,Monday Night CLAW,123.94,7,Black Claws matter,86.64,W,False
+2019,5,7,Black Claws matter,86.64,6,Monday Night CLAW,123.94,L,False
+2019,6,10,ALL DAY Johnnys,74.12,4,Give me the hotdog baby,91.62,L,False
+2019,6,4,Give me the hotdog baby,91.62,10,ALL DAY Johnnys,74.12,W,False
+2019,6,7,Black Claws matter,92.22,3,Jet Fuel Can't Melt White Claw,105.84,L,False
+2019,6,3,Jet Fuel Can't Melt White Claw,105.84,7,Black Claws matter,92.22,W,False
+2019,6,6,Monday Night CLAW,111.6,5,No One is Above The Claw,99.16,W,False
+2019,6,5,No One is Above The Claw,99.16,6,Monday Night CLAW,111.6,L,False
+2019,6,9,Mr. Krab's Klaws,98.34,1,Luck of  The Claw,96.2,W,False
+2019,6,1,Luck of  The Claw,96.2,9,Mr. Krab's Klaws,98.34,L,False
+2019,6,8,Morty! I'm White Claw Rick,94.6,2,Claw and Order Spec Seltz Unit,90.2,W,False
+2019,6,2,Claw and Order Spec Seltz Unit,90.2,8,Morty! I'm White Claw Rick,94.6,L,False
+2019,7,3,Jet Fuel Can't Melt White Claw,86.02,10,ALL DAY Johnnys,91.24,L,False
+2019,7,10,ALL DAY Johnnys,91.24,3,Jet Fuel Can't Melt White Claw,86.02,W,False
+2019,7,5,No One is Above The Claw,50.36,7,Black Claws matter,105.72,L,False
+2019,7,7,Black Claws matter,105.72,5,No One is Above The Claw,50.36,W,False
+2019,7,1,Luck of  The Claw,116.02,6,Monday Night CLAW,62.12,W,False
+2019,7,6,Monday Night CLAW,62.12,1,Luck of  The Claw,116.02,L,False
+2019,7,2,Claw and Order Spec Seltz Unit,105.56,9,Mr. Krab's Klaws,91.16,W,False
+2019,7,9,Mr. Krab's Klaws,91.16,2,Claw and Order Spec Seltz Unit,105.56,L,False
+2019,7,4,Give me the hotdog baby,82.86,8,Morty! I'm White Claw Rick,59.84,W,False
+2019,7,8,Morty! I'm White Claw Rick,59.84,4,Give me the hotdog baby,82.86,L,False
+2019,8,10,ALL DAY Johnnys,90.18,5,No One is Above The Claw,87.4,W,False
+2019,8,5,No One is Above The Claw,87.4,10,ALL DAY Johnnys,90.18,L,False
+2019,8,7,Black Claws matter,97.58,1,Luck of  The Claw,114.5,L,False
+2019,8,1,Luck of  The Claw,114.5,7,Black Claws matter,97.58,W,False
+2019,8,6,Monday Night CLAW,96.36,2,Claw and Order Spec Seltz Unit,124.18,L,False
+2019,8,2,Claw and Order Spec Seltz Unit,124.18,6,Monday Night CLAW,96.36,W,False
+2019,8,9,Mr. Krab's Klaws,102.5,4,Give me the hotdog baby,100.6,W,False
+2019,8,4,Give me the hotdog baby,100.6,9,Mr. Krab's Klaws,102.5,L,False
+2019,8,8,Morty! I'm White Claw Rick,113.18,3,Jet Fuel Can't Melt White Claw,97.6,W,False
+2019,8,3,Jet Fuel Can't Melt White Claw,97.6,8,Morty! I'm White Claw Rick,113.18,L,False
+2019,9,1,Luck of  The Claw,64.9,10,ALL DAY Johnnys,107.9,L,False
+2019,9,10,ALL DAY Johnnys,107.9,1,Luck of  The Claw,64.9,W,False
+2019,9,2,Claw and Order Spec Seltz Unit,98.9,5,No One is Above The Claw,72.34,W,False
+2019,9,5,No One is Above The Claw,72.34,2,Claw and Order Spec Seltz Unit,98.9,L,False
+2019,9,7,Black Claws matter,119.74,8,Morty! I'm White Claw Rick,136.82,L,False
+2019,9,8,Morty! I'm White Claw Rick,136.82,7,Black Claws matter,119.74,W,False
+2019,9,4,Give me the hotdog baby,100.48,3,Jet Fuel Can't Melt White Claw,107.02,L,False
+2019,9,3,Jet Fuel Can't Melt White Claw,107.02,4,Give me the hotdog baby,100.48,W,False
+2019,9,6,Monday Night CLAW,101.44,9,Mr. Krab's Klaws,119.4,L,False
+2019,9,9,Mr. Krab's Klaws,119.4,6,Monday Night CLAW,101.44,W,False
+2019,10,2,Claw and Order Spec Seltz Unit,86.76,7,Black Claws matter,82.98,W,False
+2019,10,7,Black Claws matter,82.98,2,Claw and Order Spec Seltz Unit,86.76,L,False
+2019,10,4,Give me the hotdog baby,121.58,1,Luck of  The Claw,121.28,W,False
+2019,10,1,Luck of  The Claw,121.28,4,Give me the hotdog baby,121.58,L,False
+2019,10,10,ALL DAY Johnnys,95.34,6,Monday Night CLAW,75.92,W,False
+2019,10,6,Monday Night CLAW,75.92,10,ALL DAY Johnnys,95.34,L,False
+2019,10,3,Jet Fuel Can't Melt White Claw,142.72,5,No One is Above The Claw,61.12,W,False
+2019,10,5,No One is Above The Claw,61.12,3,Jet Fuel Can't Melt White Claw,142.72,L,False
+2019,10,8,Morty! I'm White Claw Rick,97.88,9,Mr. Krab's Klaws,82.62,W,False
+2019,10,9,Mr. Krab's Klaws,82.62,8,Morty! I'm White Claw Rick,97.88,L,False
+2019,11,4,Give me the hotdog baby,77.76,6,Monday Night CLAW,69.66,W,False
+2019,11,6,Monday Night CLAW,69.66,4,Give me the hotdog baby,77.76,L,False
+2019,11,2,Claw and Order Spec Seltz Unit,114.98,3,Jet Fuel Can't Melt White Claw,106.98,W,False
+2019,11,3,Jet Fuel Can't Melt White Claw,106.98,2,Claw and Order Spec Seltz Unit,114.98,L,False
+2019,11,9,Mr. Krab's Klaws,113.04,7,Black Claws matter,118.44,L,False
+2019,11,7,Black Claws matter,118.44,9,Mr. Krab's Klaws,113.04,W,False
+2019,11,1,Luck of  The Claw,90.02,5,No One is Above The Claw,57.54,W,False
+2019,11,5,No One is Above The Claw,57.54,1,Luck of  The Claw,90.02,L,False
+2019,11,8,Morty! I'm White Claw Rick,57.52,10,ALL DAY Johnnys,85.98,L,False
+2019,11,10,ALL DAY Johnnys,85.98,8,Morty! I'm White Claw Rick,57.52,W,False
+2019,12,3,Jet Fuel Can't Melt White Claw,138.26,9,Mr. Krab's Klaws,91.44,W,False
+2019,12,9,Mr. Krab's Klaws,91.44,3,Jet Fuel Can't Melt White Claw,138.26,L,False
+2019,12,5,No One is Above The Claw,65.66,4,Give me the hotdog baby,105.28,L,False
+2019,12,4,Give me the hotdog baby,105.28,5,No One is Above The Claw,65.66,W,False
+2019,12,6,Monday Night CLAW,89.42,8,Morty! I'm White Claw Rick,90.6,L,False
+2019,12,8,Morty! I'm White Claw Rick,90.6,6,Monday Night CLAW,89.42,W,False
+2019,12,1,Luck of  The Claw,118.34,2,Claw and Order Spec Seltz Unit,65.04,W,False
+2019,12,2,Claw and Order Spec Seltz Unit,65.04,1,Luck of  The Claw,118.34,L,False
+2019,12,7,Black Claws matter,78.7,10,ALL DAY Johnnys,86.7,L,False
+2019,12,10,ALL DAY Johnnys,86.7,7,Black Claws matter,78.7,W,False
+2019,13,8,Morty! I'm White Claw Rick,87.3,3,Jet Fuel Can't Melt White Claw,104.9,L,True
+2019,13,3,Jet Fuel Can't Melt White Claw,104.9,8,Morty! I'm White Claw Rick,87.3,W,True
+2019,13,10,ALL DAY Johnnys,90.4,4,Give me the hotdog baby,88.7,W,True
+2019,13,4,Give me the hotdog baby,88.7,10,ALL DAY Johnnys,90.4,L,True
+2019,13,2,Claw and Order Spec Seltz Unit,83.26,9,Mr. Krab's Klaws,70.32,W,True
+2019,13,9,Mr. Krab's Klaws,70.32,2,Claw and Order Spec Seltz Unit,83.26,L,True
+2019,13,1,Luck of  The Claw,84.6,6,Monday Night CLAW,89.36,L,True
+2019,13,6,Monday Night CLAW,89.36,1,Luck of  The Claw,84.6,W,True
+2019,13,7,Black Claws matter,82.56,5,No One is Above The Claw,79.14,W,True
+2019,13,5,No One is Above The Claw,79.14,7,Black Claws matter,82.56,L,True
+2019,14,8,Morty! I'm White Claw Rick,110.2,3,Jet Fuel Can't Melt White Claw,78.4,W,True
+2019,14,3,Jet Fuel Can't Melt White Claw,78.4,8,Morty! I'm White Claw Rick,110.2,L,True
+2019,14,10,ALL DAY Johnnys,125.22,4,Give me the hotdog baby,88.06,W,True
+2019,14,4,Give me the hotdog baby,88.06,10,ALL DAY Johnnys,125.22,L,True
+2019,14,2,Claw and Order Spec Seltz Unit,112.9,9,Mr. Krab's Klaws,96.82,W,True
+2019,14,9,Mr. Krab's Klaws,96.82,2,Claw and Order Spec Seltz Unit,112.9,L,True
+2019,14,1,Luck of  The Claw,113.28,6,Monday Night CLAW,103.28,W,True
+2019,14,6,Monday Night CLAW,103.28,1,Luck of  The Claw,113.28,L,True
+2019,14,7,Black Claws matter,79.94,5,No One is Above The Claw,66.6,W,True
+2019,14,5,No One is Above The Claw,66.6,7,Black Claws matter,79.94,L,True
+2019,15,8,Morty! I'm White Claw Rick,123.44,10,ALL DAY Johnnys,100.8,W,True
+2019,15,10,ALL DAY Johnnys,100.8,8,Morty! I'm White Claw Rick,123.44,L,True
+2019,15,4,Give me the hotdog baby,92.98,3,Jet Fuel Can't Melt White Claw,119.68,L,True
+2019,15,3,Jet Fuel Can't Melt White Claw,119.68,4,Give me the hotdog baby,92.98,W,True
+2019,15,2,Claw and Order Spec Seltz Unit,87.04,1,Luck of  The Claw,108.48,L,True
+2019,15,1,Luck of  The Claw,108.48,2,Claw and Order Spec Seltz Unit,87.04,W,True
+2019,15,9,Mr. Krab's Klaws,129.52,7,Black Claws matter,97.16,W,True
+2019,15,7,Black Claws matter,97.16,9,Mr. Krab's Klaws,129.52,L,True
+2019,15,6,Monday Night CLAW,113.32,5,No One is Above The Claw,87.12,W,True
+2019,15,5,No One is Above The Claw,87.12,6,Monday Night CLAW,113.32,L,True
+2019,16,8,Morty! I'm White Claw Rick,57.46,10,ALL DAY Johnnys,112.64,L,True
+2019,16,10,ALL DAY Johnnys,112.64,8,Morty! I'm White Claw Rick,57.46,W,True
+2019,16,4,Give me the hotdog baby,88.4,3,Jet Fuel Can't Melt White Claw,119.42,L,True
+2019,16,3,Jet Fuel Can't Melt White Claw,119.42,4,Give me the hotdog baby,88.4,W,True
+2019,16,2,Claw and Order Spec Seltz Unit,92.88,1,Luck of  The Claw,124.36,L,True
+2019,16,1,Luck of  The Claw,124.36,2,Claw and Order Spec Seltz Unit,92.88,W,True
+2019,16,9,Mr. Krab's Klaws,83.5,7,Black Claws matter,145.18,L,True
+2019,16,7,Black Claws matter,145.18,9,Mr. Krab's Klaws,83.5,W,True
+2019,16,6,Monday Night CLAW,62.36,5,No One is Above The Claw,52.84,W,True
+2019,16,5,No One is Above The Claw,52.84,6,Monday Night CLAW,62.36,L,True
+2020,1,2,"Red, White, and COVID Positive",101.3,10,ALL DAY Johnnys,72.84,W,False
+2020,1,10,ALL DAY Johnnys,72.84,2,"Red, White, and COVID Positive",101.3,L,False
+2020,1,1,Beirut Explosiv Runners,135.9,4,PDX Peaceful Protesters,74.06,W,False
+2020,1,4,PDX Peaceful Protesters,74.06,1,Beirut Explosiv Runners,135.9,L,False
+2020,1,8,Billy Joel's Fire Starters,106.88,7,Preexisting  Condition,75.7,W,False
+2020,1,7,Preexisting  Condition,75.7,8,Billy Joel's Fire Starters,106.88,L,False
+2020,1,5,Drew Bree's Race War,106.64,3,Jet Fuel Can't Melt Ole Rona,139.7,L,False
+2020,1,3,Jet Fuel Can't Melt Ole Rona,139.7,5,Drew Bree's Race War,106.64,W,False
+2020,1,9,Killer Hornets,88.82,6,Coavoid Johnny,108.78,L,False
+2020,1,6,Coavoid Johnny,108.78,9,Killer Hornets,88.82,W,False
+2020,2,4,PDX Peaceful Protesters,72.78,7,Preexisting  Condition,101.24,L,False
+2020,2,7,Preexisting  Condition,101.24,4,PDX Peaceful Protesters,72.78,W,False
+2020,2,3,Jet Fuel Can't Melt Ole Rona,112.96,2,"Red, White, and COVID Positive",155.18,L,False
+2020,2,2,"Red, White, and COVID Positive",155.18,3,Jet Fuel Can't Melt Ole Rona,112.96,W,False
+2020,2,6,Coavoid Johnny,107.32,10,ALL DAY Johnnys,68.98,W,False
+2020,2,10,ALL DAY Johnnys,68.98,6,Coavoid Johnny,107.32,L,False
+2020,2,5,Drew Bree's Race War,131.7,1,Beirut Explosiv Runners,108.44,W,False
+2020,2,1,Beirut Explosiv Runners,108.44,5,Drew Bree's Race War,131.7,L,False
+2020,2,9,Killer Hornets,135.0,8,Billy Joel's Fire Starters,108.4,W,False
+2020,2,8,Billy Joel's Fire Starters,108.4,9,Killer Hornets,135.0,L,False
+2020,3,3,Jet Fuel Can't Melt Ole Rona,69.98,6,Coavoid Johnny,116.8,L,False
+2020,3,6,Coavoid Johnny,116.8,3,Jet Fuel Can't Melt Ole Rona,69.98,W,False
+2020,3,4,PDX Peaceful Protesters,99.28,5,Drew Bree's Race War,122.48,L,False
+2020,3,5,Drew Bree's Race War,122.48,4,PDX Peaceful Protesters,99.28,W,False
+2020,3,7,Preexisting  Condition,83.1,9,Killer Hornets,111.36,L,False
+2020,3,9,Killer Hornets,111.36,7,Preexisting  Condition,83.1,W,False
+2020,3,2,"Red, White, and COVID Positive",139.08,1,Beirut Explosiv Runners,101.3,W,False
+2020,3,1,Beirut Explosiv Runners,101.3,2,"Red, White, and COVID Positive",139.08,L,False
+2020,3,10,ALL DAY Johnnys,107.1,8,Billy Joel's Fire Starters,94.14,W,False
+2020,3,8,Billy Joel's Fire Starters,94.14,10,ALL DAY Johnnys,107.1,L,False
+2020,4,5,Drew Bree's Race War,142.08,9,Killer Hornets,85.3,W,False
+2020,4,9,Killer Hornets,85.3,5,Drew Bree's Race War,142.08,L,False
+2020,4,1,Beirut Explosiv Runners,96.82,3,Jet Fuel Can't Melt Ole Rona,126.32,L,False
+2020,4,3,Jet Fuel Can't Melt Ole Rona,126.32,1,Beirut Explosiv Runners,96.82,W,False
+2020,4,8,Billy Joel's Fire Starters,130.72,6,Coavoid Johnny,107.2,W,False
+2020,4,6,Coavoid Johnny,107.2,8,Billy Joel's Fire Starters,130.72,L,False
+2020,4,2,"Red, White, and COVID Positive",81.78,4,PDX Peaceful Protesters,112.26,L,False
+2020,4,4,PDX Peaceful Protesters,112.26,2,"Red, White, and COVID Positive",81.78,W,False
+2020,4,10,ALL DAY Johnnys,51.14,7,Preexisting  Condition,104.8,L,False
+2020,4,7,Preexisting  Condition,104.8,10,ALL DAY Johnnys,51.14,W,False
+2020,5,1,Beirut Explosiv Runners,121.8,8,Billy Joel's Fire Starters,123.62,L,False
+2020,5,8,Billy Joel's Fire Starters,123.62,1,Beirut Explosiv Runners,121.8,W,False
+2020,5,5,Drew Bree's Race War,54.54,2,"Red, White, and COVID Positive",78.08,L,False
+2020,5,2,"Red, White, and COVID Positive",78.08,5,Drew Bree's Race War,54.54,W,False
+2020,5,9,Killer Hornets,112.06,10,ALL DAY Johnnys,98.22,W,False
+2020,5,10,ALL DAY Johnnys,98.22,9,Killer Hornets,112.06,L,False
+2020,5,3,Jet Fuel Can't Melt Ole Rona,95.5,4,PDX Peaceful Protesters,103.22,L,False
+2020,5,4,PDX Peaceful Protesters,103.22,3,Jet Fuel Can't Melt Ole Rona,95.5,W,False
+2020,5,6,Coavoid Johnny,121.28,7,Preexisting  Condition,77.12,W,False
+2020,5,7,Preexisting  Condition,77.12,6,Coavoid Johnny,121.28,L,False
+2020,6,10,ALL DAY Johnnys,106.6,4,PDX Peaceful Protesters,91.44,W,False
+2020,6,4,PDX Peaceful Protesters,91.44,10,ALL DAY Johnnys,106.6,L,False
+2020,6,7,Preexisting  Condition,66.78,3,Jet Fuel Can't Melt Ole Rona,105.44,L,False
+2020,6,3,Jet Fuel Can't Melt Ole Rona,105.44,7,Preexisting  Condition,66.78,W,False
+2020,6,6,Coavoid Johnny,98.92,5,Drew Bree's Race War,62.74,W,False
+2020,6,5,Drew Bree's Race War,62.74,6,Coavoid Johnny,98.92,L,False
+2020,6,9,Killer Hornets,129.4,1,Beirut Explosiv Runners,91.42,W,False
+2020,6,1,Beirut Explosiv Runners,91.42,9,Killer Hornets,129.4,L,False
+2020,6,8,Billy Joel's Fire Starters,102.88,2,"Red, White, and COVID Positive",55.1,W,False
+2020,6,2,"Red, White, and COVID Positive",55.1,8,Billy Joel's Fire Starters,102.88,L,False
+2020,7,3,Jet Fuel Can't Melt Ole Rona,81.4,10,ALL DAY Johnnys,60.5,W,False
+2020,7,10,ALL DAY Johnnys,60.5,3,Jet Fuel Can't Melt Ole Rona,81.4,L,False
+2020,7,5,Drew Bree's Race War,95.66,7,Preexisting  Condition,111.32,L,False
+2020,7,7,Preexisting  Condition,111.32,5,Drew Bree's Race War,95.66,W,False
+2020,7,1,Beirut Explosiv Runners,141.0,6,Coavoid Johnny,101.72,W,False
+2020,7,6,Coavoid Johnny,101.72,1,Beirut Explosiv Runners,141.0,L,False
+2020,7,2,"Red, White, and COVID Positive",149.82,9,Killer Hornets,107.96,W,False
+2020,7,9,Killer Hornets,107.96,2,"Red, White, and COVID Positive",149.82,L,False
+2020,7,4,PDX Peaceful Protesters,75.66,8,Billy Joel's Fire Starters,62.18,W,False
+2020,7,8,Billy Joel's Fire Starters,62.18,4,PDX Peaceful Protesters,75.66,L,False
+2020,8,10,ALL DAY Johnnys,79.44,5,Drew Bree's Race War,102.02,L,False
+2020,8,5,Drew Bree's Race War,102.02,10,ALL DAY Johnnys,79.44,W,False
+2020,8,7,Preexisting  Condition,78.22,1,Beirut Explosiv Runners,98.32,L,False
+2020,8,1,Beirut Explosiv Runners,98.32,7,Preexisting  Condition,78.22,W,False
+2020,8,6,Coavoid Johnny,99.24,2,"Red, White, and COVID Positive",96.54,W,False
+2020,8,2,"Red, White, and COVID Positive",96.54,6,Coavoid Johnny,99.24,L,False
+2020,8,9,Killer Hornets,60.74,4,PDX Peaceful Protesters,63.36,L,False
+2020,8,4,PDX Peaceful Protesters,63.36,9,Killer Hornets,60.74,W,False
+2020,8,8,Billy Joel's Fire Starters,73.06,3,Jet Fuel Can't Melt Ole Rona,112.42,L,False
+2020,8,3,Jet Fuel Can't Melt Ole Rona,112.42,8,Billy Joel's Fire Starters,73.06,W,False
+2020,9,1,Beirut Explosiv Runners,90.02,10,ALL DAY Johnnys,86.4,W,False
+2020,9,10,ALL DAY Johnnys,86.4,1,Beirut Explosiv Runners,90.02,L,False
+2020,9,2,"Red, White, and COVID Positive",106.98,5,Drew Bree's Race War,124.06,L,False
+2020,9,5,Drew Bree's Race War,124.06,2,"Red, White, and COVID Positive",106.98,W,False
+2020,9,7,Preexisting  Condition,80.3,8,Billy Joel's Fire Starters,92.5,L,False
+2020,9,8,Billy Joel's Fire Starters,92.5,7,Preexisting  Condition,80.3,W,False
+2020,9,4,PDX Peaceful Protesters,59.86,3,Jet Fuel Can't Melt Ole Rona,97.7,L,False
+2020,9,3,Jet Fuel Can't Melt Ole Rona,97.7,4,PDX Peaceful Protesters,59.86,W,False
+2020,9,6,Coavoid Johnny,73.3,9,Killer Hornets,106.54,L,False
+2020,9,9,Killer Hornets,106.54,6,Coavoid Johnny,73.3,W,False
+2020,10,2,"Red, White, and COVID Positive",95.66,7,Preexisting  Condition,83.28,W,False
+2020,10,7,Preexisting  Condition,83.28,2,"Red, White, and COVID Positive",95.66,L,False
+2020,10,4,PDX Peaceful Protesters,96.14,1,Beirut Explosiv Runners,111.2,L,False
+2020,10,1,Beirut Explosiv Runners,111.2,4,PDX Peaceful Protesters,96.14,W,False
+2020,10,10,ALL DAY Johnnys,89.1,6,Coavoid Johnny,80.02,W,False
+2020,10,6,Coavoid Johnny,80.02,10,ALL DAY Johnnys,89.1,L,False
+2020,10,3,Jet Fuel Can't Melt Ole Rona,109.86,5,Drew Bree's Race War,81.82,W,False
+2020,10,5,Drew Bree's Race War,81.82,3,Jet Fuel Can't Melt Ole Rona,109.86,L,False
+2020,10,8,Billy Joel's Fire Starters,67.76,9,Killer Hornets,75.92,L,False
+2020,10,9,Killer Hornets,75.92,8,Billy Joel's Fire Starters,67.76,W,False
+2020,11,4,PDX Peaceful Protesters,96.44,6,Coavoid Johnny,88.38,W,False
+2020,11,6,Coavoid Johnny,88.38,4,PDX Peaceful Protesters,96.44,L,False
+2020,11,2,"Red, White, and COVID Positive",98.08,3,Jet Fuel Can't Melt Ole Rona,129.24,L,False
+2020,11,3,Jet Fuel Can't Melt Ole Rona,129.24,2,"Red, White, and COVID Positive",98.08,W,False
+2020,11,9,Killer Hornets,109.26,7,Preexisting  Condition,92.66,W,False
+2020,11,7,Preexisting  Condition,92.66,9,Killer Hornets,109.26,L,False
+2020,11,1,Beirut Explosiv Runners,99.56,5,Drew Bree's Race War,74.6,W,False
+2020,11,5,Drew Bree's Race War,74.6,1,Beirut Explosiv Runners,99.56,L,False
+2020,11,8,Billy Joel's Fire Starters,104.22,10,ALL DAY Johnnys,116.5,L,False
+2020,11,10,ALL DAY Johnnys,116.5,8,Billy Joel's Fire Starters,104.22,W,False
+2020,12,3,Jet Fuel Can't Melt Ole Rona,108.18,9,Killer Hornets,98.72,W,False
+2020,12,9,Killer Hornets,98.72,3,Jet Fuel Can't Melt Ole Rona,108.18,L,False
+2020,12,5,Drew Bree's Race War,93.36,4,PDX Peaceful Protesters,102.7,L,False
+2020,12,4,PDX Peaceful Protesters,102.7,5,Drew Bree's Race War,93.36,W,False
+2020,12,6,Coavoid Johnny,105.7,8,Billy Joel's Fire Starters,86.48,W,False
+2020,12,8,Billy Joel's Fire Starters,86.48,6,Coavoid Johnny,105.7,L,False
+2020,12,1,Beirut Explosiv Runners,63.94,2,"Red, White, and COVID Positive",172.18,L,False
+2020,12,2,"Red, White, and COVID Positive",172.18,1,Beirut Explosiv Runners,63.94,W,False
+2020,12,7,Preexisting  Condition,99.2,10,ALL DAY Johnnys,100.62,L,False
+2020,12,10,ALL DAY Johnnys,100.62,7,Preexisting  Condition,99.2,W,False
+2020,13,3,Jet Fuel Can't Melt Ole Rona,105.86,6,Coavoid Johnny,76.02,W,True
+2020,13,6,Coavoid Johnny,76.02,3,Jet Fuel Can't Melt Ole Rona,105.86,L,True
+2020,13,2,"Red, White, and COVID Positive",107.62,9,Killer Hornets,128.34,L,True
+2020,13,9,Killer Hornets,128.34,2,"Red, White, and COVID Positive",107.62,W,True
+2020,13,1,Beirut Explosiv Runners,87.12,4,PDX Peaceful Protesters,67.2,W,True
+2020,13,4,PDX Peaceful Protesters,67.2,1,Beirut Explosiv Runners,87.12,L,True
+2020,13,5,Drew Bree's Race War,110.14,8,Billy Joel's Fire Starters,82.6,W,True
+2020,13,8,Billy Joel's Fire Starters,82.6,5,Drew Bree's Race War,110.14,L,True
+2020,13,10,ALL DAY Johnnys,65.6,7,Preexisting  Condition,85.4,L,True
+2020,13,7,Preexisting  Condition,85.4,10,ALL DAY Johnnys,65.6,W,True
+2020,14,3,Jet Fuel Can't Melt Ole Rona,114.12,6,Coavoid Johnny,98.44,W,True
+2020,14,6,Coavoid Johnny,98.44,3,Jet Fuel Can't Melt Ole Rona,114.12,L,True
+2020,14,2,"Red, White, and COVID Positive",149.52,9,Killer Hornets,111.76,W,True
+2020,14,9,Killer Hornets,111.76,2,"Red, White, and COVID Positive",149.52,L,True
+2020,14,1,Beirut Explosiv Runners,94.52,4,PDX Peaceful Protesters,89.04,W,True
+2020,14,4,PDX Peaceful Protesters,89.04,1,Beirut Explosiv Runners,94.52,L,True
+2020,14,5,Drew Bree's Race War,103.86,8,Billy Joel's Fire Starters,58.52,W,True
+2020,14,8,Billy Joel's Fire Starters,58.52,5,Drew Bree's Race War,103.86,L,True
+2020,14,10,ALL DAY Johnnys,92.1,7,Preexisting  Condition,107.2,L,True
+2020,14,7,Preexisting  Condition,107.2,10,ALL DAY Johnnys,92.1,W,True
+2020,15,3,Jet Fuel Can't Melt Ole Rona,134.22,2,"Red, White, and COVID Positive",129.06,W,True
+2020,15,2,"Red, White, and COVID Positive",129.06,3,Jet Fuel Can't Melt Ole Rona,134.22,L,True
+2020,15,9,Killer Hornets,105.12,6,Coavoid Johnny,84.44,W,True
+2020,15,6,Coavoid Johnny,84.44,9,Killer Hornets,105.12,L,True
+2020,15,1,Beirut Explosiv Runners,88.64,5,Drew Bree's Race War,79.72,W,True
+2020,15,5,Drew Bree's Race War,79.72,1,Beirut Explosiv Runners,88.64,L,True
+2020,15,4,PDX Peaceful Protesters,136.9,7,Preexisting  Condition,115.22,W,True
+2020,15,7,Preexisting  Condition,115.22,4,PDX Peaceful Protesters,136.9,L,True
+2020,15,8,Billy Joel's Fire Starters,119.86,10,ALL DAY Johnnys,69.92,W,True
+2020,15,10,ALL DAY Johnnys,69.92,8,Billy Joel's Fire Starters,119.86,L,True
+2020,16,3,Jet Fuel Can't Melt Ole Rona,92.12,2,"Red, White, and COVID Positive",86.82,W,True
+2020,16,2,"Red, White, and COVID Positive",86.82,3,Jet Fuel Can't Melt Ole Rona,92.12,L,True
+2020,16,9,Killer Hornets,82.86,6,Coavoid Johnny,106.8,L,True
+2020,16,6,Coavoid Johnny,106.8,9,Killer Hornets,82.86,W,True
+2020,16,1,Beirut Explosiv Runners,101.28,5,Drew Bree's Race War,72.6,W,True
+2020,16,5,Drew Bree's Race War,72.6,1,Beirut Explosiv Runners,101.28,L,True
+2020,16,4,PDX Peaceful Protesters,125.02,7,Preexisting  Condition,110.98,W,True
+2020,16,7,Preexisting  Condition,110.98,4,PDX Peaceful Protesters,125.02,L,True
+2020,16,8,Billy Joel's Fire Starters,125.0,10,ALL DAY Johnnys,86.24,W,True
+2020,16,10,ALL DAY Johnnys,86.24,8,Billy Joel's Fire Starters,125.0,L,True
+2021,1,5,Raft Punk With a Chicken,89.38,3,Ball away  Joe,104.96,L,False
+2021,1,3,Ball away  Joe,104.96,5,Raft Punk With a Chicken,89.38,W,False
+2021,1,6,CMC Shanties,68.72,10,Fishing for The Ship Year,114.98,L,False
+2021,1,10,Fishing for The Ship Year,114.98,6,CMC Shanties,68.72,W,False
+2021,1,4,Leave Her Johnny,116.76,1,Ye Johnny on a Winner's Boat,79.6,W,False
+2021,1,1,Ye Johnny on a Winner's Boat,79.6,4,Leave Her Johnny,116.76,L,False
+2021,1,2,WhatWillWeDoWit ATinChicken!,93.92,9,DJ's Locker Flying Dutchmen,73.44,W,False
+2021,1,9,DJ's Locker Flying Dutchmen,73.44,2,WhatWillWeDoWit ATinChicken!,93.92,L,False
+2021,1,7,Tuesday Night  Wellerman Calls,149.16,8,Last of Kylers Privateers,118.26,W,False
+2021,1,8,Last of Kylers Privateers,118.26,7,Tuesday Night  Wellerman Calls,149.16,L,False
+2021,2,3,Ball away  Joe,104.64,10,Fishing for The Ship Year,96.82,W,False
+2021,2,10,Fishing for The Ship Year,96.82,3,Ball away  Joe,104.64,L,False
+2021,2,1,Ye Johnny on a Winner's Boat,95.16,5,Raft Punk With a Chicken,77.12,W,False
+2021,2,5,Raft Punk With a Chicken,77.12,1,Ye Johnny on a Winner's Boat,95.16,L,False
+2021,2,9,DJ's Locker Flying Dutchmen,118.66,6,CMC Shanties,111.7,W,False
+2021,2,6,CMC Shanties,111.7,9,DJ's Locker Flying Dutchmen,118.66,L,False
+2021,2,8,Last of Kylers Privateers,122.0,4,Leave Her Johnny,99.72,W,False
+2021,2,4,Leave Her Johnny,99.72,8,Last of Kylers Privateers,122.0,L,False
+2021,2,7,Tuesday Night  Wellerman Calls,100.5,2,WhatWillWeDoWit ATinChicken!,108.68,L,False
+2021,2,2,WhatWillWeDoWit ATinChicken!,108.68,7,Tuesday Night  Wellerman Calls,100.5,W,False
+2021,3,1,Ye Johnny on a Winner's Boat,107.88,3,Ball away  Joe,150.78,L,False
+2021,3,3,Ball away  Joe,150.78,1,Ye Johnny on a Winner's Boat,107.88,W,False
+2021,3,10,Fishing for The Ship Year,85.9,9,DJ's Locker Flying Dutchmen,121.82,L,False
+2021,3,9,DJ's Locker Flying Dutchmen,121.82,10,Fishing for The Ship Year,85.9,W,False
+2021,3,5,Raft Punk With a Chicken,82.24,8,Last of Kylers Privateers,81.24,W,False
+2021,3,8,Last of Kylers Privateers,81.24,5,Raft Punk With a Chicken,82.24,L,False
+2021,3,6,CMC Shanties,66.44,7,Tuesday Night  Wellerman Calls,105.64,L,False
+2021,3,7,Tuesday Night  Wellerman Calls,105.64,6,CMC Shanties,66.44,W,False
+2021,3,4,Leave Her Johnny,46.72,2,WhatWillWeDoWit ATinChicken!,104.62,L,False
+2021,3,2,WhatWillWeDoWit ATinChicken!,104.62,4,Leave Her Johnny,46.72,W,False
+2021,4,3,Ball away  Joe,73.36,9,DJ's Locker Flying Dutchmen,114.12,L,False
+2021,4,9,DJ's Locker Flying Dutchmen,114.12,3,Ball away  Joe,73.36,W,False
+2021,4,8,Last of Kylers Privateers,72.52,1,Ye Johnny on a Winner's Boat,119.94,L,False
+2021,4,1,Ye Johnny on a Winner's Boat,119.94,8,Last of Kylers Privateers,72.52,W,False
+2021,4,7,Tuesday Night  Wellerman Calls,110.08,10,Fishing for The Ship Year,139.32,L,False
+2021,4,10,Fishing for The Ship Year,139.32,7,Tuesday Night  Wellerman Calls,110.08,W,False
+2021,4,2,WhatWillWeDoWit ATinChicken!,77.22,5,Raft Punk With a Chicken,104.98,L,False
+2021,4,5,Raft Punk With a Chicken,104.98,2,WhatWillWeDoWit ATinChicken!,77.22,W,False
+2021,4,4,Leave Her Johnny,60.76,6,CMC Shanties,92.32,L,False
+2021,4,6,CMC Shanties,92.32,4,Leave Her Johnny,60.76,W,False
+2021,5,8,Last of Kylers Privateers,100.16,3,Ball away  Joe,147.44,L,False
+2021,5,3,Ball away  Joe,147.44,8,Last of Kylers Privateers,100.16,W,False
+2021,5,9,DJ's Locker Flying Dutchmen,161.6,7,Tuesday Night  Wellerman Calls,117.22,W,False
+2021,5,7,Tuesday Night  Wellerman Calls,117.22,9,DJ's Locker Flying Dutchmen,161.6,L,False
+2021,5,1,Ye Johnny on a Winner's Boat,136.98,2,WhatWillWeDoWit ATinChicken!,129.18,W,False
+2021,5,2,WhatWillWeDoWit ATinChicken!,129.18,1,Ye Johnny on a Winner's Boat,136.98,L,False
+2021,5,10,Fishing for The Ship Year,83.18,4,Leave Her Johnny,85.18,L,False
+2021,5,4,Leave Her Johnny,85.18,10,Fishing for The Ship Year,83.18,W,False
+2021,5,5,Raft Punk With a Chicken,146.72,6,CMC Shanties,82.16,W,False
+2021,5,6,CMC Shanties,82.16,5,Raft Punk With a Chicken,146.72,L,False
+2021,6,3,Ball away  Joe,99.28,7,Tuesday Night  Wellerman Calls,105.8,L,False
+2021,6,7,Tuesday Night  Wellerman Calls,105.8,3,Ball away  Joe,99.28,W,False
+2021,6,2,WhatWillWeDoWit ATinChicken!,135.1,8,Last of Kylers Privateers,117.66,W,False
+2021,6,8,Last of Kylers Privateers,117.66,2,WhatWillWeDoWit ATinChicken!,135.1,L,False
+2021,6,4,Leave Her Johnny,113.92,9,DJ's Locker Flying Dutchmen,116.02,L,False
+2021,6,9,DJ's Locker Flying Dutchmen,116.02,4,Leave Her Johnny,113.92,W,False
+2021,6,6,CMC Shanties,60.68,1,Ye Johnny on a Winner's Boat,87.58,L,False
+2021,6,1,Ye Johnny on a Winner's Boat,87.58,6,CMC Shanties,60.68,W,False
+2021,6,5,Raft Punk With a Chicken,87.5,10,Fishing for The Ship Year,82.88,W,False
+2021,6,10,Fishing for The Ship Year,82.88,5,Raft Punk With a Chicken,87.5,L,False
+2021,7,2,WhatWillWeDoWit ATinChicken!,68.98,3,Ball away  Joe,118.34,L,False
+2021,7,3,Ball away  Joe,118.34,2,WhatWillWeDoWit ATinChicken!,68.98,W,False
+2021,7,7,Tuesday Night  Wellerman Calls,95.94,4,Leave Her Johnny,99.4,L,False
+2021,7,4,Leave Her Johnny,99.4,7,Tuesday Night  Wellerman Calls,95.94,W,False
+2021,7,8,Last of Kylers Privateers,111.34,6,CMC Shanties,95.06,W,False
+2021,7,6,CMC Shanties,95.06,8,Last of Kylers Privateers,111.34,L,False
+2021,7,9,DJ's Locker Flying Dutchmen,123.82,5,Raft Punk With a Chicken,103.94,W,False
+2021,7,5,Raft Punk With a Chicken,103.94,9,DJ's Locker Flying Dutchmen,123.82,L,False
+2021,7,1,Ye Johnny on a Winner's Boat,103.88,10,Fishing for The Ship Year,60.44,W,False
+2021,7,10,Fishing for The Ship Year,60.44,1,Ye Johnny on a Winner's Boat,103.88,L,False
+2021,8,3,Ball away  Joe,113.7,4,Leave Her Johnny,103.9,W,False
+2021,8,4,Leave Her Johnny,103.9,3,Ball away  Joe,113.7,L,False
+2021,8,6,CMC Shanties,61.66,2,WhatWillWeDoWit ATinChicken!,79.62,L,False
+2021,8,2,WhatWillWeDoWit ATinChicken!,79.62,6,CMC Shanties,61.66,W,False
+2021,8,5,Raft Punk With a Chicken,87.92,7,Tuesday Night  Wellerman Calls,88.22,L,False
+2021,8,7,Tuesday Night  Wellerman Calls,88.22,5,Raft Punk With a Chicken,87.92,W,False
+2021,8,10,Fishing for The Ship Year,87.0,8,Last of Kylers Privateers,91.66,L,False
+2021,8,8,Last of Kylers Privateers,91.66,10,Fishing for The Ship Year,87.0,W,False
+2021,8,1,Ye Johnny on a Winner's Boat,99.28,9,DJ's Locker Flying Dutchmen,100.26,L,False
+2021,8,9,DJ's Locker Flying Dutchmen,100.26,1,Ye Johnny on a Winner's Boat,99.28,W,False
+2021,9,6,CMC Shanties,54.9,3,Ball away  Joe,92.58,L,False
+2021,9,3,Ball away  Joe,92.58,6,CMC Shanties,54.9,W,False
+2021,9,4,Leave Her Johnny,64.52,5,Raft Punk With a Chicken,99.04,L,False
+2021,9,5,Raft Punk With a Chicken,99.04,4,Leave Her Johnny,64.52,W,False
+2021,9,2,WhatWillWeDoWit ATinChicken!,67.58,10,Fishing for The Ship Year,95.44,L,False
+2021,9,10,Fishing for The Ship Year,95.44,2,WhatWillWeDoWit ATinChicken!,67.58,W,False
+2021,9,7,Tuesday Night  Wellerman Calls,94.18,1,Ye Johnny on a Winner's Boat,94.74,L,False
+2021,9,1,Ye Johnny on a Winner's Boat,94.74,7,Tuesday Night  Wellerman Calls,94.18,W,False
+2021,9,8,Last of Kylers Privateers,87.86,9,DJ's Locker Flying Dutchmen,63.86,W,False
+2021,9,9,DJ's Locker Flying Dutchmen,63.86,8,Last of Kylers Privateers,87.86,L,False
+2021,10,3,Ball away  Joe,92.0,5,Raft Punk With a Chicken,79.6,W,False
+2021,10,5,Raft Punk With a Chicken,79.6,3,Ball away  Joe,92.0,L,False
+2021,10,10,Fishing for The Ship Year,111.94,6,CMC Shanties,77.58,W,False
+2021,10,6,CMC Shanties,77.58,10,Fishing for The Ship Year,111.94,L,False
+2021,10,1,Ye Johnny on a Winner's Boat,74.38,4,Leave Her Johnny,73.44,W,False
+2021,10,4,Leave Her Johnny,73.44,1,Ye Johnny on a Winner's Boat,74.38,L,False
+2021,10,9,DJ's Locker Flying Dutchmen,76.54,2,WhatWillWeDoWit ATinChicken!,102.64,L,False
+2021,10,2,WhatWillWeDoWit ATinChicken!,102.64,9,DJ's Locker Flying Dutchmen,76.54,W,False
+2021,10,8,Last of Kylers Privateers,85.22,7,Tuesday Night  Wellerman Calls,78.62,W,False
+2021,10,7,Tuesday Night  Wellerman Calls,78.62,8,Last of Kylers Privateers,85.22,L,False
+2021,11,10,Fishing for The Ship Year,109.2,3,Ball away  Joe,140.78,L,False
+2021,11,3,Ball away  Joe,140.78,10,Fishing for The Ship Year,109.2,W,False
+2021,11,5,Raft Punk With a Chicken,94.78,1,Ye Johnny on a Winner's Boat,87.66,W,False
+2021,11,1,Ye Johnny on a Winner's Boat,87.66,5,Raft Punk With a Chicken,94.78,L,False
+2021,11,6,CMC Shanties,124.3,9,DJ's Locker Flying Dutchmen,64.06,W,False
+2021,11,9,DJ's Locker Flying Dutchmen,64.06,6,CMC Shanties,124.3,L,False
+2021,11,4,Leave Her Johnny,76.02,8,Last of Kylers Privateers,93.08,L,False
+2021,11,8,Last of Kylers Privateers,93.08,4,Leave Her Johnny,76.02,W,False
+2021,11,2,WhatWillWeDoWit ATinChicken!,107.14,7,Tuesday Night  Wellerman Calls,113.08,L,False
+2021,11,7,Tuesday Night  Wellerman Calls,113.08,2,WhatWillWeDoWit ATinChicken!,107.14,W,False
+2021,12,3,Ball away  Joe,104.14,1,Ye Johnny on a Winner's Boat,89.5,W,False
+2021,12,1,Ye Johnny on a Winner's Boat,89.5,3,Ball away  Joe,104.14,L,False
+2021,12,9,DJ's Locker Flying Dutchmen,98.2,10,Fishing for The Ship Year,93.02,W,False
+2021,12,10,Fishing for The Ship Year,93.02,9,DJ's Locker Flying Dutchmen,98.2,L,False
+2021,12,8,Last of Kylers Privateers,100.78,5,Raft Punk With a Chicken,117.82,L,False
+2021,12,5,Raft Punk With a Chicken,117.82,8,Last of Kylers Privateers,100.78,W,False
+2021,12,7,Tuesday Night  Wellerman Calls,90.46,6,CMC Shanties,97.68,L,False
+2021,12,6,CMC Shanties,97.68,7,Tuesday Night  Wellerman Calls,90.46,W,False
+2021,12,2,WhatWillWeDoWit ATinChicken!,109.06,4,Leave Her Johnny,74.98,W,False
+2021,12,4,Leave Her Johnny,74.98,2,WhatWillWeDoWit ATinChicken!,109.06,L,False
+2021,13,9,DJ's Locker Flying Dutchmen,95.0,3,Ball away  Joe,153.02,L,False
+2021,13,3,Ball away  Joe,153.02,9,DJ's Locker Flying Dutchmen,95.0,W,False
+2021,13,1,Ye Johnny on a Winner's Boat,76.52,8,Last of Kylers Privateers,90.8,L,False
+2021,13,8,Last of Kylers Privateers,90.8,1,Ye Johnny on a Winner's Boat,76.52,W,False
+2021,13,10,Fishing for The Ship Year,108.36,7,Tuesday Night  Wellerman Calls,108.96,L,False
+2021,13,7,Tuesday Night  Wellerman Calls,108.96,10,Fishing for The Ship Year,108.36,W,False
+2021,13,5,Raft Punk With a Chicken,68.98,2,WhatWillWeDoWit ATinChicken!,110.12,L,False
+2021,13,2,WhatWillWeDoWit ATinChicken!,110.12,5,Raft Punk With a Chicken,68.98,W,False
+2021,13,6,CMC Shanties,74.8,4,Leave Her Johnny,101.14,L,False
+2021,13,4,Leave Her Johnny,101.14,6,CMC Shanties,74.8,W,False
+2021,14,3,Ball away  Joe,138.62,8,Last of Kylers Privateers,89.92,W,True
+2021,14,8,Last of Kylers Privateers,89.92,3,Ball away  Joe,138.62,L,True
+2021,14,9,DJ's Locker Flying Dutchmen,119.72,2,WhatWillWeDoWit ATinChicken!,152.14,L,True
+2021,14,2,WhatWillWeDoWit ATinChicken!,152.14,9,DJ's Locker Flying Dutchmen,119.72,W,True
+2021,14,1,Ye Johnny on a Winner's Boat,55.88,5,Raft Punk With a Chicken,98.2,L,True
+2021,14,5,Raft Punk With a Chicken,98.2,1,Ye Johnny on a Winner's Boat,55.88,W,True
+2021,14,7,Tuesday Night  Wellerman Calls,104.6,10,Fishing for The Ship Year,95.52,W,True
+2021,14,10,Fishing for The Ship Year,95.52,7,Tuesday Night  Wellerman Calls,104.6,L,True
+2021,14,4,Leave Her Johnny,96.3,6,CMC Shanties,110.94,L,True
+2021,14,6,CMC Shanties,110.94,4,Leave Her Johnny,96.3,W,True
+2021,15,3,Ball away  Joe,101.86,8,Last of Kylers Privateers,69.46,W,True
+2021,15,8,Last of Kylers Privateers,69.46,3,Ball away  Joe,101.86,L,True
+2021,15,9,DJ's Locker Flying Dutchmen,98.3,2,WhatWillWeDoWit ATinChicken!,86.88,W,True
+2021,15,2,WhatWillWeDoWit ATinChicken!,86.88,9,DJ's Locker Flying Dutchmen,98.3,L,True
+2021,15,1,Ye Johnny on a Winner's Boat,86.9,5,Raft Punk With a Chicken,67.34,W,True
+2021,15,5,Raft Punk With a Chicken,67.34,1,Ye Johnny on a Winner's Boat,86.9,L,True
+2021,15,7,Tuesday Night  Wellerman Calls,108.06,10,Fishing for The Ship Year,81.7,W,True
+2021,15,10,Fishing for The Ship Year,81.7,7,Tuesday Night  Wellerman Calls,108.06,L,True
+2021,15,4,Leave Her Johnny,60.34,6,CMC Shanties,74.12,L,True
+2021,15,6,CMC Shanties,74.12,4,Leave Her Johnny,60.34,W,True
+2021,16,3,Ball away  Joe,96.68,2,WhatWillWeDoWit ATinChicken!,124.3,L,True
+2021,16,2,WhatWillWeDoWit ATinChicken!,124.3,3,Ball away  Joe,96.68,W,True
+2021,16,9,DJ's Locker Flying Dutchmen,116.96,8,Last of Kylers Privateers,68.98,W,True
+2021,16,8,Last of Kylers Privateers,68.98,9,DJ's Locker Flying Dutchmen,116.96,L,True
+2021,16,5,Raft Punk With a Chicken,94.24,7,Tuesday Night  Wellerman Calls,139.36,L,True
+2021,16,7,Tuesday Night  Wellerman Calls,139.36,5,Raft Punk With a Chicken,94.24,W,True
+2021,16,1,Ye Johnny on a Winner's Boat,92.58,6,CMC Shanties,93.28,L,True
+2021,16,6,CMC Shanties,93.28,1,Ye Johnny on a Winner's Boat,92.58,W,True
+2021,16,10,Fishing for The Ship Year,59.22,4,Leave Her Johnny,90.14,L,True
+2021,16,4,Leave Her Johnny,90.14,10,Fishing for The Ship Year,59.22,W,True
+2021,17,3,Ball away  Joe,115.8,2,WhatWillWeDoWit ATinChicken!,87.24,W,True
+2021,17,2,WhatWillWeDoWit ATinChicken!,87.24,3,Ball away  Joe,115.8,L,True
+2021,17,9,DJ's Locker Flying Dutchmen,119.1,8,Last of Kylers Privateers,77.76,W,True
+2021,17,8,Last of Kylers Privateers,77.76,9,DJ's Locker Flying Dutchmen,119.1,L,True
+2021,17,5,Raft Punk With a Chicken,91.38,7,Tuesday Night  Wellerman Calls,110.96,L,True
+2021,17,7,Tuesday Night  Wellerman Calls,110.96,5,Raft Punk With a Chicken,91.38,W,True
+2021,17,1,Ye Johnny on a Winner's Boat,36.1,6,CMC Shanties,117.72,L,True
+2021,17,6,CMC Shanties,117.72,1,Ye Johnny on a Winner's Boat,36.1,W,True
+2021,17,10,Fishing for The Ship Year,93.06,4,Leave Her Johnny,133.34,L,True
+2021,17,4,Leave Her Johnny,133.34,10,Fishing for The Ship Year,93.06,W,True
+2022,1,5,King Swole,75.36,3,Body builing  Podium finisher,77.18,L,False
+2022,1,3,Body builing  Podium finisher,77.18,5,King Swole,75.36,W,False
+2022,1,6,Certified Swole Boys,79.5,10,Hundred Dollar Clown Baby,123.28,L,False
+2022,1,10,Hundred Dollar Clown Baby,123.28,6,Certified Swole Boys,79.5,W,False
+2022,1,4,Cee Deez Traps MaHomie,113.4,1,Spray Tanned Six Packers,78.22,W,False
+2022,1,1,Spray Tanned Six Packers,78.22,4,Cee Deez Traps MaHomie,113.4,L,False
+2022,1,2,Liftin Olave Da Weights,79.6,9,Gainesville Muscle Hampstrs,138.92,L,False
+2022,1,9,Gainesville Muscle Hampstrs,138.92,2,Liftin Olave Da Weights,79.6,W,False
+2022,1,7,Goosed Up Lil Buff Boys,131.02,8,The Skeletrex Bone Flexers,92.56,W,False
+2022,1,8,The Skeletrex Bone Flexers,92.56,7,Goosed Up Lil Buff Boys,131.02,L,False
+2022,2,3,Body builing  Podium finisher,76.9,10,Hundred Dollar Clown Baby,89.28,L,False
+2022,2,10,Hundred Dollar Clown Baby,89.28,3,Body builing  Podium finisher,76.9,W,False
+2022,2,1,Spray Tanned Six Packers,91.88,5,King Swole,104.08,L,False
+2022,2,5,King Swole,104.08,1,Spray Tanned Six Packers,91.88,W,False
+2022,2,9,Gainesville Muscle Hampstrs,123.52,6,Certified Swole Boys,81.36,W,False
+2022,2,6,Certified Swole Boys,81.36,9,Gainesville Muscle Hampstrs,123.52,L,False
+2022,2,8,The Skeletrex Bone Flexers,139.46,4,Cee Deez Traps MaHomie,88.7,W,False
+2022,2,4,Cee Deez Traps MaHomie,88.7,8,The Skeletrex Bone Flexers,139.46,L,False
+2022,2,7,Goosed Up Lil Buff Boys,106.32,2,Liftin Olave Da Weights,76.36,W,False
+2022,2,2,Liftin Olave Da Weights,76.36,7,Goosed Up Lil Buff Boys,106.32,L,False
+2022,3,1,Spray Tanned Six Packers,80.56,3,Body builing  Podium finisher,65.94,W,False
+2022,3,3,Body builing  Podium finisher,65.94,1,Spray Tanned Six Packers,80.56,L,False
+2022,3,10,Hundred Dollar Clown Baby,102.8,9,Gainesville Muscle Hampstrs,108.92,L,False
+2022,3,9,Gainesville Muscle Hampstrs,108.92,10,Hundred Dollar Clown Baby,102.8,W,False
+2022,3,5,King Swole,77.14,8,The Skeletrex Bone Flexers,70.48,W,False
+2022,3,8,The Skeletrex Bone Flexers,70.48,5,King Swole,77.14,L,False
+2022,3,6,Certified Swole Boys,74.7,7,Goosed Up Lil Buff Boys,110.6,L,False
+2022,3,7,Goosed Up Lil Buff Boys,110.6,6,Certified Swole Boys,74.7,W,False
+2022,3,4,Cee Deez Traps MaHomie,90.78,2,Liftin Olave Da Weights,110.7,L,False
+2022,3,2,Liftin Olave Da Weights,110.7,4,Cee Deez Traps MaHomie,90.78,W,False
+2022,4,3,Body builing  Podium finisher,94.7,9,Gainesville Muscle Hampstrs,102.16,L,False
+2022,4,9,Gainesville Muscle Hampstrs,102.16,3,Body builing  Podium finisher,94.7,W,False
+2022,4,8,The Skeletrex Bone Flexers,91.0,1,Spray Tanned Six Packers,92.68,L,False
+2022,4,1,Spray Tanned Six Packers,92.68,8,The Skeletrex Bone Flexers,91.0,W,False
+2022,4,7,Goosed Up Lil Buff Boys,101.56,10,Hundred Dollar Clown Baby,118.32,L,False
+2022,4,10,Hundred Dollar Clown Baby,118.32,7,Goosed Up Lil Buff Boys,101.56,W,False
+2022,4,2,Liftin Olave Da Weights,111.58,5,King Swole,99.8,W,False
+2022,4,5,King Swole,99.8,2,Liftin Olave Da Weights,111.58,L,False
+2022,4,4,Cee Deez Traps MaHomie,114.56,6,Certified Swole Boys,82.34,W,False
+2022,4,6,Certified Swole Boys,82.34,4,Cee Deez Traps MaHomie,114.56,L,False
+2022,5,8,The Skeletrex Bone Flexers,90.12,3,Body builing  Podium finisher,119.94,L,False
+2022,5,3,Body builing  Podium finisher,119.94,8,The Skeletrex Bone Flexers,90.12,W,False
+2022,5,9,Gainesville Muscle Hampstrs,68.86,7,Goosed Up Lil Buff Boys,113.48,L,False
+2022,5,7,Goosed Up Lil Buff Boys,113.48,9,Gainesville Muscle Hampstrs,68.86,W,False
+2022,5,1,Spray Tanned Six Packers,88.1,2,Liftin Olave Da Weights,96.54,L,False
+2022,5,2,Liftin Olave Da Weights,96.54,1,Spray Tanned Six Packers,88.1,W,False
+2022,5,10,Hundred Dollar Clown Baby,162.86,4,Cee Deez Traps MaHomie,124.28,W,False
+2022,5,4,Cee Deez Traps MaHomie,124.28,10,Hundred Dollar Clown Baby,162.86,L,False
+2022,5,5,King Swole,135.1,6,Certified Swole Boys,64.16,W,False
+2022,5,6,Certified Swole Boys,64.16,5,King Swole,135.1,L,False
+2022,6,3,Body builing  Podium finisher,89.42,7,Goosed Up Lil Buff Boys,83.8,W,False
+2022,6,7,Goosed Up Lil Buff Boys,83.8,3,Body builing  Podium finisher,89.42,L,False
+2022,6,2,Liftin Olave Da Weights,113.9,8,The Skeletrex Bone Flexers,97.92,W,False
+2022,6,8,The Skeletrex Bone Flexers,97.92,2,Liftin Olave Da Weights,113.9,L,False
+2022,6,4,Cee Deez Traps MaHomie,92.92,9,Gainesville Muscle Hampstrs,93.5,L,False
+2022,6,9,Gainesville Muscle Hampstrs,93.5,4,Cee Deez Traps MaHomie,92.92,W,False
+2022,6,6,Certified Swole Boys,51.84,1,Spray Tanned Six Packers,71.08,L,False
+2022,6,1,Spray Tanned Six Packers,71.08,6,Certified Swole Boys,51.84,W,False
+2022,6,5,King Swole,82.22,10,Hundred Dollar Clown Baby,80.76,W,False
+2022,6,10,Hundred Dollar Clown Baby,80.76,5,King Swole,82.22,L,False
+2022,7,2,Liftin Olave Da Weights,109.9,3,Body builing  Podium finisher,84.8,W,False
+2022,7,3,Body builing  Podium finisher,84.8,2,Liftin Olave Da Weights,109.9,L,False
+2022,7,7,Goosed Up Lil Buff Boys,74.72,4,Cee Deez Traps MaHomie,103.42,L,False
+2022,7,4,Cee Deez Traps MaHomie,103.42,7,Goosed Up Lil Buff Boys,74.72,W,False
+2022,7,8,The Skeletrex Bone Flexers,103.22,6,Certified Swole Boys,100.56,W,False
+2022,7,6,Certified Swole Boys,100.56,8,The Skeletrex Bone Flexers,103.22,L,False
+2022,7,9,Gainesville Muscle Hampstrs,68.6,5,King Swole,100.52,L,False
+2022,7,5,King Swole,100.52,9,Gainesville Muscle Hampstrs,68.6,W,False
+2022,7,1,Spray Tanned Six Packers,80.36,10,Hundred Dollar Clown Baby,145.24,L,False
+2022,7,10,Hundred Dollar Clown Baby,145.24,1,Spray Tanned Six Packers,80.36,W,False
+2022,8,3,Body builing  Podium finisher,129.4,4,Cee Deez Traps MaHomie,117.8,W,False
+2022,8,4,Cee Deez Traps MaHomie,117.8,3,Body builing  Podium finisher,129.4,L,False
+2022,8,6,Certified Swole Boys,124.24,2,Liftin Olave Da Weights,120.34,W,False
+2022,8,2,Liftin Olave Da Weights,120.34,6,Certified Swole Boys,124.24,L,False
+2022,8,5,King Swole,133.66,7,Goosed Up Lil Buff Boys,153.3,L,False
+2022,8,7,Goosed Up Lil Buff Boys,153.3,5,King Swole,133.66,W,False
+2022,8,10,Hundred Dollar Clown Baby,86.62,8,The Skeletrex Bone Flexers,94.94,L,False
+2022,8,8,The Skeletrex Bone Flexers,94.94,10,Hundred Dollar Clown Baby,86.62,W,False
+2022,8,1,Spray Tanned Six Packers,89.14,9,Gainesville Muscle Hampstrs,100.52,L,False
+2022,8,9,Gainesville Muscle Hampstrs,100.52,1,Spray Tanned Six Packers,89.14,W,False
+2022,9,6,Certified Swole Boys,95.6,3,Body builing  Podium finisher,78.7,W,False
+2022,9,3,Body builing  Podium finisher,78.7,6,Certified Swole Boys,95.6,L,False
+2022,9,4,Cee Deez Traps MaHomie,94.34,5,King Swole,105.3,L,False
+2022,9,5,King Swole,105.3,4,Cee Deez Traps MaHomie,94.34,W,False
+2022,9,2,Liftin Olave Da Weights,116.72,10,Hundred Dollar Clown Baby,121.1,L,False
+2022,9,10,Hundred Dollar Clown Baby,121.1,2,Liftin Olave Da Weights,116.72,W,False
+2022,9,7,Goosed Up Lil Buff Boys,88.02,1,Spray Tanned Six Packers,82.6,W,False
+2022,9,1,Spray Tanned Six Packers,82.6,7,Goosed Up Lil Buff Boys,88.02,L,False
+2022,9,8,The Skeletrex Bone Flexers,149.4,9,Gainesville Muscle Hampstrs,76.22,W,False
+2022,9,9,Gainesville Muscle Hampstrs,76.22,8,The Skeletrex Bone Flexers,149.4,L,False
+2022,10,3,Body builing  Podium finisher,68.92,5,King Swole,94.7,L,False
+2022,10,5,King Swole,94.7,3,Body builing  Podium finisher,68.92,W,False
+2022,10,10,Hundred Dollar Clown Baby,111.5,6,Certified Swole Boys,85.68,W,False
+2022,10,6,Certified Swole Boys,85.68,10,Hundred Dollar Clown Baby,111.5,L,False
+2022,10,1,Spray Tanned Six Packers,88.58,4,Cee Deez Traps MaHomie,126.14,L,False
+2022,10,4,Cee Deez Traps MaHomie,126.14,1,Spray Tanned Six Packers,88.58,W,False
+2022,10,9,Gainesville Muscle Hampstrs,82.06,2,Liftin Olave Da Weights,125.48,L,False
+2022,10,2,Liftin Olave Da Weights,125.48,9,Gainesville Muscle Hampstrs,82.06,W,False
+2022,10,8,The Skeletrex Bone Flexers,67.44,7,Goosed Up Lil Buff Boys,91.7,L,False
+2022,10,7,Goosed Up Lil Buff Boys,91.7,8,The Skeletrex Bone Flexers,67.44,W,False
+2022,11,10,Hundred Dollar Clown Baby,119.48,3,Body builing  Podium finisher,92.74,W,False
+2022,11,3,Body builing  Podium finisher,92.74,10,Hundred Dollar Clown Baby,119.48,L,False
+2022,11,5,King Swole,134.1,1,Spray Tanned Six Packers,55.94,W,False
+2022,11,1,Spray Tanned Six Packers,55.94,5,King Swole,134.1,L,False
+2022,11,6,Certified Swole Boys,93.1,9,Gainesville Muscle Hampstrs,84.76,W,False
+2022,11,9,Gainesville Muscle Hampstrs,84.76,6,Certified Swole Boys,93.1,L,False
+2022,11,4,Cee Deez Traps MaHomie,77.16,8,The Skeletrex Bone Flexers,111.1,L,False
+2022,11,8,The Skeletrex Bone Flexers,111.1,4,Cee Deez Traps MaHomie,77.16,W,False
+2022,11,2,Liftin Olave Da Weights,118.72,7,Goosed Up Lil Buff Boys,88.5,W,False
+2022,11,7,Goosed Up Lil Buff Boys,88.5,2,Liftin Olave Da Weights,118.72,L,False
+2022,12,3,Body builing  Podium finisher,86.84,1,Spray Tanned Six Packers,108.64,L,False
+2022,12,1,Spray Tanned Six Packers,108.64,3,Body builing  Podium finisher,86.84,W,False
+2022,12,9,Gainesville Muscle Hampstrs,101.06,10,Hundred Dollar Clown Baby,107.72,L,False
+2022,12,10,Hundred Dollar Clown Baby,107.72,9,Gainesville Muscle Hampstrs,101.06,W,False
+2022,12,8,The Skeletrex Bone Flexers,103.36,5,King Swole,88.66,W,False
+2022,12,5,King Swole,88.66,8,The Skeletrex Bone Flexers,103.36,L,False
+2022,12,7,Goosed Up Lil Buff Boys,119.16,6,Certified Swole Boys,114.56,W,False
+2022,12,6,Certified Swole Boys,114.56,7,Goosed Up Lil Buff Boys,119.16,L,False
+2022,12,2,Liftin Olave Da Weights,70.98,4,Cee Deez Traps MaHomie,88.6,L,False
+2022,12,4,Cee Deez Traps MaHomie,88.6,2,Liftin Olave Da Weights,70.98,W,False
+2022,13,9,Gainesville Muscle Hampstrs,85.94,3,Body builing  Podium finisher,85.44,W,False
+2022,13,3,Body builing  Podium finisher,85.44,9,Gainesville Muscle Hampstrs,85.94,L,False
+2022,13,1,Spray Tanned Six Packers,76.36,8,The Skeletrex Bone Flexers,99.8,L,False
+2022,13,8,The Skeletrex Bone Flexers,99.8,1,Spray Tanned Six Packers,76.36,W,False
+2022,13,10,Hundred Dollar Clown Baby,104.42,7,Goosed Up Lil Buff Boys,141.5,L,False
+2022,13,7,Goosed Up Lil Buff Boys,141.5,10,Hundred Dollar Clown Baby,104.42,W,False
+2022,13,5,King Swole,104.74,2,Liftin Olave Da Weights,105.26,L,False
+2022,13,2,Liftin Olave Da Weights,105.26,5,King Swole,104.74,W,False
+2022,13,6,Certified Swole Boys,74.28,4,Cee Deez Traps MaHomie,83.72,L,False
+2022,13,4,Cee Deez Traps MaHomie,83.72,6,Certified Swole Boys,74.28,W,False
+2022,14,5,King Swole,84.0,9,Gainesville Muscle Hampstrs,119.6,L,False
+2022,14,9,Gainesville Muscle Hampstrs,119.6,5,King Swole,84.0,W,False
+2022,14,3,Body builing  Podium finisher,47.52,4,Cee Deez Traps MaHomie,97.48,L,False
+2022,14,4,Cee Deez Traps MaHomie,97.48,3,Body builing  Podium finisher,47.52,W,False
+2022,14,2,Liftin Olave Da Weights,96.52,6,Certified Swole Boys,68.4,W,False
+2022,14,6,Certified Swole Boys,68.4,2,Liftin Olave Da Weights,96.52,L,False
+2022,14,1,Spray Tanned Six Packers,78.16,7,Goosed Up Lil Buff Boys,109.38,L,False
+2022,14,7,Goosed Up Lil Buff Boys,109.38,1,Spray Tanned Six Packers,78.16,W,False
+2022,14,10,Hundred Dollar Clown Baby,83.36,8,The Skeletrex Bone Flexers,103.68,L,False
+2022,14,8,The Skeletrex Bone Flexers,103.68,10,Hundred Dollar Clown Baby,83.36,W,False
+2022,15,7,Goosed Up Lil Buff Boys,126.5,5,King Swole,126.06,W,True
+2022,15,5,King Swole,126.06,7,Goosed Up Lil Buff Boys,126.5,L,True
+2022,15,10,Hundred Dollar Clown Baby,110.56,2,Liftin Olave Da Weights,75.98,W,True
+2022,15,2,Liftin Olave Da Weights,75.98,10,Hundred Dollar Clown Baby,110.56,L,True
+2022,15,8,The Skeletrex Bone Flexers,72.92,3,Body builing  Podium finisher,101.78,L,True
+2022,15,3,Body builing  Podium finisher,101.78,8,The Skeletrex Bone Flexers,72.92,W,True
+2022,15,4,Cee Deez Traps MaHomie,114.94,9,Gainesville Muscle Hampstrs,63.44,W,True
+2022,15,9,Gainesville Muscle Hampstrs,63.44,4,Cee Deez Traps MaHomie,114.94,L,True
+2022,15,1,Spray Tanned Six Packers,110.3,6,Certified Swole Boys,99.6,W,True
+2022,15,6,Certified Swole Boys,99.6,1,Spray Tanned Six Packers,110.3,L,True
+2022,16,7,Goosed Up Lil Buff Boys,87.3,5,King Swole,91.5,L,True
+2022,16,5,King Swole,91.5,7,Goosed Up Lil Buff Boys,87.3,W,True
+2022,16,10,Hundred Dollar Clown Baby,92.98,2,Liftin Olave Da Weights,89.26,W,True
+2022,16,2,Liftin Olave Da Weights,89.26,10,Hundred Dollar Clown Baby,92.98,L,True
+2022,16,8,The Skeletrex Bone Flexers,77.6,3,Body builing  Podium finisher,113.94,L,True
+2022,16,3,Body builing  Podium finisher,113.94,8,The Skeletrex Bone Flexers,77.6,W,True
+2022,16,4,Cee Deez Traps MaHomie,105.06,9,Gainesville Muscle Hampstrs,74.7,W,True
+2022,16,9,Gainesville Muscle Hampstrs,74.7,4,Cee Deez Traps MaHomie,105.06,L,True
+2022,16,1,Spray Tanned Six Packers,125.26,6,Certified Swole Boys,88.42,W,True
+2022,16,6,Certified Swole Boys,88.42,1,Spray Tanned Six Packers,125.26,L,True
+2022,17,10,Hundred Dollar Clown Baby,86.8,7,Goosed Up Lil Buff Boys,100.0,L,True
+2022,17,7,Goosed Up Lil Buff Boys,100.0,10,Hundred Dollar Clown Baby,86.8,W,True
+2022,17,2,Liftin Olave Da Weights,119.6,5,King Swole,82.98,W,True
+2022,17,5,King Swole,82.98,2,Liftin Olave Da Weights,119.6,L,True
+2022,17,4,Cee Deez Traps MaHomie,106.32,3,Body builing  Podium finisher,69.18,W,True
+2022,17,3,Body builing  Podium finisher,69.18,4,Cee Deez Traps MaHomie,106.32,L,True
+2022,17,9,Gainesville Muscle Hampstrs,70.96,8,The Skeletrex Bone Flexers,61.58,W,True
+2022,17,8,The Skeletrex Bone Flexers,61.58,9,Gainesville Muscle Hampstrs,70.96,L,True
+2022,17,1,Spray Tanned Six Packers,108.98,6,Certified Swole Boys,97.5,W,True
+2022,17,6,Certified Swole Boys,97.5,1,Spray Tanned Six Packers,108.98,L,True
+2023,1,5,Appalachian Hill to die on,117.64,10,We Are Climbing High,89.46,W,False
+2023,1,10,We Are Climbing High,89.46,5,Appalachian Hill to die on,117.64,L,False
+2023,1,4,Mt. Field(s),94.14,9,Catskill Killers,94.38,L,False
+2023,1,9,Catskill Killers,94.38,4,Mt. Field(s),94.14,W,False
+2023,1,6,MT KilledbyLamaro,64.66,1,The Allegheny Climb Hurts,105.5,L,False
+2023,1,1,The Allegheny Climb Hurts,105.5,6,MT KilledbyLamaro,64.66,W,False
+2023,1,2,See Moore Mount-Caffreys,92.96,3,Rocky Hill Oysters,82.86,W,False
+2023,1,3,Rocky Hill Oysters,82.86,2,See Moore Mount-Caffreys,92.96,L,False
+2023,1,7,Appalachian Hillaineers,69.24,8,The West Coast Hilltoppers,84.54,L,False
+2023,1,8,The West Coast Hilltoppers,84.54,7,Appalachian Hillaineers,69.24,W,False
+2023,2,3,Rocky Hill Oysters,125.66,10,We Are Climbing High,95.3,W,False
+2023,2,10,We Are Climbing High,95.3,3,Rocky Hill Oysters,125.66,L,False
+2023,2,1,The Allegheny Climb Hurts,130.12,5,Appalachian Hill to die on,93.34,W,False
+2023,2,5,Appalachian Hill to die on,93.34,1,The Allegheny Climb Hurts,130.12,L,False
+2023,2,9,Catskill Killers,109.58,6,MT KilledbyLamaro,156.28,L,False
+2023,2,6,MT KilledbyLamaro,156.28,9,Catskill Killers,109.58,W,False
+2023,2,8,The West Coast Hilltoppers,103.7,4,Mt. Field(s),72.94,W,False
+2023,2,4,Mt. Field(s),72.94,8,The West Coast Hilltoppers,103.7,L,False
+2023,2,7,Appalachian Hillaineers,72.56,2,See Moore Mount-Caffreys,125.7,L,False
+2023,2,2,See Moore Mount-Caffreys,125.7,7,Appalachian Hillaineers,72.56,W,False
+2023,3,1,The Allegheny Climb Hurts,110.18,3,Rocky Hill Oysters,88.88,W,False
+2023,3,3,Rocky Hill Oysters,88.88,1,The Allegheny Climb Hurts,110.18,L,False
+2023,3,10,We Are Climbing High,105.26,9,Catskill Killers,85.74,W,False
+2023,3,9,Catskill Killers,85.74,10,We Are Climbing High,105.26,L,False
+2023,3,5,Appalachian Hill to die on,127.26,8,The West Coast Hilltoppers,85.78,W,False
+2023,3,8,The West Coast Hilltoppers,85.78,5,Appalachian Hill to die on,127.26,L,False
+2023,3,6,MT KilledbyLamaro,149.28,7,Appalachian Hillaineers,112.62,W,False
+2023,3,7,Appalachian Hillaineers,112.62,6,MT KilledbyLamaro,149.28,L,False
+2023,3,4,Mt. Field(s),89.66,2,See Moore Mount-Caffreys,121.26,L,False
+2023,3,2,See Moore Mount-Caffreys,121.26,4,Mt. Field(s),89.66,W,False
+2023,4,3,Rocky Hill Oysters,60.26,9,Catskill Killers,90.1,L,False
+2023,4,9,Catskill Killers,90.1,3,Rocky Hill Oysters,60.26,W,False
+2023,4,8,The West Coast Hilltoppers,111.42,10,We Are Climbing High,149.52,L,False
+2023,4,10,We Are Climbing High,149.52,8,The West Coast Hilltoppers,111.42,W,False
+2023,4,7,Appalachian Hillaineers,122.7,1,The Allegheny Climb Hurts,134.16,L,False
+2023,4,1,The Allegheny Climb Hurts,134.16,7,Appalachian Hillaineers,122.7,W,False
+2023,4,2,See Moore Mount-Caffreys,128.98,5,Appalachian Hill to die on,86.04,W,False
+2023,4,5,Appalachian Hill to die on,86.04,2,See Moore Mount-Caffreys,128.98,L,False
+2023,4,4,Mt. Field(s),64.66,6,MT KilledbyLamaro,68.14,L,False
+2023,4,6,MT KilledbyLamaro,68.14,4,Mt. Field(s),64.66,W,False
+2023,5,8,The West Coast Hilltoppers,94.34,3,Rocky Hill Oysters,79.16,W,False
+2023,5,3,Rocky Hill Oysters,79.16,8,The West Coast Hilltoppers,94.34,L,False
+2023,5,9,Catskill Killers,68.46,7,Appalachian Hillaineers,132.16,L,False
+2023,5,7,Appalachian Hillaineers,132.16,9,Catskill Killers,68.46,W,False
+2023,5,1,The Allegheny Climb Hurts,65.52,2,See Moore Mount-Caffreys,68.12,L,False
+2023,5,2,See Moore Mount-Caffreys,68.12,1,The Allegheny Climb Hurts,65.52,W,False
+2023,5,10,We Are Climbing High,134.68,4,Mt. Field(s),76.62,W,False
+2023,5,4,Mt. Field(s),76.62,10,We Are Climbing High,134.68,L,False
+2023,5,5,Appalachian Hill to die on,98.98,6,MT KilledbyLamaro,150.14,L,False
+2023,5,6,MT KilledbyLamaro,150.14,5,Appalachian Hill to die on,98.98,W,False
+2023,6,3,Rocky Hill Oysters,68.64,7,Appalachian Hillaineers,82.24,L,False
+2023,6,7,Appalachian Hillaineers,82.24,3,Rocky Hill Oysters,68.64,W,False
+2023,6,2,See Moore Mount-Caffreys,124.78,10,We Are Climbing High,79.2,W,False
+2023,6,10,We Are Climbing High,79.2,2,See Moore Mount-Caffreys,124.78,L,False
+2023,6,4,Mt. Field(s),70.02,5,Appalachian Hill to die on,99.34,L,False
+2023,6,5,Appalachian Hill to die on,99.34,4,Mt. Field(s),70.02,W,False
+2023,6,6,MT KilledbyLamaro,94.22,1,The Allegheny Climb Hurts,68.9,W,False
+2023,6,1,The Allegheny Climb Hurts,68.9,6,MT KilledbyLamaro,94.22,L,False
+2023,6,9,Catskill Killers,100.2,8,The West Coast Hilltoppers,68.36,W,False
+2023,6,8,The West Coast Hilltoppers,68.36,9,Catskill Killers,100.2,L,False
+2023,7,2,See Moore Mount-Caffreys,111.16,9,Catskill Killers,83.6,W,False
+2023,7,9,Catskill Killers,83.6,2,See Moore Mount-Caffreys,111.16,L,False
+2023,7,7,Appalachian Hillaineers,105.36,4,Mt. Field(s),69.44,W,False
+2023,7,4,Mt. Field(s),69.44,7,Appalachian Hillaineers,105.36,L,False
+2023,7,8,The West Coast Hilltoppers,118.3,6,MT KilledbyLamaro,145.88,L,False
+2023,7,6,MT KilledbyLamaro,145.88,8,The West Coast Hilltoppers,118.3,W,False
+2023,7,3,Rocky Hill Oysters,96.42,5,Appalachian Hill to die on,74.64,W,False
+2023,7,5,Appalachian Hill to die on,74.64,3,Rocky Hill Oysters,96.42,L,False
+2023,7,1,The Allegheny Climb Hurts,81.66,10,We Are Climbing High,71.96,W,False
+2023,7,10,We Are Climbing High,71.96,1,The Allegheny Climb Hurts,81.66,L,False
+2023,8,3,Rocky Hill Oysters,107.56,4,Mt. Field(s),77.76,W,False
+2023,8,4,Mt. Field(s),77.76,3,Rocky Hill Oysters,107.56,L,False
+2023,8,6,MT KilledbyLamaro,99.88,2,See Moore Mount-Caffreys,138.12,L,False
+2023,8,2,See Moore Mount-Caffreys,138.12,6,MT KilledbyLamaro,99.88,W,False
+2023,8,5,Appalachian Hill to die on,86.18,7,Appalachian Hillaineers,99.0,L,False
+2023,8,7,Appalachian Hillaineers,99.0,5,Appalachian Hill to die on,86.18,W,False
+2023,8,10,We Are Climbing High,119.32,8,The West Coast Hilltoppers,101.56,W,False
+2023,8,8,The West Coast Hilltoppers,101.56,10,We Are Climbing High,119.32,L,False
+2023,8,1,The Allegheny Climb Hurts,121.06,9,Catskill Killers,133.12,L,False
+2023,8,9,Catskill Killers,133.12,1,The Allegheny Climb Hurts,121.06,W,False
+2023,9,8,The West Coast Hilltoppers,57.22,3,Rocky Hill Oysters,101.2,L,False
+2023,9,3,Rocky Hill Oysters,101.2,8,The West Coast Hilltoppers,57.22,W,False
+2023,9,4,Mt. Field(s),74.72,2,See Moore Mount-Caffreys,116.86,L,False
+2023,9,2,See Moore Mount-Caffreys,116.86,4,Mt. Field(s),74.72,W,False
+2023,9,5,Appalachian Hill to die on,131.0,10,We Are Climbing High,85.2,W,False
+2023,9,10,We Are Climbing High,85.2,5,Appalachian Hill to die on,131.0,L,False
+2023,9,7,Appalachian Hillaineers,100.9,1,The Allegheny Climb Hurts,86.98,W,False
+2023,9,1,The Allegheny Climb Hurts,86.98,7,Appalachian Hillaineers,100.9,L,False
+2023,9,6,MT KilledbyLamaro,64.58,9,Catskill Killers,119.42,L,False
+2023,9,9,Catskill Killers,119.42,6,MT KilledbyLamaro,64.58,W,False
+2023,10,4,Mt. Field(s),78.5,5,Appalachian Hill to die on,112.64,L,False
+2023,10,5,Appalachian Hill to die on,112.64,4,Mt. Field(s),78.5,W,False
+2023,10,10,We Are Climbing High,105.08,6,MT KilledbyLamaro,110.22,L,False
+2023,10,6,MT KilledbyLamaro,110.22,10,We Are Climbing High,105.08,W,False
+2023,10,1,The Allegheny Climb Hurts,97.62,3,Rocky Hill Oysters,86.22,W,False
+2023,10,3,Rocky Hill Oysters,86.22,1,The Allegheny Climb Hurts,97.62,L,False
+2023,10,9,Catskill Killers,126.08,2,See Moore Mount-Caffreys,127.38,L,False
+2023,10,2,See Moore Mount-Caffreys,127.38,9,Catskill Killers,126.08,W,False
+2023,10,8,The West Coast Hilltoppers,83.16,7,Appalachian Hillaineers,91.92,L,False
+2023,10,7,Appalachian Hillaineers,91.92,8,The West Coast Hilltoppers,83.16,W,False
+2023,11,10,We Are Climbing High,105.84,3,Rocky Hill Oysters,87.1,W,False
+2023,11,3,Rocky Hill Oysters,87.1,10,We Are Climbing High,105.84,L,False
+2023,11,9,Catskill Killers,91.64,1,The Allegheny Climb Hurts,102.6,L,False
+2023,11,1,The Allegheny Climb Hurts,102.6,9,Catskill Killers,91.64,W,False
+2023,11,6,MT KilledbyLamaro,112.46,5,Appalachian Hill to die on,103.94,W,False
+2023,11,5,Appalachian Hill to die on,103.94,6,MT KilledbyLamaro,112.46,L,False
+2023,11,4,Mt. Field(s),96.76,8,The West Coast Hilltoppers,103.96,L,False
+2023,11,8,The West Coast Hilltoppers,103.96,4,Mt. Field(s),96.76,W,False
+2023,11,2,See Moore Mount-Caffreys,76.26,7,Appalachian Hillaineers,86.98,L,False
+2023,11,7,Appalachian Hillaineers,86.98,2,See Moore Mount-Caffreys,76.26,W,False
+2023,12,4,Mt. Field(s),88.78,1,The Allegheny Climb Hurts,131.0,L,False
+2023,12,1,The Allegheny Climb Hurts,131.0,4,Mt. Field(s),88.78,W,False
+2023,12,7,Appalachian Hillaineers,144.86,10,We Are Climbing High,106.46,W,False
+2023,12,10,We Are Climbing High,106.46,7,Appalachian Hillaineers,144.86,L,False
+2023,12,9,Catskill Killers,100.78,5,Appalachian Hill to die on,128.86,L,False
+2023,12,5,Appalachian Hill to die on,128.86,9,Catskill Killers,100.78,W,False
+2023,12,8,The West Coast Hilltoppers,76.54,2,See Moore Mount-Caffreys,129.84,L,False
+2023,12,2,See Moore Mount-Caffreys,129.84,8,The West Coast Hilltoppers,76.54,W,False
+2023,12,6,MT KilledbyLamaro,102.18,3,Rocky Hill Oysters,45.86,W,False
+2023,12,3,Rocky Hill Oysters,45.86,6,MT KilledbyLamaro,102.18,L,False
+2023,13,9,Catskill Killers,88.38,3,Rocky Hill Oysters,129.54,L,False
+2023,13,3,Rocky Hill Oysters,129.54,9,Catskill Killers,88.38,W,False
+2023,13,1,The Allegheny Climb Hurts,132.42,8,The West Coast Hilltoppers,81.6,W,False
+2023,13,8,The West Coast Hilltoppers,81.6,1,The Allegheny Climb Hurts,132.42,L,False
+2023,13,5,Appalachian Hill to die on,120.26,7,Appalachian Hillaineers,130.14,L,False
+2023,13,7,Appalachian Hillaineers,130.14,5,Appalachian Hill to die on,120.26,W,False
+2023,13,10,We Are Climbing High,98.96,2,See Moore Mount-Caffreys,129.26,L,False
+2023,13,2,See Moore Mount-Caffreys,129.26,10,We Are Climbing High,98.96,W,False
+2023,13,6,MT KilledbyLamaro,132.38,4,Mt. Field(s),83.5,W,False
+2023,13,4,Mt. Field(s),83.5,6,MT KilledbyLamaro,132.38,L,False
+2023,14,2,See Moore Mount-Caffreys,105.04,7,Appalachian Hillaineers,99.12,W,True
+2023,14,7,Appalachian Hillaineers,99.12,2,See Moore Mount-Caffreys,105.04,L,True
+2023,14,6,MT KilledbyLamaro,109.74,1,The Allegheny Climb Hurts,71.48,W,True
+2023,14,1,The Allegheny Climb Hurts,71.48,6,MT KilledbyLamaro,109.74,L,True
+2023,14,5,Appalachian Hill to die on,68.44,10,We Are Climbing High,82.12,L,True
+2023,14,10,We Are Climbing High,82.12,5,Appalachian Hill to die on,68.44,W,True
+2023,14,9,Catskill Killers,83.64,3,Rocky Hill Oysters,128.56,L,True
+2023,14,3,Rocky Hill Oysters,128.56,9,Catskill Killers,83.64,W,True
+2023,14,8,The West Coast Hilltoppers,87.4,4,Mt. Field(s),123.62,L,True
+2023,14,4,Mt. Field(s),123.62,8,The West Coast Hilltoppers,87.4,W,True
+2023,15,2,See Moore Mount-Caffreys,163.52,7,Appalachian Hillaineers,92.46,W,True
+2023,15,7,Appalachian Hillaineers,92.46,2,See Moore Mount-Caffreys,163.52,L,True
+2023,15,6,MT KilledbyLamaro,86.34,1,The Allegheny Climb Hurts,66.12,W,True
+2023,15,1,The Allegheny Climb Hurts,66.12,6,MT KilledbyLamaro,86.34,L,True
+2023,15,5,Appalachian Hill to die on,75.26,10,We Are Climbing High,69.48,W,True
+2023,15,10,We Are Climbing High,69.48,5,Appalachian Hill to die on,75.26,L,True
+2023,15,9,Catskill Killers,111.12,3,Rocky Hill Oysters,100.62,W,True
+2023,15,3,Rocky Hill Oysters,100.62,9,Catskill Killers,111.12,L,True
+2023,15,8,The West Coast Hilltoppers,78.66,4,Mt. Field(s),114.84,L,True
+2023,15,4,Mt. Field(s),114.84,8,The West Coast Hilltoppers,78.66,W,True
+2023,16,2,See Moore Mount-Caffreys,113.02,6,MT KilledbyLamaro,77.18,W,True
+2023,16,6,MT KilledbyLamaro,77.18,2,See Moore Mount-Caffreys,113.02,L,True
+2023,16,1,The Allegheny Climb Hurts,110.62,7,Appalachian Hillaineers,75.78,W,True
+2023,16,7,Appalachian Hillaineers,75.78,1,The Allegheny Climb Hurts,110.62,L,True
+2023,16,10,We Are Climbing High,113.2,3,Rocky Hill Oysters,88.92,W,True
+2023,16,3,Rocky Hill Oysters,88.92,10,We Are Climbing High,113.2,L,True
+2023,16,5,Appalachian Hill to die on,87.84,4,Mt. Field(s),83.4,W,True
+2023,16,4,Mt. Field(s),83.4,5,Appalachian Hill to die on,87.84,L,True
+2023,16,9,Catskill Killers,126.92,8,The West Coast Hilltoppers,92.5,W,True
+2023,16,8,The West Coast Hilltoppers,92.5,9,Catskill Killers,126.92,L,True
+2023,17,2,See Moore Mount-Caffreys,118.7,6,MT KilledbyLamaro,152.74,L,True
+2023,17,6,MT KilledbyLamaro,152.74,2,See Moore Mount-Caffreys,118.7,W,True
+2023,17,1,The Allegheny Climb Hurts,93.28,7,Appalachian Hillaineers,99.36,L,True
+2023,17,7,Appalachian Hillaineers,99.36,1,The Allegheny Climb Hurts,93.28,W,True
+2023,17,10,We Are Climbing High,94.82,3,Rocky Hill Oysters,53.0,W,True
+2023,17,3,Rocky Hill Oysters,53.0,10,We Are Climbing High,94.82,L,True
+2023,17,5,Appalachian Hill to die on,69.02,4,Mt. Field(s),133.32,L,True
+2023,17,4,Mt. Field(s),133.32,5,Appalachian Hill to die on,69.02,W,True
+2023,17,9,Catskill Killers,101.78,8,The West Coast Hilltoppers,103.18,L,True
+2023,17,8,The West Coast Hilltoppers,103.18,9,Catskill Killers,101.78,W,True
+2024,1,5,Mike Evans down your Vincents,131.38,10,We Are Climbing High,97.66,W,False
+2024,1,10,We Are Climbing High,97.66,5,Mike Evans down your Vincents,131.38,L,False
+2024,1,4,Ants In My Eyes Jackson,71.52,9,Pirates of the Pancreas,105.76,L,False
+2024,1,9,Pirates of the Pancreas,105.76,4,Ants In My Eyes Jackson,71.52,W,False
+2024,1,6,MT KilledbyLamaro,69.56,1,2 Brothers In a Chiefs Van,75.94,L,False
+2024,1,1,2 Brothers In a Chiefs Van,75.94,6,MT KilledbyLamaro,69.56,W,False
+2024,1,2,Violent Tyreek Roadshow,115.02,3,Three unmuscular Michaels jr.,101.38,W,False
+2024,1,3,Three unmuscular Michaels jr.,101.38,2,Violent Tyreek Roadshow,115.02,L,False
+2024,1,7,FootBall Fondlers,86.68,8,Kittl' Bits,93.9,L,False
+2024,1,8,Kittl' Bits,93.9,7,FootBall Fondlers,86.68,W,False
+2024,2,3,Three unmuscular Michaels jr.,92.76,10,We Are Climbing High,94.62,L,False
+2024,2,10,We Are Climbing High,94.62,3,Three unmuscular Michaels jr.,92.76,W,False
+2024,2,1,2 Brothers In a Chiefs Van,90.44,5,Mike Evans down your Vincents,85.8,W,False
+2024,2,5,Mike Evans down your Vincents,85.8,1,2 Brothers In a Chiefs Van,90.44,L,False
+2024,2,9,Pirates of the Pancreas,123.14,6,MT KilledbyLamaro,102.92,W,False
+2024,2,6,MT KilledbyLamaro,102.92,9,Pirates of the Pancreas,123.14,L,False
+2024,2,8,Kittl' Bits,96.4,4,Ants In My Eyes Jackson,91.68,W,False
+2024,2,4,Ants In My Eyes Jackson,91.68,8,Kittl' Bits,96.4,L,False
+2024,2,7,FootBall Fondlers,109.16,2,Violent Tyreek Roadshow,106.92,W,False
+2024,2,2,Violent Tyreek Roadshow,106.92,7,FootBall Fondlers,109.16,L,False
+2024,3,1,2 Brothers In a Chiefs Van,113.28,3,Three unmuscular Michaels jr.,83.48,W,False
+2024,3,3,Three unmuscular Michaels jr.,83.48,1,2 Brothers In a Chiefs Van,113.28,L,False
+2024,3,10,We Are Climbing High,123.16,9,Pirates of the Pancreas,87.8,W,False
+2024,3,9,Pirates of the Pancreas,87.8,10,We Are Climbing High,123.16,L,False
+2024,3,5,Mike Evans down your Vincents,82.68,8,Kittl' Bits,71.72,W,False
+2024,3,8,Kittl' Bits,71.72,5,Mike Evans down your Vincents,82.68,L,False
+2024,3,6,MT KilledbyLamaro,69.86,7,FootBall Fondlers,130.92,L,False
+2024,3,7,FootBall Fondlers,130.92,6,MT KilledbyLamaro,69.86,W,False
+2024,3,4,Ants In My Eyes Jackson,85.48,2,Violent Tyreek Roadshow,75.14,W,False
+2024,3,2,Violent Tyreek Roadshow,75.14,4,Ants In My Eyes Jackson,85.48,L,False
+2024,4,3,Three unmuscular Michaels jr.,70.84,9,Pirates of the Pancreas,91.22,L,False
+2024,4,9,Pirates of the Pancreas,91.22,3,Three unmuscular Michaels jr.,70.84,W,False
+2024,4,8,Kittl' Bits,115.98,10,We Are Climbing High,98.78,W,False
+2024,4,10,We Are Climbing High,98.78,8,Kittl' Bits,115.98,L,False
+2024,4,7,FootBall Fondlers,102.46,1,2 Brothers In a Chiefs Van,131.5,L,False
+2024,4,1,2 Brothers In a Chiefs Van,131.5,7,FootBall Fondlers,102.46,W,False
+2024,4,2,Violent Tyreek Roadshow,93.22,5,Mike Evans down your Vincents,107.48,L,False
+2024,4,5,Mike Evans down your Vincents,107.48,2,Violent Tyreek Roadshow,93.22,W,False
+2024,4,4,Ants In My Eyes Jackson,90.44,6,MT KilledbyLamaro,76.84,W,False
+2024,4,6,MT KilledbyLamaro,76.84,4,Ants In My Eyes Jackson,90.44,L,False
+2024,5,8,Kittl' Bits,116.16,3,Three unmuscular Michaels jr.,90.16,W,False
+2024,5,3,Three unmuscular Michaels jr.,90.16,8,Kittl' Bits,116.16,L,False
+2024,5,9,Pirates of the Pancreas,123.22,7,FootBall Fondlers,96.64,W,False
+2024,5,7,FootBall Fondlers,96.64,9,Pirates of the Pancreas,123.22,L,False
+2024,5,1,2 Brothers In a Chiefs Van,116.74,2,Violent Tyreek Roadshow,80.66,W,False
+2024,5,2,Violent Tyreek Roadshow,80.66,1,2 Brothers In a Chiefs Van,116.74,L,False
+2024,5,10,We Are Climbing High,107.88,4,Ants In My Eyes Jackson,126.72,L,False
+2024,5,4,Ants In My Eyes Jackson,126.72,10,We Are Climbing High,107.88,W,False
+2024,5,5,Mike Evans down your Vincents,106.34,6,MT KilledbyLamaro,68.98,W,False
+2024,5,6,MT KilledbyLamaro,68.98,5,Mike Evans down your Vincents,106.34,L,False
+2024,6,3,Three unmuscular Michaels jr.,123.68,7,FootBall Fondlers,121.4,W,False
+2024,6,7,FootBall Fondlers,121.4,3,Three unmuscular Michaels jr.,123.68,L,False
+2024,6,2,Violent Tyreek Roadshow,75.26,10,We Are Climbing High,82.22,L,False
+2024,6,10,We Are Climbing High,82.22,2,Violent Tyreek Roadshow,75.26,W,False
+2024,6,4,Ants In My Eyes Jackson,95.32,5,Mike Evans down your Vincents,97.16,L,False
+2024,6,5,Mike Evans down your Vincents,97.16,4,Ants In My Eyes Jackson,95.32,W,False
+2024,6,6,MT KilledbyLamaro,58.22,1,2 Brothers In a Chiefs Van,113.48,L,False
+2024,6,1,2 Brothers In a Chiefs Van,113.48,6,MT KilledbyLamaro,58.22,W,False
+2024,6,9,Pirates of the Pancreas,90.86,8,Kittl' Bits,113.42,L,False
+2024,6,8,Kittl' Bits,113.42,9,Pirates of the Pancreas,90.86,W,False
+2024,7,2,Violent Tyreek Roadshow,88.56,9,Pirates of the Pancreas,66.44,W,False
+2024,7,9,Pirates of the Pancreas,66.44,2,Violent Tyreek Roadshow,88.56,L,False
+2024,7,7,FootBall Fondlers,133.82,4,Ants In My Eyes Jackson,139.54,L,False
+2024,7,4,Ants In My Eyes Jackson,139.54,7,FootBall Fondlers,133.82,W,False
+2024,7,8,Kittl' Bits,93.3,6,MT KilledbyLamaro,66.26,W,False
+2024,7,6,MT KilledbyLamaro,66.26,8,Kittl' Bits,93.3,L,False
+2024,7,3,Three unmuscular Michaels jr.,78.78,5,Mike Evans down your Vincents,128.0,L,False
+2024,7,5,Mike Evans down your Vincents,128.0,3,Three unmuscular Michaels jr.,78.78,W,False
+2024,7,1,2 Brothers In a Chiefs Van,81.44,10,We Are Climbing High,100.74,L,False
+2024,7,10,We Are Climbing High,100.74,1,2 Brothers In a Chiefs Van,81.44,W,False
+2024,8,3,Three unmuscular Michaels jr.,90.7,4,Ants In My Eyes Jackson,107.56,L,False
+2024,8,4,Ants In My Eyes Jackson,107.56,3,Three unmuscular Michaels jr.,90.7,W,False
+2024,8,6,MT KilledbyLamaro,87.26,2,Violent Tyreek Roadshow,137.74,L,False
+2024,8,2,Violent Tyreek Roadshow,137.74,6,MT KilledbyLamaro,87.26,W,False
+2024,8,5,Mike Evans down your Vincents,123.88,7,FootBall Fondlers,111.72,W,False
+2024,8,7,FootBall Fondlers,111.72,5,Mike Evans down your Vincents,123.88,L,False
+2024,8,10,We Are Climbing High,87.36,8,Kittl' Bits,117.54,L,False
+2024,8,8,Kittl' Bits,117.54,10,We Are Climbing High,87.36,W,False
+2024,8,1,2 Brothers In a Chiefs Van,91.86,9,Pirates of the Pancreas,112.14,L,False
+2024,8,9,Pirates of the Pancreas,112.14,1,2 Brothers In a Chiefs Van,91.86,W,False
+2024,9,8,Kittl' Bits,137.3,3,Three unmuscular Michaels jr.,77.4,W,False
+2024,9,3,Three unmuscular Michaels jr.,77.4,8,Kittl' Bits,137.3,L,False
+2024,9,4,Ants In My Eyes Jackson,105.4,2,Violent Tyreek Roadshow,109.2,L,False
+2024,9,2,Violent Tyreek Roadshow,109.2,4,Ants In My Eyes Jackson,105.4,W,False
+2024,9,5,Mike Evans down your Vincents,95.86,10,We Are Climbing High,104.82,L,False
+2024,9,10,We Are Climbing High,104.82,5,Mike Evans down your Vincents,95.86,W,False
+2024,9,7,FootBall Fondlers,108.3,1,2 Brothers In a Chiefs Van,108.94,L,False
+2024,9,1,2 Brothers In a Chiefs Van,108.94,7,FootBall Fondlers,108.3,W,False
+2024,9,6,MT KilledbyLamaro,78.98,9,Pirates of the Pancreas,133.06,L,False
+2024,9,9,Pirates of the Pancreas,133.06,6,MT KilledbyLamaro,78.98,W,False
+2024,10,4,Ants In My Eyes Jackson,113.6,5,Mike Evans down your Vincents,95.4,W,False
+2024,10,5,Mike Evans down your Vincents,95.4,4,Ants In My Eyes Jackson,113.6,L,False
+2024,10,10,We Are Climbing High,117.62,6,MT KilledbyLamaro,71.16,W,False
+2024,10,6,MT KilledbyLamaro,71.16,10,We Are Climbing High,117.62,L,False
+2024,10,1,2 Brothers In a Chiefs Van,120.44,3,Three unmuscular Michaels jr.,69.54,W,False
+2024,10,3,Three unmuscular Michaels jr.,69.54,1,2 Brothers In a Chiefs Van,120.44,L,False
+2024,10,9,Pirates of the Pancreas,53.88,2,Violent Tyreek Roadshow,97.58,L,False
+2024,10,2,Violent Tyreek Roadshow,97.58,9,Pirates of the Pancreas,53.88,W,False
+2024,10,8,Kittl' Bits,94.54,7,FootBall Fondlers,99.4,L,False
+2024,10,7,FootBall Fondlers,99.4,8,Kittl' Bits,94.54,W,False
+2024,11,10,We Are Climbing High,97.74,3,Three unmuscular Michaels jr.,86.24,W,False
+2024,11,3,Three unmuscular Michaels jr.,86.24,10,We Are Climbing High,97.74,L,False
+2024,11,9,Pirates of the Pancreas,114.04,1,2 Brothers In a Chiefs Van,96.64,W,False
+2024,11,1,2 Brothers In a Chiefs Van,96.64,9,Pirates of the Pancreas,114.04,L,False
+2024,11,6,MT KilledbyLamaro,113.38,5,Mike Evans down your Vincents,79.1,W,False
+2024,11,5,Mike Evans down your Vincents,79.1,6,MT KilledbyLamaro,113.38,L,False
+2024,11,4,Ants In My Eyes Jackson,115.28,8,Kittl' Bits,79.84,W,False
+2024,11,8,Kittl' Bits,79.84,4,Ants In My Eyes Jackson,115.28,L,False
+2024,11,2,Violent Tyreek Roadshow,108.34,7,FootBall Fondlers,116.18,L,False
+2024,11,7,FootBall Fondlers,116.18,2,Violent Tyreek Roadshow,108.34,W,False
+2024,12,4,Ants In My Eyes Jackson,67.38,1,2 Brothers In a Chiefs Van,86.92,L,False
+2024,12,1,2 Brothers In a Chiefs Van,86.92,4,Ants In My Eyes Jackson,67.38,W,False
+2024,12,7,FootBall Fondlers,87.48,10,We Are Climbing High,84.66,W,False
+2024,12,10,We Are Climbing High,84.66,7,FootBall Fondlers,87.48,L,False
+2024,12,9,Pirates of the Pancreas,136.0,5,Mike Evans down your Vincents,91.7,W,False
+2024,12,5,Mike Evans down your Vincents,91.7,9,Pirates of the Pancreas,136.0,L,False
+2024,12,8,Kittl' Bits,114.26,2,Violent Tyreek Roadshow,92.46,W,False
+2024,12,2,Violent Tyreek Roadshow,92.46,8,Kittl' Bits,114.26,L,False
+2024,12,6,MT KilledbyLamaro,67.52,3,Three unmuscular Michaels jr.,113.3,L,False
+2024,12,3,Three unmuscular Michaels jr.,113.3,6,MT KilledbyLamaro,67.52,W,False
+2024,13,9,Pirates of the Pancreas,109.64,3,Three unmuscular Michaels jr.,132.9,L,False
+2024,13,3,Three unmuscular Michaels jr.,132.9,9,Pirates of the Pancreas,109.64,W,False
+2024,13,1,2 Brothers In a Chiefs Van,85.04,8,Kittl' Bits,59.6,W,False
+2024,13,8,Kittl' Bits,59.6,1,2 Brothers In a Chiefs Van,85.04,L,False
+2024,13,5,Mike Evans down your Vincents,140.66,7,FootBall Fondlers,135.48,W,False
+2024,13,7,FootBall Fondlers,135.48,5,Mike Evans down your Vincents,140.66,L,False
+2024,13,10,We Are Climbing High,91.96,2,Violent Tyreek Roadshow,105.42,L,False
+2024,13,2,Violent Tyreek Roadshow,105.42,10,We Are Climbing High,91.96,W,False
+2024,13,6,MT KilledbyLamaro,94.08,4,Ants In My Eyes Jackson,104.02,L,False
+2024,13,4,Ants In My Eyes Jackson,104.02,6,MT KilledbyLamaro,94.08,W,False
+2024,14,1,2 Brothers In a Chiefs Van,109.24,9,Pirates of the Pancreas,95.2,W,True
+2024,14,9,Pirates of the Pancreas,95.2,1,2 Brothers In a Chiefs Van,109.24,L,True
+2024,14,8,Kittl' Bits,122.8,5,Mike Evans down your Vincents,88.36,W,True
+2024,14,5,Mike Evans down your Vincents,88.36,8,Kittl' Bits,122.8,L,True
+2024,14,4,Ants In My Eyes Jackson,126.28,7,FootBall Fondlers,109.48,W,True
+2024,14,7,FootBall Fondlers,109.48,4,Ants In My Eyes Jackson,126.28,L,True
+2024,14,10,We Are Climbing High,128.06,2,Violent Tyreek Roadshow,101.22,W,True
+2024,14,2,Violent Tyreek Roadshow,101.22,10,We Are Climbing High,128.06,L,True
+2024,14,3,Three unmuscular Michaels jr.,96.58,6,MT KilledbyLamaro,131.12,L,True
+2024,14,6,MT KilledbyLamaro,131.12,3,Three unmuscular Michaels jr.,96.58,W,True
+2024,15,1,2 Brothers In a Chiefs Van,76.6,9,Pirates of the Pancreas,125.54,L,True
+2024,15,9,Pirates of the Pancreas,125.54,1,2 Brothers In a Chiefs Van,76.6,W,True
+2024,15,8,Kittl' Bits,88.62,5,Mike Evans down your Vincents,149.06,L,True
+2024,15,5,Mike Evans down your Vincents,149.06,8,Kittl' Bits,88.62,W,True
+2024,15,4,Ants In My Eyes Jackson,125.98,7,FootBall Fondlers,117.6,W,True
+2024,15,7,FootBall Fondlers,117.6,4,Ants In My Eyes Jackson,125.98,L,True
+2024,15,10,We Are Climbing High,131.44,2,Violent Tyreek Roadshow,100.7,W,True
+2024,15,2,Violent Tyreek Roadshow,100.7,10,We Are Climbing High,131.44,L,True
+2024,15,3,Three unmuscular Michaels jr.,82.64,6,MT KilledbyLamaro,75.6,W,True
+2024,15,6,MT KilledbyLamaro,75.6,3,Three unmuscular Michaels jr.,82.64,L,True
+2024,16,5,Mike Evans down your Vincents,159.08,9,Pirates of the Pancreas,139.02,W,True
+2024,16,9,Pirates of the Pancreas,139.02,5,Mike Evans down your Vincents,159.08,L,True
+2024,16,1,2 Brothers In a Chiefs Van,87.82,8,Kittl' Bits,118.62,L,True
+2024,16,8,Kittl' Bits,118.62,1,2 Brothers In a Chiefs Van,87.82,W,True
+2024,16,4,Ants In My Eyes Jackson,106.16,10,We Are Climbing High,110.34,L,True
+2024,16,10,We Are Climbing High,110.34,4,Ants In My Eyes Jackson,106.16,W,True
+2024,16,2,Violent Tyreek Roadshow,88.24,7,FootBall Fondlers,97.18,L,True
+2024,16,7,FootBall Fondlers,97.18,2,Violent Tyreek Roadshow,88.24,W,True
+2024,16,3,Three unmuscular Michaels jr.,92.14,6,MT KilledbyLamaro,101.26,L,True
+2024,16,6,MT KilledbyLamaro,101.26,3,Three unmuscular Michaels jr.,92.14,W,True
+2024,17,5,Mike Evans down your Vincents,98.64,9,Pirates of the Pancreas,93.28,W,True
+2024,17,9,Pirates of the Pancreas,93.28,5,Mike Evans down your Vincents,98.64,L,True
+2024,17,1,2 Brothers In a Chiefs Van,98.26,8,Kittl' Bits,124.36,L,True
+2024,17,8,Kittl' Bits,124.36,1,2 Brothers In a Chiefs Van,98.26,W,True
+2024,17,4,Ants In My Eyes Jackson,150.78,10,We Are Climbing High,91.72,W,True
+2024,17,10,We Are Climbing High,91.72,4,Ants In My Eyes Jackson,150.78,L,True
+2024,17,2,Violent Tyreek Roadshow,66.2,7,FootBall Fondlers,104.92,L,True
+2024,17,7,FootBall Fondlers,104.92,2,Violent Tyreek Roadshow,66.2,W,True
+2024,17,3,Three unmuscular Michaels jr.,99.78,6,MT KilledbyLamaro,130.84,L,True
+2024,17,6,MT KilledbyLamaro,130.84,3,Three unmuscular Michaels jr.,99.78,W,True
+2025,1,3,Hunters and renfrow,97.02,10,We Are Rolling High,78.62,W,False
+2025,1,10,We Are Rolling High,78.62,3,Hunters and renfrow,97.02,L,False
+2025,1,7,Roll for Yardage,56.64,9,Paladins of the Pancreas,111.96,L,False
+2025,1,9,Paladins of the Pancreas,111.96,7,Roll for Yardage,56.64,W,False
+2025,1,8,"I Don't Care, I Cast Fireball",86.18,1,Heroic Inspiration,97.46,L,False
+2025,1,1,Heroic Inspiration,97.46,8,"I Don't Care, I Cast Fireball",86.18,W,False
+2025,1,6,NameOfCurseWarding,86.08,5,Constitution Check Downs,88.62,L,False
+2025,1,5,Constitution Check Downs,88.62,6,NameOfCurseWarding,86.08,W,False
+2025,1,4,Forgotten Burrows,113.02,2,Danny Dice Rolls,73.02,W,False
+2025,1,2,Danny Dice Rolls,73.02,4,Forgotten Burrows,113.02,L,False
+2025,2,9,Paladins of the Pancreas,132.22,10,We Are Rolling High,115.9,W,False
+2025,2,10,We Are Rolling High,115.9,9,Paladins of the Pancreas,132.22,L,False
+2025,2,2,Danny Dice Rolls,73.44,5,Constitution Check Downs,111.28,L,False
+2025,2,5,Constitution Check Downs,111.28,2,Danny Dice Rolls,73.44,W,False
+2025,2,1,Heroic Inspiration,93.4,6,NameOfCurseWarding,114.14,L,False
+2025,2,6,NameOfCurseWarding,114.14,1,Heroic Inspiration,93.4,W,False
+2025,2,8,"I Don't Care, I Cast Fireball",77.2,4,Forgotten Burrows,81.14,L,False
+2025,2,4,Forgotten Burrows,81.14,8,"I Don't Care, I Cast Fireball",77.2,W,False
+2025,2,7,Roll for Yardage,82.48,3,Hunters and renfrow,109.58,L,False
+2025,2,3,Hunters and renfrow,109.58,7,Roll for Yardage,82.48,W,False
+2025,3,1,Heroic Inspiration,146.42,3,Hunters and renfrow,75.16,W,False
+2025,3,3,Hunters and renfrow,75.16,1,Heroic Inspiration,146.42,L,False
+2025,3,2,Danny Dice Rolls,82.04,9,Paladins of the Pancreas,99.12,L,False
+2025,3,9,Paladins of the Pancreas,99.12,2,Danny Dice Rolls,82.04,W,False
+2025,3,7,Roll for Yardage,112.32,8,"I Don't Care, I Cast Fireball",82.52,W,False
+2025,3,8,"I Don't Care, I Cast Fireball",82.52,7,Roll for Yardage,112.32,L,False
+2025,3,10,We Are Rolling High,84.86,5,Constitution Check Downs,80.3,W,False
+2025,3,5,Constitution Check Downs,80.3,10,We Are Rolling High,84.86,L,False
+2025,3,4,Forgotten Burrows,126.72,6,NameOfCurseWarding,76.34,W,False
+2025,3,6,NameOfCurseWarding,76.34,4,Forgotten Burrows,126.72,L,False
+2025,4,8,"I Don't Care, I Cast Fireball",89.08,9,Paladins of the Pancreas,105.06,L,False
+2025,4,9,Paladins of the Pancreas,105.06,8,"I Don't Care, I Cast Fireball",89.08,W,False
+2025,4,1,Heroic Inspiration,95.58,10,We Are Rolling High,115.92,L,False
+2025,4,10,We Are Rolling High,115.92,1,Heroic Inspiration,95.58,W,False
+2025,4,4,Forgotten Burrows,86.58,3,Hunters and renfrow,86.0,W,False
+2025,4,3,Hunters and renfrow,86.0,4,Forgotten Burrows,86.58,L,False
+2025,4,7,Roll for Yardage,122.64,5,Constitution Check Downs,117.92,W,False
+2025,4,5,Constitution Check Downs,117.92,7,Roll for Yardage,122.64,L,False
+2025,4,2,Danny Dice Rolls,152.68,6,NameOfCurseWarding,86.4,W,False
+2025,4,6,NameOfCurseWarding,86.4,2,Danny Dice Rolls,152.68,L,False
+2025,5,2,Danny Dice Rolls,101.58,3,Hunters and renfrow,95.62,W,False
+2025,5,3,Hunters and renfrow,95.62,2,Danny Dice Rolls,101.58,L,False
+2025,5,1,Heroic Inspiration,93.76,7,Roll for Yardage,115.24,L,False
+2025,5,7,Roll for Yardage,115.24,1,Heroic Inspiration,93.76,W,False
+2025,5,5,Constitution Check Downs,110.34,8,"I Don't Care, I Cast Fireball",108.96,W,False
+2025,5,8,"I Don't Care, I Cast Fireball",108.96,5,Constitution Check Downs,110.34,L,False
+2025,5,10,We Are Rolling High,101.4,4,Forgotten Burrows,139.46,L,False
+2025,5,4,Forgotten Burrows,139.46,10,We Are Rolling High,101.4,W,False
+2025,5,9,Paladins of the Pancreas,93.62,6,NameOfCurseWarding,103.3,L,False
+2025,5,6,NameOfCurseWarding,103.3,9,Paladins of the Pancreas,93.62,W,False
+2025,6,4,Forgotten Burrows,132.88,7,Roll for Yardage,112.04,W,False
+2025,6,7,Roll for Yardage,112.04,4,Forgotten Burrows,132.88,L,False
+2025,6,2,Danny Dice Rolls,68.66,10,We Are Rolling High,94.84,L,False
+2025,6,10,We Are Rolling High,94.84,2,Danny Dice Rolls,68.66,W,False
+2025,6,1,Heroic Inspiration,58.74,5,Constitution Check Downs,134.84,L,False
+2025,6,5,Constitution Check Downs,134.84,1,Heroic Inspiration,58.74,W,False
+2025,6,9,Paladins of the Pancreas,96.4,3,Hunters and renfrow,91.08,W,False
+2025,6,3,Hunters and renfrow,91.08,9,Paladins of the Pancreas,96.4,L,False
+2025,6,6,NameOfCurseWarding,86.72,8,"I Don't Care, I Cast Fireball",96.06,L,False
+2025,6,8,"I Don't Care, I Cast Fireball",96.06,6,NameOfCurseWarding,86.72,W,False
+2025,7,1,Heroic Inspiration,115.78,9,Paladins of the Pancreas,94.26,W,False
+2025,7,9,Paladins of the Pancreas,94.26,1,Heroic Inspiration,115.78,L,False
+2025,7,5,Constitution Check Downs,99.26,4,Forgotten Burrows,95.38,W,False
+2025,7,4,Forgotten Burrows,95.38,5,Constitution Check Downs,99.26,L,False
+2025,7,10,We Are Rolling High,133.04,6,NameOfCurseWarding,96.14,W,False
+2025,7,6,NameOfCurseWarding,96.14,10,We Are Rolling High,133.04,L,False
+2025,7,3,Hunters and renfrow,105.54,8,"I Don't Care, I Cast Fireball",65.62,W,False
+2025,7,8,"I Don't Care, I Cast Fireball",65.62,3,Hunters and renfrow,105.54,L,False
+2025,7,2,Danny Dice Rolls,133.02,7,Roll for Yardage,97.78,W,False
+2025,7,7,Roll for Yardage,97.78,2,Danny Dice Rolls,133.02,L,False
+2025,8,9,Paladins of the Pancreas,100.22,4,Forgotten Burrows,139.0,L,False
+2025,8,4,Forgotten Burrows,139.0,9,Paladins of the Pancreas,100.22,W,False
+2025,8,1,Heroic Inspiration,89.96,2,Danny Dice Rolls,82.88,W,False
+2025,8,2,Danny Dice Rolls,82.88,1,Heroic Inspiration,89.96,L,False
+2025,8,6,NameOfCurseWarding,89.26,7,Roll for Yardage,111.08,L,False
+2025,8,7,Roll for Yardage,111.08,6,NameOfCurseWarding,89.26,W,False
+2025,8,3,Hunters and renfrow,126.42,5,Constitution Check Downs,98.48,W,False
+2025,8,5,Constitution Check Downs,98.48,3,Hunters and renfrow,126.42,L,False
+2025,8,8,"I Don't Care, I Cast Fireball",90.88,10,We Are Rolling High,112.12,L,False
+2025,8,10,We Are Rolling High,112.12,8,"I Don't Care, I Cast Fireball",90.88,W,False
+2025,9,10,We Are Rolling High,139.3,3,Hunters and renfrow,80.2,W,False
+2025,9,3,Hunters and renfrow,80.2,10,We Are Rolling High,139.3,L,False
+2025,9,4,Forgotten Burrows,100.5,2,Danny Dice Rolls,110.58,L,False
+2025,9,2,Danny Dice Rolls,110.58,4,Forgotten Burrows,100.5,W,False
+2025,9,1,Heroic Inspiration,96.76,8,"I Don't Care, I Cast Fireball",48.42,W,False
+2025,9,8,"I Don't Care, I Cast Fireball",48.42,1,Heroic Inspiration,96.76,L,False
+2025,9,6,NameOfCurseWarding,141.2,5,Constitution Check Downs,99.2,W,False
+2025,9,5,Constitution Check Downs,99.2,6,NameOfCurseWarding,141.2,L,False
+2025,9,7,Roll for Yardage,103.66,9,Paladins of the Pancreas,87.32,W,False
+2025,9,9,Paladins of the Pancreas,87.32,7,Roll for Yardage,103.66,L,False
+2025,10,2,Danny Dice Rolls,71.02,5,Constitution Check Downs,97.8,L,False
+2025,10,5,Constitution Check Downs,97.8,2,Danny Dice Rolls,71.02,W,False
+2025,10,1,Heroic Inspiration,107.4,6,NameOfCurseWarding,89.0,W,False
+2025,10,6,NameOfCurseWarding,89.0,1,Heroic Inspiration,107.4,L,False
+2025,10,7,Roll for Yardage,115.5,3,Hunters and renfrow,98.82,W,False
+2025,10,3,Hunters and renfrow,98.82,7,Roll for Yardage,115.5,L,False
+2025,10,8,"I Don't Care, I Cast Fireball",111.92,4,Forgotten Burrows,141.9,L,False
+2025,10,4,Forgotten Burrows,141.9,8,"I Don't Care, I Cast Fireball",111.92,W,False
+2025,10,9,Paladins of the Pancreas,125.44,10,We Are Rolling High,90.64,W,False
+2025,10,10,We Are Rolling High,90.64,9,Paladins of the Pancreas,125.44,L,False
+2025,11,1,Heroic Inspiration,101.7,3,Hunters and renfrow,72.24,W,False
+2025,11,3,Hunters and renfrow,72.24,1,Heroic Inspiration,101.7,L,False
+2025,11,5,Constitution Check Downs,104.82,10,We Are Rolling High,83.22,W,False
+2025,11,10,We Are Rolling High,83.22,5,Constitution Check Downs,104.82,L,False
+2025,11,2,Danny Dice Rolls,83.0,9,Paladins of the Pancreas,133.78,L,False
+2025,11,9,Paladins of the Pancreas,133.78,2,Danny Dice Rolls,83.0,W,False
+2025,11,7,Roll for Yardage,124.84,8,"I Don't Care, I Cast Fireball",71.72,W,False
+2025,11,8,"I Don't Care, I Cast Fireball",71.72,7,Roll for Yardage,124.84,L,False
+2025,11,6,NameOfCurseWarding,87.1,4,Forgotten Burrows,88.62,L,False
+2025,11,4,Forgotten Burrows,88.62,6,NameOfCurseWarding,87.1,W,False
+2025,12,4,Forgotten Burrows,120.56,1,Heroic Inspiration,127.82,L,False
+2025,12,1,Heroic Inspiration,127.82,4,Forgotten Burrows,120.56,W,False
+2025,12,7,Roll for Yardage,99.56,10,We Are Rolling High,65.82,W,False
+2025,12,10,We Are Rolling High,65.82,7,Roll for Yardage,99.56,L,False
+2025,12,9,Paladins of the Pancreas,84.12,5,Constitution Check Downs,109.86,L,False
+2025,12,5,Constitution Check Downs,109.86,9,Paladins of the Pancreas,84.12,W,False
+2025,12,8,"I Don't Care, I Cast Fireball",74.82,2,Danny Dice Rolls,130.96,L,False
+2025,12,2,Danny Dice Rolls,130.96,8,"I Don't Care, I Cast Fireball",74.82,W,False
+2025,12,6,NameOfCurseWarding,78.46,3,Hunters and renfrow,86.68,L,False
+2025,12,3,Hunters and renfrow,86.68,6,NameOfCurseWarding,78.46,W,False
+2025,13,4,Forgotten Burrows,76.94,3,Hunters and renfrow,128.14,L,False
+2025,13,3,Hunters and renfrow,128.14,4,Forgotten Burrows,76.94,W,False
+2025,13,9,Paladins of the Pancreas,103.52,8,"I Don't Care, I Cast Fireball",87.04,W,False
+2025,13,8,"I Don't Care, I Cast Fireball",87.04,9,Paladins of the Pancreas,103.52,L,False
+2025,13,5,Constitution Check Downs,89.0,7,Roll for Yardage,100.98,L,False
+2025,13,7,Roll for Yardage,100.98,5,Constitution Check Downs,89.0,W,False
+2025,13,6,NameOfCurseWarding,69.24,2,Danny Dice Rolls,95.0,L,False
+2025,13,2,Danny Dice Rolls,95.0,6,NameOfCurseWarding,69.24,W,False
+2025,13,10,We Are Rolling High,97.74,1,Heroic Inspiration,111.22,L,False
+2025,13,1,Heroic Inspiration,111.22,10,We Are Rolling High,97.74,W,False
+2025,14,7,Roll for Yardage,75.36,5,Constitution Check Downs,113.64,L,True
+2025,14,5,Constitution Check Downs,113.64,7,Roll for Yardage,75.36,W,True
+2025,14,4,Forgotten Burrows,107.76,9,Paladins of the Pancreas,95.04,W,True
+2025,14,9,Paladins of the Pancreas,95.04,4,Forgotten Burrows,107.76,L,True
+2025,14,1,Heroic Inspiration,121.54,2,Danny Dice Rolls,83.4,W,True
+2025,14,2,Danny Dice Rolls,83.4,1,Heroic Inspiration,121.54,L,True
+2025,14,3,Hunters and renfrow,57.5,10,We Are Rolling High,103.16,L,True
+2025,14,10,We Are Rolling High,103.16,3,Hunters and renfrow,57.5,W,True
+2025,14,6,NameOfCurseWarding,109.08,8,"I Don't Care, I Cast Fireball",84.08,W,True
+2025,14,8,"I Don't Care, I Cast Fireball",84.08,6,NameOfCurseWarding,109.08,L,True
+2025,15,7,Roll for Yardage,112.0,5,Constitution Check Downs,94.56,W,True
+2025,15,5,Constitution Check Downs,94.56,7,Roll for Yardage,112.0,L,True
+2025,15,4,Forgotten Burrows,101.2,9,Paladins of the Pancreas,120.62,L,True
+2025,15,9,Paladins of the Pancreas,120.62,4,Forgotten Burrows,101.2,W,True
+2025,15,1,Heroic Inspiration,116.64,2,Danny Dice Rolls,86.7,W,True
+2025,15,2,Danny Dice Rolls,86.7,1,Heroic Inspiration,116.64,L,True
+2025,15,3,Hunters and renfrow,126.76,10,We Are Rolling High,114.0,W,True
+2025,15,10,We Are Rolling High,114.0,3,Hunters and renfrow,126.76,L,True
+2025,15,6,NameOfCurseWarding,122.08,8,"I Don't Care, I Cast Fireball",49.64,W,True
+2025,15,8,"I Don't Care, I Cast Fireball",49.64,6,NameOfCurseWarding,122.08,L,True
+2025,16,9,Paladins of the Pancreas,91.6,5,Constitution Check Downs,136.2,L,True
+2025,16,5,Constitution Check Downs,136.2,9,Paladins of the Pancreas,91.6,W,True
+2025,16,7,Roll for Yardage,138.9,4,Forgotten Burrows,129.16,W,True
+2025,16,4,Forgotten Burrows,129.16,7,Roll for Yardage,138.9,L,True
+2025,16,1,Heroic Inspiration,76.52,10,We Are Rolling High,66.14,W,True
+2025,16,10,We Are Rolling High,66.14,1,Heroic Inspiration,76.52,L,True
+2025,16,2,Danny Dice Rolls,92.3,3,Hunters and renfrow,94.6,L,True
+2025,16,3,Hunters and renfrow,94.6,2,Danny Dice Rolls,92.3,W,True
+2025,16,6,NameOfCurseWarding,102.98,8,"I Don't Care, I Cast Fireball",84.88,W,True
+2025,16,8,"I Don't Care, I Cast Fireball",84.88,6,NameOfCurseWarding,102.98,L,True
+2025,17,9,Paladins of the Pancreas,97.48,5,Constitution Check Downs,127.78,L,True
+2025,17,5,Constitution Check Downs,127.78,9,Paladins of the Pancreas,97.48,W,True
+2025,17,7,Roll for Yardage,142.04,4,Forgotten Burrows,125.8,W,True
+2025,17,4,Forgotten Burrows,125.8,7,Roll for Yardage,142.04,L,True
+2025,17,1,Heroic Inspiration,80.76,10,We Are Rolling High,94.42,L,True
+2025,17,10,We Are Rolling High,94.42,1,Heroic Inspiration,80.76,W,True
+2025,17,2,Danny Dice Rolls,54.9,3,Hunters and renfrow,76.6,L,True
+2025,17,3,Hunters and renfrow,76.6,2,Danny Dice Rolls,54.9,W,True
+2025,17,6,NameOfCurseWarding,107.68,8,"I Don't Care, I Cast Fireball",85.34,W,True
+2025,17,8,"I Don't Care, I Cast Fireball",85.34,6,NameOfCurseWarding,107.68,L,True

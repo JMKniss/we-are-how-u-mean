@@ -85,7 +85,11 @@ def top_players(boxscores_df: pd.DataFrame, position: str = None, top_n: int = 2
     df = boxscores_df[boxscores_df["is_active_slot"]].copy()
     if position:
         df = df[df["position"] == position]
-    grp = df.groupby(["player_id", "player_name", "position", "pro_team"]).agg(
+    # dropna=False: pro_team is NaN for every 2016-2017 player (nfl-data-py path
+    # never sets it) and for released players in later seasons. Without this the
+    # groupby silently drops those rows — 2016/2017 returned an empty leaderboard.
+    grp = df.groupby(["player_id", "player_name", "position", "pro_team"],
+                     dropna=False).agg(
         total_points=("points", "sum"),
         avg_points=("points", "mean"),
         weeks_played=("points", "count"),

@@ -41,6 +41,32 @@ ff_app/
     └── 8_Data_Validation.py
 ```
 
+## Data storage — archive vs cache
+
+Two distinct layers. Do not conflate them.
+
+**`data/archive/` — the permanent record. Committed to git.**
+Plain CSV, one file per dataset with every season stacked (`season` column):
+`matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
+plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
+
+This is the source of truth for completed seasons. It is read *before* the pickle
+cache and *before* ESPN, so day-to-day use needs no cookies and no network.
+Because it is CSV it is readable, diffable, and hand-correctable — if a value is
+wrong, edit the cell. Read it via `data/archive.py`.
+
+Rebuild after a correction upstream or to add a season:
+```
+cd ff_app && python build_archive.py     # needs valid ESPN cookies
+```
+
+**`data/cache/` — disposable pickle cache. Gitignored.**
+Only relevant when pulling a season not yet archived. Delete freely.
+`league.pkl` is the raw espn-api object graph; nothing reads it any more except
+`get_current_week()` as a fallback, and pre-archive dataset builds.
+
+`USE_ARCHIVE = False` in `data/espn_client.py` bypasses the archive entirely.
+
 ## Data layer — espn_client.py
 - All functions check a local pickle cache before hitting ESPN
 - Cache lives at `data/cache/<season>/`. Delete a folder to force a fresh pull
@@ -110,8 +136,12 @@ NFL moved to 17-game seasons starting in 2021, shifting fantasy playoffs by one 
 a notebook. Streamlit gives interactive dropdowns, live charts, and hot-reload editing without
 re-running cells.
 
-**Pickle cache over parquet:** espn-api returns Python objects (League, Team, etc.) that
-can't be serialized to parquet. Pickle preserves the full object graph.
+**Pickle for the League object, CSV for everything else:** espn-api returns Python
+objects (League, Team) that can't be serialized to a table, so `league.pkl` stays pickle.
+But every *derived* dataset is a plain DataFrame, so those live in `data/archive/` as CSV.
+Pickle is a bad archival format — unreadable without Python, and it embeds espn-api class
+definitions, so a library upgrade can make old files unloadable. The archive is the
+durable record precisely because it is boring text.
 
 **espn-api library over raw requests:** Previous attempts at raw ESPN API calls failed due to
 cookie/auth complexity and ESPN returning HTML instead of JSON. The library handles all of that.

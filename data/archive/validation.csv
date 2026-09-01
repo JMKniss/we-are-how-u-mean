@@ -1,0 +1,1160 @@
+season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
+2016,0,0,N/A,not_available,Pre-2018: per-week player scores not available in ESPN API,0.0,0.0,0.0
+2017,0,0,N/A,not_available,Pre-2018: per-week player scores not available in ESPN API,0.0,0.0,0.0
+2018,1,2,UuHhhh myYyy gICEEE,regular_season,Wk 1,108.24,108.24,0.0
+2018,1,10,ALL DAY Johnnys,regular_season,Wk 1,108.58,108.58,0.0
+2018,1,1,Ice In My Veins,regular_season,Wk 1,58.84,58.84,0.0
+2018,1,4,Give me the hotdog baby,regular_season,Wk 1,120.26,120.26,0.0
+2018,1,8,Behind Blue Ice,regular_season,Wk 1,99.84,99.84,0.0
+2018,1,7,smirn office,regular_season,Wk 1,119.86,119.86,0.0
+2018,1,5,the iceman cometh,regular_season,Wk 1,127.12,127.12,0.0
+2018,1,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 1,75.4,75.4,0.0
+2018,1,9,Antonio Cromarties Kids,regular_season,Wk 1,74.74,74.74,0.0
+2018,1,6,Travis Kelce And the Boys,regular_season,Wk 1,100.74,100.74,0.0
+2018,2,4,Give me the hotdog baby,regular_season,Wk 2,69.56,69.56,0.0
+2018,2,7,smirn office,regular_season,Wk 2,99.54,99.54,0.0
+2018,2,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 2,59.34,59.34,0.0
+2018,2,2,UuHhhh myYyy gICEEE,regular_season,Wk 2,135.04,135.04,0.0
+2018,2,6,Travis Kelce And the Boys,regular_season,Wk 2,89.7,89.7,0.0
+2018,2,10,ALL DAY Johnnys,regular_season,Wk 2,83.86,83.86,0.0
+2018,2,5,the iceman cometh,regular_season,Wk 2,114.24,114.24,0.0
+2018,2,1,Ice In My Veins,regular_season,Wk 2,90.0,90.0,0.0
+2018,2,9,Antonio Cromarties Kids,regular_season,Wk 2,94.38,94.38,0.0
+2018,2,8,Behind Blue Ice,regular_season,Wk 2,122.68,122.68,0.0
+2018,3,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 3,100.42,100.42,0.0
+2018,3,6,Travis Kelce And the Boys,regular_season,Wk 3,80.44,80.44,0.0
+2018,3,4,Give me the hotdog baby,regular_season,Wk 3,68.26,68.26,0.0
+2018,3,5,the iceman cometh,regular_season,Wk 3,94.58,94.58,0.0
+2018,3,7,smirn office,regular_season,Wk 3,110.74,110.74,0.0
+2018,3,9,Antonio Cromarties Kids,regular_season,Wk 3,88.18,88.18,0.0
+2018,3,2,UuHhhh myYyy gICEEE,regular_season,Wk 3,76.96,76.96,0.0
+2018,3,1,Ice In My Veins,regular_season,Wk 3,87.0,87.0,0.0
+2018,3,10,ALL DAY Johnnys,regular_season,Wk 3,91.52,91.52,0.0
+2018,3,8,Behind Blue Ice,regular_season,Wk 3,92.0,92.0,0.0
+2018,4,5,the iceman cometh,regular_season,Wk 4,122.7,122.7,0.0
+2018,4,9,Antonio Cromarties Kids,regular_season,Wk 4,131.88,131.88,0.0
+2018,4,1,Ice In My Veins,regular_season,Wk 4,140.1,140.1,0.0
+2018,4,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 4,104.36,104.36,0.0
+2018,4,8,Behind Blue Ice,regular_season,Wk 4,128.56,128.56,0.0
+2018,4,6,Travis Kelce And the Boys,regular_season,Wk 4,114.48,114.48,0.0
+2018,4,2,UuHhhh myYyy gICEEE,regular_season,Wk 4,97.56,97.56,0.0
+2018,4,4,Give me the hotdog baby,regular_season,Wk 4,109.06,109.06,0.0
+2018,4,10,ALL DAY Johnnys,regular_season,Wk 4,90.12,90.12,0.0
+2018,4,7,smirn office,regular_season,Wk 4,88.58,88.58,0.0
+2018,5,1,Ice In My Veins,regular_season,Wk 5,97.8,97.8,0.0
+2018,5,8,Behind Blue Ice,regular_season,Wk 5,74.8,74.8,0.0
+2018,5,5,the iceman cometh,regular_season,Wk 5,99.56,99.56,0.0
+2018,5,2,UuHhhh myYyy gICEEE,regular_season,Wk 5,109.26,109.26,0.0
+2018,5,9,Antonio Cromarties Kids,regular_season,Wk 5,73.42,73.42,0.0
+2018,5,10,ALL DAY Johnnys,regular_season,Wk 5,119.34,119.34,0.0
+2018,5,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 5,114.1,114.1,0.0
+2018,5,4,Give me the hotdog baby,regular_season,Wk 5,97.1,97.1,0.0
+2018,5,6,Travis Kelce And the Boys,regular_season,Wk 5,78.34,78.34,0.0
+2018,5,7,smirn office,regular_season,Wk 5,118.22,118.22,0.0
+2018,6,10,ALL DAY Johnnys,regular_season,Wk 6,99.7,99.7,0.0
+2018,6,4,Give me the hotdog baby,regular_season,Wk 6,98.74,98.74,0.0
+2018,6,7,smirn office,regular_season,Wk 6,106.26,106.26,0.0
+2018,6,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 6,116.46,116.46,0.0
+2018,6,6,Travis Kelce And the Boys,regular_season,Wk 6,104.02,104.02,0.0
+2018,6,5,the iceman cometh,regular_season,Wk 6,113.88,113.88,0.0
+2018,6,9,Antonio Cromarties Kids,regular_season,Wk 6,136.7,136.7,0.0
+2018,6,1,Ice In My Veins,regular_season,Wk 6,85.28,85.28,0.0
+2018,6,8,Behind Blue Ice,regular_season,Wk 6,67.2,67.2,0.0
+2018,6,2,UuHhhh myYyy gICEEE,regular_season,Wk 6,94.88,94.88,0.0
+2018,7,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 7,97.48,97.48,0.0
+2018,7,10,ALL DAY Johnnys,regular_season,Wk 7,114.18,114.18,0.0
+2018,7,5,the iceman cometh,regular_season,Wk 7,109.64,109.64,0.0
+2018,7,7,smirn office,regular_season,Wk 7,78.78,78.78,0.0
+2018,7,1,Ice In My Veins,regular_season,Wk 7,70.72,70.72,0.0
+2018,7,6,Travis Kelce And the Boys,regular_season,Wk 7,99.24,99.24,0.0
+2018,7,2,UuHhhh myYyy gICEEE,regular_season,Wk 7,118.92,118.92,0.0
+2018,7,9,Antonio Cromarties Kids,regular_season,Wk 7,101.0,101.0,0.0
+2018,7,4,Give me the hotdog baby,regular_season,Wk 7,96.66,96.66,0.0
+2018,7,8,Behind Blue Ice,regular_season,Wk 7,113.06,113.06,0.0
+2018,8,10,ALL DAY Johnnys,regular_season,Wk 8,99.76,99.76,0.0
+2018,8,5,the iceman cometh,regular_season,Wk 8,102.12,102.12,0.0
+2018,8,7,smirn office,regular_season,Wk 8,74.1,74.1,0.0
+2018,8,1,Ice In My Veins,regular_season,Wk 8,138.9,138.9,0.0
+2018,8,6,Travis Kelce And the Boys,regular_season,Wk 8,97.06,97.06,0.0
+2018,8,2,UuHhhh myYyy gICEEE,regular_season,Wk 8,90.12,90.12,0.0
+2018,8,9,Antonio Cromarties Kids,regular_season,Wk 8,68.34,68.34,0.0
+2018,8,4,Give me the hotdog baby,regular_season,Wk 8,86.66,86.66,0.0
+2018,8,8,Behind Blue Ice,regular_season,Wk 8,108.94,108.94,0.0
+2018,8,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 8,152.8,152.8,0.0
+2018,9,1,Ice In My Veins,regular_season,Wk 9,121.32,121.32,0.0
+2018,9,10,ALL DAY Johnnys,regular_season,Wk 9,114.46,114.46,0.0
+2018,9,2,UuHhhh myYyy gICEEE,regular_season,Wk 9,115.3,115.3,0.0
+2018,9,5,the iceman cometh,regular_season,Wk 9,74.82,74.82,0.0
+2018,9,7,smirn office,regular_season,Wk 9,80.24,80.24,0.0
+2018,9,8,Behind Blue Ice,regular_season,Wk 9,119.1,119.1,0.0
+2018,9,4,Give me the hotdog baby,regular_season,Wk 9,68.18,68.18,0.0
+2018,9,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 9,123.16,123.16,0.0
+2018,9,6,Travis Kelce And the Boys,regular_season,Wk 9,86.54,86.54,0.0
+2018,9,9,Antonio Cromarties Kids,regular_season,Wk 9,105.52,105.52,0.0
+2018,10,2,UuHhhh myYyy gICEEE,regular_season,Wk 10,110.06,110.06,0.0
+2018,10,7,smirn office,regular_season,Wk 10,93.9,93.9,0.0
+2018,10,4,Give me the hotdog baby,regular_season,Wk 10,98.24,98.24,0.0
+2018,10,1,Ice In My Veins,regular_season,Wk 10,135.0,135.0,0.0
+2018,10,10,ALL DAY Johnnys,regular_season,Wk 10,114.36,114.36,0.0
+2018,10,6,Travis Kelce And the Boys,regular_season,Wk 10,79.66,79.66,0.0
+2018,10,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 10,99.66,99.66,0.0
+2018,10,5,the iceman cometh,regular_season,Wk 10,142.82,142.82,0.0
+2018,10,8,Behind Blue Ice,regular_season,Wk 10,78.4,78.4,0.0
+2018,10,9,Antonio Cromarties Kids,regular_season,Wk 10,119.54,119.54,0.0
+2018,11,4,Give me the hotdog baby,regular_season,Wk 11,139.58,139.58,0.0
+2018,11,6,Travis Kelce And the Boys,regular_season,Wk 11,51.5,51.5,0.0
+2018,11,2,UuHhhh myYyy gICEEE,regular_season,Wk 11,122.02,122.02,0.0
+2018,11,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 11,100.48,100.48,0.0
+2018,11,9,Antonio Cromarties Kids,regular_season,Wk 11,117.82,117.82,0.0
+2018,11,7,smirn office,regular_season,Wk 11,130.02,130.02,0.0
+2018,11,1,Ice In My Veins,regular_season,Wk 11,73.22,73.22,0.0
+2018,11,5,the iceman cometh,regular_season,Wk 11,144.5,144.5,0.0
+2018,11,8,Behind Blue Ice,regular_season,Wk 11,64.04,64.04,0.0
+2018,11,10,ALL DAY Johnnys,regular_season,Wk 11,87.26,87.26,0.0
+2018,12,3,Jet Fuel Can't Evaporate Ice,regular_season,Wk 12,109.82,109.82,0.0
+2018,12,9,Antonio Cromarties Kids,regular_season,Wk 12,115.32,115.32,0.0
+2018,12,5,the iceman cometh,regular_season,Wk 12,72.96,72.96,0.0
+2018,12,4,Give me the hotdog baby,regular_season,Wk 12,103.52,103.52,0.0
+2018,12,6,Travis Kelce And the Boys,regular_season,Wk 12,99.88,99.88,0.0
+2018,12,8,Behind Blue Ice,regular_season,Wk 12,68.68,68.68,0.0
+2018,12,1,Ice In My Veins,regular_season,Wk 12,119.5,119.5,0.0
+2018,12,2,UuHhhh myYyy gICEEE,regular_season,Wk 12,111.44,111.44,0.0
+2018,12,7,smirn office,regular_season,Wk 12,119.26,119.26,0.0
+2018,12,10,ALL DAY Johnnys,regular_season,Wk 12,98.12,98.12,0.0
+2018,14,1,Ice In My Veins,playoff_round1,R1 wk13+14,154.76,154.76,0.0
+2018,14,2,UuHhhh myYyy gICEEE,playoff_round1,R1 wk13+14,176.64,176.64,0.0
+2018,14,3,Jet Fuel Can't Evaporate Ice,playoff_round1,R1 wk13+14,207.36,207.36,0.0
+2018,14,4,Give me the hotdog baby,playoff_round1,R1 wk13+14,188.48,188.48,0.0
+2018,14,5,the iceman cometh,playoff_round1,R1 wk13+14,182.5,182.5,0.0
+2018,14,6,Travis Kelce And the Boys,playoff_round1,R1 wk13+14,139.36,139.36,0.0
+2018,14,7,smirn office,playoff_round1,R1 wk13+14,225.96,225.96,-0.0
+2018,14,8,Behind Blue Ice,playoff_round1,R1 wk13+14,171.72,171.72,0.0
+2018,14,9,Antonio Cromarties Kids,playoff_round1,R1 wk13+14,203.78,203.78,0.0
+2018,14,10,ALL DAY Johnnys,playoff_round1,R1 wk13+14,178.66,178.66,0.0
+2018,16,1,Ice In My Veins,playoff_round2,R2 wk15+16,255.02,255.02,-0.0
+2018,16,2,UuHhhh myYyy gICEEE,playoff_round2,R2 wk15+16,199.04,199.04,0.0
+2018,16,3,Jet Fuel Can't Evaporate Ice,playoff_round2,R2 wk15+16,193.66,193.66,0.0
+2018,16,4,Give me the hotdog baby,playoff_round2,R2 wk15+16,150.96,150.96,0.0
+2018,16,5,the iceman cometh,playoff_round2,R2 wk15+16,215.52,215.52,-0.0
+2018,16,6,Travis Kelce And the Boys,playoff_round2,R2 wk15+16,168.42,168.42,0.0
+2018,16,7,smirn office,playoff_round2,R2 wk15+16,180.46,180.46,0.0
+2018,16,8,Behind Blue Ice,playoff_round2,R2 wk15+16,143.42,143.42,0.0
+2018,16,9,Antonio Cromarties Kids,playoff_round2,R2 wk15+16,172.5,172.5,0.0
+2018,16,10,ALL DAY Johnnys,playoff_round2,R2 wk15+16,183.1,183.1,0.0
+2019,1,2,Claw and Order Spec Seltz Unit,regular_season,Wk 1,91.92,91.92,0.0
+2019,1,10,ALL DAY Johnnys,regular_season,Wk 1,104.32,104.32,0.0
+2019,1,1,Luck of  The Claw,regular_season,Wk 1,98.96,98.96,0.0
+2019,1,4,Give me the hotdog baby,regular_season,Wk 1,84.7,84.7,0.0
+2019,1,8,Morty! I'm White Claw Rick,regular_season,Wk 1,126.44,126.44,0.0
+2019,1,7,Black Claws matter,regular_season,Wk 1,106.88,106.88,0.0
+2019,1,5,No One is Above The Claw,regular_season,Wk 1,83.94,83.94,0.0
+2019,1,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 1,117.56,117.56,0.0
+2019,1,9,Mr. Krab's Klaws,regular_season,Wk 1,123.66,123.66,0.0
+2019,1,6,Monday Night CLAW,regular_season,Wk 1,122.02,122.02,0.0
+2019,2,4,Give me the hotdog baby,regular_season,Wk 2,85.36,85.36,0.0
+2019,2,7,Black Claws matter,regular_season,Wk 2,68.72,68.72,0.0
+2019,2,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 2,91.98,91.98,0.0
+2019,2,2,Claw and Order Spec Seltz Unit,regular_season,Wk 2,74.84,74.84,0.0
+2019,2,6,Monday Night CLAW,regular_season,Wk 2,73.66,73.66,0.0
+2019,2,10,ALL DAY Johnnys,regular_season,Wk 2,132.02,132.02,0.0
+2019,2,5,No One is Above The Claw,regular_season,Wk 2,92.76,92.76,0.0
+2019,2,1,Luck of  The Claw,regular_season,Wk 2,102.6,102.6,0.0
+2019,2,9,Mr. Krab's Klaws,regular_season,Wk 2,98.4,98.4,0.0
+2019,2,8,Morty! I'm White Claw Rick,regular_season,Wk 2,99.8,99.8,0.0
+2019,3,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 3,80.48,80.48,0.0
+2019,3,6,Monday Night CLAW,regular_season,Wk 3,145.24,145.24,0.0
+2019,3,4,Give me the hotdog baby,regular_season,Wk 3,110.54,110.54,0.0
+2019,3,5,No One is Above The Claw,regular_season,Wk 3,95.54,95.54,0.0
+2019,3,7,Black Claws matter,regular_season,Wk 3,82.02,82.02,0.0
+2019,3,9,Mr. Krab's Klaws,regular_season,Wk 3,122.66,122.66,0.0
+2019,3,2,Claw and Order Spec Seltz Unit,regular_season,Wk 3,131.02,131.02,0.0
+2019,3,1,Luck of  The Claw,regular_season,Wk 3,95.6,95.6,0.0
+2019,3,10,ALL DAY Johnnys,regular_season,Wk 3,97.06,97.06,0.0
+2019,3,8,Morty! I'm White Claw Rick,regular_season,Wk 3,118.34,118.34,0.0
+2019,4,5,No One is Above The Claw,regular_season,Wk 4,78.0,78.0,0.0
+2019,4,9,Mr. Krab's Klaws,regular_season,Wk 4,99.3,99.3,0.0
+2019,4,1,Luck of  The Claw,regular_season,Wk 4,99.8,99.8,0.0
+2019,4,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 4,144.18,144.18,0.0
+2019,4,8,Morty! I'm White Claw Rick,regular_season,Wk 4,92.6,92.6,0.0
+2019,4,6,Monday Night CLAW,regular_season,Wk 4,78.3,78.3,0.0
+2019,4,2,Claw and Order Spec Seltz Unit,regular_season,Wk 4,95.6,95.6,0.0
+2019,4,4,Give me the hotdog baby,regular_season,Wk 4,74.22,74.22,0.0
+2019,4,10,ALL DAY Johnnys,regular_season,Wk 4,91.2,91.2,0.0
+2019,4,7,Black Claws matter,regular_season,Wk 4,93.88,93.88,0.0
+2019,5,1,Luck of  The Claw,regular_season,Wk 5,79.26,79.26,0.0
+2019,5,8,Morty! I'm White Claw Rick,regular_season,Wk 5,130.32,130.32,0.0
+2019,5,5,No One is Above The Claw,regular_season,Wk 5,104.32,104.32,0.0
+2019,5,2,Claw and Order Spec Seltz Unit,regular_season,Wk 5,73.48,73.48,0.0
+2019,5,9,Mr. Krab's Klaws,regular_season,Wk 5,130.6,130.6,0.0
+2019,5,10,ALL DAY Johnnys,regular_season,Wk 5,142.04,142.04,0.0
+2019,5,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 5,90.54,90.54,0.0
+2019,5,4,Give me the hotdog baby,regular_season,Wk 5,109.42,109.42,0.0
+2019,5,6,Monday Night CLAW,regular_season,Wk 5,123.94,123.94,0.0
+2019,5,7,Black Claws matter,regular_season,Wk 5,86.64,86.64,0.0
+2019,6,10,ALL DAY Johnnys,regular_season,Wk 6,74.12,74.12,0.0
+2019,6,4,Give me the hotdog baby,regular_season,Wk 6,91.62,91.62,0.0
+2019,6,7,Black Claws matter,regular_season,Wk 6,92.22,92.22,0.0
+2019,6,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 6,105.84,105.84,0.0
+2019,6,6,Monday Night CLAW,regular_season,Wk 6,111.6,111.6,0.0
+2019,6,5,No One is Above The Claw,regular_season,Wk 6,99.16,99.16,0.0
+2019,6,9,Mr. Krab's Klaws,regular_season,Wk 6,98.34,98.34,0.0
+2019,6,1,Luck of  The Claw,regular_season,Wk 6,96.2,96.2,0.0
+2019,6,8,Morty! I'm White Claw Rick,regular_season,Wk 6,94.6,94.6,0.0
+2019,6,2,Claw and Order Spec Seltz Unit,regular_season,Wk 6,90.2,90.2,0.0
+2019,7,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 7,86.02,86.02,0.0
+2019,7,10,ALL DAY Johnnys,regular_season,Wk 7,91.24,91.24,0.0
+2019,7,5,No One is Above The Claw,regular_season,Wk 7,50.36,50.36,0.0
+2019,7,7,Black Claws matter,regular_season,Wk 7,105.72,105.72,0.0
+2019,7,1,Luck of  The Claw,regular_season,Wk 7,116.02,116.02,0.0
+2019,7,6,Monday Night CLAW,regular_season,Wk 7,62.12,62.12,0.0
+2019,7,2,Claw and Order Spec Seltz Unit,regular_season,Wk 7,105.56,105.56,0.0
+2019,7,9,Mr. Krab's Klaws,regular_season,Wk 7,91.16,91.16,0.0
+2019,7,4,Give me the hotdog baby,regular_season,Wk 7,82.86,82.86,0.0
+2019,7,8,Morty! I'm White Claw Rick,regular_season,Wk 7,59.84,59.84,0.0
+2019,8,10,ALL DAY Johnnys,regular_season,Wk 8,90.18,90.18,0.0
+2019,8,5,No One is Above The Claw,regular_season,Wk 8,87.4,87.4,0.0
+2019,8,7,Black Claws matter,regular_season,Wk 8,97.58,97.58,0.0
+2019,8,1,Luck of  The Claw,regular_season,Wk 8,114.5,114.5,0.0
+2019,8,6,Monday Night CLAW,regular_season,Wk 8,96.36,96.36,0.0
+2019,8,2,Claw and Order Spec Seltz Unit,regular_season,Wk 8,124.18,124.18,0.0
+2019,8,9,Mr. Krab's Klaws,regular_season,Wk 8,102.5,102.5,0.0
+2019,8,4,Give me the hotdog baby,regular_season,Wk 8,100.6,100.6,0.0
+2019,8,8,Morty! I'm White Claw Rick,regular_season,Wk 8,113.18,113.18,0.0
+2019,8,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 8,97.6,97.6,0.0
+2019,9,1,Luck of  The Claw,regular_season,Wk 9,64.9,64.9,0.0
+2019,9,10,ALL DAY Johnnys,regular_season,Wk 9,107.9,107.9,0.0
+2019,9,2,Claw and Order Spec Seltz Unit,regular_season,Wk 9,98.9,98.9,0.0
+2019,9,5,No One is Above The Claw,regular_season,Wk 9,72.34,72.34,0.0
+2019,9,7,Black Claws matter,regular_season,Wk 9,119.74,119.74,0.0
+2019,9,8,Morty! I'm White Claw Rick,regular_season,Wk 9,136.82,136.82,0.0
+2019,9,4,Give me the hotdog baby,regular_season,Wk 9,100.48,100.48,0.0
+2019,9,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 9,107.02,107.02,0.0
+2019,9,6,Monday Night CLAW,regular_season,Wk 9,101.44,101.44,0.0
+2019,9,9,Mr. Krab's Klaws,regular_season,Wk 9,119.4,119.4,0.0
+2019,10,2,Claw and Order Spec Seltz Unit,regular_season,Wk 10,86.76,86.76,0.0
+2019,10,7,Black Claws matter,regular_season,Wk 10,82.98,82.98,0.0
+2019,10,4,Give me the hotdog baby,regular_season,Wk 10,121.58,121.58,0.0
+2019,10,1,Luck of  The Claw,regular_season,Wk 10,121.28,121.28,0.0
+2019,10,10,ALL DAY Johnnys,regular_season,Wk 10,95.34,95.34,0.0
+2019,10,6,Monday Night CLAW,regular_season,Wk 10,75.92,75.92,0.0
+2019,10,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 10,142.72,142.72,0.0
+2019,10,5,No One is Above The Claw,regular_season,Wk 10,61.12,61.12,0.0
+2019,10,8,Morty! I'm White Claw Rick,regular_season,Wk 10,97.88,97.88,0.0
+2019,10,9,Mr. Krab's Klaws,regular_season,Wk 10,82.62,82.62,0.0
+2019,11,4,Give me the hotdog baby,regular_season,Wk 11,77.76,77.76,0.0
+2019,11,6,Monday Night CLAW,regular_season,Wk 11,69.66,69.66,0.0
+2019,11,2,Claw and Order Spec Seltz Unit,regular_season,Wk 11,114.98,114.98,0.0
+2019,11,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 11,106.98,106.98,0.0
+2019,11,9,Mr. Krab's Klaws,regular_season,Wk 11,113.04,113.04,0.0
+2019,11,7,Black Claws matter,regular_season,Wk 11,118.44,118.44,0.0
+2019,11,1,Luck of  The Claw,regular_season,Wk 11,90.02,90.02,0.0
+2019,11,5,No One is Above The Claw,regular_season,Wk 11,57.54,57.54,0.0
+2019,11,8,Morty! I'm White Claw Rick,regular_season,Wk 11,57.52,57.52,0.0
+2019,11,10,ALL DAY Johnnys,regular_season,Wk 11,85.98,85.98,0.0
+2019,12,3,Jet Fuel Can't Melt White Claw,regular_season,Wk 12,138.26,138.26,0.0
+2019,12,9,Mr. Krab's Klaws,regular_season,Wk 12,91.44,91.44,0.0
+2019,12,5,No One is Above The Claw,regular_season,Wk 12,65.66,65.66,0.0
+2019,12,4,Give me the hotdog baby,regular_season,Wk 12,105.28,105.28,0.0
+2019,12,6,Monday Night CLAW,regular_season,Wk 12,89.42,89.42,0.0
+2019,12,8,Morty! I'm White Claw Rick,regular_season,Wk 12,90.6,90.6,0.0
+2019,12,1,Luck of  The Claw,regular_season,Wk 12,118.34,118.34,0.0
+2019,12,2,Claw and Order Spec Seltz Unit,regular_season,Wk 12,65.04,65.04,0.0
+2019,12,7,Black Claws matter,regular_season,Wk 12,78.7,78.7,0.0
+2019,12,10,ALL DAY Johnnys,regular_season,Wk 12,86.7,86.7,0.0
+2019,14,1,Luck of  The Claw,playoff_round1,R1 wk13+14,197.88,197.88,0.0
+2019,14,2,Claw and Order Spec Seltz Unit,playoff_round1,R1 wk13+14,196.16,196.16,0.0
+2019,14,3,Jet Fuel Can't Melt White Claw,playoff_round1,R1 wk13+14,183.3,183.3,0.0
+2019,14,4,Give me the hotdog baby,playoff_round1,R1 wk13+14,176.76,176.76,0.0
+2019,14,5,No One is Above The Claw,playoff_round1,R1 wk13+14,145.74,145.74,0.0
+2019,14,6,Monday Night CLAW,playoff_round1,R1 wk13+14,192.64,192.64,0.0
+2019,14,7,Black Claws matter,playoff_round1,R1 wk13+14,162.5,162.5,0.0
+2019,14,8,Morty! I'm White Claw Rick,playoff_round1,R1 wk13+14,197.5,197.5,0.0
+2019,14,9,Mr. Krab's Klaws,playoff_round1,R1 wk13+14,167.14,167.14,0.0
+2019,14,10,ALL DAY Johnnys,playoff_round1,R1 wk13+14,215.62,215.62,0.0
+2019,16,1,Luck of  The Claw,playoff_round2,R2 wk15+16,232.84,232.84,0.0
+2019,16,2,Claw and Order Spec Seltz Unit,playoff_round2,R2 wk15+16,179.92,179.92,0.0
+2019,16,3,Jet Fuel Can't Melt White Claw,playoff_round2,R2 wk15+16,239.1,239.1,0.0
+2019,16,4,Give me the hotdog baby,playoff_round2,R2 wk15+16,181.38,181.38,0.0
+2019,16,5,No One is Above The Claw,playoff_round2,R2 wk15+16,139.96,139.96,0.0
+2019,16,6,Monday Night CLAW,playoff_round2,R2 wk15+16,175.68,175.68,0.0
+2019,16,7,Black Claws matter,playoff_round2,R2 wk15+16,242.34,242.34,0.0
+2019,16,8,Morty! I'm White Claw Rick,playoff_round2,R2 wk15+16,180.9,180.9,0.0
+2019,16,9,Mr. Krab's Klaws,playoff_round2,R2 wk15+16,213.02,213.02,0.0
+2019,16,10,ALL DAY Johnnys,playoff_round2,R2 wk15+16,213.44,213.44,0.0
+2020,1,2,"Red, White, and COVID Positive",regular_season,Wk 1,101.3,101.3,0.0
+2020,1,10,ALL DAY Johnnys,regular_season,Wk 1,72.84,72.84,0.0
+2020,1,1,Beirut Explosiv Runners,regular_season,Wk 1,135.9,135.9,0.0
+2020,1,4,PDX Peaceful Protesters,regular_season,Wk 1,74.06,74.06,0.0
+2020,1,8,Billy Joel's Fire Starters,regular_season,Wk 1,106.88,106.88,0.0
+2020,1,7,Preexisting  Condition,regular_season,Wk 1,75.7,75.7,0.0
+2020,1,5,Drew Bree's Race War,regular_season,Wk 1,106.64,106.64,0.0
+2020,1,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 1,139.7,139.7,0.0
+2020,1,9,Killer Hornets,regular_season,Wk 1,88.82,88.82,0.0
+2020,1,6,Coavoid Johnny,regular_season,Wk 1,108.78,108.78,0.0
+2020,2,4,PDX Peaceful Protesters,regular_season,Wk 2,72.78,72.78,0.0
+2020,2,7,Preexisting  Condition,regular_season,Wk 2,101.24,101.24,0.0
+2020,2,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 2,112.96,112.96,0.0
+2020,2,2,"Red, White, and COVID Positive",regular_season,Wk 2,155.18,155.18,0.0
+2020,2,6,Coavoid Johnny,regular_season,Wk 2,107.32,107.32,0.0
+2020,2,10,ALL DAY Johnnys,regular_season,Wk 2,68.98,68.98,0.0
+2020,2,5,Drew Bree's Race War,regular_season,Wk 2,131.7,131.7,0.0
+2020,2,1,Beirut Explosiv Runners,regular_season,Wk 2,108.44,108.44,0.0
+2020,2,9,Killer Hornets,regular_season,Wk 2,135.0,135.0,0.0
+2020,2,8,Billy Joel's Fire Starters,regular_season,Wk 2,108.4,108.4,0.0
+2020,3,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 3,69.98,69.98,0.0
+2020,3,6,Coavoid Johnny,regular_season,Wk 3,116.8,116.8,0.0
+2020,3,4,PDX Peaceful Protesters,regular_season,Wk 3,99.28,99.28,0.0
+2020,3,5,Drew Bree's Race War,regular_season,Wk 3,122.48,122.48,0.0
+2020,3,7,Preexisting  Condition,regular_season,Wk 3,83.1,83.1,0.0
+2020,3,9,Killer Hornets,regular_season,Wk 3,111.36,111.36,0.0
+2020,3,2,"Red, White, and COVID Positive",regular_season,Wk 3,139.08,139.08,0.0
+2020,3,1,Beirut Explosiv Runners,regular_season,Wk 3,101.3,101.3,0.0
+2020,3,10,ALL DAY Johnnys,regular_season,Wk 3,107.1,107.1,0.0
+2020,3,8,Billy Joel's Fire Starters,regular_season,Wk 3,94.14,94.14,0.0
+2020,4,5,Drew Bree's Race War,regular_season,Wk 4,142.08,142.08,0.0
+2020,4,9,Killer Hornets,regular_season,Wk 4,85.3,85.3,0.0
+2020,4,1,Beirut Explosiv Runners,regular_season,Wk 4,96.82,96.82,0.0
+2020,4,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 4,126.32,126.32,0.0
+2020,4,8,Billy Joel's Fire Starters,regular_season,Wk 4,130.72,130.72,0.0
+2020,4,6,Coavoid Johnny,regular_season,Wk 4,107.2,107.2,0.0
+2020,4,2,"Red, White, and COVID Positive",regular_season,Wk 4,81.78,81.78,0.0
+2020,4,4,PDX Peaceful Protesters,regular_season,Wk 4,112.26,112.26,0.0
+2020,4,10,ALL DAY Johnnys,regular_season,Wk 4,51.14,51.14,0.0
+2020,4,7,Preexisting  Condition,regular_season,Wk 4,104.8,104.8,0.0
+2020,5,1,Beirut Explosiv Runners,regular_season,Wk 5,121.8,121.8,0.0
+2020,5,8,Billy Joel's Fire Starters,regular_season,Wk 5,123.62,123.62,0.0
+2020,5,5,Drew Bree's Race War,regular_season,Wk 5,54.54,54.54,0.0
+2020,5,2,"Red, White, and COVID Positive",regular_season,Wk 5,78.08,78.08,0.0
+2020,5,9,Killer Hornets,regular_season,Wk 5,112.06,112.06,0.0
+2020,5,10,ALL DAY Johnnys,regular_season,Wk 5,98.22,98.22,0.0
+2020,5,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 5,95.5,95.5,0.0
+2020,5,4,PDX Peaceful Protesters,regular_season,Wk 5,103.22,103.22,0.0
+2020,5,6,Coavoid Johnny,regular_season,Wk 5,121.28,121.28,0.0
+2020,5,7,Preexisting  Condition,regular_season,Wk 5,77.12,77.12,0.0
+2020,6,10,ALL DAY Johnnys,regular_season,Wk 6,106.6,106.6,0.0
+2020,6,4,PDX Peaceful Protesters,regular_season,Wk 6,91.44,91.44,0.0
+2020,6,7,Preexisting  Condition,regular_season,Wk 6,66.78,66.78,0.0
+2020,6,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 6,105.44,105.44,0.0
+2020,6,6,Coavoid Johnny,regular_season,Wk 6,98.92,98.92,0.0
+2020,6,5,Drew Bree's Race War,regular_season,Wk 6,62.74,62.74,0.0
+2020,6,9,Killer Hornets,regular_season,Wk 6,129.4,129.4,0.0
+2020,6,1,Beirut Explosiv Runners,regular_season,Wk 6,91.42,91.42,0.0
+2020,6,8,Billy Joel's Fire Starters,regular_season,Wk 6,102.88,102.88,0.0
+2020,6,2,"Red, White, and COVID Positive",regular_season,Wk 6,55.1,55.1,0.0
+2020,7,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 7,81.4,81.4,0.0
+2020,7,10,ALL DAY Johnnys,regular_season,Wk 7,60.5,60.5,0.0
+2020,7,5,Drew Bree's Race War,regular_season,Wk 7,95.66,95.66,0.0
+2020,7,7,Preexisting  Condition,regular_season,Wk 7,111.32,111.32,0.0
+2020,7,1,Beirut Explosiv Runners,regular_season,Wk 7,141.0,141.0,0.0
+2020,7,6,Coavoid Johnny,regular_season,Wk 7,101.72,101.72,0.0
+2020,7,2,"Red, White, and COVID Positive",regular_season,Wk 7,149.82,149.82,0.0
+2020,7,9,Killer Hornets,regular_season,Wk 7,107.96,107.96,0.0
+2020,7,4,PDX Peaceful Protesters,regular_season,Wk 7,75.66,75.66,0.0
+2020,7,8,Billy Joel's Fire Starters,regular_season,Wk 7,62.18,62.18,0.0
+2020,8,10,ALL DAY Johnnys,regular_season,Wk 8,79.44,79.44,0.0
+2020,8,5,Drew Bree's Race War,regular_season,Wk 8,102.02,102.02,0.0
+2020,8,7,Preexisting  Condition,regular_season,Wk 8,78.22,78.22,0.0
+2020,8,1,Beirut Explosiv Runners,regular_season,Wk 8,98.32,98.32,0.0
+2020,8,6,Coavoid Johnny,regular_season,Wk 8,99.24,99.24,0.0
+2020,8,2,"Red, White, and COVID Positive",regular_season,Wk 8,96.54,96.54,0.0
+2020,8,9,Killer Hornets,regular_season,Wk 8,60.74,60.74,0.0
+2020,8,4,PDX Peaceful Protesters,regular_season,Wk 8,63.36,63.36,0.0
+2020,8,8,Billy Joel's Fire Starters,regular_season,Wk 8,73.06,73.06,0.0
+2020,8,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 8,112.42,112.42,0.0
+2020,9,1,Beirut Explosiv Runners,regular_season,Wk 9,90.02,90.02,0.0
+2020,9,10,ALL DAY Johnnys,regular_season,Wk 9,86.4,86.4,0.0
+2020,9,2,"Red, White, and COVID Positive",regular_season,Wk 9,106.98,106.98,0.0
+2020,9,5,Drew Bree's Race War,regular_season,Wk 9,124.06,124.06,0.0
+2020,9,7,Preexisting  Condition,regular_season,Wk 9,80.3,80.3,0.0
+2020,9,8,Billy Joel's Fire Starters,regular_season,Wk 9,92.5,92.5,0.0
+2020,9,4,PDX Peaceful Protesters,regular_season,Wk 9,59.86,59.86,0.0
+2020,9,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 9,97.7,97.7,0.0
+2020,9,6,Coavoid Johnny,regular_season,Wk 9,73.3,73.3,0.0
+2020,9,9,Killer Hornets,regular_season,Wk 9,106.54,106.54,0.0
+2020,10,2,"Red, White, and COVID Positive",regular_season,Wk 10,95.66,95.66,0.0
+2020,10,7,Preexisting  Condition,regular_season,Wk 10,83.28,83.28,0.0
+2020,10,4,PDX Peaceful Protesters,regular_season,Wk 10,96.14,96.14,0.0
+2020,10,1,Beirut Explosiv Runners,regular_season,Wk 10,111.2,111.2,0.0
+2020,10,10,ALL DAY Johnnys,regular_season,Wk 10,89.1,89.1,0.0
+2020,10,6,Coavoid Johnny,regular_season,Wk 10,80.02,80.02,0.0
+2020,10,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 10,109.86,109.86,0.0
+2020,10,5,Drew Bree's Race War,regular_season,Wk 10,81.82,81.82,0.0
+2020,10,8,Billy Joel's Fire Starters,regular_season,Wk 10,67.76,67.76,0.0
+2020,10,9,Killer Hornets,regular_season,Wk 10,75.92,75.92,0.0
+2020,11,4,PDX Peaceful Protesters,regular_season,Wk 11,96.44,96.44,0.0
+2020,11,6,Coavoid Johnny,regular_season,Wk 11,88.38,88.38,0.0
+2020,11,2,"Red, White, and COVID Positive",regular_season,Wk 11,98.08,98.08,0.0
+2020,11,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 11,129.24,129.24,0.0
+2020,11,9,Killer Hornets,regular_season,Wk 11,109.26,109.26,0.0
+2020,11,7,Preexisting  Condition,regular_season,Wk 11,92.66,92.66,0.0
+2020,11,1,Beirut Explosiv Runners,regular_season,Wk 11,99.56,99.56,0.0
+2020,11,5,Drew Bree's Race War,regular_season,Wk 11,74.6,74.6,0.0
+2020,11,8,Billy Joel's Fire Starters,regular_season,Wk 11,104.22,104.22,0.0
+2020,11,10,ALL DAY Johnnys,regular_season,Wk 11,116.5,116.5,0.0
+2020,12,3,Jet Fuel Can't Melt Ole Rona,regular_season,Wk 12,108.18,108.18,0.0
+2020,12,9,Killer Hornets,regular_season,Wk 12,98.72,98.72,0.0
+2020,12,5,Drew Bree's Race War,regular_season,Wk 12,93.36,93.36,0.0
+2020,12,4,PDX Peaceful Protesters,regular_season,Wk 12,102.7,102.7,0.0
+2020,12,6,Coavoid Johnny,regular_season,Wk 12,105.7,105.7,0.0
+2020,12,8,Billy Joel's Fire Starters,regular_season,Wk 12,86.48,86.48,0.0
+2020,12,1,Beirut Explosiv Runners,regular_season,Wk 12,63.94,63.94,0.0
+2020,12,2,"Red, White, and COVID Positive",regular_season,Wk 12,172.18,172.18,0.0
+2020,12,7,Preexisting  Condition,regular_season,Wk 12,99.2,99.2,0.0
+2020,12,10,ALL DAY Johnnys,regular_season,Wk 12,100.62,100.62,0.0
+2020,14,1,Beirut Explosiv Runners,playoff_round1,R1 wk13+14,181.64,181.64,0.0
+2020,14,2,"Red, White, and COVID Positive",playoff_round1,R1 wk13+14,257.14,257.14,0.0
+2020,14,3,Jet Fuel Can't Melt Ole Rona,playoff_round1,R1 wk13+14,219.98,219.98,0.0
+2020,14,4,PDX Peaceful Protesters,playoff_round1,R1 wk13+14,156.24,156.24,0.0
+2020,14,5,Drew Bree's Race War,playoff_round1,R1 wk13+14,214.0,214.0,0.0
+2020,14,6,Coavoid Johnny,playoff_round1,R1 wk13+14,174.46,174.46,0.0
+2020,14,7,Preexisting  Condition,playoff_round1,R1 wk13+14,192.6,192.6,0.0
+2020,14,8,Billy Joel's Fire Starters,playoff_round1,R1 wk13+14,141.12,141.12,0.0
+2020,14,9,Killer Hornets,playoff_round1,R1 wk13+14,240.1,240.1,0.0
+2020,14,10,ALL DAY Johnnys,playoff_round1,R1 wk13+14,157.7,157.7,0.0
+2020,16,1,Beirut Explosiv Runners,playoff_round2,R2 wk15+16,189.92,189.92,0.0
+2020,16,2,"Red, White, and COVID Positive",playoff_round2,R2 wk15+16,215.88,215.88,0.0
+2020,16,3,Jet Fuel Can't Melt Ole Rona,playoff_round2,R2 wk15+16,226.34,226.34,0.0
+2020,16,4,PDX Peaceful Protesters,playoff_round2,R2 wk15+16,261.92,261.92,0.0
+2020,16,5,Drew Bree's Race War,playoff_round2,R2 wk15+16,152.32,152.32,0.0
+2020,16,6,Coavoid Johnny,playoff_round2,R2 wk15+16,191.24,191.24,0.0
+2020,16,7,Preexisting  Condition,playoff_round2,R2 wk15+16,226.2,226.2,0.0
+2020,16,8,Billy Joel's Fire Starters,playoff_round2,R2 wk15+16,244.86,244.86,0.0
+2020,16,9,Killer Hornets,playoff_round2,R2 wk15+16,187.98,187.98,0.0
+2020,16,10,ALL DAY Johnnys,playoff_round2,R2 wk15+16,156.16,156.16,0.0
+2021,1,5,Raft Punk With a Chicken,regular_season,Wk 1,89.38,89.38,0.0
+2021,1,3,Ball away  Joe,regular_season,Wk 1,104.96,104.96,0.0
+2021,1,6,CMC Shanties,regular_season,Wk 1,68.72,68.72,0.0
+2021,1,10,Fishing for The Ship Year,regular_season,Wk 1,114.98,114.98,0.0
+2021,1,4,Leave Her Johnny,regular_season,Wk 1,116.76,116.76,0.0
+2021,1,1,Ye Johnny on a Winner's Boat,regular_season,Wk 1,79.6,79.6,0.0
+2021,1,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 1,93.92,93.92,0.0
+2021,1,9,DJ's Locker Flying Dutchmen,regular_season,Wk 1,73.44,73.44,0.0
+2021,1,7,Tuesday Night  Wellerman Calls,regular_season,Wk 1,149.16,149.16,0.0
+2021,1,8,Last of Kylers Privateers,regular_season,Wk 1,118.26,118.26,0.0
+2021,2,3,Ball away  Joe,regular_season,Wk 2,104.64,104.64,0.0
+2021,2,10,Fishing for The Ship Year,regular_season,Wk 2,96.82,96.82,0.0
+2021,2,1,Ye Johnny on a Winner's Boat,regular_season,Wk 2,95.16,95.16,0.0
+2021,2,5,Raft Punk With a Chicken,regular_season,Wk 2,77.12,77.12,0.0
+2021,2,9,DJ's Locker Flying Dutchmen,regular_season,Wk 2,118.66,118.66,0.0
+2021,2,6,CMC Shanties,regular_season,Wk 2,111.7,111.7,0.0
+2021,2,8,Last of Kylers Privateers,regular_season,Wk 2,122.0,122.0,0.0
+2021,2,4,Leave Her Johnny,regular_season,Wk 2,99.72,99.72,0.0
+2021,2,7,Tuesday Night  Wellerman Calls,regular_season,Wk 2,100.5,100.5,0.0
+2021,2,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 2,108.68,108.68,0.0
+2021,3,1,Ye Johnny on a Winner's Boat,regular_season,Wk 3,107.88,107.88,0.0
+2021,3,3,Ball away  Joe,regular_season,Wk 3,150.78,150.78,0.0
+2021,3,10,Fishing for The Ship Year,regular_season,Wk 3,85.9,85.9,0.0
+2021,3,9,DJ's Locker Flying Dutchmen,regular_season,Wk 3,121.82,121.82,0.0
+2021,3,5,Raft Punk With a Chicken,regular_season,Wk 3,82.24,82.24,0.0
+2021,3,8,Last of Kylers Privateers,regular_season,Wk 3,81.24,81.24,0.0
+2021,3,6,CMC Shanties,regular_season,Wk 3,66.44,66.44,0.0
+2021,3,7,Tuesday Night  Wellerman Calls,regular_season,Wk 3,105.64,105.64,0.0
+2021,3,4,Leave Her Johnny,regular_season,Wk 3,46.72,46.72,0.0
+2021,3,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 3,104.62,104.62,0.0
+2021,4,3,Ball away  Joe,regular_season,Wk 4,73.36,73.36,0.0
+2021,4,9,DJ's Locker Flying Dutchmen,regular_season,Wk 4,114.12,114.12,0.0
+2021,4,8,Last of Kylers Privateers,regular_season,Wk 4,72.52,72.52,0.0
+2021,4,1,Ye Johnny on a Winner's Boat,regular_season,Wk 4,119.94,119.94,0.0
+2021,4,7,Tuesday Night  Wellerman Calls,regular_season,Wk 4,110.08,110.08,0.0
+2021,4,10,Fishing for The Ship Year,regular_season,Wk 4,139.32,139.32,0.0
+2021,4,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 4,77.22,77.22,0.0
+2021,4,5,Raft Punk With a Chicken,regular_season,Wk 4,104.98,104.98,0.0
+2021,4,4,Leave Her Johnny,regular_season,Wk 4,60.76,60.76,0.0
+2021,4,6,CMC Shanties,regular_season,Wk 4,92.32,92.32,0.0
+2021,5,8,Last of Kylers Privateers,regular_season,Wk 5,100.16,100.16,0.0
+2021,5,3,Ball away  Joe,regular_season,Wk 5,147.44,147.44,0.0
+2021,5,9,DJ's Locker Flying Dutchmen,regular_season,Wk 5,161.6,161.6,0.0
+2021,5,7,Tuesday Night  Wellerman Calls,regular_season,Wk 5,117.22,117.22,0.0
+2021,5,1,Ye Johnny on a Winner's Boat,regular_season,Wk 5,136.98,136.98,0.0
+2021,5,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 5,129.18,129.18,0.0
+2021,5,10,Fishing for The Ship Year,regular_season,Wk 5,83.18,83.18,0.0
+2021,5,4,Leave Her Johnny,regular_season,Wk 5,85.18,85.18,0.0
+2021,5,5,Raft Punk With a Chicken,regular_season,Wk 5,146.72,146.72,0.0
+2021,5,6,CMC Shanties,regular_season,Wk 5,82.16,82.16,0.0
+2021,6,3,Ball away  Joe,regular_season,Wk 6,99.28,99.28,0.0
+2021,6,7,Tuesday Night  Wellerman Calls,regular_season,Wk 6,105.8,105.8,0.0
+2021,6,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 6,135.1,135.1,0.0
+2021,6,8,Last of Kylers Privateers,regular_season,Wk 6,117.66,117.66,0.0
+2021,6,4,Leave Her Johnny,regular_season,Wk 6,113.92,113.92,0.0
+2021,6,9,DJ's Locker Flying Dutchmen,regular_season,Wk 6,116.02,116.02,0.0
+2021,6,6,CMC Shanties,regular_season,Wk 6,60.68,60.68,0.0
+2021,6,1,Ye Johnny on a Winner's Boat,regular_season,Wk 6,87.58,87.58,0.0
+2021,6,5,Raft Punk With a Chicken,regular_season,Wk 6,87.5,87.5,0.0
+2021,6,10,Fishing for The Ship Year,regular_season,Wk 6,82.88,82.88,0.0
+2021,7,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 7,68.98,68.98,0.0
+2021,7,3,Ball away  Joe,regular_season,Wk 7,118.34,118.34,0.0
+2021,7,7,Tuesday Night  Wellerman Calls,regular_season,Wk 7,95.94,95.94,0.0
+2021,7,4,Leave Her Johnny,regular_season,Wk 7,99.4,99.4,0.0
+2021,7,8,Last of Kylers Privateers,regular_season,Wk 7,111.34,111.34,0.0
+2021,7,6,CMC Shanties,regular_season,Wk 7,95.06,95.06,0.0
+2021,7,9,DJ's Locker Flying Dutchmen,regular_season,Wk 7,123.82,123.82,0.0
+2021,7,5,Raft Punk With a Chicken,regular_season,Wk 7,103.94,103.94,0.0
+2021,7,1,Ye Johnny on a Winner's Boat,regular_season,Wk 7,103.88,103.88,0.0
+2021,7,10,Fishing for The Ship Year,regular_season,Wk 7,60.44,60.44,0.0
+2021,8,3,Ball away  Joe,regular_season,Wk 8,113.7,113.7,0.0
+2021,8,4,Leave Her Johnny,regular_season,Wk 8,103.9,103.9,0.0
+2021,8,6,CMC Shanties,regular_season,Wk 8,61.66,61.66,0.0
+2021,8,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 8,79.62,79.62,0.0
+2021,8,5,Raft Punk With a Chicken,regular_season,Wk 8,87.92,87.92,0.0
+2021,8,7,Tuesday Night  Wellerman Calls,regular_season,Wk 8,88.22,88.22,0.0
+2021,8,10,Fishing for The Ship Year,regular_season,Wk 8,87.0,87.0,0.0
+2021,8,8,Last of Kylers Privateers,regular_season,Wk 8,91.66,91.66,0.0
+2021,8,1,Ye Johnny on a Winner's Boat,regular_season,Wk 8,99.28,99.28,0.0
+2021,8,9,DJ's Locker Flying Dutchmen,regular_season,Wk 8,100.26,100.26,0.0
+2021,9,6,CMC Shanties,regular_season,Wk 9,54.9,54.9,0.0
+2021,9,3,Ball away  Joe,regular_season,Wk 9,92.58,92.58,0.0
+2021,9,4,Leave Her Johnny,regular_season,Wk 9,64.52,64.52,0.0
+2021,9,5,Raft Punk With a Chicken,regular_season,Wk 9,99.04,99.04,0.0
+2021,9,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 9,67.58,67.58,0.0
+2021,9,10,Fishing for The Ship Year,regular_season,Wk 9,95.44,95.44,0.0
+2021,9,7,Tuesday Night  Wellerman Calls,regular_season,Wk 9,94.18,94.18,0.0
+2021,9,1,Ye Johnny on a Winner's Boat,regular_season,Wk 9,94.74,94.74,0.0
+2021,9,8,Last of Kylers Privateers,regular_season,Wk 9,87.86,87.86,0.0
+2021,9,9,DJ's Locker Flying Dutchmen,regular_season,Wk 9,63.86,63.86,0.0
+2021,10,3,Ball away  Joe,regular_season,Wk 10,92.0,92.0,0.0
+2021,10,5,Raft Punk With a Chicken,regular_season,Wk 10,79.6,79.6,0.0
+2021,10,10,Fishing for The Ship Year,regular_season,Wk 10,111.94,111.94,0.0
+2021,10,6,CMC Shanties,regular_season,Wk 10,77.58,77.58,0.0
+2021,10,1,Ye Johnny on a Winner's Boat,regular_season,Wk 10,74.38,74.38,0.0
+2021,10,4,Leave Her Johnny,regular_season,Wk 10,73.44,73.44,0.0
+2021,10,9,DJ's Locker Flying Dutchmen,regular_season,Wk 10,76.54,76.54,0.0
+2021,10,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 10,102.64,102.64,0.0
+2021,10,8,Last of Kylers Privateers,regular_season,Wk 10,85.22,85.22,0.0
+2021,10,7,Tuesday Night  Wellerman Calls,regular_season,Wk 10,78.62,78.62,0.0
+2021,11,10,Fishing for The Ship Year,regular_season,Wk 11,109.2,109.2,0.0
+2021,11,3,Ball away  Joe,regular_season,Wk 11,140.78,140.78,0.0
+2021,11,5,Raft Punk With a Chicken,regular_season,Wk 11,94.78,94.78,0.0
+2021,11,1,Ye Johnny on a Winner's Boat,regular_season,Wk 11,87.66,87.66,0.0
+2021,11,6,CMC Shanties,regular_season,Wk 11,124.3,124.3,0.0
+2021,11,9,DJ's Locker Flying Dutchmen,regular_season,Wk 11,64.06,64.06,0.0
+2021,11,4,Leave Her Johnny,regular_season,Wk 11,76.02,76.02,0.0
+2021,11,8,Last of Kylers Privateers,regular_season,Wk 11,93.08,93.08,0.0
+2021,11,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 11,107.14,107.14,0.0
+2021,11,7,Tuesday Night  Wellerman Calls,regular_season,Wk 11,113.08,113.08,0.0
+2021,12,3,Ball away  Joe,regular_season,Wk 12,104.14,104.14,0.0
+2021,12,1,Ye Johnny on a Winner's Boat,regular_season,Wk 12,89.5,89.5,0.0
+2021,12,9,DJ's Locker Flying Dutchmen,regular_season,Wk 12,98.2,98.2,0.0
+2021,12,10,Fishing for The Ship Year,regular_season,Wk 12,93.02,93.02,0.0
+2021,12,8,Last of Kylers Privateers,regular_season,Wk 12,100.78,100.78,0.0
+2021,12,5,Raft Punk With a Chicken,regular_season,Wk 12,117.82,117.82,0.0
+2021,12,7,Tuesday Night  Wellerman Calls,regular_season,Wk 12,90.46,90.46,0.0
+2021,12,6,CMC Shanties,regular_season,Wk 12,97.68,97.68,0.0
+2021,12,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 12,109.06,109.06,0.0
+2021,12,4,Leave Her Johnny,regular_season,Wk 12,74.98,74.98,0.0
+2021,13,9,DJ's Locker Flying Dutchmen,regular_season,Wk 13,95.0,95.0,0.0
+2021,13,3,Ball away  Joe,regular_season,Wk 13,153.02,153.02,0.0
+2021,13,1,Ye Johnny on a Winner's Boat,regular_season,Wk 13,76.52,76.52,0.0
+2021,13,8,Last of Kylers Privateers,regular_season,Wk 13,90.8,90.8,0.0
+2021,13,10,Fishing for The Ship Year,regular_season,Wk 13,108.36,108.36,0.0
+2021,13,7,Tuesday Night  Wellerman Calls,regular_season,Wk 13,108.96,108.96,0.0
+2021,13,5,Raft Punk With a Chicken,regular_season,Wk 13,68.98,68.98,0.0
+2021,13,2,WhatWillWeDoWit ATinChicken!,regular_season,Wk 13,110.12,110.12,0.0
+2021,13,6,CMC Shanties,regular_season,Wk 13,74.8,74.8,0.0
+2021,13,4,Leave Her Johnny,regular_season,Wk 13,101.14,101.14,0.0
+2021,15,1,Ye Johnny on a Winner's Boat,playoff_round1,R1 wk14+15,142.78,142.78,0.0
+2021,15,2,WhatWillWeDoWit ATinChicken!,playoff_round1,R1 wk14+15,239.02,239.02,0.0
+2021,15,3,Ball away  Joe,playoff_round1,R1 wk14+15,240.48,240.48,0.0
+2021,15,4,Leave Her Johnny,playoff_round1,R1 wk14+15,156.64,156.64,0.0
+2021,15,5,Raft Punk With a Chicken,playoff_round1,R1 wk14+15,165.54,165.54,0.0
+2021,15,6,CMC Shanties,playoff_round1,R1 wk14+15,185.06,185.06,0.0
+2021,15,7,Tuesday Night  Wellerman Calls,playoff_round1,R1 wk14+15,212.66,212.66,0.0
+2021,15,8,Last of Kylers Privateers,playoff_round1,R1 wk14+15,159.38,159.38,0.0
+2021,15,9,DJ's Locker Flying Dutchmen,playoff_round1,R1 wk14+15,218.02,218.02,0.0
+2021,15,10,Fishing for The Ship Year,playoff_round1,R1 wk14+15,177.22,177.22,0.0
+2021,17,1,Ye Johnny on a Winner's Boat,playoff_round2,R2 wk16+17,128.68,128.68,0.0
+2021,17,2,WhatWillWeDoWit ATinChicken!,playoff_round2,R2 wk16+17,211.54,211.54,0.0
+2021,17,3,Ball away  Joe,playoff_round2,R2 wk16+17,212.48,212.48,0.0
+2021,17,4,Leave Her Johnny,playoff_round2,R2 wk16+17,223.48,223.48,0.0
+2021,17,5,Raft Punk With a Chicken,playoff_round2,R2 wk16+17,185.62,185.62,0.0
+2021,17,6,CMC Shanties,playoff_round2,R2 wk16+17,211.0,211.0,0.0
+2021,17,7,Tuesday Night  Wellerman Calls,playoff_round2,R2 wk16+17,250.32,250.32,0.0
+2021,17,8,Last of Kylers Privateers,playoff_round2,R2 wk16+17,146.74,146.74,0.0
+2021,17,9,DJ's Locker Flying Dutchmen,playoff_round2,R2 wk16+17,236.06,236.06,0.0
+2021,17,10,Fishing for The Ship Year,playoff_round2,R2 wk16+17,152.28,152.28,0.0
+2022,1,5,King Swole,regular_season,Wk 1,75.36,75.36,0.0
+2022,1,3,Body builing  Podium finisher,regular_season,Wk 1,77.18,77.18,0.0
+2022,1,6,Certified Swole Boys,regular_season,Wk 1,79.5,79.5,0.0
+2022,1,10,Hundred Dollar Clown Baby,regular_season,Wk 1,123.28,123.28,0.0
+2022,1,4,Cee Deez Traps MaHomie,regular_season,Wk 1,113.4,113.4,0.0
+2022,1,1,Spray Tanned Six Packers,regular_season,Wk 1,78.22,78.22,0.0
+2022,1,2,Liftin Olave Da Weights,regular_season,Wk 1,79.6,79.6,0.0
+2022,1,9,Gainesville Muscle Hampstrs,regular_season,Wk 1,138.92,138.92,0.0
+2022,1,7,Goosed Up Lil Buff Boys,regular_season,Wk 1,131.02,131.02,0.0
+2022,1,8,The Skeletrex Bone Flexers,regular_season,Wk 1,92.56,92.56,0.0
+2022,2,3,Body builing  Podium finisher,regular_season,Wk 2,76.9,76.9,0.0
+2022,2,10,Hundred Dollar Clown Baby,regular_season,Wk 2,89.28,89.28,0.0
+2022,2,1,Spray Tanned Six Packers,regular_season,Wk 2,91.88,91.88,0.0
+2022,2,5,King Swole,regular_season,Wk 2,104.08,104.08,0.0
+2022,2,9,Gainesville Muscle Hampstrs,regular_season,Wk 2,123.52,123.52,0.0
+2022,2,6,Certified Swole Boys,regular_season,Wk 2,81.36,81.36,0.0
+2022,2,8,The Skeletrex Bone Flexers,regular_season,Wk 2,139.46,139.46,0.0
+2022,2,4,Cee Deez Traps MaHomie,regular_season,Wk 2,88.7,88.7,0.0
+2022,2,7,Goosed Up Lil Buff Boys,regular_season,Wk 2,106.32,106.32,0.0
+2022,2,2,Liftin Olave Da Weights,regular_season,Wk 2,76.36,76.36,0.0
+2022,3,1,Spray Tanned Six Packers,regular_season,Wk 3,80.56,80.56,0.0
+2022,3,3,Body builing  Podium finisher,regular_season,Wk 3,65.94,65.94,0.0
+2022,3,10,Hundred Dollar Clown Baby,regular_season,Wk 3,102.8,102.8,0.0
+2022,3,9,Gainesville Muscle Hampstrs,regular_season,Wk 3,108.92,108.92,0.0
+2022,3,5,King Swole,regular_season,Wk 3,77.14,77.14,0.0
+2022,3,8,The Skeletrex Bone Flexers,regular_season,Wk 3,70.48,70.48,0.0
+2022,3,6,Certified Swole Boys,regular_season,Wk 3,74.7,74.7,0.0
+2022,3,7,Goosed Up Lil Buff Boys,regular_season,Wk 3,110.6,110.6,0.0
+2022,3,4,Cee Deez Traps MaHomie,regular_season,Wk 3,90.78,90.78,0.0
+2022,3,2,Liftin Olave Da Weights,regular_season,Wk 3,110.7,110.7,0.0
+2022,4,3,Body builing  Podium finisher,regular_season,Wk 4,94.7,94.7,0.0
+2022,4,9,Gainesville Muscle Hampstrs,regular_season,Wk 4,102.16,102.16,0.0
+2022,4,8,The Skeletrex Bone Flexers,regular_season,Wk 4,91.0,91.0,0.0
+2022,4,1,Spray Tanned Six Packers,regular_season,Wk 4,92.68,92.68,0.0
+2022,4,7,Goosed Up Lil Buff Boys,regular_season,Wk 4,101.56,101.56,0.0
+2022,4,10,Hundred Dollar Clown Baby,regular_season,Wk 4,118.32,118.32,0.0
+2022,4,2,Liftin Olave Da Weights,regular_season,Wk 4,111.58,111.58,0.0
+2022,4,5,King Swole,regular_season,Wk 4,99.8,99.8,0.0
+2022,4,4,Cee Deez Traps MaHomie,regular_season,Wk 4,114.56,114.56,0.0
+2022,4,6,Certified Swole Boys,regular_season,Wk 4,82.34,82.34,0.0
+2022,5,8,The Skeletrex Bone Flexers,regular_season,Wk 5,90.12,90.12,0.0
+2022,5,3,Body builing  Podium finisher,regular_season,Wk 5,119.94,119.94,0.0
+2022,5,9,Gainesville Muscle Hampstrs,regular_season,Wk 5,68.86,68.86,0.0
+2022,5,7,Goosed Up Lil Buff Boys,regular_season,Wk 5,113.48,113.48,0.0
+2022,5,1,Spray Tanned Six Packers,regular_season,Wk 5,88.1,88.1,0.0
+2022,5,2,Liftin Olave Da Weights,regular_season,Wk 5,96.54,96.54,0.0
+2022,5,10,Hundred Dollar Clown Baby,regular_season,Wk 5,162.86,162.86,0.0
+2022,5,4,Cee Deez Traps MaHomie,regular_season,Wk 5,124.28,124.28,0.0
+2022,5,5,King Swole,regular_season,Wk 5,135.1,135.1,0.0
+2022,5,6,Certified Swole Boys,regular_season,Wk 5,64.16,64.16,0.0
+2022,6,3,Body builing  Podium finisher,regular_season,Wk 6,89.42,89.42,0.0
+2022,6,7,Goosed Up Lil Buff Boys,regular_season,Wk 6,83.8,83.8,0.0
+2022,6,2,Liftin Olave Da Weights,regular_season,Wk 6,113.9,113.9,0.0
+2022,6,8,The Skeletrex Bone Flexers,regular_season,Wk 6,97.92,97.92,0.0
+2022,6,4,Cee Deez Traps MaHomie,regular_season,Wk 6,92.92,92.92,0.0
+2022,6,9,Gainesville Muscle Hampstrs,regular_season,Wk 6,93.5,93.5,0.0
+2022,6,6,Certified Swole Boys,regular_season,Wk 6,51.84,51.84,0.0
+2022,6,1,Spray Tanned Six Packers,regular_season,Wk 6,71.08,71.08,0.0
+2022,6,5,King Swole,regular_season,Wk 6,82.22,82.22,0.0
+2022,6,10,Hundred Dollar Clown Baby,regular_season,Wk 6,80.76,80.76,0.0
+2022,7,2,Liftin Olave Da Weights,regular_season,Wk 7,109.9,109.9,0.0
+2022,7,3,Body builing  Podium finisher,regular_season,Wk 7,84.8,84.8,0.0
+2022,7,7,Goosed Up Lil Buff Boys,regular_season,Wk 7,74.72,74.72,0.0
+2022,7,4,Cee Deez Traps MaHomie,regular_season,Wk 7,103.42,103.42,0.0
+2022,7,8,The Skeletrex Bone Flexers,regular_season,Wk 7,103.22,103.22,0.0
+2022,7,6,Certified Swole Boys,regular_season,Wk 7,100.56,100.56,0.0
+2022,7,9,Gainesville Muscle Hampstrs,regular_season,Wk 7,68.6,68.6,0.0
+2022,7,5,King Swole,regular_season,Wk 7,100.52,100.52,0.0
+2022,7,1,Spray Tanned Six Packers,regular_season,Wk 7,80.36,80.36,0.0
+2022,7,10,Hundred Dollar Clown Baby,regular_season,Wk 7,145.24,145.24,0.0
+2022,8,3,Body builing  Podium finisher,regular_season,Wk 8,129.4,129.4,0.0
+2022,8,4,Cee Deez Traps MaHomie,regular_season,Wk 8,117.8,117.8,0.0
+2022,8,6,Certified Swole Boys,regular_season,Wk 8,124.24,124.24,0.0
+2022,8,2,Liftin Olave Da Weights,regular_season,Wk 8,120.34,120.34,0.0
+2022,8,5,King Swole,regular_season,Wk 8,133.66,133.66,0.0
+2022,8,7,Goosed Up Lil Buff Boys,regular_season,Wk 8,153.3,153.3,0.0
+2022,8,10,Hundred Dollar Clown Baby,regular_season,Wk 8,86.62,86.62,0.0
+2022,8,8,The Skeletrex Bone Flexers,regular_season,Wk 8,94.94,94.94,0.0
+2022,8,1,Spray Tanned Six Packers,regular_season,Wk 8,89.14,89.14,0.0
+2022,8,9,Gainesville Muscle Hampstrs,regular_season,Wk 8,100.52,100.52,0.0
+2022,9,6,Certified Swole Boys,regular_season,Wk 9,95.6,95.6,0.0
+2022,9,3,Body builing  Podium finisher,regular_season,Wk 9,78.7,78.7,0.0
+2022,9,4,Cee Deez Traps MaHomie,regular_season,Wk 9,94.34,94.34,0.0
+2022,9,5,King Swole,regular_season,Wk 9,105.3,105.3,0.0
+2022,9,2,Liftin Olave Da Weights,regular_season,Wk 9,116.72,116.72,0.0
+2022,9,10,Hundred Dollar Clown Baby,regular_season,Wk 9,121.1,121.1,0.0
+2022,9,7,Goosed Up Lil Buff Boys,regular_season,Wk 9,88.02,88.02,0.0
+2022,9,1,Spray Tanned Six Packers,regular_season,Wk 9,82.6,82.6,0.0
+2022,9,8,The Skeletrex Bone Flexers,regular_season,Wk 9,149.4,149.4,0.0
+2022,9,9,Gainesville Muscle Hampstrs,regular_season,Wk 9,76.22,76.22,0.0
+2022,10,3,Body builing  Podium finisher,regular_season,Wk 10,68.92,68.92,0.0
+2022,10,5,King Swole,regular_season,Wk 10,94.7,94.7,0.0
+2022,10,10,Hundred Dollar Clown Baby,regular_season,Wk 10,111.5,111.5,0.0
+2022,10,6,Certified Swole Boys,regular_season,Wk 10,85.68,85.68,0.0
+2022,10,1,Spray Tanned Six Packers,regular_season,Wk 10,88.58,88.58,0.0
+2022,10,4,Cee Deez Traps MaHomie,regular_season,Wk 10,126.14,126.14,0.0
+2022,10,9,Gainesville Muscle Hampstrs,regular_season,Wk 10,82.06,82.06,0.0
+2022,10,2,Liftin Olave Da Weights,regular_season,Wk 10,125.48,125.48,0.0
+2022,10,8,The Skeletrex Bone Flexers,regular_season,Wk 10,67.44,67.44,0.0
+2022,10,7,Goosed Up Lil Buff Boys,regular_season,Wk 10,91.7,91.7,0.0
+2022,11,10,Hundred Dollar Clown Baby,regular_season,Wk 11,119.48,119.48,0.0
+2022,11,3,Body builing  Podium finisher,regular_season,Wk 11,92.74,92.74,0.0
+2022,11,5,King Swole,regular_season,Wk 11,134.1,134.1,0.0
+2022,11,1,Spray Tanned Six Packers,regular_season,Wk 11,55.94,55.94,0.0
+2022,11,6,Certified Swole Boys,regular_season,Wk 11,93.1,93.1,0.0
+2022,11,9,Gainesville Muscle Hampstrs,regular_season,Wk 11,84.76,84.76,0.0
+2022,11,4,Cee Deez Traps MaHomie,regular_season,Wk 11,77.16,77.16,0.0
+2022,11,8,The Skeletrex Bone Flexers,regular_season,Wk 11,111.1,111.1,0.0
+2022,11,2,Liftin Olave Da Weights,regular_season,Wk 11,118.72,118.72,0.0
+2022,11,7,Goosed Up Lil Buff Boys,regular_season,Wk 11,88.5,88.5,0.0
+2022,12,3,Body builing  Podium finisher,regular_season,Wk 12,86.84,86.84,0.0
+2022,12,1,Spray Tanned Six Packers,regular_season,Wk 12,108.64,108.64,0.0
+2022,12,9,Gainesville Muscle Hampstrs,regular_season,Wk 12,101.06,101.06,0.0
+2022,12,10,Hundred Dollar Clown Baby,regular_season,Wk 12,107.72,107.72,0.0
+2022,12,8,The Skeletrex Bone Flexers,regular_season,Wk 12,103.36,103.36,0.0
+2022,12,5,King Swole,regular_season,Wk 12,88.66,88.66,0.0
+2022,12,7,Goosed Up Lil Buff Boys,regular_season,Wk 12,119.16,119.16,0.0
+2022,12,6,Certified Swole Boys,regular_season,Wk 12,114.56,114.56,0.0
+2022,12,2,Liftin Olave Da Weights,regular_season,Wk 12,70.98,70.98,0.0
+2022,12,4,Cee Deez Traps MaHomie,regular_season,Wk 12,88.6,88.6,0.0
+2022,13,9,Gainesville Muscle Hampstrs,regular_season,Wk 13,85.94,85.94,0.0
+2022,13,3,Body builing  Podium finisher,regular_season,Wk 13,85.44,85.44,0.0
+2022,13,1,Spray Tanned Six Packers,regular_season,Wk 13,76.36,76.36,0.0
+2022,13,8,The Skeletrex Bone Flexers,regular_season,Wk 13,99.8,99.8,0.0
+2022,13,10,Hundred Dollar Clown Baby,regular_season,Wk 13,104.42,104.42,0.0
+2022,13,7,Goosed Up Lil Buff Boys,regular_season,Wk 13,141.5,141.5,0.0
+2022,13,5,King Swole,regular_season,Wk 13,104.74,104.74,0.0
+2022,13,2,Liftin Olave Da Weights,regular_season,Wk 13,105.26,105.26,0.0
+2022,13,6,Certified Swole Boys,regular_season,Wk 13,74.28,74.28,0.0
+2022,13,4,Cee Deez Traps MaHomie,regular_season,Wk 13,83.72,83.72,0.0
+2022,14,5,King Swole,regular_season,Wk 14,84.0,84.0,0.0
+2022,14,9,Gainesville Muscle Hampstrs,regular_season,Wk 14,119.6,119.6,0.0
+2022,14,3,Body builing  Podium finisher,regular_season,Wk 14,47.52,47.52,0.0
+2022,14,4,Cee Deez Traps MaHomie,regular_season,Wk 14,97.48,97.48,0.0
+2022,14,2,Liftin Olave Da Weights,regular_season,Wk 14,96.52,96.52,0.0
+2022,14,6,Certified Swole Boys,regular_season,Wk 14,68.4,68.4,0.0
+2022,14,1,Spray Tanned Six Packers,regular_season,Wk 14,78.16,78.16,0.0
+2022,14,7,Goosed Up Lil Buff Boys,regular_season,Wk 14,109.38,109.38,0.0
+2022,14,10,Hundred Dollar Clown Baby,regular_season,Wk 14,83.36,83.36,0.0
+2022,14,8,The Skeletrex Bone Flexers,regular_season,Wk 14,103.68,103.68,0.0
+2022,0,0,N/A,not_available,2022 playoffs: custom format run outside ESPN — playoff validation skipped,0.0,0.0,0.0
+2023,1,5,Appalachian Hill to die on,regular_season,Wk 1,117.64,117.64,0.0
+2023,1,10,We Are Climbing High,regular_season,Wk 1,89.46,89.46,0.0
+2023,1,4,Mt. Field(s),regular_season,Wk 1,94.14,94.14,0.0
+2023,1,9,Catskill Killers,regular_season,Wk 1,94.38,94.38,0.0
+2023,1,6,MT KilledbyLamaro,regular_season,Wk 1,64.66,64.66,0.0
+2023,1,1,The Allegheny Climb Hurts,regular_season,Wk 1,105.5,105.5,0.0
+2023,1,2,See Moore Mount-Caffreys,regular_season,Wk 1,92.96,92.96,0.0
+2023,1,3,Rocky Hill Oysters,regular_season,Wk 1,82.86,82.86,0.0
+2023,1,7,Appalachian Hillaineers,regular_season,Wk 1,69.24,69.24,0.0
+2023,1,8,The West Coast Hilltoppers,regular_season,Wk 1,84.54,84.54,0.0
+2023,2,3,Rocky Hill Oysters,regular_season,Wk 2,125.66,125.66,0.0
+2023,2,10,We Are Climbing High,regular_season,Wk 2,95.3,95.3,0.0
+2023,2,1,The Allegheny Climb Hurts,regular_season,Wk 2,130.12,130.12,0.0
+2023,2,5,Appalachian Hill to die on,regular_season,Wk 2,93.34,93.34,0.0
+2023,2,9,Catskill Killers,regular_season,Wk 2,109.58,109.58,0.0
+2023,2,6,MT KilledbyLamaro,regular_season,Wk 2,156.28,156.28,0.0
+2023,2,8,The West Coast Hilltoppers,regular_season,Wk 2,103.7,103.7,0.0
+2023,2,4,Mt. Field(s),regular_season,Wk 2,72.94,72.94,0.0
+2023,2,7,Appalachian Hillaineers,regular_season,Wk 2,72.56,72.56,0.0
+2023,2,2,See Moore Mount-Caffreys,regular_season,Wk 2,125.7,125.7,0.0
+2023,3,1,The Allegheny Climb Hurts,regular_season,Wk 3,110.18,110.18,0.0
+2023,3,3,Rocky Hill Oysters,regular_season,Wk 3,88.88,88.88,0.0
+2023,3,10,We Are Climbing High,regular_season,Wk 3,105.26,105.26,0.0
+2023,3,9,Catskill Killers,regular_season,Wk 3,85.74,85.74,0.0
+2023,3,5,Appalachian Hill to die on,regular_season,Wk 3,127.26,127.26,0.0
+2023,3,8,The West Coast Hilltoppers,regular_season,Wk 3,85.78,85.78,0.0
+2023,3,6,MT KilledbyLamaro,regular_season,Wk 3,149.28,149.28,0.0
+2023,3,7,Appalachian Hillaineers,regular_season,Wk 3,112.62,112.62,0.0
+2023,3,4,Mt. Field(s),regular_season,Wk 3,89.66,89.66,0.0
+2023,3,2,See Moore Mount-Caffreys,regular_season,Wk 3,121.26,121.26,0.0
+2023,4,3,Rocky Hill Oysters,regular_season,Wk 4,60.26,60.26,0.0
+2023,4,9,Catskill Killers,regular_season,Wk 4,90.1,90.1,0.0
+2023,4,8,The West Coast Hilltoppers,regular_season,Wk 4,111.42,111.42,0.0
+2023,4,10,We Are Climbing High,regular_season,Wk 4,149.52,149.52,0.0
+2023,4,7,Appalachian Hillaineers,regular_season,Wk 4,122.7,122.7,0.0
+2023,4,1,The Allegheny Climb Hurts,regular_season,Wk 4,134.16,134.16,0.0
+2023,4,2,See Moore Mount-Caffreys,regular_season,Wk 4,128.98,128.98,0.0
+2023,4,5,Appalachian Hill to die on,regular_season,Wk 4,86.04,86.04,0.0
+2023,4,4,Mt. Field(s),regular_season,Wk 4,64.66,64.66,0.0
+2023,4,6,MT KilledbyLamaro,regular_season,Wk 4,68.14,68.14,0.0
+2023,5,8,The West Coast Hilltoppers,regular_season,Wk 5,94.34,94.34,0.0
+2023,5,3,Rocky Hill Oysters,regular_season,Wk 5,79.16,79.16,0.0
+2023,5,9,Catskill Killers,regular_season,Wk 5,68.46,68.46,0.0
+2023,5,7,Appalachian Hillaineers,regular_season,Wk 5,132.16,132.16,0.0
+2023,5,1,The Allegheny Climb Hurts,regular_season,Wk 5,65.52,65.52,0.0
+2023,5,2,See Moore Mount-Caffreys,regular_season,Wk 5,68.12,68.12,0.0
+2023,5,10,We Are Climbing High,regular_season,Wk 5,134.68,134.68,0.0
+2023,5,4,Mt. Field(s),regular_season,Wk 5,76.62,76.62,0.0
+2023,5,5,Appalachian Hill to die on,regular_season,Wk 5,98.98,98.98,0.0
+2023,5,6,MT KilledbyLamaro,regular_season,Wk 5,150.14,150.14,0.0
+2023,6,3,Rocky Hill Oysters,regular_season,Wk 6,68.64,68.64,0.0
+2023,6,7,Appalachian Hillaineers,regular_season,Wk 6,82.24,82.24,0.0
+2023,6,2,See Moore Mount-Caffreys,regular_season,Wk 6,124.78,124.78,0.0
+2023,6,10,We Are Climbing High,regular_season,Wk 6,79.2,79.2,0.0
+2023,6,4,Mt. Field(s),regular_season,Wk 6,70.02,70.02,0.0
+2023,6,5,Appalachian Hill to die on,regular_season,Wk 6,99.34,99.34,0.0
+2023,6,6,MT KilledbyLamaro,regular_season,Wk 6,94.22,94.22,0.0
+2023,6,1,The Allegheny Climb Hurts,regular_season,Wk 6,68.9,68.9,0.0
+2023,6,9,Catskill Killers,regular_season,Wk 6,100.2,100.2,0.0
+2023,6,8,The West Coast Hilltoppers,regular_season,Wk 6,68.36,68.36,0.0
+2023,7,2,See Moore Mount-Caffreys,regular_season,Wk 7,111.16,111.16,0.0
+2023,7,9,Catskill Killers,regular_season,Wk 7,83.6,83.6,0.0
+2023,7,7,Appalachian Hillaineers,regular_season,Wk 7,105.36,105.36,0.0
+2023,7,4,Mt. Field(s),regular_season,Wk 7,69.44,69.44,0.0
+2023,7,8,The West Coast Hilltoppers,regular_season,Wk 7,118.3,118.3,0.0
+2023,7,6,MT KilledbyLamaro,regular_season,Wk 7,145.88,145.88,0.0
+2023,7,3,Rocky Hill Oysters,regular_season,Wk 7,96.42,96.42,0.0
+2023,7,5,Appalachian Hill to die on,regular_season,Wk 7,74.64,74.64,0.0
+2023,7,1,The Allegheny Climb Hurts,regular_season,Wk 7,81.66,81.66,0.0
+2023,7,10,We Are Climbing High,regular_season,Wk 7,71.96,71.96,0.0
+2023,8,3,Rocky Hill Oysters,regular_season,Wk 8,107.56,107.56,0.0
+2023,8,4,Mt. Field(s),regular_season,Wk 8,77.76,77.76,0.0
+2023,8,6,MT KilledbyLamaro,regular_season,Wk 8,99.88,99.88,0.0
+2023,8,2,See Moore Mount-Caffreys,regular_season,Wk 8,138.12,138.12,0.0
+2023,8,5,Appalachian Hill to die on,regular_season,Wk 8,86.18,86.18,0.0
+2023,8,7,Appalachian Hillaineers,regular_season,Wk 8,99.0,99.0,0.0
+2023,8,10,We Are Climbing High,regular_season,Wk 8,119.32,119.32,0.0
+2023,8,8,The West Coast Hilltoppers,regular_season,Wk 8,101.56,101.56,0.0
+2023,8,1,The Allegheny Climb Hurts,regular_season,Wk 8,121.06,121.06,0.0
+2023,8,9,Catskill Killers,regular_season,Wk 8,133.12,133.12,0.0
+2023,9,8,The West Coast Hilltoppers,regular_season,Wk 9,57.22,57.22,0.0
+2023,9,3,Rocky Hill Oysters,regular_season,Wk 9,101.2,101.2,0.0
+2023,9,4,Mt. Field(s),regular_season,Wk 9,74.72,74.72,0.0
+2023,9,2,See Moore Mount-Caffreys,regular_season,Wk 9,116.86,116.86,0.0
+2023,9,5,Appalachian Hill to die on,regular_season,Wk 9,131.0,131.0,0.0
+2023,9,10,We Are Climbing High,regular_season,Wk 9,85.2,85.2,0.0
+2023,9,7,Appalachian Hillaineers,regular_season,Wk 9,100.9,100.9,0.0
+2023,9,1,The Allegheny Climb Hurts,regular_season,Wk 9,86.98,86.98,0.0
+2023,9,6,MT KilledbyLamaro,regular_season,Wk 9,64.58,64.58,0.0
+2023,9,9,Catskill Killers,regular_season,Wk 9,119.42,119.42,0.0
+2023,10,4,Mt. Field(s),regular_season,Wk 10,78.5,78.5,0.0
+2023,10,5,Appalachian Hill to die on,regular_season,Wk 10,112.64,112.64,0.0
+2023,10,10,We Are Climbing High,regular_season,Wk 10,105.08,105.08,0.0
+2023,10,6,MT KilledbyLamaro,regular_season,Wk 10,110.22,110.22,0.0
+2023,10,1,The Allegheny Climb Hurts,regular_season,Wk 10,97.62,97.62,0.0
+2023,10,3,Rocky Hill Oysters,regular_season,Wk 10,86.22,86.22,0.0
+2023,10,9,Catskill Killers,regular_season,Wk 10,126.08,126.08,0.0
+2023,10,2,See Moore Mount-Caffreys,regular_season,Wk 10,127.38,127.38,0.0
+2023,10,8,The West Coast Hilltoppers,regular_season,Wk 10,83.16,83.16,0.0
+2023,10,7,Appalachian Hillaineers,regular_season,Wk 10,91.92,91.92,0.0
+2023,11,10,We Are Climbing High,regular_season,Wk 11,105.84,105.84,0.0
+2023,11,3,Rocky Hill Oysters,regular_season,Wk 11,87.1,87.1,0.0
+2023,11,9,Catskill Killers,regular_season,Wk 11,91.64,91.64,0.0
+2023,11,1,The Allegheny Climb Hurts,regular_season,Wk 11,102.6,102.6,0.0
+2023,11,6,MT KilledbyLamaro,regular_season,Wk 11,112.46,112.46,0.0
+2023,11,5,Appalachian Hill to die on,regular_season,Wk 11,103.94,103.94,0.0
+2023,11,4,Mt. Field(s),regular_season,Wk 11,96.76,96.76,0.0
+2023,11,8,The West Coast Hilltoppers,regular_season,Wk 11,103.96,103.96,0.0
+2023,11,2,See Moore Mount-Caffreys,regular_season,Wk 11,76.26,76.26,0.0
+2023,11,7,Appalachian Hillaineers,regular_season,Wk 11,86.98,86.98,0.0
+2023,12,4,Mt. Field(s),regular_season,Wk 12,88.78,88.78,0.0
+2023,12,1,The Allegheny Climb Hurts,regular_season,Wk 12,131.0,131.0,0.0
+2023,12,7,Appalachian Hillaineers,regular_season,Wk 12,144.86,144.86,0.0
+2023,12,10,We Are Climbing High,regular_season,Wk 12,106.46,106.46,0.0
+2023,12,9,Catskill Killers,regular_season,Wk 12,100.78,100.78,0.0
+2023,12,5,Appalachian Hill to die on,regular_season,Wk 12,128.86,128.86,0.0
+2023,12,8,The West Coast Hilltoppers,regular_season,Wk 12,76.54,76.54,0.0
+2023,12,2,See Moore Mount-Caffreys,regular_season,Wk 12,129.84,129.84,0.0
+2023,12,6,MT KilledbyLamaro,regular_season,Wk 12,102.18,102.18,0.0
+2023,12,3,Rocky Hill Oysters,regular_season,Wk 12,45.86,45.86,0.0
+2023,13,9,Catskill Killers,regular_season,Wk 13,88.38,88.38,0.0
+2023,13,3,Rocky Hill Oysters,regular_season,Wk 13,129.54,129.54,0.0
+2023,13,1,The Allegheny Climb Hurts,regular_season,Wk 13,132.42,132.42,0.0
+2023,13,8,The West Coast Hilltoppers,regular_season,Wk 13,81.6,81.6,0.0
+2023,13,5,Appalachian Hill to die on,regular_season,Wk 13,120.26,120.26,0.0
+2023,13,7,Appalachian Hillaineers,regular_season,Wk 13,130.14,130.14,0.0
+2023,13,10,We Are Climbing High,regular_season,Wk 13,98.96,98.96,0.0
+2023,13,2,See Moore Mount-Caffreys,regular_season,Wk 13,129.26,129.26,0.0
+2023,13,6,MT KilledbyLamaro,regular_season,Wk 13,132.38,132.38,0.0
+2023,13,4,Mt. Field(s),regular_season,Wk 13,83.5,83.5,0.0
+2023,15,1,The Allegheny Climb Hurts,playoff_round1,R1 wk14+15,137.6,137.6,0.0
+2023,15,2,See Moore Mount-Caffreys,playoff_round1,R1 wk14+15,268.56,268.56,0.0
+2023,15,3,Rocky Hill Oysters,playoff_round1,R1 wk14+15,229.18,229.18,0.0
+2023,15,4,Mt. Field(s),playoff_round1,R1 wk14+15,238.46,238.46,0.0
+2023,15,5,Appalachian Hill to die on,playoff_round1,R1 wk14+15,143.7,143.7,0.0
+2023,15,6,MT KilledbyLamaro,playoff_round1,R1 wk14+15,196.08,196.08,0.0
+2023,15,7,Appalachian Hillaineers,playoff_round1,R1 wk14+15,191.58,191.58,0.0
+2023,15,8,The West Coast Hilltoppers,playoff_round1,R1 wk14+15,166.06,166.06,0.0
+2023,15,9,Catskill Killers,playoff_round1,R1 wk14+15,194.76,194.76,0.0
+2023,15,10,We Are Climbing High,playoff_round1,R1 wk14+15,151.6,151.6,0.0
+2023,17,1,The Allegheny Climb Hurts,playoff_round2,R2 wk16+17,203.9,203.9,0.0
+2023,17,2,See Moore Mount-Caffreys,playoff_round2,R2 wk16+17,231.72,231.72,0.0
+2023,17,3,Rocky Hill Oysters,playoff_round2,R2 wk16+17,141.92,141.92,0.0
+2023,17,4,Mt. Field(s),playoff_round2,R2 wk16+17,216.72,216.72,0.0
+2023,17,5,Appalachian Hill to die on,playoff_round2,R2 wk16+17,156.86,156.86,0.0
+2023,17,6,MT KilledbyLamaro,playoff_round2,R2 wk16+17,229.92,229.92,0.0
+2023,17,7,Appalachian Hillaineers,playoff_round2,R2 wk16+17,175.14,175.14,0.0
+2023,17,8,The West Coast Hilltoppers,playoff_round2,R2 wk16+17,195.68,195.68,0.0
+2023,17,9,Catskill Killers,playoff_round2,R2 wk16+17,228.7,228.7,0.0
+2023,17,10,We Are Climbing High,playoff_round2,R2 wk16+17,208.02,208.02,0.0
+2024,1,5,Mike Evans down your Vincents,regular_season,Wk 1,131.38,131.38,0.0
+2024,1,10,We Are Climbing High,regular_season,Wk 1,97.66,97.66,0.0
+2024,1,4,Ants In My Eyes Jackson,regular_season,Wk 1,71.52,71.52,0.0
+2024,1,9,Pirates of the Pancreas,regular_season,Wk 1,105.76,105.76,0.0
+2024,1,6,MT KilledbyLamaro,regular_season,Wk 1,69.56,69.56,0.0
+2024,1,1,2 Brothers In a Chiefs Van,regular_season,Wk 1,75.94,75.94,0.0
+2024,1,2,Violent Tyreek Roadshow,regular_season,Wk 1,115.02,115.02,0.0
+2024,1,3,Three unmuscular Michaels jr.,regular_season,Wk 1,101.38,101.38,0.0
+2024,1,7,FootBall Fondlers,regular_season,Wk 1,86.68,86.68,0.0
+2024,1,8,Kittl' Bits,regular_season,Wk 1,93.9,93.9,0.0
+2024,2,3,Three unmuscular Michaels jr.,regular_season,Wk 2,92.76,92.76,0.0
+2024,2,10,We Are Climbing High,regular_season,Wk 2,94.62,94.62,0.0
+2024,2,1,2 Brothers In a Chiefs Van,regular_season,Wk 2,90.44,90.44,0.0
+2024,2,5,Mike Evans down your Vincents,regular_season,Wk 2,85.8,85.8,0.0
+2024,2,9,Pirates of the Pancreas,regular_season,Wk 2,123.14,123.14,0.0
+2024,2,6,MT KilledbyLamaro,regular_season,Wk 2,102.92,102.92,0.0
+2024,2,8,Kittl' Bits,regular_season,Wk 2,96.4,96.4,0.0
+2024,2,4,Ants In My Eyes Jackson,regular_season,Wk 2,91.68,91.68,0.0
+2024,2,7,FootBall Fondlers,regular_season,Wk 2,109.16,109.16,0.0
+2024,2,2,Violent Tyreek Roadshow,regular_season,Wk 2,106.92,106.92,0.0
+2024,3,1,2 Brothers In a Chiefs Van,regular_season,Wk 3,113.28,113.28,0.0
+2024,3,3,Three unmuscular Michaels jr.,regular_season,Wk 3,83.48,83.48,0.0
+2024,3,10,We Are Climbing High,regular_season,Wk 3,123.16,123.16,0.0
+2024,3,9,Pirates of the Pancreas,regular_season,Wk 3,87.8,87.8,0.0
+2024,3,5,Mike Evans down your Vincents,regular_season,Wk 3,82.68,82.68,0.0
+2024,3,8,Kittl' Bits,regular_season,Wk 3,71.72,71.72,0.0
+2024,3,6,MT KilledbyLamaro,regular_season,Wk 3,69.86,69.86,0.0
+2024,3,7,FootBall Fondlers,regular_season,Wk 3,130.92,130.92,0.0
+2024,3,4,Ants In My Eyes Jackson,regular_season,Wk 3,85.48,85.48,0.0
+2024,3,2,Violent Tyreek Roadshow,regular_season,Wk 3,75.14,75.14,0.0
+2024,4,3,Three unmuscular Michaels jr.,regular_season,Wk 4,70.84,70.84,0.0
+2024,4,9,Pirates of the Pancreas,regular_season,Wk 4,91.22,91.22,0.0
+2024,4,8,Kittl' Bits,regular_season,Wk 4,115.98,115.98,0.0
+2024,4,10,We Are Climbing High,regular_season,Wk 4,98.78,98.78,0.0
+2024,4,7,FootBall Fondlers,regular_season,Wk 4,102.46,102.46,0.0
+2024,4,1,2 Brothers In a Chiefs Van,regular_season,Wk 4,131.5,131.5,0.0
+2024,4,2,Violent Tyreek Roadshow,regular_season,Wk 4,93.22,93.22,0.0
+2024,4,5,Mike Evans down your Vincents,regular_season,Wk 4,107.48,107.48,0.0
+2024,4,4,Ants In My Eyes Jackson,regular_season,Wk 4,90.44,90.44,0.0
+2024,4,6,MT KilledbyLamaro,regular_season,Wk 4,76.84,76.84,0.0
+2024,5,8,Kittl' Bits,regular_season,Wk 5,116.16,116.16,0.0
+2024,5,3,Three unmuscular Michaels jr.,regular_season,Wk 5,90.16,90.16,0.0
+2024,5,9,Pirates of the Pancreas,regular_season,Wk 5,123.22,123.22,0.0
+2024,5,7,FootBall Fondlers,regular_season,Wk 5,96.64,96.64,0.0
+2024,5,1,2 Brothers In a Chiefs Van,regular_season,Wk 5,116.74,116.74,0.0
+2024,5,2,Violent Tyreek Roadshow,regular_season,Wk 5,80.66,80.66,0.0
+2024,5,10,We Are Climbing High,regular_season,Wk 5,107.88,107.88,0.0
+2024,5,4,Ants In My Eyes Jackson,regular_season,Wk 5,126.72,126.72,0.0
+2024,5,5,Mike Evans down your Vincents,regular_season,Wk 5,106.34,106.34,0.0
+2024,5,6,MT KilledbyLamaro,regular_season,Wk 5,68.98,68.98,0.0
+2024,6,3,Three unmuscular Michaels jr.,regular_season,Wk 6,123.68,123.68,0.0
+2024,6,7,FootBall Fondlers,regular_season,Wk 6,121.4,121.4,0.0
+2024,6,2,Violent Tyreek Roadshow,regular_season,Wk 6,75.26,75.26,0.0
+2024,6,10,We Are Climbing High,regular_season,Wk 6,82.22,82.22,0.0
+2024,6,4,Ants In My Eyes Jackson,regular_season,Wk 6,95.32,95.32,0.0
+2024,6,5,Mike Evans down your Vincents,regular_season,Wk 6,97.16,97.16,0.0
+2024,6,6,MT KilledbyLamaro,regular_season,Wk 6,58.22,58.22,0.0
+2024,6,1,2 Brothers In a Chiefs Van,regular_season,Wk 6,113.48,113.48,0.0
+2024,6,9,Pirates of the Pancreas,regular_season,Wk 6,90.86,90.86,0.0
+2024,6,8,Kittl' Bits,regular_season,Wk 6,113.42,113.42,0.0
+2024,7,2,Violent Tyreek Roadshow,regular_season,Wk 7,88.56,88.56,0.0
+2024,7,9,Pirates of the Pancreas,regular_season,Wk 7,66.44,66.44,0.0
+2024,7,7,FootBall Fondlers,regular_season,Wk 7,133.82,133.82,0.0
+2024,7,4,Ants In My Eyes Jackson,regular_season,Wk 7,139.54,139.54,0.0
+2024,7,8,Kittl' Bits,regular_season,Wk 7,93.3,93.3,0.0
+2024,7,6,MT KilledbyLamaro,regular_season,Wk 7,66.26,66.26,0.0
+2024,7,3,Three unmuscular Michaels jr.,regular_season,Wk 7,78.78,78.78,0.0
+2024,7,5,Mike Evans down your Vincents,regular_season,Wk 7,128.0,128.0,0.0
+2024,7,1,2 Brothers In a Chiefs Van,regular_season,Wk 7,81.44,81.44,0.0
+2024,7,10,We Are Climbing High,regular_season,Wk 7,100.74,100.74,0.0
+2024,8,3,Three unmuscular Michaels jr.,regular_season,Wk 8,90.7,90.7,0.0
+2024,8,4,Ants In My Eyes Jackson,regular_season,Wk 8,107.56,107.56,0.0
+2024,8,6,MT KilledbyLamaro,regular_season,Wk 8,87.26,87.26,0.0
+2024,8,2,Violent Tyreek Roadshow,regular_season,Wk 8,137.74,137.74,0.0
+2024,8,5,Mike Evans down your Vincents,regular_season,Wk 8,123.88,123.88,0.0
+2024,8,7,FootBall Fondlers,regular_season,Wk 8,111.72,111.72,0.0
+2024,8,10,We Are Climbing High,regular_season,Wk 8,87.36,87.36,0.0
+2024,8,8,Kittl' Bits,regular_season,Wk 8,117.54,117.54,0.0
+2024,8,1,2 Brothers In a Chiefs Van,regular_season,Wk 8,91.86,91.86,0.0
+2024,8,9,Pirates of the Pancreas,regular_season,Wk 8,112.14,112.14,0.0
+2024,9,8,Kittl' Bits,regular_season,Wk 9,137.3,137.3,0.0
+2024,9,3,Three unmuscular Michaels jr.,regular_season,Wk 9,77.4,77.4,0.0
+2024,9,4,Ants In My Eyes Jackson,regular_season,Wk 9,105.4,105.4,0.0
+2024,9,2,Violent Tyreek Roadshow,regular_season,Wk 9,109.2,109.2,0.0
+2024,9,5,Mike Evans down your Vincents,regular_season,Wk 9,95.86,95.86,0.0
+2024,9,10,We Are Climbing High,regular_season,Wk 9,104.82,104.82,0.0
+2024,9,7,FootBall Fondlers,regular_season,Wk 9,108.3,108.3,0.0
+2024,9,1,2 Brothers In a Chiefs Van,regular_season,Wk 9,108.94,108.94,0.0
+2024,9,6,MT KilledbyLamaro,regular_season,Wk 9,78.98,78.98,0.0
+2024,9,9,Pirates of the Pancreas,regular_season,Wk 9,133.06,133.06,0.0
+2024,10,4,Ants In My Eyes Jackson,regular_season,Wk 10,113.6,113.6,0.0
+2024,10,5,Mike Evans down your Vincents,regular_season,Wk 10,95.4,95.4,0.0
+2024,10,10,We Are Climbing High,regular_season,Wk 10,117.62,117.62,0.0
+2024,10,6,MT KilledbyLamaro,regular_season,Wk 10,71.16,71.16,0.0
+2024,10,1,2 Brothers In a Chiefs Van,regular_season,Wk 10,120.44,120.44,0.0
+2024,10,3,Three unmuscular Michaels jr.,regular_season,Wk 10,69.54,69.54,0.0
+2024,10,9,Pirates of the Pancreas,regular_season,Wk 10,53.88,53.88,0.0
+2024,10,2,Violent Tyreek Roadshow,regular_season,Wk 10,97.58,97.58,0.0
+2024,10,8,Kittl' Bits,regular_season,Wk 10,94.54,94.54,0.0
+2024,10,7,FootBall Fondlers,regular_season,Wk 10,99.4,99.4,0.0
+2024,11,10,We Are Climbing High,regular_season,Wk 11,97.74,97.74,0.0
+2024,11,3,Three unmuscular Michaels jr.,regular_season,Wk 11,86.24,86.24,0.0
+2024,11,9,Pirates of the Pancreas,regular_season,Wk 11,114.04,114.04,0.0
+2024,11,1,2 Brothers In a Chiefs Van,regular_season,Wk 11,96.64,96.64,0.0
+2024,11,6,MT KilledbyLamaro,regular_season,Wk 11,113.38,113.38,0.0
+2024,11,5,Mike Evans down your Vincents,regular_season,Wk 11,79.1,79.1,0.0
+2024,11,4,Ants In My Eyes Jackson,regular_season,Wk 11,115.28,115.28,0.0
+2024,11,8,Kittl' Bits,regular_season,Wk 11,79.84,79.84,0.0
+2024,11,2,Violent Tyreek Roadshow,regular_season,Wk 11,108.34,108.34,0.0
+2024,11,7,FootBall Fondlers,regular_season,Wk 11,116.18,116.18,0.0
+2024,12,4,Ants In My Eyes Jackson,regular_season,Wk 12,67.38,67.38,0.0
+2024,12,1,2 Brothers In a Chiefs Van,regular_season,Wk 12,86.92,86.92,0.0
+2024,12,7,FootBall Fondlers,regular_season,Wk 12,87.48,87.48,0.0
+2024,12,10,We Are Climbing High,regular_season,Wk 12,84.66,84.66,0.0
+2024,12,9,Pirates of the Pancreas,regular_season,Wk 12,136.0,136.0,0.0
+2024,12,5,Mike Evans down your Vincents,regular_season,Wk 12,91.7,91.7,0.0
+2024,12,8,Kittl' Bits,regular_season,Wk 12,114.26,114.26,0.0
+2024,12,2,Violent Tyreek Roadshow,regular_season,Wk 12,92.46,92.46,0.0
+2024,12,6,MT KilledbyLamaro,regular_season,Wk 12,67.52,67.52,0.0
+2024,12,3,Three unmuscular Michaels jr.,regular_season,Wk 12,113.3,113.3,0.0
+2024,13,9,Pirates of the Pancreas,regular_season,Wk 13,109.64,109.64,0.0
+2024,13,3,Three unmuscular Michaels jr.,regular_season,Wk 13,132.9,132.9,0.0
+2024,13,1,2 Brothers In a Chiefs Van,regular_season,Wk 13,85.04,85.04,0.0
+2024,13,8,Kittl' Bits,regular_season,Wk 13,59.6,59.6,0.0
+2024,13,5,Mike Evans down your Vincents,regular_season,Wk 13,140.66,140.66,0.0
+2024,13,7,FootBall Fondlers,regular_season,Wk 13,135.48,135.48,0.0
+2024,13,10,We Are Climbing High,regular_season,Wk 13,91.96,91.96,0.0
+2024,13,2,Violent Tyreek Roadshow,regular_season,Wk 13,105.42,105.42,0.0
+2024,13,6,MT KilledbyLamaro,regular_season,Wk 13,94.08,93.08,1.0
+2024,13,4,Ants In My Eyes Jackson,regular_season,Wk 13,104.02,104.02,0.0
+2024,15,1,2 Brothers In a Chiefs Van,playoff_round1,R1 wk14+15,185.84,185.84,0.0
+2024,15,2,Violent Tyreek Roadshow,playoff_round1,R1 wk14+15,201.92,201.92,0.0
+2024,15,4,Ants In My Eyes Jackson,playoff_round1,R1 wk14+15,252.26,252.26,0.0
+2024,15,5,Mike Evans down your Vincents,playoff_round1,R1 wk14+15,237.42,237.42,0.0
+2024,15,7,FootBall Fondlers,playoff_round1,R1 wk14+15,227.08,227.08,0.0
+2024,15,8,Kittl' Bits,playoff_round1,R1 wk14+15,211.42,211.42,0.0
+2024,15,9,Pirates of the Pancreas,playoff_round1,R1 wk14+15,220.74,220.74,0.0
+2024,15,10,We Are Climbing High,playoff_round1,R1 wk14+15,259.5,259.5,0.0
+2024,17,1,2 Brothers In a Chiefs Van,playoff_round2,R2 wk16+17,186.08,186.08,0.0
+2024,17,2,Violent Tyreek Roadshow,playoff_round2,R2 wk16+17,154.44,154.44,0.0
+2024,17,4,Ants In My Eyes Jackson,playoff_round2,R2 wk16+17,256.94,256.94,0.0
+2024,17,5,Mike Evans down your Vincents,playoff_round2,R2 wk16+17,257.72,257.72,0.0
+2024,17,7,FootBall Fondlers,playoff_round2,R2 wk16+17,202.1,202.1,0.0
+2024,17,8,Kittl' Bits,playoff_round2,R2 wk16+17,242.98,242.98,0.0
+2024,17,9,Pirates of the Pancreas,playoff_round2,R2 wk16+17,232.3,232.3,0.0
+2024,17,10,We Are Climbing High,playoff_round2,R2 wk16+17,202.06,202.06,0.0
+2024,17,3,Three unmuscular Michaels jr.,toilet_bowl,Toilet Bowl wk14-17,371.14,371.14,0.0
+2024,17,6,MT KilledbyLamaro,toilet_bowl,Toilet Bowl wk14-17,438.82,438.82,0.0
+2025,1,3,Hunters and renfrow,regular_season,Wk 1,97.02,97.02,0.0
+2025,1,10,We Are Rolling High,regular_season,Wk 1,78.62,78.62,0.0
+2025,1,7,Roll for Yardage,regular_season,Wk 1,56.64,56.64,0.0
+2025,1,9,Paladins of the Pancreas,regular_season,Wk 1,111.96,111.96,0.0
+2025,1,8,"I Don't Care, I Cast Fireball",regular_season,Wk 1,86.18,86.18,0.0
+2025,1,1,Heroic Inspiration,regular_season,Wk 1,97.46,97.46,0.0
+2025,1,6,NameOfCurseWarding,regular_season,Wk 1,86.08,86.08,0.0
+2025,1,5,Constitution Check Downs,regular_season,Wk 1,88.62,88.62,0.0
+2025,1,4,Forgotten Burrows,regular_season,Wk 1,113.02,113.02,0.0
+2025,1,2,Danny Dice Rolls,regular_season,Wk 1,73.02,73.02,0.0
+2025,2,9,Paladins of the Pancreas,regular_season,Wk 2,132.22,132.22,0.0
+2025,2,10,We Are Rolling High,regular_season,Wk 2,115.9,115.9,0.0
+2025,2,2,Danny Dice Rolls,regular_season,Wk 2,73.44,73.44,0.0
+2025,2,5,Constitution Check Downs,regular_season,Wk 2,111.28,111.28,0.0
+2025,2,1,Heroic Inspiration,regular_season,Wk 2,93.4,93.4,0.0
+2025,2,6,NameOfCurseWarding,regular_season,Wk 2,114.14,114.14,0.0
+2025,2,8,"I Don't Care, I Cast Fireball",regular_season,Wk 2,77.2,77.2,0.0
+2025,2,4,Forgotten Burrows,regular_season,Wk 2,81.14,81.14,0.0
+2025,2,7,Roll for Yardage,regular_season,Wk 2,82.48,82.48,0.0
+2025,2,3,Hunters and renfrow,regular_season,Wk 2,109.58,109.58,0.0
+2025,3,1,Heroic Inspiration,regular_season,Wk 3,146.42,146.42,0.0
+2025,3,3,Hunters and renfrow,regular_season,Wk 3,75.16,75.16,0.0
+2025,3,2,Danny Dice Rolls,regular_season,Wk 3,82.04,82.04,0.0
+2025,3,9,Paladins of the Pancreas,regular_season,Wk 3,99.12,99.12,0.0
+2025,3,7,Roll for Yardage,regular_season,Wk 3,112.32,112.32,0.0
+2025,3,8,"I Don't Care, I Cast Fireball",regular_season,Wk 3,82.52,82.52,0.0
+2025,3,10,We Are Rolling High,regular_season,Wk 3,84.86,84.86,0.0
+2025,3,5,Constitution Check Downs,regular_season,Wk 3,80.3,80.3,0.0
+2025,3,4,Forgotten Burrows,regular_season,Wk 3,126.72,126.72,0.0
+2025,3,6,NameOfCurseWarding,regular_season,Wk 3,76.34,76.34,0.0
+2025,4,8,"I Don't Care, I Cast Fireball",regular_season,Wk 4,89.08,89.08,0.0
+2025,4,9,Paladins of the Pancreas,regular_season,Wk 4,105.06,105.06,0.0
+2025,4,1,Heroic Inspiration,regular_season,Wk 4,95.58,95.58,0.0
+2025,4,10,We Are Rolling High,regular_season,Wk 4,115.92,115.92,0.0
+2025,4,4,Forgotten Burrows,regular_season,Wk 4,86.58,86.58,0.0
+2025,4,3,Hunters and renfrow,regular_season,Wk 4,86.0,86.0,0.0
+2025,4,7,Roll for Yardage,regular_season,Wk 4,122.64,122.64,0.0
+2025,4,5,Constitution Check Downs,regular_season,Wk 4,117.92,117.92,0.0
+2025,4,2,Danny Dice Rolls,regular_season,Wk 4,152.68,152.68,0.0
+2025,4,6,NameOfCurseWarding,regular_season,Wk 4,86.4,86.4,0.0
+2025,5,2,Danny Dice Rolls,regular_season,Wk 5,101.58,101.58,0.0
+2025,5,3,Hunters and renfrow,regular_season,Wk 5,95.62,95.62,0.0
+2025,5,1,Heroic Inspiration,regular_season,Wk 5,93.76,93.76,0.0
+2025,5,7,Roll for Yardage,regular_season,Wk 5,115.24,115.24,0.0
+2025,5,5,Constitution Check Downs,regular_season,Wk 5,110.34,110.34,0.0
+2025,5,8,"I Don't Care, I Cast Fireball",regular_season,Wk 5,108.96,108.96,0.0
+2025,5,10,We Are Rolling High,regular_season,Wk 5,101.4,101.4,0.0
+2025,5,4,Forgotten Burrows,regular_season,Wk 5,139.46,139.46,0.0
+2025,5,9,Paladins of the Pancreas,regular_season,Wk 5,93.62,93.62,0.0
+2025,5,6,NameOfCurseWarding,regular_season,Wk 5,103.3,103.3,0.0
+2025,6,4,Forgotten Burrows,regular_season,Wk 6,132.88,132.88,0.0
+2025,6,7,Roll for Yardage,regular_season,Wk 6,112.04,112.04,0.0
+2025,6,2,Danny Dice Rolls,regular_season,Wk 6,68.66,68.66,0.0
+2025,6,10,We Are Rolling High,regular_season,Wk 6,94.84,94.84,0.0
+2025,6,1,Heroic Inspiration,regular_season,Wk 6,58.74,58.74,0.0
+2025,6,5,Constitution Check Downs,regular_season,Wk 6,134.84,134.84,0.0
+2025,6,9,Paladins of the Pancreas,regular_season,Wk 6,96.4,96.4,0.0
+2025,6,3,Hunters and renfrow,regular_season,Wk 6,91.08,91.08,0.0
+2025,6,6,NameOfCurseWarding,regular_season,Wk 6,86.72,86.72,0.0
+2025,6,8,"I Don't Care, I Cast Fireball",regular_season,Wk 6,96.06,96.06,0.0
+2025,7,1,Heroic Inspiration,regular_season,Wk 7,115.78,115.78,0.0
+2025,7,9,Paladins of the Pancreas,regular_season,Wk 7,94.26,94.26,0.0
+2025,7,5,Constitution Check Downs,regular_season,Wk 7,99.26,99.26,0.0
+2025,7,4,Forgotten Burrows,regular_season,Wk 7,95.38,95.38,0.0
+2025,7,10,We Are Rolling High,regular_season,Wk 7,133.04,133.04,0.0
+2025,7,6,NameOfCurseWarding,regular_season,Wk 7,96.14,96.14,0.0
+2025,7,3,Hunters and renfrow,regular_season,Wk 7,105.54,105.54,0.0
+2025,7,8,"I Don't Care, I Cast Fireball",regular_season,Wk 7,65.62,65.62,0.0
+2025,7,2,Danny Dice Rolls,regular_season,Wk 7,133.02,133.02,0.0
+2025,7,7,Roll for Yardage,regular_season,Wk 7,97.78,97.78,0.0
+2025,8,9,Paladins of the Pancreas,regular_season,Wk 8,100.22,100.22,0.0
+2025,8,4,Forgotten Burrows,regular_season,Wk 8,139.0,139.0,0.0
+2025,8,1,Heroic Inspiration,regular_season,Wk 8,89.96,89.96,0.0
+2025,8,2,Danny Dice Rolls,regular_season,Wk 8,82.88,82.88,0.0
+2025,8,6,NameOfCurseWarding,regular_season,Wk 8,89.26,89.26,0.0
+2025,8,7,Roll for Yardage,regular_season,Wk 8,111.08,111.08,0.0
+2025,8,3,Hunters and renfrow,regular_season,Wk 8,126.42,126.42,0.0
+2025,8,5,Constitution Check Downs,regular_season,Wk 8,98.48,98.48,0.0
+2025,8,8,"I Don't Care, I Cast Fireball",regular_season,Wk 8,90.88,90.88,0.0
+2025,8,10,We Are Rolling High,regular_season,Wk 8,112.12,112.12,0.0
+2025,9,10,We Are Rolling High,regular_season,Wk 9,139.3,139.3,0.0
+2025,9,3,Hunters and renfrow,regular_season,Wk 9,80.2,80.2,0.0
+2025,9,4,Forgotten Burrows,regular_season,Wk 9,100.5,100.5,0.0
+2025,9,2,Danny Dice Rolls,regular_season,Wk 9,110.58,110.58,0.0
+2025,9,1,Heroic Inspiration,regular_season,Wk 9,96.76,96.76,0.0
+2025,9,8,"I Don't Care, I Cast Fireball",regular_season,Wk 9,48.42,48.42,0.0
+2025,9,6,NameOfCurseWarding,regular_season,Wk 9,141.2,141.2,0.0
+2025,9,5,Constitution Check Downs,regular_season,Wk 9,99.2,99.2,0.0
+2025,9,7,Roll for Yardage,regular_season,Wk 9,103.66,103.66,0.0
+2025,9,9,Paladins of the Pancreas,regular_season,Wk 9,87.32,87.32,0.0
+2025,10,2,Danny Dice Rolls,regular_season,Wk 10,71.02,71.02,0.0
+2025,10,5,Constitution Check Downs,regular_season,Wk 10,97.8,97.8,0.0
+2025,10,1,Heroic Inspiration,regular_season,Wk 10,107.4,107.4,0.0
+2025,10,6,NameOfCurseWarding,regular_season,Wk 10,89.0,89.0,0.0
+2025,10,7,Roll for Yardage,regular_season,Wk 10,115.5,115.5,0.0
+2025,10,3,Hunters and renfrow,regular_season,Wk 10,98.82,98.82,0.0
+2025,10,8,"I Don't Care, I Cast Fireball",regular_season,Wk 10,111.92,111.92,0.0
+2025,10,4,Forgotten Burrows,regular_season,Wk 10,141.9,141.9,0.0
+2025,10,9,Paladins of the Pancreas,regular_season,Wk 10,125.44,125.44,0.0
+2025,10,10,We Are Rolling High,regular_season,Wk 10,90.64,90.64,0.0
+2025,11,1,Heroic Inspiration,regular_season,Wk 11,101.7,101.7,0.0
+2025,11,3,Hunters and renfrow,regular_season,Wk 11,72.24,72.24,0.0
+2025,11,5,Constitution Check Downs,regular_season,Wk 11,104.82,104.82,0.0
+2025,11,10,We Are Rolling High,regular_season,Wk 11,83.22,83.22,0.0
+2025,11,2,Danny Dice Rolls,regular_season,Wk 11,83.0,83.0,0.0
+2025,11,9,Paladins of the Pancreas,regular_season,Wk 11,133.78,133.78,0.0
+2025,11,7,Roll for Yardage,regular_season,Wk 11,124.84,124.84,0.0
+2025,11,8,"I Don't Care, I Cast Fireball",regular_season,Wk 11,71.72,71.72,0.0
+2025,11,6,NameOfCurseWarding,regular_season,Wk 11,87.1,87.1,0.0
+2025,11,4,Forgotten Burrows,regular_season,Wk 11,88.62,88.62,0.0
+2025,12,4,Forgotten Burrows,regular_season,Wk 12,120.56,120.56,0.0
+2025,12,1,Heroic Inspiration,regular_season,Wk 12,127.82,127.82,0.0
+2025,12,7,Roll for Yardage,regular_season,Wk 12,99.56,99.56,0.0
+2025,12,10,We Are Rolling High,regular_season,Wk 12,65.82,65.82,0.0
+2025,12,9,Paladins of the Pancreas,regular_season,Wk 12,84.12,84.12,0.0
+2025,12,5,Constitution Check Downs,regular_season,Wk 12,109.86,109.86,0.0
+2025,12,8,"I Don't Care, I Cast Fireball",regular_season,Wk 12,74.82,74.82,0.0
+2025,12,2,Danny Dice Rolls,regular_season,Wk 12,130.96,130.96,0.0
+2025,12,6,NameOfCurseWarding,regular_season,Wk 12,78.46,78.46,0.0
+2025,12,3,Hunters and renfrow,regular_season,Wk 12,86.68,86.68,0.0
+2025,13,4,Forgotten Burrows,regular_season,Wk 13,76.94,76.94,0.0
+2025,13,3,Hunters and renfrow,regular_season,Wk 13,128.14,128.14,0.0
+2025,13,9,Paladins of the Pancreas,regular_season,Wk 13,103.52,103.52,0.0
+2025,13,8,"I Don't Care, I Cast Fireball",regular_season,Wk 13,87.04,87.04,0.0
+2025,13,5,Constitution Check Downs,regular_season,Wk 13,89.0,89.0,0.0
+2025,13,7,Roll for Yardage,regular_season,Wk 13,100.98,100.98,0.0
+2025,13,6,NameOfCurseWarding,regular_season,Wk 13,69.24,69.24,0.0
+2025,13,2,Danny Dice Rolls,regular_season,Wk 13,95.0,95.0,0.0
+2025,13,10,We Are Rolling High,regular_season,Wk 13,97.74,97.74,0.0
+2025,13,1,Heroic Inspiration,regular_season,Wk 13,111.22,111.22,0.0
+2025,15,1,Heroic Inspiration,playoff_round1,R1 wk14+15,238.18,238.18,0.0
+2025,15,2,Danny Dice Rolls,playoff_round1,R1 wk14+15,170.1,170.1,0.0
+2025,15,3,Hunters and renfrow,playoff_round1,R1 wk14+15,184.26,184.26,0.0
+2025,15,4,Forgotten Burrows,playoff_round1,R1 wk14+15,208.96,208.96,0.0
+2025,15,5,Constitution Check Downs,playoff_round1,R1 wk14+15,208.2,208.2,0.0
+2025,15,7,Roll for Yardage,playoff_round1,R1 wk14+15,187.36,187.36,0.0
+2025,15,9,Paladins of the Pancreas,playoff_round1,R1 wk14+15,215.66,215.66,0.0
+2025,15,10,We Are Rolling High,playoff_round1,R1 wk14+15,217.16,217.16,0.0
+2025,17,1,Heroic Inspiration,playoff_round2,R2 wk16+17,157.28,157.28,0.0
+2025,17,2,Danny Dice Rolls,playoff_round2,R2 wk16+17,147.2,147.2,0.0
+2025,17,3,Hunters and renfrow,playoff_round2,R2 wk16+17,171.2,171.2,0.0
+2025,17,4,Forgotten Burrows,playoff_round2,R2 wk16+17,254.96,254.96,-0.0
+2025,17,5,Constitution Check Downs,playoff_round2,R2 wk16+17,263.98,263.98,0.0
+2025,17,7,Roll for Yardage,playoff_round2,R2 wk16+17,280.94,280.94,0.0
+2025,17,9,Paladins of the Pancreas,playoff_round2,R2 wk16+17,189.08,189.08,-0.0
+2025,17,10,We Are Rolling High,playoff_round2,R2 wk16+17,160.56,160.56,0.0
+2025,17,6,NameOfCurseWarding,toilet_bowl,Toilet wk14-17,441.82,441.82,0.0
+2025,17,8,"I Don't Care, I Cast Fireball",toilet_bowl,Toilet wk14-17,303.94,303.94,0.0

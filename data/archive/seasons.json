@@ -1,0 +1,361 @@
+{
+  "2016": {
+    "current_week": 17,
+    "reg_season_end": 12,
+    "playoff_weeks": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "total_weeks": 16,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Mikey",
+      "4": "David",
+      "5": "Matt",
+      "6": "Mitchell",
+      "7": "B. Pisarcik",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Tin Chicken Lives Matter",
+      "2": "I have the tin chicken",
+      "3": "Jet Fuel Can't Melt Tin Chickn",
+      "4": "Prestige Worldwide",
+      "5": "they got tin chken n philly?",
+      "6": "TINder Chicken Draft Date",
+      "7": "The NFL Team Owners",
+      "8": "Shiver Me Tin Chickens",
+      "9": "Parm Farty Tin Chickens",
+      "10": "ALL DAY Johnnys"
+    }
+  },
+  "2017": {
+    "current_week": 16,
+    "reg_season_end": 12,
+    "playoff_weeks": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "total_weeks": 16,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Mikey",
+      "4": "David",
+      "5": "Matt",
+      "6": "Mitchell",
+      "7": "B. Pisarcik",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Triple Crown Affirmed",
+      "2": "Honey Funches  Of Oats",
+      "3": "Jet Fuel Can't Melt Tin Chickn",
+      "4": "Give me the hotdog baby",
+      "5": "they got tin chken n philly?",
+      "6": "Travis Kelce And the Boys",
+      "7": "Dontrelle Inman and the Necks",
+      "8": "Josh N Brian's Excellent Team",
+      "9": "On the 2nd Year He Ressurected",
+      "10": "ALL DAY Johnnys"
+    }
+  },
+  "2018": {
+    "current_week": 16,
+    "reg_season_end": 12,
+    "playoff_weeks": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "total_weeks": 16,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Mikey",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Ice In My Veins",
+      "2": "UuHhhh myYyy gICEEE",
+      "3": "Jet Fuel Can't Evaporate Ice",
+      "4": "Give me the hotdog baby",
+      "5": "the iceman cometh",
+      "6": "Travis Kelce And the Boys",
+      "7": "smirn office",
+      "8": "Behind Blue Ice",
+      "9": "Antonio Cromarties Kids",
+      "10": "ALL DAY Johnnys"
+    }
+  },
+  "2019": {
+    "current_week": 16,
+    "reg_season_end": 12,
+    "playoff_weeks": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "total_weeks": 16,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Mikey",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Luck of  The Claw",
+      "2": "Claw and Order Spec Seltz Unit",
+      "3": "Jet Fuel Can't Melt White Claw",
+      "4": "Give me the hotdog baby",
+      "5": "No One is Above The Claw",
+      "6": "Monday Night CLAW",
+      "7": "Black Claws matter",
+      "8": "Morty! I'm White Claw Rick",
+      "9": "Mr. Krab's Klaws",
+      "10": "ALL DAY Johnnys"
+    }
+  },
+  "2020": {
+    "current_week": 16,
+    "reg_season_end": 12,
+    "playoff_weeks": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "total_weeks": 16,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Mikey",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Beirut Explosiv Runners",
+      "2": "Red, White, and COVID Positive",
+      "3": "Jet Fuel Can't Melt Ole Rona",
+      "4": "PDX Peaceful Protesters",
+      "5": "Drew Bree's Race War",
+      "6": "Coavoid Johnny",
+      "7": "Preexisting  Condition",
+      "8": "Billy Joel's Fire Starters",
+      "9": "Killer Hornets",
+      "10": "ALL DAY Johnnys"
+    }
+  },
+  "2021": {
+    "current_week": 17,
+    "reg_season_end": 13,
+    "playoff_weeks": [
+      14,
+      15,
+      16,
+      17
+    ],
+    "total_weeks": 17,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Kevin",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Ye Johnny on a Winner's Boat",
+      "2": "WhatWillWeDoWit ATinChicken!",
+      "3": "Ball away  Joe",
+      "4": "Leave Her Johnny",
+      "5": "Raft Punk With a Chicken",
+      "6": "CMC Shanties",
+      "7": "Tuesday Night  Wellerman Calls",
+      "8": "Last of Kylers Privateers",
+      "9": "DJ's Locker Flying Dutchmen",
+      "10": "Fishing for The Ship Year"
+    }
+  },
+  "2022": {
+    "current_week": 18,
+    "reg_season_end": 14,
+    "playoff_weeks": [
+      15,
+      16,
+      17
+    ],
+    "total_weeks": 17,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Kevin",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Spray Tanned Six Packers",
+      "2": "Liftin Olave Da Weights",
+      "3": "Body builing  Podium finisher",
+      "4": "Cee Deez Traps MaHomie",
+      "5": "King Swole",
+      "6": "Certified Swole Boys",
+      "7": "Goosed Up Lil Buff Boys",
+      "8": "The Skeletrex Bone Flexers",
+      "9": "Gainesville Muscle Hampstrs",
+      "10": "Hundred Dollar Clown Baby"
+    }
+  },
+  "2023": {
+    "current_week": 17,
+    "reg_season_end": 13,
+    "playoff_weeks": [
+      14,
+      15,
+      16,
+      17
+    ],
+    "total_weeks": 17,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Kevin",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "The Allegheny Climb Hurts",
+      "2": "See Moore Mount-Caffreys",
+      "3": "Rocky Hill Oysters",
+      "4": "Mt. Field(s)",
+      "5": "Appalachian Hill to die on",
+      "6": "MT KilledbyLamaro",
+      "7": "Appalachian Hillaineers",
+      "8": "The West Coast Hilltoppers",
+      "9": "Catskill Killers",
+      "10": "We Are Climbing High"
+    }
+  },
+  "2024": {
+    "current_week": 17,
+    "reg_season_end": 13,
+    "playoff_weeks": [
+      14,
+      15,
+      16,
+      17
+    ],
+    "total_weeks": 17,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Kevin",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "2 Brothers In a Chiefs Van",
+      "2": "Violent Tyreek Roadshow",
+      "3": "Three unmuscular Michaels jr.",
+      "4": "Ants In My Eyes Jackson",
+      "5": "Mike Evans down your Vincents",
+      "6": "MT KilledbyLamaro",
+      "7": "FootBall Fondlers",
+      "8": "Kittl' Bits",
+      "9": "Pirates of the Pancreas",
+      "10": "We Are Climbing High"
+    }
+  },
+  "2025": {
+    "current_week": 17,
+    "reg_season_end": 13,
+    "playoff_weeks": [
+      14,
+      15,
+      16,
+      17
+    ],
+    "total_weeks": 17,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Kevin",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Heroic Inspiration",
+      "2": "Danny Dice Rolls",
+      "3": "Hunters and renfrow",
+      "4": "Forgotten Burrows",
+      "5": "Constitution Check Downs",
+      "6": "NameOfCurseWarding",
+      "7": "Roll for Yardage",
+      "8": "I Don't Care, I Cast Fireball",
+      "9": "Paladins of the Pancreas",
+      "10": "We Are Rolling High"
+    }
+  }
+}

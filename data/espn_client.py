@@ -17,6 +17,25 @@ from config import ESPN_S2, SWID, season_config, get_manager_name
 
 CACHE_DIR = Path(__file__).parent / "cache"
 
+# ── Permanent archive ────────────────────────────────────────────────────────
+# data/archive/*.csv is the durable record of completed seasons. It is read
+# before the pickle cache and before ESPN, so normal use needs no cookies.
+# Set USE_ARCHIVE = False to bypass it and force a live ESPN pull.
+USE_ARCHIVE = True
+
+
+def _from_archive(name: str, season: int):
+    """Return an archived DataFrame, or None if unavailable."""
+    if not USE_ARCHIVE:
+        return None
+    try:
+        from data import archive
+        if archive.has(name, season):
+            return archive.get(name, season)
+    except Exception:
+        pass
+    return None
+
 
 def _cache_path(season: int, key: str) -> Path:
     d = CACHE_DIR / str(season)
@@ -228,6 +247,9 @@ def get_matchups_df(season: int) -> pd.DataFrame:
     The 'is_playoff' flag marks these rows. Individual playoff weeks (pw[0],
     pw[2]) will not exist in the dataframe for pre-2019 seasons.
     """
+    arc = _from_archive("matchups", season)
+    if arc is not None:
+        return arc
     cached = _load(season, "matchups_df")
     if cached is not None:
         return cached
@@ -372,6 +394,9 @@ def get_validation_df(season: int) -> pd.DataFrame:
         Round 3 = pw[2]+pw[3], ESPN cumulative at pw[3].
         Toilet bowl = teams paired against same opponent at pw[1], pw[2], AND pw[3] (3 weeks).
     """
+    arc = _from_archive("validation", season)
+    if arc is not None:
+        return arc
     cached = _load(season, "validation_df")
     if cached is not None:
         return cached
@@ -634,6 +659,9 @@ def get_validation_df(season: int) -> pd.DataFrame:
 
 def get_boxscores_df(season: int) -> pd.DataFrame:
     """Player-level box score data for all played weeks."""
+    arc = _from_archive("boxscores", season)
+    if arc is not None:
+        return arc
     cached = _load(season, "boxscores_df")
     if cached is not None:
         return cached
@@ -733,6 +761,14 @@ def get_manager_map(season: int) -> dict[int, str]:
     Applies MANAGER_OVERRIDES and OWNER_ID_TO_NAME from config.
     Safe to call on every page render — uses the cached league object.
     """
+    if USE_ARCHIVE:
+        try:
+            from data import archive
+            m = archive.manager_map(season)
+            if m:
+                return m
+        except Exception:
+            pass
     league = get_league(season)
     result = {}
     for team in league.teams:
@@ -741,7 +777,28 @@ def get_manager_map(season: int) -> dict[int, str]:
     return result
 
 
+def get_current_week(season: int) -> int:
+    """
+    Last scoring period ESPN recorded for the season.
+
+    Reads the archive first so completed seasons need neither the pickled
+    League object nor a live ESPN call.
+    """
+    if USE_ARCHIVE:
+        try:
+            from data import archive
+            cw = archive.current_week(season)
+            if cw is not None:
+                return cw
+        except Exception:
+            pass
+    return get_league(season).current_week
+
+
 def get_draft_df(season: int) -> pd.DataFrame:
+    arc = _from_archive("draft", season)
+    if arc is not None:
+        return arc
     cached = _load(season, "draft_df")
     if cached is not None:
         return cached
@@ -764,6 +821,9 @@ def get_draft_df(season: int) -> pd.DataFrame:
 
 
 def get_standings_df(season: int) -> pd.DataFrame:
+    arc = _from_archive("standings", season)
+    if arc is not None:
+        return arc
     cached = _load(season, "standings_df")
     if cached is not None:
         return cached
