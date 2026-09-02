@@ -3,12 +3,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import streamlit as st
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import (
     h2h_standings, median_standings, combined_standings,
-    strength_of_schedule, luck_index, alternate_schedule_standings
+    strength_of_schedule, luck_index, alternate_schedule_standings,
+    swapped_schedule_matrix
 )
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import sidebar_display_prefs, prep_display, chart_label
@@ -204,28 +206,64 @@ with tab5:
 
 # ── Tab 6: Alternate Schedule ─────────────────────────────────────────────────
 with tab6:
-    st.subheader("Alternate Schedule Standings")
-    st.caption("If each team played every other team every week — who would have the most wins?")
-    with st.spinner("Computing alternate schedule (may take a moment)..."):
-        df = alternate_schedule_standings(matchups_df)
-    display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "alt_wins", "alt_games", "alt_win_pct"],
-                           headers=["Team", "Alt Wins", "Games", "Win%"])
+    weeks_played = matchups_df["week"].nunique()
+    n_teams = matchups_df["team_id"].nunique()
+    opp_per_week = n_teams - 1
+
+    # ── Swapped schedules ─────────────────────────────────────────────────────
+    st.subheader("If You Had Played Someone Else's Schedule")
+    st.caption(
+        "Each cell: H2H wins the **row** manager would have if they had played the "
+        "**column** manager's schedule, using their own real weekly scores. "
+        "The diagonal is their own schedule, so it equals their actual record. "
+        f"Regular season only ({weeks_played} weeks)."
+    )
+
+    with st.spinner("Computing swapped schedules..."):
+        mat = swapped_schedule_matrix(matchups_df)
+
+    ts = mat.mean(axis=1)   # row average — how well this team does against any schedule
+    ss = mat.mean(axis=0)   # column average — how generous this schedule is to anyone
+
+    order = ts.sort_values(ascending=False).index.tolist()
+    mat = mat.loc[order, order]
+    names = {t: manager_map.get(t, "?") for t in order}
+
+    # Values are formatted as text so integer wins and one-decimal averages can
+    # share a column without pandas widening the wins to 9.0.
+    rows = []
+    for r in order:
+        row = {"Manager": names[r]}
+        for c in order:
+            row[names[c]] = str(int(mat.loc[r, c]))
+        row["TS"] = f"{ts[r]:.1f}"
+        rows.append(row)
+    ss_row = {"Manager": "SS"}
+    for c in order:
+        ss_row[names[c]] = f"{ss[c]:.1f}"
+    ss_row["TS"] = ""
+    rows.append(ss_row)
+
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    st.caption(
+        "**TS** (Team Strength) = that team's average wins across all 10 schedules. "
+        "**SS** (Schedule Strength) = average wins any team would get playing that "
+        "schedule, so a **higher SS means an easier schedule**."
+    )
+
+    st.divider()
+
+    # ── Play everyone every week ──────────────────────────────────────────────
+    st.subheader("If Everyone Played Everyone, Every Week")
+    st.caption(
+        f"Each week every team is scored against all {opp_per_week} others. "
+        f"Maximum possible: **{opp_per_week * weeks_played} wins** "
+        f"({opp_per_week} per week x {weeks_played} weeks)."
+    )
+    with st.spinner("Computing..."):
+        alt = alternate_schedule_standings(matchups_df)
+    display = prep_display(alt, manager_map, show_mgr, show_team,
+                           cols=["team_name", "alt_wins", "alt_win_pct"],
+                           headers=["Team", "Wins", "Win%"])
     display["Win%"] = display["Win%"].round(3)
     st.dataframe(display, use_container_width=True, hide_index=True)
-
-    df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-    h2h = h2h_standings(matchups_df).set_index("team_name")["wins"]
-    df["actual_wins"] = df["team_name"].map(h2h)
-    n_teams = matchups_df["team_id"].nunique()
-    weeks_played = matchups_df["week"].nunique()
-    actual_games = weeks_played
-    alt_games_per_week = n_teams - 1
-    scale = actual_games / (alt_games_per_week * weeks_played) if weeks_played > 0 else 1
-    fig = go.Figure()
-    fig.add_trace(go.Bar(name="Actual Wins", x=df["label"], y=df["actual_wins"], marker_color="#3498db"))
-    fig.add_trace(go.Bar(name="Alt Win Rate (scaled to actual games)", x=df["label"],
-                         y=(df["alt_wins"] * scale).round(1), marker_color="#e67e22"))
-    fig.update_layout(barmode="group", xaxis_tickangle=-30,
-                      title="Actual Wins vs Alternate Schedule Win Rate")
-    st.plotly_chart(fig, use_container_width=True)

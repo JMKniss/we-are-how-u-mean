@@ -134,3 +134,45 @@ def alternate_schedule_standings(matchups_df: pd.DataFrame) -> pd.DataFrame:
     df = pd.DataFrame(results).sort_values("alt_wins", ascending=False).reset_index(drop=True)
     df.index += 1
     return df
+
+
+def swapped_schedule_matrix(matchups_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    wins[R][C] = H2H wins team R would have if it had played team C's schedule.
+
+    For each week, R faces whoever C actually faced that week, and wins if R's
+    real score that week beats that opponent's real score.
+
+    Self-match rule: if C's opponent in a week is R itself, R cannot play
+    itself, so C is substituted as the opponent. That is also what really
+    happened — C played R that week — so the diagonal (R playing R's own
+    schedule) equals R's actual win total, which makes the matrix self-checking.
+
+    Ties are not wins, matching how actual wins are counted.
+
+    Returns a DataFrame indexed by team_id with team_id columns.
+    """
+    df = matchups_df
+    score = {(r.team_id, r.week): r.score for r in df.itertuples()}
+    sched = {(r.team_id, r.week): r.opp_id for r in df.itertuples()}
+    teams = sorted(df["team_id"].unique())
+    weeks = sorted(df["week"].unique())
+
+    out = {}
+    for row_t in teams:
+        row = {}
+        for col_t in teams:
+            wins = 0
+            for w in weeks:
+                opp = sched.get((col_t, w))
+                my = score.get((row_t, w))
+                if opp is None or my is None:
+                    continue
+                if opp == row_t:          # would face itself; borrow C instead
+                    opp = col_t
+                opp_score = score.get((opp, w))
+                if opp_score is not None and my > opp_score:
+                    wins += 1
+            row[col_t] = wins
+        out[row_t] = row
+    return pd.DataFrame(out).T.loc[teams, teams]
