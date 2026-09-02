@@ -7,7 +7,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from data.espn_client import get_boxscores_df, get_manager_map
-from analysis.efficiency import lineup_efficiency, top_players, projected_vs_actual
+from analysis.efficiency import (lineup_efficiency, top_players, projected_vs_actual,
+                                 player_manager_sequence)
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import sidebar_display_prefs, prep_display, chart_label
 
@@ -159,9 +160,21 @@ with tab3:
                 return f"{row['player_name']} ({team.strip()})"
             return row["player_name"]
 
+        # Who rostered each of these players, in order. Only the displayed
+        # players are looked up, and the slider caps that at 50.
+        seqs = player_manager_sequence(box_df, top["player_id"])
+
+        def manager_chain(pid):
+            teams = seqs.get(pid, [])
+            names = [manager_map.get(t, "?") for t in teams]
+            # collapse again in case two team_ids map to the same manager
+            chain = [n for i, n in enumerate(names) if i == 0 or n != names[i - 1]]
+            return " → ".join(chain)
+
         disp = pd.DataFrame({
             "Pos": top["position"],
             "Player": top.apply(player_label, axis=1),
+            "Manager": top["player_id"].map(manager_chain),
             "Total": top["total_points"].round(1),
             "Avg": top["avg_points"].round(1),
             "Weeks": top["weeks_played"],

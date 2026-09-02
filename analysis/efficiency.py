@@ -190,3 +190,30 @@ def projected_vs_actual(boxscores_df: pd.DataFrame) -> pd.DataFrame:
     ).reset_index()
     summary["beat_proj_pct"] = (summary["times_beat_proj"] / summary["total_weeks"] * 100).round(1)
     return summary.sort_values("avg_proj_diff", ascending=False).reset_index(drop=True)
+
+
+def player_manager_sequence(boxscores_df: pd.DataFrame, player_ids=None) -> dict:
+    """
+    Ordered fantasy teams that rostered each player, as {player_id: [team_id, ...]}.
+
+    Consecutive repeats are collapsed, so a player held all season yields one
+    entry and a player who changed hands yields one entry per spell. A player
+    who leaves and later returns to the same manager correctly yields
+    A, B, A rather than A, B.
+
+    Counts every week the player was on a roster, bench included, since the
+    question is who held him rather than who started him.
+    """
+    df = boxscores_df
+    if player_ids is not None:
+        df = df[df["player_id"].isin(list(player_ids))]
+    df = df.sort_values(["player_id", "season", "week"])
+
+    out = {}
+    for pid, g in df.groupby("player_id", sort=False):
+        seq = []
+        for tid in g["team_id"]:
+            if not seq or seq[-1] != tid:
+                seq.append(tid)
+        out[pid] = seq
+    return out
