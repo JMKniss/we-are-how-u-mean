@@ -160,19 +160,15 @@ with tab3:
             return row["player_name"]
 
         disp = pd.DataFrame({
-            "Player": top.apply(player_label, axis=1),
             "Pos": top["position"],
+            "Player": top.apply(player_label, axis=1),
             "Total": top["total_points"].round(1),
             "Avg": top["avg_points"].round(1),
             "Weeks": top["weeks_played"],
         })
-        # 2016-2017 carry no projections, so the column would read 0.00 for
-        # everyone. Only show it where projections actually exist.
-        if (top["avg_projected"].fillna(0) != 0).any():
-            disp["Proj"] = top["avg_projected"].round(1)
-
         disp.index = range(1, len(disp) + 1)
-        st.dataframe(disp, use_container_width=True)
+        st.dataframe(disp, use_container_width=True,
+                     column_config={"Pos": st.column_config.TextColumn("Pos", width="small")})
 
 with tab4:
     st.subheader("Projected vs Actual Scoring")
