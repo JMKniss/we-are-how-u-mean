@@ -3,6 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import streamlit as st
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from data.espn_client import get_boxscores_df, get_manager_map
@@ -147,8 +148,31 @@ with tab3:
         top_n = st.slider("Show top N", 10, 50, 20)
     pos = None if pos_filter == "All" else pos_filter
     top = top_players(box_df, position=pos, top_n=top_n)
-    top.index += 1
-    st.dataframe(top, use_container_width=True)
+
+    if top.empty:
+        st.info("No player data for this selection.")
+    else:
+        def player_label(row):
+            """Josh Allen (BUF), or just the name when the team is unknown."""
+            team = row["pro_team"]
+            if isinstance(team, str) and team.strip() and team.strip().lower() != "nan":
+                return f"{row['player_name']} ({team.strip()})"
+            return row["player_name"]
+
+        disp = pd.DataFrame({
+            "Player": top.apply(player_label, axis=1),
+            "Pos": top["position"],
+            "Total": top["total_points"].round(1),
+            "Avg": top["avg_points"].round(1),
+            "Weeks": top["weeks_played"],
+        })
+        # 2016-2017 carry no projections, so the column would read 0.00 for
+        # everyone. Only show it where projections actually exist.
+        if (top["avg_projected"].fillna(0) != 0).any():
+            disp["Proj"] = top["avg_projected"].round(1)
+
+        disp.index = range(1, len(disp) + 1)
+        st.dataframe(disp, use_container_width=True)
 
 with tab4:
     st.subheader("Projected vs Actual Scoring")
