@@ -10,3 +10,6 @@ data/cache/
 # NOTE: data/archive/ is deliberately NOT ignored.
 # It is the permanent, human-readable record of league history and is
 # committed to the repo. Rebuild it with: python build_archive.py
+
+# Local safety backups written by build_archive.py — not part of the record.
+data/archive/_backups/

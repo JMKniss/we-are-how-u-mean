@@ -38,7 +38,7 @@ season,team_id,team_name,wins,losses,ties,points_for,points_against,final_standi
 2019,7,Black Claws matter,3,9,0,1133.5200000000002,1243.62,7,0,36,36,4,0
 2019,8,Morty! I'm White Claw Rick,10,2,0,1217.94,1108.32,2,0,27,27,5,0
 2019,9,Mr. Krab's Klaws,6,6,0,1273.12,1282.26,8,0,12,12,1,0
-2019,10,ALL DAY Johnnys,9,3,0,1198.1000000000001,1050.48,1,0,25,25,1,0
+2019,10,ALL DAY Johnnys,9,3,0,1198.1,1050.48,1,0,25,25,1,0
 2020,1,Beirut Explosiv Runners,6,6,0,1259.72,1333.44,5,0,39,38,2,5
 2020,2,"Red, White, and COVID Positive",7,5,0,1329.7800000000002,1164.5,2,0,44,43,6,2
 2020,3,Jet Fuel Can't Melt Ole Rona,9,3,0,1288.7,1117.48,1,0,57,52,8,12
@@ -50,12 +50,12 @@ season,team_id,team_name,wins,losses,ties,points_for,points_against,final_standi
 2020,9,Killer Hornets,7,5,0,1221.08,1187.08,4,0,39,39,1,3
 2020,10,ALL DAY Johnnys,5,7,0,1037.44,1167.94,10,0,33,33,3,3
 2021,1,Ye Johnny on a Winner's Boat,7,6,0,1253.1,1225.08,8,0,30,30,3,3
-2021,2,WhatWillWeDoWit ATinChicken!,8,5,0,1293.8600000000001,1189.3,2,0,62,62,6,6
+2021,2,WhatWillWeDoWit ATinChicken!,8,5,0,1293.86,1189.3,2,0,62,62,6,6
 2021,3,Ball away  Joe,11,2,0,1495.0200000000002,1215.24,1,0,15,14,1,4
 2021,4,Leave Her Johnny,4,9,0,1116.46,1257.74,9,0,16,16,2,2
 2021,5,Raft Punk With a Chicken,7,6,0,1240.02,1190.74,6,0,32,30,1,6
 2021,6,CMC Shanties,3,10,0,1068.0,1285.48,7,0,36,35,1,4
-2021,7,Tuesday Night  Wellerman Calls,6,7,0,1357.8600000000001,1374.04,5,0,28,24,6,5
+2021,7,Tuesday Night  Wellerman Calls,6,7,0,1357.86,1374.04,5,0,28,24,6,5
 2021,8,Last of Kylers Privateers,7,6,0,1272.58,1328.5,4,0,44,44,3,2
 2021,9,DJ's Locker Flying Dutchmen,8,5,0,1327.4,1360.08,3,0,40,38,2,2
 2021,10,Fishing for The Ship Year,4,9,0,1268.48,1266.58,10,0,26,25,3,2
@@ -67,13 +67,13 @@ season,team_id,team_name,wins,losses,ties,points_for,points_against,final_standi
 2022,6,Certified Swole Boys,3,11,0,1190.3200000000002,1476.06,10,0,13,13,2,2
 2022,7,Goosed Up Lil Buff Boys,10,4,0,1513.06,1323.2,1,0,46,48,2,7
 2022,8,The Skeletrex Bone Flexers,8,6,0,1414.4799999999998,1304.02,8,0,44,48,3,2
-2022,9,Gainesville Muscle Hampstrs,8,6,0,1354.6399999999999,1399.66,7,0,49,49,1,3
+2022,9,Gainesville Muscle Hampstrs,8,6,0,1354.64,1399.66,7,0,49,49,1,3
 2022,10,Hundred Dollar Clown Baby,9,5,0,1556.74,1390.06,2,0,32,32,1,0
 2023,1,The Allegheny Climb Hurts,9,4,0,1367.72,1186.14,3,0,25,23,2,3
 2023,2,See Moore Mount-Caffreys,12,1,0,1490.6799999999996,1122.6,1,0,50,47,5,8
 2023,3,Rocky Hill Oysters,5,8,0,1159.36,1168.76,6,0,12,12,3,3
 2023,4,Mt. Field(s),0,13,0,1037.5,1431.26,7,0,11,11,2,2
-2023,5,Appalachian Hill to die on,6,7,0,1380.1200000000001,1357.0,8,0,24,24,2,4
+2023,5,Appalachian Hill to die on,6,7,0,1380.12,1357.0,8,0,24,24,2,4
 2023,6,MT KilledbyLamaro,10,3,0,1450.3000000000002,1274.46,2,0,6,6,0,0
 2023,7,Appalachian Hillaineers,9,4,0,1350.6799999999998,1259.52,4,0,50,49,5,10
 2023,8,The West Coast Hilltoppers,4,9,0,1170.48,1415.66,10,0,43,45,3,15
@@ -87,14 +87,14 @@ season,team_id,team_name,wins,losses,ties,points_for,points_against,final_standi
 2024,6,MT KilledbyLamaro,1,12,0,1024.02,1418.4,9,0,19,18,1,5
 2024,7,FootBall Fondlers,5,8,0,1439.64,1449.64,7,0,29,26,6,10
 2024,8,Kittl' Bits,9,4,0,1303.9599999999996,1164.04,3,0,37,37,5,15
-2024,9,Pirates of the Pancreas,8,5,0,1347.2000000000003,1256.72,2,0,21,20,3,4
+2024,9,Pirates of the Pancreas,8,5,0,1347.2000000000005,1256.72,2,0,21,20,3,4
 2024,10,We Are Climbing High,7,6,0,1289.22,1275.04,6,0,16,17,2,5
 2025,1,Heroic Inspiration,16,10,0,1336.0,1246.58,6,0,27,25,1,7
 2025,2,Danny Dice Rolls,10,16,0,1257.88,1264.16,8,0,42,40,5,4
 2025,3,Hunters and renfrow,11,15,0,1252.5,1268.08,7,0,5,4,1,4
 2025,4,Forgotten Burrows,18,8,0,1442.6999999999998,1291.04,4,0,8,8,0,5
 2025,5,Constitution Check Downs,16,10,0,1341.72,1237.06,1,0,46,45,3,5
-2025,6,NameOfCurseWarding,6,20,0,1203.3799999999999,1372.12,9,0,13,12,1,4
+2025,6,NameOfCurseWarding,6,20,0,1203.38,1372.12,9,0,13,12,1,4
 2025,7,Roll for Yardage,19,7,0,1354.76,1283.58,3,0,57,56,4,8
 2025,8,"I Don't Care, I Cast Fireball",4,22,0,1090.4199999999998,1408.68,10,0,59,58,5,9
 2025,9,Paladins of the Pancreas,17,9,0,1367.04,1267.02,2,0,28,26,2,5
