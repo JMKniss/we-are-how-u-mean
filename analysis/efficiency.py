@@ -3,69 +3,147 @@ Lineup efficiency analysis using player-level box score data.
 """
 import pandas as pd
 import numpy as np
+from scipy.optimize import linear_sum_assignment
+
+# Which player positions may fill each lineup slot.
+# Keys are ESPN slot names as they appear in boxscores_df["slot"].
+SLOT_ELIGIBILITY = {
+    "QB":           {"QB"},
+    "RB":           {"RB"},
+    "WR":           {"WR"},
+    "TE":           {"TE"},
+    "K":            {"K"},
+    "D/ST":         {"D/ST"},
+    "RB/WR":        {"RB", "WR"},
+    "WR/TE":        {"WR", "TE"},
+    "RB/WR/TE":     {"RB", "WR", "TE"},          # FLEX
+    "OP":           {"QB", "RB", "WR", "TE"},    # superflex
+    "QB/RB/WR/TE":  {"QB", "RB", "WR", "TE"},
+}
+
+# Slots that are not real starting positions.
+NON_STARTING_SLOTS = {"BE", "IR"}
 
 
-def lineup_efficiency(boxscores_df: pd.DataFrame) -> pd.DataFrame:
+def season_slot_requirements(boxscores_df: pd.DataFrame) -> dict:
     """
-    Actual score vs optimal possible score (best available lineup).
+    The league's canonical starting lineup for a season, as {slot: count}.
+
+    Taken as the most common starting-slot signature across all team-weeks
+    rather than per-team-per-week, because a manager who leaves a slot empty
+    should be measured against the full lineup they were allowed to field,
+    not against their own mistake. Roster construction has never changed
+    mid-season in this league, so one signature per season is correct.
+    """
+    sigs = {}
+    for _, g in boxscores_df.groupby(["week", "team_id"]):
+        counts = g[g["is_active_slot"]]["slot"].value_counts().to_dict()
+        key = tuple(sorted(counts.items()))
+        sigs[key] = sigs.get(key, 0) + 1
+    if not sigs:
+        return {}
+    best = max(sigs.items(), key=lambda kv: kv[1])[0]
+    return dict(best)
+
+
+def optimal_lineup_points(positions, points, slot_counts) -> float:
+    """
+    Highest total points achievable from this player pool under the slot rules.
+
+    Solved as a maximum-weight bipartite assignment rather than greedily, so
+    the answer is provably optimal for any slot structure, including multiple
+    flex spots. Dummy columns let a slot go unfilled when no eligible player
+    is available.
+    """
+    slots = []
+    for slot, n in slot_counts.items():
+        slots.extend([slot] * int(n))
+    if not slots or len(positions) == 0:
+        return 0.0
+
+    n_slots = len(slots)
+    n_players = len(positions)
+    # Real players plus one dummy per slot, so a slot can always be filled.
+    width = n_players + n_slots
+    BIG = 1e6
+    cost = np.full((n_slots, width), BIG)
+
+    for i, slot in enumerate(slots):
+        eligible = SLOT_ELIGIBILITY.get(slot)
+        for j in range(n_players):
+            if eligible is None or positions[j] in eligible:
+                cost[i, j] = -points[j]        # negative: minimising maximises points
+        cost[i, n_players + i] = 0.0           # dummy: slot left empty, worth 0
+
+    rows, cols = linear_sum_assignment(cost)
+    total = 0.0
+    for r, c in zip(rows, cols):
+        if c < n_players and cost[r, c] < BIG:
+            total += points[c]
+    return round(float(total), 2)
+
+
+def lineup_efficiency(boxscores_df: pd.DataFrame):
+    """
+    Actual score vs the best lineup that could legally have been fielded.
+
+    The optimal lineup respects position eligibility: two big quarterback
+    weeks cannot both count, because only one QB slot exists. The pool is
+    every non-IR player on the roster that week (starters plus bench).
+
     Efficiency % = actual / optimal * 100.
-    Bench points = sum of bench player points.
+
+    Seasons without bench data (2016-2017, sourced from nfl-data-py) have no
+    alternatives to choose from, so optimal would trivially equal actual.
+    Those rows get NaN efficiency instead of a meaningless 100%.
     """
     df = boxscores_df.copy()
 
-    # Positions that count as active (not bench/IR)
-    active = df[df["is_active_slot"]].groupby(["season", "week", "team_id", "team_name"])["points"].sum().reset_index()
-    active = active.rename(columns={"points": "actual_score"})
+    rows = []
+    for season, season_df in df.groupby("season"):
+        slot_counts = season_slot_requirements(season_df)
+        # Real slot names mean real lineup rules. 2016-2017 report "STARTER"
+        # for everything and carry no bench, so optimal is not computable.
+        computable = (
+            bool(slot_counts)
+            and not set(slot_counts) & {"STARTER"}
+            and bool(season_df["on_bench"].any())
+        )
 
-    bench = df[df["on_bench"]].groupby(["season", "week", "team_id", "team_name"])["points"].sum().reset_index()
-    bench = bench.rename(columns={"points": "bench_points"})
+        for (week, team_id, team_name), g in season_df.groupby(
+            ["week", "team_id", "team_name"]
+        ):
+            actual = round(float(g[g["is_active_slot"]]["points"].sum()), 2)
+            bench_pts = round(float(g[g["on_bench"]]["points"].sum()), 2)
 
-    # Optimal: for each week/team, find best possible lineup
-    # Group by position slot and pick top scorers to fill slots
-    def optimal_score(group):
-        # Use slot eligibility to find optimal — simplified: take top N by position
-        # Active slots from that week
-        active_slots = group[group["is_active_slot"]]["slot"].value_counts()
-        slot_counts = active_slots.to_dict()
+            if computable:
+                pool = g[~g["slot"].isin(["IR"])]
+                optimal = optimal_lineup_points(
+                    pool["position"].tolist(),
+                    pool["points"].tolist(),
+                    slot_counts,
+                )
+                # Actual can exceed a computed optimal only if the data is odd;
+                # clamp so efficiency never exceeds 100%.
+                optimal = max(optimal, actual)
+                left = round(optimal - actual, 2)
+                eff = round(actual / optimal * 100, 1) if optimal else np.nan
+            else:
+                optimal, left, eff = np.nan, np.nan, np.nan
 
-        all_players = group[~group["slot"].isin(["IR"])].copy()
-        all_players = all_players.sort_values("points", ascending=False)
+            rows.append({
+                "season": season,
+                "week": week,
+                "team_id": team_id,
+                "team_name": team_name,
+                "actual_score": actual,
+                "optimal_score": optimal,
+                "bench_points": bench_pts,
+                "points_left_on_bench": left,
+                "efficiency_pct": eff,
+            })
 
-        total = 0.0
-        filled = {}
-        # First pass: fill exact position slots
-        for _, player in all_players.iterrows():
-            pos = player["position"]
-            slot = player["slot"]
-            needed = slot_counts.get(slot, 0)
-            used = filled.get(slot, 0)
-            if used < needed:
-                total += player["points"]
-                filled[slot] = used + 1
-        return total
-
-    opt_rows = []
-    for (season, week, team_id, team_name), group in df.groupby(["season", "week", "team_id", "team_name"]):
-        active_pts = group[group["is_active_slot"]]["points"].sum()
-        bench_pts = group[group["on_bench"]]["points"].sum()
-        all_pts = group[~group["slot"].isin(["IR"])]["points"].sum()
-        # Optimal: active + any bench players who outscored active
-        # Simple proxy: sort all non-IR by points, take top N where N = active count
-        n_active = group[group["is_active_slot"]].shape[0]
-        top_n = group[~group["slot"].isin(["IR"])].nlargest(n_active, "points")["points"].sum()
-        opt_rows.append({
-            "season": season,
-            "week": week,
-            "team_id": team_id,
-            "team_name": team_name,
-            "actual_score": active_pts,
-            "optimal_score": top_n,
-            "bench_points": bench_pts,
-            "points_left_on_bench": max(0, top_n - active_pts),
-        })
-
-    result = pd.DataFrame(opt_rows)
-    result["efficiency_pct"] = (result["actual_score"] / result["optimal_score"].replace(0, np.nan) * 100).round(1)
+    result = pd.DataFrame(rows)
 
     summary = result.groupby(["team_id", "team_name"]).agg(
         avg_actual=("actual_score", "mean"),

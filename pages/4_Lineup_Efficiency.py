@@ -48,75 +48,94 @@ def label_for(tname: str) -> str:
 
 summary, weekly = lineup_efficiency(box_df)
 
+# 2016-2017 come from nfl-data-py: starters only, no bench, no real slot names.
+# With no bench there is no alternative lineup, so efficiency is not computable
+# rather than a meaningless 100%.
+efficiency_available = weekly["optimal_score"].notna().any()
+if not efficiency_available:
+    st.info(
+        f"Lineup efficiency is not available for {season}. Player data for "
+        "2016-2017 comes from nfl-data-py and covers only the nine starters "
+        "each week, with no bench and no lineup-slot detail, so there is no "
+        "alternative lineup to compare against. Top Players and Projections "
+        "vs Actual below are unaffected."
+    )
+
 tab1, tab2, tab3, tab4 = st.tabs(["Season Summary", "Weekly Efficiency", "Top Players", "Projections vs Actual"])
 
 with tab1:
-    st.subheader("Season Efficiency Summary")
-    display = prep_display(summary, manager_map, show_mgr, show_team,
-                           cols=["team_name", "avg_actual", "avg_optimal", "avg_efficiency",
-                                 "avg_bench", "avg_left_on_bench", "total_left_on_bench"],
-                           headers=["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
-                                    "Avg Bench Pts", "Avg Left on Bench", "Total Left on Bench"])
-    st.dataframe(display, use_container_width=True)
+    if not efficiency_available:
+        st.caption("Not available for this season - see the note above.")
+    else:
+        st.subheader("Season Efficiency Summary")
+        display = prep_display(summary, manager_map, show_mgr, show_team,
+                               cols=["team_name", "avg_actual", "avg_optimal", "avg_efficiency",
+                                     "avg_bench", "avg_left_on_bench", "total_left_on_bench"],
+                               headers=["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
+                                        "Avg Bench Pts", "Avg Left on Bench", "Total Left on Bench"])
+        st.dataframe(display, use_container_width=True)
 
-    summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
-    fig = px.bar(summary.sort_values("avg_efficiency"), x="avg_efficiency", y="label",
-                 orientation="h", title="Average Lineup Efficiency %",
-                 labels={"avg_efficiency": "Efficiency %", "label": ""},
-                 color="avg_efficiency", color_continuous_scale="RdYlGn",
-                 range_color=[summary["avg_efficiency"].min() - 2, 100])
-    fig.add_vline(x=summary["avg_efficiency"].mean(), line_dash="dash", line_color="gray",
-                  annotation_text="League Avg")
-    fig.update_layout(coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
+        summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
+        fig = px.bar(summary.sort_values("avg_efficiency"), x="avg_efficiency", y="label",
+                     orientation="h", title="Average Lineup Efficiency %",
+                     labels={"avg_efficiency": "Efficiency %", "label": ""},
+                     color="avg_efficiency", color_continuous_scale="RdYlGn",
+                     range_color=[summary["avg_efficiency"].min() - 2, 100])
+        fig.add_vline(x=summary["avg_efficiency"].mean(), line_dash="dash", line_color="gray",
+                      annotation_text="League Avg")
+        fig.update_layout(coloraxis_showscale=False)
+        st.plotly_chart(fig, use_container_width=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        fig2 = px.bar(summary.sort_values("total_left_on_bench", ascending=False),
-                      x="label", y="total_left_on_bench",
-                      title="Total Points Left on Bench (Season)",
-                      labels={"label": "", "total_left_on_bench": "Points"},
-                      color="total_left_on_bench", color_continuous_scale="Reds")
-        fig2.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
-        st.plotly_chart(fig2, use_container_width=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            fig2 = px.bar(summary.sort_values("total_left_on_bench", ascending=False),
+                          x="label", y="total_left_on_bench",
+                          title="Total Points Left on Bench (Season)",
+                          labels={"label": "", "total_left_on_bench": "Points"},
+                          color="total_left_on_bench", color_continuous_scale="Reds")
+            fig2.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
+            st.plotly_chart(fig2, use_container_width=True)
 
-    with col2:
-        fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
-                          text="label", title="Actual Score vs Efficiency",
-                          labels={"avg_actual": "Avg Actual Score", "avg_efficiency": "Efficiency %"})
-        fig3.update_traces(textposition="top center")
-        st.plotly_chart(fig3, use_container_width=True)
+        with col2:
+            fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
+                              text="label", title="Actual Score vs Efficiency",
+                              labels={"avg_actual": "Avg Actual Score", "avg_efficiency": "Efficiency %"})
+            fig3.update_traces(textposition="top center")
+            st.plotly_chart(fig3, use_container_width=True)
 
 with tab2:
-    st.subheader("Weekly Efficiency by Team")
-    teams = sorted(weekly["team_name"].unique())
-    selected_team = st.selectbox("Select Team", ["All Teams"] + teams)
-
-    if selected_team == "All Teams":
-        weekly["label"] = chart_label(weekly, manager_map, show_mgr, show_team)
-        fig = px.line(weekly.sort_values("week"), x="week", y="efficiency_pct",
-                      color="label", markers=True,
-                      title="Lineup Efficiency % by Week",
-                      labels={"week": "Week", "efficiency_pct": "Efficiency %", "label": "Team"})
-        fig.add_hline(y=100, line_dash="dash", line_color="gray", annotation_text="Perfect")
+    if not efficiency_available:
+        st.caption("Not available for this season - see the note above.")
     else:
-        tdf = weekly[weekly["team_name"] == selected_team].sort_values("week")
-        lbl = label_for(selected_team)
-        fig = go.Figure()
-        fig.add_trace(go.Bar(x=tdf["week"], y=tdf["actual_score"], name="Actual", marker_color="#3498db"))
-        fig.add_trace(go.Bar(x=tdf["week"], y=tdf["optimal_score"], name="Optimal", marker_color="#2ecc71"))
-        fig.add_trace(go.Scatter(x=tdf["week"], y=tdf["bench_points"], name="Bench Pts",
-                                 mode="lines+markers", line=dict(color="orange")))
-        fig.update_layout(barmode="group", title=f"{lbl} — Actual vs Optimal by Week",
-                          xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
-    st.plotly_chart(fig, use_container_width=True)
+        st.subheader("Weekly Efficiency by Team")
+        teams = sorted(weekly["team_name"].unique())
+        selected_team = st.selectbox("Select Team", ["All Teams"] + teams)
 
-    if selected_team != "All Teams":
-        tdf = weekly[weekly["team_name"] == selected_team][
-            ["week", "actual_score", "optimal_score", "bench_points", "points_left_on_bench", "efficiency_pct"]
-        ].round(2)
-        tdf.columns = ["Week", "Actual", "Optimal", "Bench Pts", "Left on Bench", "Eff%"]
-        st.dataframe(tdf, use_container_width=True, hide_index=True)
+        if selected_team == "All Teams":
+            weekly["label"] = chart_label(weekly, manager_map, show_mgr, show_team)
+            fig = px.line(weekly.sort_values("week"), x="week", y="efficiency_pct",
+                          color="label", markers=True,
+                          title="Lineup Efficiency % by Week",
+                          labels={"week": "Week", "efficiency_pct": "Efficiency %", "label": "Team"})
+            fig.add_hline(y=100, line_dash="dash", line_color="gray", annotation_text="Perfect")
+        else:
+            tdf = weekly[weekly["team_name"] == selected_team].sort_values("week")
+            lbl = label_for(selected_team)
+            fig = go.Figure()
+            fig.add_trace(go.Bar(x=tdf["week"], y=tdf["actual_score"], name="Actual", marker_color="#3498db"))
+            fig.add_trace(go.Bar(x=tdf["week"], y=tdf["optimal_score"], name="Optimal", marker_color="#2ecc71"))
+            fig.add_trace(go.Scatter(x=tdf["week"], y=tdf["bench_points"], name="Bench Pts",
+                                     mode="lines+markers", line=dict(color="orange")))
+            fig.update_layout(barmode="group", title=f"{lbl} — Actual vs Optimal by Week",
+                              xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
+        st.plotly_chart(fig, use_container_width=True)
+
+        if selected_team != "All Teams":
+            tdf = weekly[weekly["team_name"] == selected_team][
+                ["week", "actual_score", "optimal_score", "bench_points", "points_left_on_bench", "efficiency_pct"]
+            ].round(2)
+            tdf.columns = ["Week", "Actual", "Optimal", "Bench Pts", "Left on Bench", "Eff%"]
+            st.dataframe(tdf, use_container_width=True, hide_index=True)
 
 with tab3:
     st.subheader("Top Scoring Players")
