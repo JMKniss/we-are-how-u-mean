@@ -59,8 +59,8 @@ if not efficiency_available:
         f"Lineup efficiency is not available for {season}. Player data for "
         "2016-2017 comes from nfl-data-py and covers only the nine starters "
         "each week, with no bench and no lineup-slot detail, so there is no "
-        "alternative lineup to compare against. Top Players and Projections "
-        "vs Actual below are unaffected."
+        "alternative lineup to compare against. Top Players below is "
+        "unaffected."
     )
 
 tab1, tab2, tab3, tab4 = st.tabs(["Season Summary", "Weekly Efficiency", "Top Players", "Projections vs Actual"])
@@ -186,18 +186,27 @@ with tab3:
 with tab4:
     st.subheader("Projected vs Actual Scoring")
     st.caption("Did teams consistently outscore or underperform their ESPN projections?")
-    proj_df = projected_vs_actual(box_df)
-    display = prep_display(proj_df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "times_beat_proj", "total_weeks", "beat_proj_pct", "avg_proj_diff"],
-                           headers=["Team", "Times Beat Proj", "Weeks", "Beat Proj %", "Avg Diff"])
-    display["Avg Diff"] = display["Avg Diff"].round(2)
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    # 2016-2017 carry no ESPN projections at all, so every team "beats" a
+    # projection of zero. The comparison is meaningless for those seasons.
+    projections_available = (box_df["projected"].fillna(0) != 0).any()
+    if not projections_available:
+        st.info(
+            f"ESPN projections are not available for {season}, so there is "
+            "nothing to compare actual scoring against."
+        )
+    else:
+        proj_df = projected_vs_actual(box_df)
+        display = prep_display(proj_df, manager_map, show_mgr, show_team,
+                               cols=["team_name", "avg_projected", "times_beat_proj", "beat_proj_pct"],
+                               headers=["Team", "Avg Proj", "Times Beat Proj", "Beat Proj %"])
+        display["Avg Proj"] = display["Avg Proj"].round(1)
+        st.dataframe(display, use_container_width=True, hide_index=True)
 
-    proj_df["label"] = chart_label(proj_df, manager_map, show_mgr, show_team)
-    fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
-                 orientation="h", title="Average Points Above/Below ESPN Projection",
-                 labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "label": ""},
-                 color="avg_proj_diff", color_continuous_scale="RdYlGn")
-    fig.add_vline(x=0, line_dash="dash", line_color="gray")
-    fig.update_layout(coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
+        proj_df["label"] = chart_label(proj_df, manager_map, show_mgr, show_team)
+        fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
+                     orientation="h", title="Average Points Above/Below ESPN Projection",
+                     labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "label": ""},
+                     color="avg_proj_diff", color_continuous_scale="RdYlGn")
+        fig.add_vline(x=0, line_dash="dash", line_color="gray")
+        fig.update_layout(coloraxis_showscale=False)
+        st.plotly_chart(fig, use_container_width=True)

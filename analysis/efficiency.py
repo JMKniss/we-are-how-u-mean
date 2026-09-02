@@ -186,10 +186,11 @@ def projected_vs_actual(boxscores_df: pd.DataFrame) -> pd.DataFrame:
     summary = team_weekly.groupby(["team_id", "team_name"]).agg(
         times_beat_proj=("beat_projection", "sum"),
         total_weeks=("beat_projection", "count"),
+        avg_projected=("projected", "mean"),
         avg_proj_diff=("proj_diff", "mean"),
     ).reset_index()
     summary["beat_proj_pct"] = (summary["times_beat_proj"] / summary["total_weeks"] * 100).round(1)
-    return summary.sort_values("avg_proj_diff", ascending=False).reset_index(drop=True)
+    return summary.sort_values("beat_proj_pct", ascending=False).reset_index(drop=True)
 
 
 def player_manager_sequence(boxscores_df: pd.DataFrame, player_ids=None) -> dict:
