@@ -114,7 +114,6 @@ def lineup_efficiency(boxscores_df: pd.DataFrame):
             ["week", "team_id", "team_name"]
         ):
             actual = round(float(g[g["is_active_slot"]]["points"].sum()), 2)
-            bench_pts = round(float(g[g["on_bench"]]["points"].sum()), 2)
 
             if computable:
                 pool = g[~g["slot"].isin(["IR"])]
@@ -138,7 +137,6 @@ def lineup_efficiency(boxscores_df: pd.DataFrame):
                 "team_name": team_name,
                 "actual_score": actual,
                 "optimal_score": optimal,
-                "bench_points": bench_pts,
                 "points_left_on_bench": left,
                 "efficiency_pct": eff,
             })
@@ -148,7 +146,6 @@ def lineup_efficiency(boxscores_df: pd.DataFrame):
     summary = result.groupby(["team_id", "team_name"]).agg(
         avg_actual=("actual_score", "mean"),
         avg_optimal=("optimal_score", "mean"),
-        avg_bench=("bench_points", "mean"),
         avg_left_on_bench=("points_left_on_bench", "mean"),
         avg_efficiency=("efficiency_pct", "mean"),
         total_left_on_bench=("points_left_on_bench", "sum"),

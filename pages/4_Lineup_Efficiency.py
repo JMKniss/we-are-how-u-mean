@@ -70,9 +70,9 @@ with tab1:
         st.subheader("Season Efficiency Summary")
         display = prep_display(summary, manager_map, show_mgr, show_team,
                                cols=["team_name", "avg_actual", "avg_optimal", "avg_efficiency",
-                                     "avg_bench", "avg_left_on_bench", "total_left_on_bench"],
+                                     "avg_left_on_bench", "total_left_on_bench"],
                                headers=["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
-                                        "Avg Bench Pts", "Avg Left on Bench", "Total Left on Bench"])
+                                        "Avg Left on Bench", "Total Left on Bench"])
         st.dataframe(display, use_container_width=True)
 
         summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
@@ -124,7 +124,8 @@ with tab2:
             fig = go.Figure()
             fig.add_trace(go.Bar(x=tdf["week"], y=tdf["actual_score"], name="Actual", marker_color="#3498db"))
             fig.add_trace(go.Bar(x=tdf["week"], y=tdf["optimal_score"], name="Optimal", marker_color="#2ecc71"))
-            fig.add_trace(go.Scatter(x=tdf["week"], y=tdf["bench_points"], name="Bench Pts",
+            fig.add_trace(go.Scatter(x=tdf["week"], y=tdf["points_left_on_bench"],
+                                     name="Left on Bench",
                                      mode="lines+markers", line=dict(color="orange")))
             fig.update_layout(barmode="group", title=f"{lbl} — Actual vs Optimal by Week",
                               xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
@@ -132,9 +133,9 @@ with tab2:
 
         if selected_team != "All Teams":
             tdf = weekly[weekly["team_name"] == selected_team][
-                ["week", "actual_score", "optimal_score", "bench_points", "points_left_on_bench", "efficiency_pct"]
+                ["week", "actual_score", "optimal_score", "points_left_on_bench", "efficiency_pct"]
             ].round(2)
-            tdf.columns = ["Week", "Actual", "Optimal", "Bench Pts", "Left on Bench", "Eff%"]
+            tdf.columns = ["Week", "Actual", "Optimal", "Left on Bench", "Eff%"]
             st.dataframe(tdf, use_container_width=True, hide_index=True)
 
 with tab3:
