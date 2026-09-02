@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import numpy as np
-from data.espn_client import get_matchups_df, get_manager_map, invalidate_cache
+from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import h2h_standings, combined_standings
 from config import SEASONS, season_config
 from display_utils import sidebar_display_prefs
@@ -17,11 +17,6 @@ st.set_page_config(page_title="All-Time Records", page_icon="📜", layout="wide
 st.title("📜 All-Time Records")
 
 show_mgr, show_team = sidebar_display_prefs()
-if st.sidebar.button("🔄 Refresh All Data"):
-    for s in SEASONS:
-        invalidate_cache(s)
-    st.cache_data.clear()
-    st.rerun()
 
 # ── 2015 hardcoded ────────────────────────────────────────────────────────────
 LEGACY_2015 = {"champion": "Mikey", "sacko": "Tyler"}

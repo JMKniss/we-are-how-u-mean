@@ -5,7 +5,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
-from data.espn_client import get_boxscores_df, get_manager_map, invalidate_cache
+from data.espn_client import get_boxscores_df, get_manager_map
 from analysis.efficiency import lineup_efficiency, top_players, projected_vs_actual
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import sidebar_display_prefs, prep_display, chart_label
@@ -21,10 +21,6 @@ season = st.sidebar.selectbox(
     index=SEASONS.index(st.session_state["selected_season"])
 )
 st.session_state["selected_season"] = season
-if st.sidebar.button("🔄 Refresh Data"):
-    invalidate_cache(season)
-    st.cache_data.clear()
-    st.rerun()
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)

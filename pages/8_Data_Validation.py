@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from data.espn_client import get_validation_df, get_manager_map, invalidate_cache
+from data.espn_client import get_validation_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import sidebar_display_prefs, prep_display
 
@@ -31,14 +31,6 @@ season = st.sidebar.selectbox(
 )
 st.session_state["selected_season"] = season
 all_seasons = st.sidebar.checkbox("Check all seasons at once", value=False)
-if st.sidebar.button("🔄 Re-run validation (clears cache)"):
-    if all_seasons:
-        for y in SEASONS:
-            invalidate_cache(y)
-    else:
-        invalidate_cache(season)
-    st.cache_data.clear()
-    st.rerun()
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=600)

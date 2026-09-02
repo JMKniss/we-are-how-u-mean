@@ -55,10 +55,35 @@ cache and *before* ESPN, so day-to-day use needs no cookies and no network.
 Because it is CSV it is readable, diffable, and hand-correctable — if a value is
 wrong, edit the cell. Read it via `data/archive.py`.
 
-Rebuild after a correction upstream or to add a season:
+The archive is curated — some values were checked by hand and corrected — so
+refreshes are **targeted, never wholesale**. `build_archive.py` has no
+"rebuild everything" mode and will not touch a season you did not name.
+
 ```
-cd ff_app && python build_archive.py     # needs valid ESPN cookies
+python build_archive.py --list                            # what is archived
+python build_archive.py --season 2026 --update            # weekly: adds new rows only
+python build_archive.py --season 2026 --update --dry-run  # preview, writes nothing
+python build_archive.py --season 2019 --rebuild --force   # replace ONE season
 ```
+
+Guarantees:
+- `--season` is required. There is no all-seasons mode.
+- `--update` is additive. Rows that would *change* are reported as conflicts
+  and skipped unless you pass `--force`.
+- `--rebuild` refuses to replace an already-archived season without `--force`.
+- Every write is backed up to `data/archive/_backups/` (gitignored) first.
+- After writing, unnamed seasons are verified unchanged and untouched files
+  are checked byte-identical.
+
+Row order is canonical (sorted by identity keys), so a `git diff` after an
+update shows only rows that genuinely changed. A weekly update that finds
+nothing new writes nothing at all.
+
+To correct a single wrong value, edit the CSV directly — that is the point of
+using CSV. Do not re-pull to fix one cell.
+
+There is no "Refresh Data" button in the app. Pages read the archive, so a
+button that cleared the pickle cache would have done nothing.
 
 **`data/cache/` — disposable pickle cache. Gitignored.**
 Only relevant when pulling a season not yet archived. Delete freely.
