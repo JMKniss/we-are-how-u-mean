@@ -193,6 +193,14 @@ def build_legacy_boxscores(season: int, roster_data: dict) -> pd.DataFrame:
     # Season-specific team remap (old abbrs used in ESPN/schedule vs PBP)
     remap = _TEAM_REMAP_2016 if season == 2016 else _TEAM_REMAP_2017
 
+    # Season-long gsis_id -> NFL team. Covers kickers, who do not appear in
+    # import_weekly_data, and any player whose weekly row is missing.
+    try:
+        _ros = nfl.import_seasonal_rosters([season])
+        roster_team = dict(zip(_ros["player_id"], _ros["team"]))
+    except Exception:
+        roster_team = {}
+
     crosswalk = _load_crosswalk()
 
     rows = []
@@ -223,20 +231,35 @@ def build_legacy_boxscores(season: int, roster_data: dict) -> pd.DataFrame:
                     is_active = p.get("is_active", True)
 
                     pts = 0.0
+                    nfl_team = None
                     if pos == "D/ST":
                         abbr = _dst_abbr(name, team_desc_remap)
                         if abbr:
                             pts = _dst_pts(pbp_wk, sched_wk, abbr)
+                            nfl_team = abbr          # a defence is its own team
                     elif pos == "K":
                         gsis = crosswalk.get(espn_id) if espn_id else None
                         if gsis:
                             pts = _kicker_pts(pbp_wk, gsis)
+                            nfl_team = roster_team.get(gsis)
                     else:
                         gsis = crosswalk.get(espn_id) if espn_id else None
                         if gsis:
                             row_wk = weekly_wk[weekly_wk["player_id"] == gsis]
                             if not row_wk.empty:
                                 pts = float(row_wk["fantasy_points"].values[0])
+                                # recent_team is per week, so mid-season trades
+                                # are reflected correctly.
+                                nfl_team = row_wk["recent_team"].values[0]
+                            if not nfl_team:
+                                nfl_team = roster_team.get(gsis)
+
+                    # nflfastR reports modern abbreviations (LAC/LV/LAR) even for
+                    # these seasons. Apply the same historical remap used for
+                    # scoring so a player is not shown as SD one week and LAC the
+                    # next: in 2016-17 they were SD, OAK and LA.
+                    if nfl_team:
+                        nfl_team = remap.get(nfl_team, nfl_team)
 
                     rows.append({
                         "season": season,
@@ -249,6 +272,7 @@ def build_legacy_boxscores(season: int, roster_data: dict) -> pd.DataFrame:
                         "slot": slot,
                         "points": round(pts, 2),
                         "projected": 0.0,
+                        "pro_team": nfl_team,
                         "is_active_slot": is_active,
                         "on_bench": not is_active,
                     })
