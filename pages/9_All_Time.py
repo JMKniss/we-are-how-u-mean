@@ -855,11 +855,8 @@ with tab_h2h:
     h2h_agg["record"] = h2h_agg["wins"].astype(str) + "-" + h2h_agg["losses"].astype(str)
 
     st.subheader("Record Matrix")
-    st.caption(
-        "Rows = manager, Columns = opponent. Cell = the row manager's record "
-        "against that opponent. Records rather than raw wins, because managers "
-        "have played different numbers of seasons against each other."
-    )
+    st.caption("Rows = manager, Columns = opponent. Cell = the row manager's "
+               "record against that opponent.")
     # pivot rather than pivot_table: the values are strings and each
     # manager/opponent pair appears once, so nothing needs aggregating.
     matrix = (h2h_agg.pivot(index="manager", columns="opp_manager",
@@ -870,7 +867,7 @@ with tab_h2h:
 
     st.divider()
     st.subheader("Head-to-Head Records")
-    st.caption("Regular season matchups only. Each game counted once per side.")
+    st.caption("Regular season matchups only.")
 
     managers_h2h = sorted(h2h_agg["manager"].unique())
     selected_mgr = st.selectbox("View matchups for:", managers_h2h)
@@ -890,46 +887,6 @@ with tab_h2h:
         "avg_diff": "Avg Margin",
     })
     st.dataframe(disp, hide_index=True, use_container_width=True)
-
-    st.divider()
-    st.subheader("Career Totals (H2H, Regular Season + Playoff Rounds)")
-
-    # Career reg season wins/losses
-    career_reg = (
-        reg_matchups.groupby("manager")
-        .agg(
-            reg_wins=("outcome", lambda x: (x == "W").sum()),
-            reg_losses=("outcome", lambda x: (x == "L").sum()),
-            games=("outcome", "count"),
-            pf=("score", "sum"),
-            pa=("opp_score", "sum"),
-        )
-        .reset_index()
-    )
-    career_reg["avg_pf"] = (career_reg["pf"] / career_reg["games"]).round(2)
-    career_reg["win_pct"] = (career_reg["reg_wins"] / career_reg["games"]).round(3)
-
-    career_playoff = (playoff_wins_df.groupby("manager")["playoff_wins"].sum().reset_index()
-                      if not playoff_wins_df.empty else pd.DataFrame(columns=["manager", "playoff_wins"]))
-
-    career = career_reg.merge(career_playoff, on="manager", how="left")
-    career["playoff_wins"] = career["playoff_wins"].fillna(0).astype(int)
-    career["total_wins"] = career["reg_wins"] + career["playoff_wins"]
-    career = career.sort_values("total_wins", ascending=False)
-
-    career_disp = career[["manager", "reg_wins", "reg_losses", "playoff_wins", "total_wins",
-                           "games", "win_pct", "avg_pf"]].rename(columns={
-        "manager": "Manager",
-        "reg_wins": "Reg W",
-        "reg_losses": "Reg L",
-        "playoff_wins": "Playoff W",
-        "total_wins": "Total W",
-        "games": "Reg Games",
-        "win_pct": "Win %",
-        "avg_pf": "Avg PF",
-    })
-    career_disp["Win %"] = career_disp["Win %"].apply(lambda x: f"{x:.1%}")
-    st.dataframe(career_disp, hide_index=True, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
