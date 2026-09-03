@@ -413,6 +413,67 @@ with tab_records:
                                 "Score": f"{r['score']:.2f}"})
     st.dataframe(pd.DataFrame(weekly_records), hide_index=True, use_container_width=True)
 
+    st.markdown("#### Single-Season Win Records")
+
+    def wins_record_rows(label, df, col, largest=True):
+        rows = tied_extreme(df, col, largest)
+        if rows.empty:
+            return [{"Record": label, "Manager": "—", "Season": "—",
+                     "Wins": "—", "Finish": "—"}]
+        lbl = f"{label} (tie)" if len(rows) > 1 else label
+        return [{"Record": lbl, "Manager": r["manager"], "Season": str(int(r["season"])),
+                 "Wins": int(r[col]), "Finish": finish_label(r["final_standing"])}
+                for _, r in rows.iterrows()]
+
+    win_records = pd.DataFrame(
+        wins_record_rows("Most Reg Season Wins",   season_stats_df, "reg_wins", largest=True) +
+        wins_record_rows("Fewest Reg Season Wins", season_stats_df, "reg_wins", largest=False)
+    )
+    st.dataframe(win_records, hide_index=True, use_container_width=True)
+
+    # A perfect season is winning out and then taking the title; a perfect
+    # disaster is losing out and then finishing last. Both are computed rather
+    # than asserted, so the caption stays honest if either ever happens.
+    _ws = season_stats_df.copy()
+    _ws["games"] = _ws["reg_wins"] + _ws["reg_losses"]
+    _last = (_ws[_ws["final_standing"] > 0]
+             .groupby("season")["final_standing"].max().to_dict())
+    _is_last = _ws.apply(
+        lambda r: r["final_standing"] == _last.get(int(r["season"]), -1), axis=1)
+
+    perfect = _ws[(_ws["games"] > 0) & (_ws["reg_wins"] == _ws["games"])
+                  & (_ws["final_standing"] == 1)]
+    disaster = _ws[(_ws["games"] > 0) & (_ws["reg_wins"] == 0) & _is_last]
+
+    def _who(df):
+        return ", ".join(f"{r.manager} ({int(r.season)})" for r in df.itertuples())
+
+    if perfect.empty and disaster.empty:
+        caption = ("There has never been a perfect season, nor a perfect "
+                   "disaster through the playoffs.")
+    elif perfect.empty:
+        caption = (f"There has never been a perfect season. Perfect disasters: "
+                   f"{_who(disaster)}.")
+    elif disaster.empty:
+        caption = (f"Perfect seasons: {_who(perfect)}. There has never been a "
+                   f"perfect disaster through the playoffs.")
+    else:
+        caption = f"Perfect seasons: {_who(perfect)}. Perfect disasters: {_who(disaster)}."
+
+    # Near misses are the interesting part: a winless team that still escaped
+    # last place, or an unbeaten team that failed to win it all.
+    near = []
+    for r in _ws[(_ws["games"] > 0) & (_ws["reg_wins"] == 0) & ~_is_last].itertuples():
+        near.append(f"{r.manager} went 0-{int(r.reg_losses)} in {int(r.season)} "
+                    f"and still finished {finish_label(r.final_standing)}")
+    for r in _ws[(_ws["games"] > 0) & (_ws["reg_wins"] == _ws["games"])
+                 & (_ws["final_standing"] != 1)].itertuples():
+        near.append(f"{r.manager} went {int(r.reg_wins)}-0 in {int(r.season)} "
+                    f"and finished {finish_label(r.final_standing)}")
+    if near:
+        caption += " Closest: " + "; ".join(near) + "."
+    st.caption(caption)
+
     # ── Matchup differential records ───────────────────────────────────────
     st.markdown("#### Matchup Differentials (Regular Season)")
     def diff_rows(label, df, largest=True):
@@ -435,25 +496,6 @@ with tab_records:
     st.dataframe(diff_records, hide_index=True, use_container_width=True)
 
     # ── Win records ────────────────────────────────────────────────────────
-    st.markdown("#### Single-Season Win Records")
-
-    def wins_record_rows(label, df, col, largest=True):
-        rows = tied_extreme(df, col, largest)
-        if rows.empty:
-            return [{"Record": label, "Manager": "—", "Season": "—", "Wins": "—", "Finish": "—"}]
-        lbl = f"{label} (tie)" if len(rows) > 1 else label
-        return [{"Record": lbl, "Manager": r["manager"], "Season": str(int(r["season"])),
-                 "Wins": int(r[col]), "Finish": finish_label(r["final_standing"])}
-                for _, r in rows.iterrows()]
-
-    win_records = pd.DataFrame(
-        wins_record_rows("Most Reg Season Wins",   season_stats_df, "reg_wins",  largest=True) +
-        wins_record_rows("Fewest Reg Season Wins", season_stats_df, "reg_wins",  largest=False) +
-        wins_record_rows("Most Full Season Wins",  season_stats_df, "full_wins", largest=True) +
-        wins_record_rows("Fewest Full Season Wins",season_stats_df, "full_wins", largest=False)
-    )
-    st.dataframe(win_records, hide_index=True, use_container_width=True)
-
     # ── Scoring season records ─────────────────────────────────────────────
     st.markdown("#### Season Scoring Records (Regular Season Only)")
     scoring_record_specs = [
