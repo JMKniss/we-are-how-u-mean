@@ -837,6 +837,13 @@ with tab_h2h:
     if active_only:
         h2h_src = h2h_src[h2h_src["opp_manager"].isin(ACTIVE_MANAGERS)]
 
+    # |score - opp_score| per game. Distinct from the signed differential:
+    # alternating blowouts average out to nearly zero signed, while the games
+    # themselves were nowhere near close. Matt and Scott sit at +0.1 signed
+    # across 11 games, yet swing by 33.6 on average.
+    h2h_src = h2h_src.assign(
+        _absmar=(h2h_src["score"] - h2h_src["opp_score"]).abs())
+
     h2h_agg = (
         h2h_src
         .groupby(["manager", "opp_manager"])
@@ -846,12 +853,52 @@ with tab_h2h:
             pf=("score", "sum"),
             pa=("opp_score", "sum"),
             games=("outcome", "count"),
+            absmar=("_absmar", "mean"),
         )
         .reset_index()
     )
     h2h_agg["avg_diff"] = ((h2h_agg["pf"] - h2h_agg["pa"]) / h2h_agg["games"]).round(2)
     h2h_agg["record"] = h2h_agg["wins"].astype(str) + "-" + h2h_agg["losses"].astype(str)
 
+    MIN_MEETINGS = 8   # ~5 seasons of history; below this the picks are noise
+
+    st.subheader("Rivalries at a Glance")
+    st.caption(
+        "Most Played is whoever you have faced most. The rest need at least "
+        f"{MIN_MEETINGS} meetings, so a hot streak over two games cannot claim "
+        "a title. Tightest uses the unsigned margin, so alternating blowouts "
+        "do not masquerade as close games."
+    )
+
+    riv_rows = []
+    for mgr in sorted(h2h_agg["manager"].unique()):
+        d = h2h_agg[h2h_agg["manager"] == mgr]
+        q = d[d["games"] >= MIN_MEETINGS]
+        row = {"Manager": mgr}
+
+        mp = d.loc[d["games"].idxmax()] if len(d) else None
+        row["Most Played"] = f"{mp.opp_manager} ({int(mp.games)})" if mp is not None else "—"
+
+        if len(q):
+            # balance: closest to even, ties broken by who has been met more
+            q = q.assign(_bal=1 - 2 * (q["wins"] / q["games"] - 0.5).abs())
+            bal = q.sort_values(["_bal", "games"], ascending=[False, False]).iloc[0]
+            tight = q.sort_values("absmar").iloc[0]
+            wp = q["wins"] / q["games"]
+            nem = q.loc[wp.idxmin()]
+            vic = q.loc[wp.idxmax()]
+            row["Most Balanced"] = f"{bal.opp_manager} ({int(bal.wins)}-{int(bal.losses)})"
+            row["Tightest"] = f"{tight.opp_manager} ({tight.absmar:.1f})"
+            row["Nemesis"] = f"{nem.opp_manager} ({int(nem.wins)}-{int(nem.losses)})"
+            row["Victim"] = f"{vic.opp_manager} ({int(vic.wins)}-{int(vic.losses)})"
+        else:
+            for c in ("Most Balanced", "Tightest", "Nemesis", "Victim"):
+                row[c] = "—"
+        riv_rows.append(row)
+
+    st.dataframe(pd.DataFrame(riv_rows), hide_index=True, use_container_width=True)
+
+    st.divider()
     st.subheader("Record Matrix")
     st.caption("Rows = manager, Columns = opponent. Cell = the row manager's "
                "record against that opponent.")
@@ -865,7 +912,11 @@ with tab_h2h:
 
     st.divider()
     st.subheader("Head-to-Head Records")
-    st.caption("Regular season matchups only.")
+    st.caption(
+        "Regular season matchups only. Avg Diff is signed, so it says who is "
+        "ahead. Avg Margin ignores the sign, so it says how close the games "
+        f"were - the league average is {reg_matchups.eval('abs(score - opp_score)').mean():.1f}."
+    )
 
     managers_h2h = sorted(h2h_agg["manager"].unique())
     selected_mgr = st.selectbox("View matchups for:", managers_h2h)
@@ -875,14 +926,16 @@ with tab_h2h:
         avg_pf=(mgr_h2h["pf"] / mgr_h2h["games"]).round(1),
         avg_pa=(mgr_h2h["pa"] / mgr_h2h["games"]).round(1),
     )
+    mgr_h2h = mgr_h2h.assign(absmar=mgr_h2h["absmar"].round(1))
     disp = mgr_h2h[["opp_manager", "games", "record",
-                    "avg_pf", "avg_pa", "avg_diff"]].rename(columns={
+                    "avg_pf", "avg_pa", "avg_diff", "absmar"]].rename(columns={
         "opp_manager": "Opponent",
         "games": "Games Played",
         "record": "Record",
         "avg_pf": "Avg PF",
         "avg_pa": "Avg PA",
-        "avg_diff": "Avg Margin",
+        "avg_diff": "Avg Diff",      # signed: who is ahead, and by how much
+        "absmar": "Avg Margin",      # unsigned: how close the games actually are
     })
     st.dataframe(disp, hide_index=True, use_container_width=True)
 
