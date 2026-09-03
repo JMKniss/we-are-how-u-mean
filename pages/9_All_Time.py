@@ -427,6 +427,25 @@ with tab_records:
                                 "Score": f"{r['score']:.2f}"})
     st.dataframe(pd.DataFrame(weekly_records), hide_index=True, use_container_width=True)
 
+    # ── Scoring season records ─────────────────────────────────────────────
+    st.markdown("#### Season Scoring Records (Regular Season Only)")
+    # Each total is followed immediately by its per-game equivalent, so the two
+    # views of the same record sit together.
+    scoring_record_specs = [
+        ("Highest Total PF",    "pf",     True),
+        ("Highest PF per Game", "avg_pf", True),
+        ("Lowest Total PF",     "pf",     False),
+        ("Lowest PF per Game",  "avg_pf", False),
+        ("Highest Total PA",    "pa",     True),
+        ("Highest PA per Game", "avg_pa", True),
+        ("Lowest Total PA",     "pa",     False),
+        ("Lowest PA per Game",  "avg_pa", False),
+    ]
+    all_scoring_rows = []
+    for label, col, largest in scoring_record_specs:
+        all_scoring_rows += season_record_rows(label, season_stats_df, col, largest)
+    st.dataframe(pd.DataFrame(all_scoring_rows), hide_index=True, use_container_width=True)
+
     st.markdown("#### Single-Season Win Records")
 
     def wins_record_rows(label, df, col, largest=True):
@@ -498,26 +517,6 @@ with tab_records:
     st.dataframe(diff_records, hide_index=True, use_container_width=True)
 
     # ── Win records ────────────────────────────────────────────────────────
-    # ── Scoring season records ─────────────────────────────────────────────
-    st.markdown("#### Season Scoring Records (Regular Season Only)")
-    scoring_record_specs = [
-        ("Highest Total PF",       "pf",         True),
-        ("Lowest Total PF",        "pf",         False),
-        ("Highest Total PA",       "pa",         True),
-        ("Lowest Total PA",        "pa",         False),
-        ("Highest Avg PF",         "avg_pf",     True),
-        ("Lowest Avg PF",          "avg_pf",     False),
-        ("Highest Avg PA",         "avg_pa",     True),
-        ("Lowest Avg PA",          "avg_pa",     False),
-        ("Highest Total Pt Diff",  "point_diff", True),
-        ("Lowest Total Pt Diff",   "point_diff", False),
-        ("Highest Avg Pt Diff",    "avg_diff",   True),
-        ("Lowest Avg Pt Diff",     "avg_diff",   False),
-    ]
-    all_scoring_rows = []
-    for label, col, largest in scoring_record_specs:
-        all_scoring_rows += season_record_rows(label, season_stats_df, col, largest)
-    st.dataframe(pd.DataFrame(all_scoring_rows), hide_index=True, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
