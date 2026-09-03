@@ -886,6 +886,57 @@ with tab_h2h:
     })
     st.dataframe(disp, hide_index=True, use_container_width=True)
 
+    st.divider()
+    st.subheader("Every Matchup")
+    st.caption("Regular season only.")
+
+    _opts = sorted(h2h_src["manager"].unique())
+    c1, c2 = st.columns(2)
+    with c1:
+        mgr_a = st.selectbox("Manager A", _opts, key="every_a")
+    with c2:
+        _b_opts = [m for m in _opts if m != mgr_a] or _opts
+        mgr_b = st.selectbox("Manager B", _b_opts, key="every_b")
+
+    if mgr_a == mgr_b:
+        st.info("Pick two different managers.")
+    else:
+        meet = (h2h_src[(h2h_src["manager"] == mgr_a)
+                        & (h2h_src["opp_manager"] == mgr_b)]
+                .sort_values(["season", "week"]))
+        if meet.empty:
+            st.info(f"{mgr_a} and {mgr_b} have never met in the regular season.")
+        else:
+            a_w = int((meet["outcome"] == "W").sum())
+            b_w = int((meet["outcome"] == "L").sum())
+            tied = int((meet["outcome"] == "T").sum())
+
+            games = []
+            for r in meet.itertuples():
+                if r.score > r.opp_score:
+                    winner = mgr_a
+                elif r.opp_score > r.score:
+                    winner = mgr_b
+                else:
+                    winner = "Tie"
+                games.append({
+                    "Year": str(int(r.season)),
+                    "Week": int(r.week),
+                    mgr_a: f"{r.score:.2f}",
+                    mgr_b: f"{r.opp_score:.2f}",
+                    "Winner": winner,
+                })
+            st.dataframe(pd.DataFrame(games), hide_index=True,
+                         use_container_width=True)
+            summary = f"{mgr_a} leads {a_w}-{b_w}" if a_w > b_w else (
+                f"{mgr_b} leads {b_w}-{a_w}" if b_w > a_w else
+                f"All square at {a_w}-{b_w}")
+            st.caption(
+                f"{len(meet)} meeting{'s' if len(meet) != 1 else ''}. {summary}"
+                + (f", with {tied} tie{'s' if tied != 1 else ''}." if tied else ".")
+            )
+
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 6: MILESTONES
