@@ -703,7 +703,12 @@ with tab_milestones:
             row = {"Manager": mgr}
             for ms in milestones:
                 hit = m_df[m_df[cumcol] >= ms]
-                row[f"{ms} {label}"] = int(hit["career_game"].min()) if not hit.empty else "—"
+                # Rendered as text: a column mixing ints with the em-dash
+                # placeholder is an object column, which Arrow cannot serialise
+                # and Streamlit then fails to display.
+                row[f"{ms} {label}"] = (
+                    str(int(hit["career_game"].min())) if not hit.empty else "—"
+                )
             rows.append(row)
         return pd.DataFrame(rows)
 
