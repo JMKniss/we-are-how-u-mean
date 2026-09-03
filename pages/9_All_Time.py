@@ -429,17 +429,16 @@ with tab_records:
 
     # ── Scoring season records ─────────────────────────────────────────────
     st.markdown("#### Season Scoring Records (Regular Season Only)")
-    # Each total is followed immediately by its per-game equivalent, so the two
-    # views of the same record sit together.
+    # Per-game records first, then totals, each kept as its own block.
     scoring_record_specs = [
-        ("Highest Total PF",    "pf",     True),
         ("Highest PF per Game", "avg_pf", True),
-        ("Lowest Total PF",     "pf",     False),
         ("Lowest PF per Game",  "avg_pf", False),
-        ("Highest Total PA",    "pa",     True),
         ("Highest PA per Game", "avg_pa", True),
-        ("Lowest Total PA",     "pa",     False),
         ("Lowest PA per Game",  "avg_pa", False),
+        ("Highest Total PF",    "pf",     True),
+        ("Lowest Total PF",     "pf",     False),
+        ("Highest Total PA",    "pa",     True),
+        ("Lowest Total PA",     "pa",     False),
     ]
     all_scoring_rows = []
     for label, col, largest in scoring_record_specs:
