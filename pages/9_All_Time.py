@@ -41,6 +41,8 @@ def finish_label(standing) -> str:
     return ordinal(s)
 
 
+PLAYOFF_SPOTS = 4   # seeds 1-4 make the championship bracket
+
 # ── Playoff wins by finish position ──────────────────────────────────────────
 # Win R1 + win R2 = 2; win R1 only = 1; lose R1 + win R2 consolation = 1; etc.
 PLAYOFF_WINS_BY_FINISH = {1: 2, 2: 1, 3: 1, 4: 0, 5: 2, 6: 1, 7: 1, 8: 0, 9: 1, 10: 0}
@@ -358,7 +360,6 @@ with tab_trophy:
     view_toggle("trophy")
     st.subheader("Career Summary")
 
-    PLAYOFF_SPOTS = 4          # seeds 1-4 make the championship bracket
     MEDAL = {1: "🏆", 2: "🥈", 3: "🥉"}   # trophy, silver, bronze
     SACKO = "🚽"                                          # toilet
 
@@ -606,6 +607,64 @@ with tab_records:
     st.dataframe(diff_records, hide_index=True, use_container_width=True)
 
     # ── Win records ────────────────────────────────────────────────────────
+
+    # ── Milestone records ──────────────────────────────────────────────────
+    st.markdown("#### Milestone Records")
+
+    # Career games in chronological order. Every row is a week actually played,
+    # ties included, so "weeks" and games are the same thing here.
+    _cg = reg_matchups.sort_values(["manager", "season", "week"]).copy()
+    _cg["career_game"] = _cg.groupby("manager").cumcount() + 1
+    _cg["cum_w"] = _cg.groupby("manager")["outcome"].transform(
+        lambda x: (x == "W").cumsum())
+    _cg["cum_l"] = _cg.groupby("manager")["outcome"].transform(
+        lambda x: (x == "L").cumsum())
+
+    # Playoff appearances accrue per season, so the cost is the career games
+    # played up to the end of the season the milestone was reached in.
+    _se = season_stats_df.sort_values(["manager", "season"]).copy()
+    if "reg_ties" not in _se.columns:
+        _se["reg_ties"] = 0
+    _se["_games"] = _se["reg_wins"] + _se["reg_losses"] + _se["reg_ties"]
+    _se["_made"] = _se["seed"].between(1, PLAYOFF_SPOTS).astype(int)
+    _se["cum_made"] = _se.groupby("manager")["_made"].cumsum()
+    _se["cum_games"] = _se.groupby("manager")["_games"].cumsum()
+
+    def _fastest(df, cond_col, target, cost_col):
+        """Fewest games taken by any manager to reach `target` of cond_col."""
+        hit = df[df[cond_col] >= target]
+        if hit.empty:
+            return None, []
+        per = hit.groupby("manager")[cost_col].min()
+        best = int(per.min())
+        return best, sorted(per[per == best].index.tolist())
+
+    milestone_specs = (
+        [(f"{n} Wins",   _cg, "cum_w", n, "career_game") for n in (25, 50, 75)]
+        + [(f"{n} Losses", _cg, "cum_l", n, "career_game") for n in (25, 50, 75)]
+        + [("5 Playoff Appearances", _se, "cum_made", 5, "cum_games")]
+    )
+
+    milestone_rows = []
+    for label, frame, col, target, cost in milestone_specs:
+        weeks, who = _fastest(frame, col, target, cost)
+        if weeks is None:
+            milestone_rows.append({"Fastest To": label, "Manager": "—",
+                                   "Weeks to Achieve": "not yet reached"})
+        else:
+            milestone_rows.append({
+                "Fastest To": label + (" (tie)" if len(who) > 1 else ""),
+                "Manager": ", ".join(who),
+                "Weeks to Achieve": str(weeks),
+            })
+    st.dataframe(pd.DataFrame(milestone_rows), hide_index=True,
+                 use_container_width=True)
+    st.caption(
+        "Weeks counts regular season games played, ties included. Playoff "
+        f"appearances are seasons seeded in the top {PLAYOFF_SPOTS}, counted at "
+        "the end of the season they were earned, so 2015 does not count."
+    )
+
 
 
 # ══════════════════════════════════════════════════════════════════════════════
