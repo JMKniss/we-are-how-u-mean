@@ -460,18 +460,6 @@ with tab_records:
     else:
         caption = f"Perfect seasons: {_who(perfect)}. Perfect disasters: {_who(disaster)}."
 
-    # Near misses are the interesting part: a winless team that still escaped
-    # last place, or an unbeaten team that failed to win it all.
-    near = []
-    for r in _ws[(_ws["games"] > 0) & (_ws["reg_wins"] == 0) & ~_is_last].itertuples():
-        near.append(f"{r.manager} went 0-{int(r.reg_losses)} in {int(r.season)} "
-                    f"and still finished {finish_label(r.final_standing)}")
-    for r in _ws[(_ws["games"] > 0) & (_ws["reg_wins"] == _ws["games"])
-                 & (_ws["final_standing"] != 1)].itertuples():
-        near.append(f"{r.manager} went {int(r.reg_wins)}-0 in {int(r.season)} "
-                    f"and finished {finish_label(r.final_standing)}")
-    if near:
-        caption += " Closest: " + "; ".join(near) + "."
     st.caption(caption)
 
     # ── Matchup differential records ───────────────────────────────────────
