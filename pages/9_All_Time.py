@@ -276,6 +276,71 @@ else:
 
 season_stats_df["full_wins"] = season_stats_df["reg_wins"] + season_stats_df["playoff_wins"]
 
+# ── Active vs Legacy view ─────────────────────────────────────────────────────
+# "Active" means a manager who played in the most recent season with data.
+# Filtering is applied to the SUBJECT of every table, never to opponents, so an
+# active manager keeps every game they played - including games against people
+# who have since left. Whole seasons are never dropped; a record simply passes
+# to the next holder if the top one is no longer active.
+LATEST_SEASON = int(season_stats_df["season"].max())
+ACTIVE_MANAGERS = set(
+    season_stats_df.loc[season_stats_df["season"] == LATEST_SEASON, "manager"]
+)
+
+VIEW_ACTIVE = "Active Managers Only"
+VIEW_LEGACY = "Legacy"
+if "alltime_view" not in st.session_state:
+    st.session_state["alltime_view"] = VIEW_ACTIVE
+
+
+VIEW_TAB_KEYS = ("trophy", "records", "mgr", "seasons", "h2h", "milestones")
+
+
+def _view_changed(changed_key: str):
+    """
+    Push one tab's new choice to the shared value and to every other tab.
+
+    Streamlit renders all tabs on every run, so each needs its own widget key.
+    Syncing them inline would clobber the click that caused the run - the
+    freshly set widget value would be overwritten before the widget redrew.
+    Doing it in on_change avoids that, because the callback fires after the
+    interaction is recorded and before the rerun.
+    """
+    val = st.session_state[changed_key]
+    st.session_state["alltime_view"] = val
+    for tk in VIEW_TAB_KEYS:
+        st.session_state[f"alltime_view_{tk}"] = val
+
+
+def view_toggle(tab_key: str):
+    """Render the Active/Legacy switch at the top of a tab."""
+    k = f"alltime_view_{tab_key}"
+    if k not in st.session_state:
+        st.session_state[k] = st.session_state["alltime_view"]
+    st.radio("View", [VIEW_ACTIVE, VIEW_LEGACY], key=k, horizontal=True,
+             label_visibility="collapsed",
+             on_change=_view_changed, args=(k,))
+    if st.session_state["alltime_view"] == VIEW_ACTIVE:
+        st.caption(
+            f"Showing only managers active in {LATEST_SEASON}. A record held by "
+            f"someone who has left passes to the next holder; no season is dropped."
+        )
+
+
+active_only = st.session_state["alltime_view"] == VIEW_ACTIVE
+if active_only:
+    season_stats_df = season_stats_df[
+        season_stats_df["manager"].isin(ACTIVE_MANAGERS)].copy()
+    all_matchups_df = all_matchups_df[
+        all_matchups_df["manager"].isin(ACTIVE_MANAGERS)].copy()
+    reg_matchups = reg_matchups[
+        reg_matchups["manager"].isin(ACTIVE_MANAGERS)].copy()
+    reg_matchups_win_side = reg_matchups_win_side[
+        reg_matchups_win_side["manager"].isin(ACTIVE_MANAGERS)].copy()
+    if not playoff_wins_df.empty:
+        playoff_wins_df = playoff_wins_df[
+            playoff_wins_df["manager"].isin(ACTIVE_MANAGERS)].copy()
+
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab_trophy, tab_records, tab_mgr_records, tab_seasons, tab_h2h, tab_milestones = st.tabs([
     "🏆 Trophy Case",
@@ -291,6 +356,7 @@ tab_trophy, tab_records, tab_mgr_records, tab_seasons, tab_h2h, tab_milestones =
 # TAB 1: TROPHY CASE
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_trophy:
+    view_toggle("trophy")
     st.subheader("Career Summary")
 
     PLAYOFF_SPOTS = 4          # seeds 1-4 make the championship bracket
@@ -365,12 +431,24 @@ with tab_trophy:
     career.index = range(1, len(career) + 1)
     st.dataframe(career, use_container_width=True)
 
+    # 2015 has no game data, so its champion and sacko show up in Finishes only.
+    # Name only the ones actually on screen, since Active view may hide them.
+    _shown = set(career["Manager"])
+    _bits = []
+    if LEGACY_2015["champion"] in _shown:
+        _bits.append(f"{LEGACY_2015['champion']}'s title")
+    if LEGACY_2015["sacko"] in _shown:
+        _bits.append(f"{LEGACY_2015['sacko']}'s sacko")
+    legacy_2015_note = (
+        f" 2015 predates the league data, so {' and '.join(_bits)} that year "
+        f"{'are' if len(_bits) > 1 else 'is'} included in Finishes but in no "
+        f"other column." if _bits else ""
+    )
     st.caption(
         f"Regular season head-to-head only; median wins are not counted. "
         f"Playoffs counts seasons seeded in the top {PLAYOFF_SPOTS}. "
         f"Finishes: {MEDAL[1]} 1st · {MEDAL[2]} 2nd · {MEDAL[3]} 3rd · {SACKO} last. "
-        f"2015 predates the league data, so Mikey's title and Tyler's sacko that "
-        f"year are included in Finishes but in no other column."
+        + legacy_2015_note
     )
 
 
@@ -378,6 +456,7 @@ with tab_trophy:
 # TAB 2: LEAGUE RECORDS
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_records:
+    view_toggle("records")
     st.subheader("League Records")
 
     def record_row(label, df_row, val_col, fmt="{:.2f}"):
@@ -524,6 +603,7 @@ with tab_records:
 # TAB 3: MANAGER RECORDS
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_mgr_records:
+    view_toggle("mgr")
     st.subheader("Best & Worst Season by Manager")
     st.caption(
         "Regular season only. Records rank by win percentage, not win count, "
@@ -622,6 +702,7 @@ with tab_mgr_records:
 # TAB 4: SEASON-BY-SEASON
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_seasons:
+    view_toggle("seasons")
     st.subheader("Every Manager's Season-by-Season Record")
     st.caption("W/L = regular season H2H. Full W = reg + playoff rounds won. Finish = ESPN final standing.")
 
@@ -656,6 +737,7 @@ with tab_seasons:
 # TAB 5: HEAD TO HEAD
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_h2h:
+    view_toggle("h2h")
     st.subheader("Head-to-Head Manager Records")
     st.caption("Regular season matchups only. Each game counted once per side.")
 
@@ -743,6 +825,7 @@ with tab_h2h:
 # TAB 6: MILESTONES
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_milestones:
+    view_toggle("milestones")
     st.subheader("Win & Loss Milestones")
     st.caption(
         "Regular season only. Numbers show career game # (game played) when each milestone was reached. "
