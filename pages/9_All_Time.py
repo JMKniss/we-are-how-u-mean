@@ -303,7 +303,13 @@ with tab_trophy:
 
     # 2015 predates the data. Its champion and sacko are known, and are counted
     # here only: that season contributes no games, years or percentages.
-    tally = {"Mikey": {1: 1}, "Tyler": {"last": 1}}
+    # Winning it also means making that season's playoffs, so the champion gets
+    # a playoff appearance too - otherwise a manager could show more trophies
+    # than appearances, which cannot happen (1st through 4th are all top-four
+    # seeds). The sacko finished last and gets no appearance.
+    tally = {LEGACY_2015["champion"]: {1: 1},
+             LEGACY_2015["sacko"]: {"last": 1}}
+    legacy_playoffs = {LEGACY_2015["champion"]: 1}
 
     rows = []
     for mgr, g in season_stats_df.groupby("manager"):
@@ -334,7 +340,8 @@ with tab_trophy:
             "W": wins,
             "L": losses,
             "Win%": round(wins / games * 100, 1) if games else 0.0,
-            "Playoffs": int((g["seed"].between(1, PLAYOFF_SPOTS)).sum()),
+            "Playoffs": (int((g["seed"].between(1, PLAYOFF_SPOTS)).sum())
+                         + legacy_playoffs.get(mgr, 0)),
             "Finishes": "  ".join(parts),
         })
 
