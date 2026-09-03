@@ -889,10 +889,10 @@ with tab_h2h:
             vic = q.loc[wp.idxmax()]
             row["Most Balanced"] = f"{bal.opp_manager} ({int(bal.wins)}-{int(bal.losses)})"
             row["Tightest"] = f"{tight.opp_manager} ({tight.absmar:.1f})"
-            row["Nemesis"] = f"{nem.opp_manager} ({int(nem.wins)}-{int(nem.losses)})"
-            row["Victim"] = f"{vic.opp_manager} ({int(vic.wins)}-{int(vic.losses)})"
+            row["Bully"] = f"{nem.opp_manager} ({int(nem.wins)}-{int(nem.losses)})"
+            row["Bully-ee"] = f"{vic.opp_manager} ({int(vic.wins)}-{int(vic.losses)})"
         else:
-            for c in ("Most Balanced", "Tightest", "Nemesis", "Victim"):
+            for c in ("Most Balanced", "Tightest", "Bully", "Bully-ee"):
                 row[c] = "—"
         riv_rows.append(row)
 
