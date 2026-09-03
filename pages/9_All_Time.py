@@ -831,10 +831,8 @@ with tab_mgr_records:
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_h2h:
     view_toggle("h2h")
-    # In Active view the opponent axis is filtered too, so a manager's
-    # breakdown and the matrix only show people still in the league. Career
-    # totals below deliberately are not: those stay full-career figures and
-    # match the Trophy Case, so they will exceed the rows shown here.
+    # In Active view the opponent axis is filtered as well as the subject, so
+    # the matrix and each breakdown show only managers still in the league.
     h2h_src = reg_matchups
     if active_only:
         h2h_src = h2h_src[h2h_src["opp_manager"].isin(ACTIVE_MANAGERS)]
