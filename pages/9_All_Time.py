@@ -834,12 +834,16 @@ with tab_mgr_records:
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_h2h:
     view_toggle("h2h")
-    st.subheader("Head-to-Head Manager Records")
-    st.caption("Regular season matchups only. Each game counted once per side.")
+    # In Active view the opponent axis is filtered too, so a manager's
+    # breakdown and the matrix only show people still in the league. Career
+    # totals below deliberately are not: those stay full-career figures and
+    # match the Trophy Case, so they will exceed the rows shown here.
+    h2h_src = reg_matchups
+    if active_only:
+        h2h_src = h2h_src[h2h_src["opp_manager"].isin(ACTIVE_MANAGERS)]
 
-    # H2H summary table (row manager vs col managers)
     h2h_agg = (
-        reg_matchups
+        h2h_src
         .groupby(["manager", "opp_manager"])
         .agg(
             wins=("outcome", lambda x: (x == "W").sum()),
@@ -853,28 +857,32 @@ with tab_h2h:
     h2h_agg["avg_diff"] = ((h2h_agg["pf"] - h2h_agg["pa"]) / h2h_agg["games"]).round(2)
     h2h_agg["record"] = h2h_agg["wins"].astype(str) + "-" + h2h_agg["losses"].astype(str)
 
-    managers_h2h = sorted(h2h_agg["manager"].unique())
-
-    # Select a manager to view their H2H breakdown
-    selected_mgr = st.selectbox("View matchups for:", managers_h2h)
-    mgr_h2h = h2h_agg[h2h_agg["manager"] == selected_mgr].copy()
-    mgr_h2h = mgr_h2h.sort_values("wins", ascending=False)
-    disp = mgr_h2h[["opp_manager", "record", "wins", "losses", "games", "avg_diff"]].rename(columns={
-        "opp_manager": "Opponent",
-        "record": "Record",
-        "wins": "W",
-        "losses": "L",
-        "games": "G",
-        "avg_diff": "Avg Margin",
-    })
-    st.dataframe(disp, hide_index=True, use_container_width=True)
-
-    st.divider()
     st.subheader("Win Matrix")
     st.caption("Rows = winner, Columns = opponent. Cell = number of times row beat column.")
     matrix = h2h_agg.pivot_table(index="manager", columns="opp_manager",
-                                  values="wins", fill_value=0)
+                                 values="wins", fill_value=0)
     st.dataframe(matrix.astype(int), use_container_width=True)
+
+    st.divider()
+    st.subheader("Head-to-Head Records")
+    st.caption(
+        "Regular season matchups only. Each game counted once per side."
+        + (" Opponents are limited to managers still active, so these games "
+           "will total fewer than the career figures below, which still count "
+           "every opponent." if active_only else "")
+    )
+
+    managers_h2h = sorted(h2h_agg["manager"].unique())
+    selected_mgr = st.selectbox("View matchups for:", managers_h2h)
+    mgr_h2h = (h2h_agg[h2h_agg["manager"] == selected_mgr]
+               .sort_values("wins", ascending=False))
+    disp = mgr_h2h[["opp_manager", "games", "record", "avg_diff"]].rename(columns={
+        "opp_manager": "Opponent",
+        "games": "Games Played",
+        "record": "Record",
+        "avg_diff": "Avg Margin",
+    })
+    st.dataframe(disp, hide_index=True, use_container_width=True)
 
     st.divider()
     st.subheader("Career Totals (H2H, Regular Season + Playoff Rounds)")
