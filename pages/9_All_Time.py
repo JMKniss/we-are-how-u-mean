@@ -396,7 +396,9 @@ with tab_trophy:
     for mgr, g in season_stats_df.groupby("manager"):
         wins = int(g["reg_wins"].sum())
         losses = int(g["reg_losses"].sum())
-        games = wins + losses
+        ties = int(g["reg_ties"].sum()) if "reg_ties" in g.columns else 0
+        decided = wins + losses          # win% denominator, ties excluded
+        games = decided + ties           # games actually played
         counts = dict(tally.get(mgr, {}))
         for _, r in g.iterrows():
             fin = int(r["final_standing"])
@@ -415,18 +417,25 @@ with tab_trophy:
             sym = SACKO if key == "last" else MEDAL[key]
             parts.append(sym if n == 1 else f"{sym}x{n}")
 
+        record = f"{wins}-{losses}" + (f"-{ties}" if ties else "")
         rows.append({
+            "_wins": wins,           # sort key only; dropped before display
             "Manager": mgr,
             "Years": year_ranges(g["season"]),
-            "W": wins,
-            "L": losses,
-            "Win%": round(wins / games * 100, 1) if games else 0.0,
+            "Games": games,
+            "Record": record,
+            "Win%": round(wins / decided * 100, 1) if decided else 0.0,
             "Playoffs": (int((g["seed"].between(1, PLAYOFF_SPOTS)).sum())
                          + legacy_playoffs.get(mgr, 0)),
             "Finishes": "  ".join(parts),
         })
 
-    career = pd.DataFrame(rows).sort_values("W", ascending=False).reset_index(drop=True)
+    # Ordered by career wins as before; the column itself is now folded into
+    # Record, so the raw value is kept only to sort by and then dropped.
+    career = (pd.DataFrame(rows)
+              .sort_values("_wins", ascending=False)
+              .drop(columns="_wins")
+              .reset_index(drop=True))
     career.index = range(1, len(career) + 1)
     st.dataframe(career, use_container_width=True)
 
@@ -445,6 +454,7 @@ with tab_trophy:
     )
     st.caption(
         f"Regular season head-to-head only; median wins are not counted. "
+        f"Win% excludes ties, which the record still shows. "
         f"Playoffs counts seasons seeded in the top {PLAYOFF_SPOTS}. "
         f"Finishes: {MEDAL[1]} 1st · {MEDAL[2]} 2nd · {MEDAL[3]} 3rd · {SACKO} last. "
         + legacy_2015_note
@@ -727,18 +737,31 @@ with tab_mgr_records:
         aw, al = m_df["reg_wins"].mean(), m_df["reg_losses"].mean()
         tot_g = (m_df["reg_wins"] + m_df["reg_losses"] + m_df.get("reg_ties", 0)).sum()
         placed = m_df[m_df["final_standing"] > 0]["final_standing"]
+        made_n = int(sum(1 for _, r in m_df.iterrows()
+                         if r["seed"] and 1 <= int(r["seed"]) <= PLAYOFF_SPOTS))
         avg_row = {
             "Season": "Average",
             "Record": f"{aw:.1f} W, {al:.1f} L",
             "Win%": win_pct(aw, al),
-            "Playoffs": "",
+            "Playoffs": f"{made_n} of {n}",
             "PF (/g)": f"{m_df['pf'].mean():.1f} ({m_df['pf'].sum() / tot_g:.1f})" if tot_g else "—",
             "PA (/g)": f"{m_df['pa'].mean():.1f} ({m_df['pa'].sum() / tot_g:.1f})" if tot_g else "—",
             "Avg Diff": round(float(m_df["avg_diff"].mean()), 2),
             "Finish": f"{placed.mean():.1f}" if not placed.empty else "—",
         }
-        st.dataframe(pd.DataFrame([avg_row] + season_rows),
-                     hide_index=True, use_container_width=True)
+        # Average sits last, and is bolded so it reads as a summary rather than
+        # another season. Needs jinja2 >= 3.1.5 for the pandas Styler.
+        season_table = pd.DataFrame(season_rows + [avg_row])
+        avg_idx = len(season_table) - 1
+        styled = season_table.style.apply(
+            lambda row: ["font-weight: bold"] * len(row)
+            if row.name == avg_idx else [""] * len(row),
+            axis=1,
+        # A Styler bypasses Streamlit's default number rendering, so the
+        # numeric columns must be formatted explicitly or they print as
+        # 30.800000 instead of 30.8.
+        ).format({"Win%": "{:.1f}", "Avg Diff": "{:.2f}"})
+        st.dataframe(styled, hide_index=True, use_container_width=True)
         st.caption(
             f"{pick}, {n} season{'s' if n != 1 else ''}. Ties are excluded from "
             "win% and from the average row. Playoffs marks a top-"
