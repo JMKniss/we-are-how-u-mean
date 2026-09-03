@@ -81,7 +81,20 @@ def season_config(season: int) -> dict:
 
     2022 exception: regular season ran through week 14; playoffs were 3 weeks:
       Round 1 = week 15 (1 week), Finals = weeks 16-17, Sacko = weeks 15-17.
+
+    2016 exception: the league ran a 13-week regular season and played into NFL
+    week 17, so its playoffs were weeks 14-17 - the same shape as 2021+, five
+    years early. ESPN's own scoreboard labels them "Playoff Round 1 (NFL Week
+    14 - NFL Week 15)" and "Playoff Round 2 (NFL Week 16 - NFL Week 17)".
+    Treating 2016 like its neighbours capped the season at week 16, which
+    dropped week 17 entirely and split Round 1 across the two rounds.
     """
+    if season == 2016:
+        return {
+            "reg_season_end": 13,
+            "playoff_weeks": [14, 15, 16, 17],
+            "total_weeks": 17,
+        }
     if season == 2022:
         return {
             "reg_season_end": 14,

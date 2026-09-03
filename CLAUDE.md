@@ -140,6 +140,27 @@ is selected, noting that player data may not be 100% accurate.
 
 ## Season quirks
 
+### 2016 — 13-week regular season, playoffs into NFL week 17
+The league ran a longer regular season and played a week later than every other
+pre-2021 year. ESPN's scoreboard labels the rounds "Playoff Round 1 (NFL Week
+14 - NFL Week 15)" and "Playoff Round 2 (NFL Week 16 - NFL Week 17)".
+
+`season_config(2016)` returns `reg_season_end=13`, `playoff_weeks=[14,15,16,17]`,
+`total_weeks=17` - the same shape as 2021+, five years early.
+
+Treating it like its neighbours (12-week season, playoffs 13-16) capped the
+fetch at week 16, so week 17 was never pulled and Round 1 was split across
+both rounds. That produced wrong finishes for six of ten managers, including
+handing Tyler a runner-up he did not earn.
+
+2016 also had East/West divisions, which fed seeding, and ran a consolation
+ladder rather than a fixed bracket: the bottom two met in Round 1 only and
+then played different opponents. The sacko is therefore decided over the weeks
+the bottom two actually faced each other, not over all playoff weeks.
+
+Finishes for all ten seasons now match the league's manually kept records
+(`We Are How U Mean Analytics.xlsx`, Standings Data tab) 95/95.
+
 ### 2022 — manually managed playoff bracket
 The league ran a custom playoff bracket outside ESPN with an extra regular season week:
 - Regular season: weeks 1–14 (vs weeks 1–13 in all other 2021+ seasons)

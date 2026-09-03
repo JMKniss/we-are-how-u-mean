@@ -119,16 +119,16 @@ season,week,team_id,team_name,score,opp_id,opp_name,opp_score,outcome,is_playoff
 2016,12,8,Shiver Me Tin Chickens,58.0,6,TINder Chicken Draft Date,78.0,L,False
 2016,12,9,Parm Farty Tin Chickens,101.0,3,Jet Fuel Can't Melt Tin Chickn,91.0,W,False
 2016,12,10,ALL DAY Johnnys,106.0,7,The NFL Team Owners,78.0,W,False
-2016,13,1,Tin Chicken Lives Matter,73.0,3,Jet Fuel Can't Melt Tin Chickn,82.0,L,True
-2016,13,2,I have the tin chicken,78.0,4,Prestige Worldwide,102.0,L,True
-2016,13,3,Jet Fuel Can't Melt Tin Chickn,82.0,1,Tin Chicken Lives Matter,73.0,W,True
-2016,13,4,Prestige Worldwide,102.0,2,I have the tin chicken,78.0,W,True
-2016,13,5,they got tin chken n philly?,94.0,8,Shiver Me Tin Chickens,68.0,W,True
-2016,13,6,TINder Chicken Draft Date,91.0,7,The NFL Team Owners,111.0,L,True
-2016,13,7,The NFL Team Owners,111.0,6,TINder Chicken Draft Date,91.0,W,True
-2016,13,8,Shiver Me Tin Chickens,68.0,5,they got tin chken n philly?,94.0,L,True
-2016,13,9,Parm Farty Tin Chickens,103.0,10,ALL DAY Johnnys,91.0,W,True
-2016,13,10,ALL DAY Johnnys,91.0,9,Parm Farty Tin Chickens,103.0,L,True
+2016,13,1,Tin Chicken Lives Matter,73.0,3,Jet Fuel Can't Melt Tin Chickn,82.0,L,False
+2016,13,2,I have the tin chicken,78.0,4,Prestige Worldwide,102.0,L,False
+2016,13,3,Jet Fuel Can't Melt Tin Chickn,82.0,1,Tin Chicken Lives Matter,73.0,W,False
+2016,13,4,Prestige Worldwide,102.0,2,I have the tin chicken,78.0,W,False
+2016,13,5,they got tin chken n philly?,94.0,8,Shiver Me Tin Chickens,68.0,W,False
+2016,13,6,TINder Chicken Draft Date,91.0,7,The NFL Team Owners,111.0,L,False
+2016,13,7,The NFL Team Owners,111.0,6,TINder Chicken Draft Date,91.0,W,False
+2016,13,8,Shiver Me Tin Chickens,68.0,5,they got tin chken n philly?,94.0,L,False
+2016,13,9,Parm Farty Tin Chickens,103.0,10,ALL DAY Johnnys,91.0,W,False
+2016,13,10,ALL DAY Johnnys,91.0,9,Parm Farty Tin Chickens,103.0,L,False
 2016,14,1,Tin Chicken Lives Matter,77.0,6,TINder Chicken Draft Date,69.0,W,True
 2016,14,2,I have the tin chicken,73.0,8,Shiver Me Tin Chickens,84.0,L,True
 2016,14,3,Jet Fuel Can't Melt Tin Chickn,142.0,7,The NFL Team Owners,68.0,W,True
@@ -159,6 +159,16 @@ season,week,team_id,team_name,score,opp_id,opp_name,opp_score,outcome,is_playoff
 2016,16,8,Shiver Me Tin Chickens,89.0,10,ALL DAY Johnnys,75.0,W,True
 2016,16,9,Parm Farty Tin Chickens,82.0,7,The NFL Team Owners,137.0,L,True
 2016,16,10,ALL DAY Johnnys,75.0,8,Shiver Me Tin Chickens,89.0,L,True
+2016,17,1,Tin Chicken Lives Matter,127.0,4,Prestige Worldwide,71.0,W,True
+2016,17,2,I have the tin chicken,63.0,6,TINder Chicken Draft Date,72.0,L,True
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,111.0,5,they got tin chken n philly?,100.0,W,True
+2016,17,4,Prestige Worldwide,71.0,1,Tin Chicken Lives Matter,127.0,L,True
+2016,17,5,they got tin chken n philly?,100.0,3,Jet Fuel Can't Melt Tin Chickn,111.0,L,True
+2016,17,6,TINder Chicken Draft Date,72.0,2,I have the tin chicken,63.0,W,True
+2016,17,7,The NFL Team Owners,101.0,9,Parm Farty Tin Chickens,96.0,W,True
+2016,17,8,Shiver Me Tin Chickens,82.0,10,ALL DAY Johnnys,64.0,W,True
+2016,17,9,Parm Farty Tin Chickens,96.0,7,The NFL Team Owners,101.0,L,True
+2016,17,10,ALL DAY Johnnys,64.0,8,Shiver Me Tin Chickens,82.0,L,True
 2017,1,1,Triple Crown Affirmed,65.0,4,Give me the hotdog baby,71.0,L,False
 2017,1,2,Honey Funches  Of Oats,68.0,10,ALL DAY Johnnys,76.0,L,False
 2017,1,3,Jet Fuel Can't Melt Tin Chickn,84.0,5,they got tin chken n philly?,64.0,W,False

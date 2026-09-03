@@ -54,10 +54,12 @@ def compute_season_finish_map(season: int, season_df: pd.DataFrame) -> dict:
     Bracket structure (all seasons except 2022):
       Seeds 1–4  → Championship. R1: 1v4, 2v3. R2: winners vs winners, losers vs losers.
       Seeds 5–8  → Consolation.  R1: 5v8, 6v7. R2: same.
-      Seeds 9–10 → Sacko bowl. All playoff weeks cumulative. Lower total = 10th.
+      Seeds 9–10 → Sacko. Compared over the weeks they actually played each
+                    other. Lower total finishes last.
 
     2022 (3-week format): R1 = pw[0] only. Finals = pw[1]+pw[2].
-    Sacko = all 3 weeks cumulative.
+    2016: playoffs ran weeks 14–17 after a 13-week regular season, and the
+    bottom two met in Round 1 only, under a consolation ladder.
 
     Played-week detection: checks which playoff weeks have actual data rather
     than trusting total_weeks from config — guards against seasons where the
@@ -124,9 +126,21 @@ def compute_season_finish_map(season: int, season_df: pd.DataFrame) -> dict:
     fifth,  sixth   = play_round(consol_w[0], consol_w[1], r2_weeks)
     seventh, eighth = play_round(consol_l[0], consol_l[1], r2_weeks)
 
-    # Sacko bowl: all playoff weeks cumulative, lower total = 10th
-    s0 = team_cum(sacko_ids[0], pw)
-    s1 = team_cum(sacko_ids[1], pw)
+    # Sacko: compare only over the weeks the bottom two actually faced each
+    # other. That is every playoff week in most seasons, but 2016 ran a
+    # consolation ladder where they met in Round 1 only and then played
+    # different opponents, so summing all four weeks compared scores from
+    # games against other teams.
+    sacko_weeks = [
+        w for w in pw
+        if not playoff_df[(playoff_df["team_id"] == sacko_ids[0])
+                          & (playoff_df["week"] == w)
+                          & (playoff_df["opp_id"] == sacko_ids[1])].empty
+    ]
+    if not sacko_weeks:
+        sacko_weeks = pw
+    s0 = team_cum(sacko_ids[0], sacko_weeks)
+    s1 = team_cum(sacko_ids[1], sacko_weeks)
     ninth  = sacko_ids[0] if s0 > s1 else sacko_ids[1]
     tenth  = sacko_ids[1] if ninth == sacko_ids[0] else sacko_ids[0]
 
