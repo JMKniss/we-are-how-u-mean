@@ -186,6 +186,7 @@ def load_all_seasons():
                 final_standing = finish_map.get(team_id, 0)
                 wins = int((grp["outcome"] == "W").sum())
                 losses = int((grp["outcome"] == "L").sum())
+                ties = int((grp["outcome"] == "T").sum())
                 pf = round(grp["score"].sum(), 2)
                 pa = round(grp["opp_score"].sum(), 2)
                 games = wins + losses
@@ -195,6 +196,7 @@ def load_all_seasons():
                     "manager": mgr,
                     "reg_wins": wins,
                     "reg_losses": losses,
+                    "reg_ties": ties,
                     "pf": pf,
                     "pa": pa,
                     "avg_pf": round(pf / games, 2) if games > 0 else 0.0,
@@ -523,76 +525,97 @@ with tab_records:
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_mgr_records:
     st.subheader("Best & Worst Season by Manager")
-    st.caption("All stats are regular season only unless noted. ⭐ = most extreme across all managers.")
+    st.caption(
+        "Regular season only. Records rank by win percentage, not win count, "
+        "because season length has varied from 12 to 14 games. "
+        "⭐ = most extreme across all managers."
+    )
 
-    managers = sorted(season_stats_df["manager"].unique())
+    st_df = season_stats_df.copy()
+    if "reg_ties" not in st_df.columns:
+        st_df["reg_ties"] = 0
+    st_df["games"] = st_df["reg_wins"] + st_df["reg_losses"] + st_df["reg_ties"]
+    # Ties count as half a win, so a 6-5-2 season is not ranked as if it were 6-5.
+    st_df["win_pct"] = ((st_df["reg_wins"] + 0.5 * st_df["reg_ties"])
+                        / st_df["games"].replace(0, np.nan))
 
-    # Column definitions: (display_name, raw_name, src_col, largest)
-    # largest=True  → higher raw value is more extreme (e.g. best RegW = max)
-    # largest=False → lower raw value is more extreme (e.g. worst RegW = min)
+    def record_str(r):
+        base = f"{int(r['reg_wins'])}-{int(r['reg_losses'])}"
+        if int(r["reg_ties"]):
+            base += f"-{int(r['reg_ties'])}"
+        return base
+
+    # (display, key, source column, higher-is-more-extreme)
     col_specs = [
-        ("Best RegW (Yr)",   "_best_rw",  "reg_wins",    True),
-        ("Worst RegW (Yr)",  "_worst_rw", "reg_wins",    False),
-        ("Best Full W (Yr)", "_best_fw",  "full_wins",   True),
-        ("High PF (Yr)",     "_high_pf",  "pf",          True),
-        ("Low PF (Yr)",      "_low_pf",   "pf",          False),
-        ("High PA (Yr)",     "_high_pa",  "pa",          True),
-        ("Low PA (Yr)",      "_low_pa",   "pa",          False),
-        ("High Diff (Yr)",   "_high_pd",  "point_diff",  True),
-        ("Low Diff (Yr)",    "_low_pd",   "point_diff",  False),
+        ("Best Record",  "_best_rec",  "win_pct",  True),
+        ("Worst Record", "_worst_rec", "win_pct",  False),
+        ("High PF/G",    "_high_pf",   "avg_pf",   True),
+        ("Low PF/G",     "_low_pf",    "avg_pf",   False),
+        ("High PA/G",    "_high_pa",   "avg_pa",   True),
+        ("Low PA/G",     "_low_pa",    "avg_pa",   False),
+        ("High Diff/G",  "_high_pd",   "avg_diff", True),
+        ("Low Diff/G",   "_low_pd",    "avg_diff", False),
     ]
 
-    # Build rows with raw numeric values for finding extremes later
+    managers = sorted(st_df["manager"].unique())
     raw_rows = []
     for mgr in managers:
-        m_df = season_stats_df[season_stats_df["manager"] == mgr]
+        m_df = st_df[st_df["manager"] == mgr]
         if m_df.empty:
             continue
         row = {"Manager": mgr}
-        for disp, raw, src, largest in col_specs:
-            best = m_df.nlargest(1, src) if largest else m_df.nsmallest(1, src)
-            if not best.empty:
-                row[raw] = round(best[src].values[0], 2)
-                row[f"{raw}_yr"] = int(best["season"].values[0])
-            else:
-                row[raw] = None
-                row[f"{raw}_yr"] = None
+        for disp, key, src, largest in col_specs:
+            pick = m_df.nlargest(1, src) if largest else m_df.nsmallest(1, src)
+            if pick.empty or pd.isna(pick[src].values[0]):
+                row[key] = row[f"{key}_txt"] = row[f"{key}_yr"] = None
+                continue
+            r = pick.iloc[0]
+            row[key] = round(float(r[src]), 4)
+            row[f"{key}_yr"] = int(r["season"])
+            row[f"{key}_txt"] = (record_str(r) if src == "win_pct"
+                                 else f"{float(r[src]):.2f}")
+
+        # Best and worst finish, with a count when it happened more than once.
+        placed = m_df[m_df["final_standing"] > 0]["final_standing"]
+        if placed.empty:
+            row["Best Finish"] = row["Worst Finish"] = "—"
+        else:
+            for label, pos in (("Best Finish", int(placed.min())),
+                               ("Worst Finish", int(placed.max()))):
+                n = int((placed == pos).sum())
+                row[label] = ordinal(pos) + (f" x{n}" if n > 1 else "")
         raw_rows.append(row)
 
     raw_df = pd.DataFrame(raw_rows)
 
-    # Find the cross-manager extreme for each column
     extremes = {}
-    for disp, raw, src, largest in col_specs:
-        col_vals = raw_df[raw].dropna()
-        if not col_vals.empty:
-            extremes[raw] = col_vals.max() if largest else col_vals.min()
-        else:
-            extremes[raw] = None
+    for disp, key, src, largest in col_specs:
+        vals = raw_df[key].dropna()
+        extremes[key] = (vals.max() if largest else vals.min()) if not vals.empty else None
 
-    # Build display DataFrame, appending ⭐ to the extreme cell
     display_rows = []
     for _, r in raw_df.iterrows():
-        display_row = {"Manager": r["Manager"]}
-        for disp, raw, src, largest in col_specs:
-            val = r[raw]
-            yr = r[f"{raw}_yr"]
-            if val is None:
-                display_row[disp] = "—"
-            else:
-                is_int = src in ("reg_wins", "full_wins")
-                val_str = f"{int(val)}" if is_int else f"{val:.2f}"
-                cell = f"{val_str} ({yr})"
-                if extremes.get(raw) is not None and val == extremes[raw]:
-                    cell += " ⭐"
-                display_row[disp] = cell
-        display_rows.append(display_row)
+        out = {"Manager": r["Manager"]}
+        for disp, key, src, largest in col_specs:
+            if r[key] is None:
+                out[disp] = "—"
+                continue
+            cell = f"{r[f'{key}_txt']} ({r[f'{key}_yr']})"
+            if extremes[key] is not None and r[key] == extremes[key]:
+                cell += " ⭐"
+            out[disp] = cell
+        # Finish columns are categorical and several managers share a best of
+        # 1st, so starring them would mark half the table. Left unmarked.
+        out["Best Finish"] = r["Best Finish"]
+        out["Worst Finish"] = r["Worst Finish"]
+        display_rows.append(out)
 
-    stat_col_width = 155
-    col_config = {disp: st.column_config.TextColumn(disp, width=stat_col_width)
-                  for disp, raw, src, largest in col_specs}
+    col_config = {disp: st.column_config.TextColumn(disp, width=150)
+                  for disp, key, src, largest in col_specs}
     st.dataframe(pd.DataFrame(display_rows), hide_index=True,
                  use_container_width=True, column_config=col_config)
+
+
 
 
 # ══════════════════════════════════════════════════════════════════════════════
