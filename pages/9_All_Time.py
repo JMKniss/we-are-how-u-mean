@@ -293,7 +293,7 @@ if "alltime_view" not in st.session_state:
     st.session_state["alltime_view"] = VIEW_ACTIVE
 
 
-VIEW_TAB_KEYS = ("trophy", "records", "mgr", "seasons", "h2h", "milestones")
+VIEW_TAB_KEYS = ("trophy", "records", "mgr", "h2h", "milestones")
 
 
 def _view_changed(changed_key: str):
@@ -342,11 +342,10 @@ if active_only:
             playoff_wins_df["manager"].isin(ACTIVE_MANAGERS)].copy()
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab_trophy, tab_records, tab_mgr_records, tab_seasons, tab_h2h, tab_milestones = st.tabs([
+tab_trophy, tab_records, tab_mgr_records, tab_h2h, tab_milestones = st.tabs([
     "🏆 Trophy Case",
     "📊 League Records",
     "👤 Manager Records",
-    "📅 Season-by-Season",
     "⚔️ Head to Head",
     "🎯 Milestones",
 ])
@@ -695,42 +694,57 @@ with tab_mgr_records:
     st.dataframe(pd.DataFrame(display_rows), hide_index=True,
                  use_container_width=True, column_config=col_config)
 
+    st.divider()
 
+    # ── One manager's season-by-season record ──────────────────────────────
+    st.subheader("Season by Season")
+    pick = st.selectbox("Manager", sorted(st_df["manager"].unique()),
+                        key="season_by_season_mgr")
+    m_df = st_df[st_df["manager"] == pick].sort_values("season")
 
+    # Ties are excluded from every calculation here, so win% is W/(W+L) and the
+    # average row averages wins and losses only.
+    def win_pct(w, l):
+        return round(w / (w + l) * 100, 1) if (w + l) else 0.0
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 4: SEASON-BY-SEASON
-# ══════════════════════════════════════════════════════════════════════════════
-with tab_seasons:
-    view_toggle("seasons")
-    st.subheader("Every Manager's Season-by-Season Record")
-    st.caption("W/L = regular season H2H. Full W = reg + playoff rounds won. Finish = ESPN final standing.")
+    season_rows = []
+    for _, r in m_df.iterrows():
+        g = int(r["reg_wins"]) + int(r["reg_losses"]) + int(r.get("reg_ties", 0))
+        made = 1 <= int(r["seed"]) <= PLAYOFF_SPOTS if r["seed"] else False
+        season_rows.append({
+            "Season": str(int(r["season"])),
+            "Record": record_str(r),
+            "Win%": win_pct(int(r["reg_wins"]), int(r["reg_losses"])),
+            "Playoffs": "✅" if made else "❌",
+            "PF (/g)": f"{r['pf']:.1f} ({r['pf'] / g:.1f})" if g else "—",
+            "PA (/g)": f"{r['pa']:.1f} ({r['pa'] / g:.1f})" if g else "—",
+            "Avg Diff": round(float(r["avg_diff"]), 2),
+            "Finish": finish_label(r["final_standing"]),
+        })
 
-    display_cols = {
-        "manager": "Manager",
-        "season": "Season",
-        "reg_wins": "W",
-        "reg_losses": "L",
-        "playoff_wins": "Playoff W",
-        "full_wins": "Full W",
-        "pf": "PF",
-        "pa": "PA",
-        "avg_pf": "Avg PF",
-        "avg_diff": "Avg Diff",
-        "final_standing": "Finish",
-    }
-    disp = season_stats_df[list(display_cols.keys())].copy()
-    disp = disp.rename(columns=display_cols)
-    disp["Season"] = disp["Season"].astype(str)
-    disp["Finish"] = disp["Finish"].apply(finish_label)
-    disp = disp.sort_values(["Manager", "Season"])
+    if season_rows:
+        n = len(m_df)
+        aw, al = m_df["reg_wins"].mean(), m_df["reg_losses"].mean()
+        tot_g = (m_df["reg_wins"] + m_df["reg_losses"] + m_df.get("reg_ties", 0)).sum()
+        placed = m_df[m_df["final_standing"] > 0]["final_standing"]
+        avg_row = {
+            "Season": "Average",
+            "Record": f"{aw:.1f} W, {al:.1f} L",
+            "Win%": win_pct(aw, al),
+            "Playoffs": "",
+            "PF (/g)": f"{m_df['pf'].mean():.1f} ({m_df['pf'].sum() / tot_g:.1f})" if tot_g else "—",
+            "PA (/g)": f"{m_df['pa'].mean():.1f} ({m_df['pa'].sum() / tot_g:.1f})" if tot_g else "—",
+            "Avg Diff": round(float(m_df["avg_diff"].mean()), 2),
+            "Finish": f"{placed.mean():.1f}" if not placed.empty else "—",
+        }
+        st.dataframe(pd.DataFrame([avg_row] + season_rows),
+                     hide_index=True, use_container_width=True)
+        st.caption(
+            f"{pick}, {n} season{'s' if n != 1 else ''}. Ties are excluded from "
+            "win% and from the average row. Playoffs marks a top-"
+            f"{PLAYOFF_SPOTS} seed. Finish on the Average row is the mean placing."
+        )
 
-    # Optional filter by manager
-    mgr_filter = st.selectbox("Filter by manager", ["All"] + sorted(season_stats_df["manager"].unique()))
-    if mgr_filter != "All":
-        disp = disp[disp["Manager"] == mgr_filter]
-
-    st.dataframe(disp, hide_index=True, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
