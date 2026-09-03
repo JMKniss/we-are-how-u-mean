@@ -162,6 +162,11 @@ def load_all_seasons():
             finish_map = compute_season_finish_map(season, m)  # {team_id: 1-10}
 
             reg_df = m[m["week"] <= reg_end]
+            # Regular season seed, using the same basis as playoff seeding:
+            # combined (H2H + median) from 2025, H2H before that.
+            seed_order = (combined_standings(reg_df) if season >= 2025
+                          else h2h_standings(reg_df)).reset_index(drop=True)
+            seed_map = {t: i + 1 for i, t in enumerate(seed_order["team_id"])}
             for team_id, grp in reg_df.groupby("team_id"):
                 mgr = mgr_map.get(team_id, "?")
                 final_standing = finish_map.get(team_id, 0)
@@ -183,6 +188,7 @@ def load_all_seasons():
                     "point_diff": round(pf - pa, 2),
                     "avg_diff": round((pf - pa) / games, 2) if games > 0 else 0.0,
                     "final_standing": final_standing,
+                    "seed": seed_map.get(team_id, 0),
                 })
         except Exception as e:
             failed.append((season, str(e)))
@@ -254,17 +260,6 @@ else:
 
 season_stats_df["full_wins"] = season_stats_df["reg_wins"] + season_stats_df["playoff_wins"]
 
-# Champion/sacko per season
-champ_sacko_rows = [{"Season": 2015, "Champion 🏆": "Mikey", "Sacko 🚽": "Tyler"}]
-for season in SEASONS:
-    s_df = season_stats_df[season_stats_df["season"] == season]
-    champ_row = s_df[s_df["final_standing"] == 1]
-    sacko_row = s_df[s_df["final_standing"] == s_df["final_standing"].max()]
-    champ = champ_row["manager"].values[0] if not champ_row.empty else "—"
-    sacko = sacko_row["manager"].values[0] if not sacko_row.empty else "—"
-    champ_sacko_rows.append({"Season": season, "Champion 🏆": champ, "Sacko 🚽": sacko})
-champ_sacko_df = pd.DataFrame(champ_sacko_rows)
-
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab_trophy, tab_records, tab_mgr_records, tab_seasons, tab_h2h, tab_milestones = st.tabs([
     "🏆 Trophy Case",
@@ -280,28 +275,80 @@ tab_trophy, tab_records, tab_mgr_records, tab_seasons, tab_h2h, tab_milestones =
 # TAB 1: TROPHY CASE
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_trophy:
-    st.subheader("Champions & Sacko by Season")
-    st.caption("2015 data is not tracked in standings — only listed here for historical completeness.")
-    display = champ_sacko_df.copy()
-    display["Season"] = display["Season"].astype(str)
-    st.dataframe(display, hide_index=True, use_container_width=True)
+    st.subheader("Career Summary")
 
-    st.divider()
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("🏆 Most Championships")
-        champ_counts = (champ_sacko_df["Champion 🏆"]
-                        .value_counts()
-                        .reset_index()
-                        .rename(columns={"Champion 🏆": "Manager", "count": "Titles"}))
-        st.dataframe(champ_counts, hide_index=True, use_container_width=True)
-    with col2:
-        st.subheader("🚽 Most Sackos")
-        sacko_counts = (champ_sacko_df["Sacko 🚽"]
-                        .value_counts()
-                        .reset_index()
-                        .rename(columns={"Sacko 🚽": "Manager", "count": "Sackos"}))
-        st.dataframe(sacko_counts, hide_index=True, use_container_width=True)
+    PLAYOFF_SPOTS = 4          # seeds 1-4 make the championship bracket
+    MEDAL = {1: "🏆", 2: "🥈", 3: "🥉"}   # trophy, silver, bronze
+    SACKO = "🚽"                                          # toilet
+
+    def year_ranges(years):
+        """[2016,2017,2019,2020,2021] -> '2016-2017, 2019-2021'."""
+        ys = sorted({int(y) for y in years})
+        if not ys:
+            return ""
+        spans, start_y, prev = [], ys[0], ys[0]
+        for y in ys[1:]:
+            if y == prev + 1:
+                prev = y
+                continue
+            spans.append((start_y, prev))
+            start_y = prev = y
+        spans.append((start_y, prev))
+        return ", ".join(f"{a}-{b}" if a != b else str(a) for a, b in spans)
+
+    # Last place is whatever the largest finish that season was, rather than a
+    # hardcoded 10, so a season with a different team count still works.
+    last_by_season = (season_stats_df[season_stats_df["final_standing"] > 0]
+                      .groupby("season")["final_standing"].max().to_dict())
+
+    # 2015 predates the data. Its champion and sacko are known, and are counted
+    # here only: that season contributes no games, years or percentages.
+    tally = {"Mikey": {1: 1}, "Tyler": {"last": 1}}
+
+    rows = []
+    for mgr, g in season_stats_df.groupby("manager"):
+        wins = int(g["reg_wins"].sum())
+        losses = int(g["reg_losses"].sum())
+        games = wins + losses
+        counts = dict(tally.get(mgr, {}))
+        for _, r in g.iterrows():
+            fin = int(r["final_standing"])
+            if fin == 0:
+                continue
+            if fin == last_by_season.get(int(r["season"])):
+                counts["last"] = counts.get("last", 0) + 1
+            elif fin in MEDAL:
+                counts[fin] = counts.get(fin, 0) + 1
+
+        parts = []
+        for key in (1, 2, 3, "last"):
+            n = counts.get(key, 0)
+            if not n:
+                continue
+            sym = SACKO if key == "last" else MEDAL[key]
+            parts.append(sym if n == 1 else f"{sym}x{n}")
+
+        rows.append({
+            "Manager": mgr,
+            "Years": year_ranges(g["season"]),
+            "W": wins,
+            "L": losses,
+            "Win%": round(wins / games * 100, 1) if games else 0.0,
+            "Playoffs": int((g["seed"].between(1, PLAYOFF_SPOTS)).sum()),
+            "Finishes": "  ".join(parts),
+        })
+
+    career = pd.DataFrame(rows).sort_values("W", ascending=False).reset_index(drop=True)
+    career.index = range(1, len(career) + 1)
+    st.dataframe(career, use_container_width=True)
+
+    st.caption(
+        f"Regular season head-to-head only; median wins are not counted. "
+        f"Playoffs counts seasons seeded in the top {PLAYOFF_SPOTS}. "
+        f"Finishes: {MEDAL[1]} 1st · {MEDAL[2]} 2nd · {MEDAL[3]} 3rd · {SACKO} last. "
+        f"2015 predates the league data, so Mikey's title and Tyler's sacko that "
+        f"year are included in Finishes but in no other column."
+    )
 
 
 # ══════════════════════════════════════════════════════════════════════════════
