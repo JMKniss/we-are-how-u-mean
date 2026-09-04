@@ -59,6 +59,7 @@ def _current_standings_display(df):
         "Total": record(df["total_wins"], df["total_losses"]),
         "H2H": record(df["wins"], df["losses"]),
         "Median": record(df["median_wins"], df["median_losses"]),
+        "Vs All": df["_vs_all"],
         "PF": df["points_for"].round(1),
         "PA": df["points_against"].round(1),
         "Avg": df["avg_score"].round(1),
@@ -66,23 +67,34 @@ def _current_standings_display(df):
     return out
 
 
-tab1, tab4, tab5, tab6 = st.tabs(
-    ["Standings", "Strength of Schedule", "Luck Index", "Alternate Schedule"])
+tab1, tab4, tab5 = st.tabs(
+    ["Standings", "Strength of Schedule", "Luck Index"])
 
 # ── Tab 1 ─────────────────────────────────────────────────────────────────────
 with tab1:
     st.subheader("Standings")
     df = combined_standings(matchups_df)
+    # Record if you had played every other team every week, folded in here so
+    # the schedule-free view sits beside the schedule-bound ones.
+    _alt = alternate_schedule_standings(matchups_df).set_index("team_id")
+    df["_vs_all"] = [
+        f"{int(_alt.loc[t, 'alt_wins'])}-"
+        f"{int(_alt.loc[t, 'alt_games'] - _alt.loc[t, 'alt_wins'])}"
+        if t in _alt.index else "—" for t in df["team_id"]]
     if official_combined:
         st.caption("Two games per week: one H2H matchup and one vs-median. "
-                   "Sorted by total wins, which is the official standing from 2025.")
+                   "Sorted by total wins, which is the official standing from "
+                   "2025. Vs All is the record if you had played every other "
+                   "team every week, which removes the schedule entirely.")
     else:
         # Median wins were not official before 2025, so the order has to follow
         # head-to-head or the table would rewrite history. The median column is
         # still shown, since the games were played either way.
         df = df.sort_values(["wins", "points_for"], ascending=False)
         st.caption("Head-to-head decided the standings before 2025, so the order "
-                   "follows H2H. The median column is shown for reference only.")
+                   "follows H2H. Median and Vs All are shown for reference "
+                   "only; Vs All is the record if you had played every other "
+                   "team every week.")
     st.dataframe(_current_standings_display(df), use_container_width=True,
                  hide_index=True)
 
@@ -238,42 +250,8 @@ with tab4:
         display[col] = display[col].round(1)
     st.dataframe(display, use_container_width=True, hide_index=True)
 
-    df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-    fig = px.bar(df, x="label", y="avg_opp_score",
-                 title="Average Opponent Score Faced",
-                 labels={"label": "", "avg_opp_score": "Avg Opp Score"},
-                 color="avg_opp_score", color_continuous_scale="RdYlGn_r")
-    fig.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
-
-# ── Tab 5: Luck Index ─────────────────────────────────────────────────────────
-with tab5:
-    st.subheader("Luck Index")
-    st.caption("Luck = Actual Wins − Expected Wins (based on weekly score percentile). Positive = lucky, negative = unlucky.")
-    df = luck_index(matchups_df)
-    display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "actual_wins", "expected_wins", "luck_score"],
-                           headers=["Team", "Actual W", "Expected W", "Luck Score"])
-    display["Expected W"] = display["Expected W"].round(1)
-    display["Luck Score"] = display["Luck Score"].round(2)
-    st.dataframe(display, use_container_width=True, hide_index=True)
-
-    df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-    fig = px.bar(df.sort_values("luck_score"), x="luck_score", y="label",
-                 orientation="h",
-                 title="Luck Score by Team",
-                 labels={"luck_score": "Luck Score", "label": ""},
-                 color="luck_score", color_continuous_scale="RdYlGn")
-    fig.add_vline(x=0, line_dash="dash", line_color="gray")
-    fig.update_layout(coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
-
-# ── Tab 6: Alternate Schedule ─────────────────────────────────────────────────
-with tab6:
+    st.divider()
     weeks_played = matchups_df["week"].nunique()
-    n_teams = matchups_df["team_id"].nunique()
-    opp_per_week = n_teams - 1
-
     # ── Swapped schedules ─────────────────────────────────────────────────────
     st.subheader("If You Had Played Someone Else's Schedule")
     st.caption(
@@ -315,19 +293,24 @@ with tab6:
         "schedule, so a **higher SS means an easier schedule**."
     )
 
-    st.divider()
-
-    # ── Play everyone every week ──────────────────────────────────────────────
-    st.subheader("If Everyone Played Everyone, Every Week")
-    st.caption(
-        f"Each week every team is scored against all {opp_per_week} others. "
-        f"Maximum possible: **{opp_per_week * weeks_played} wins** "
-        f"({opp_per_week} per week x {weeks_played} weeks)."
-    )
-    with st.spinner("Computing..."):
-        alt = alternate_schedule_standings(matchups_df)
-    display = prep_display(alt, manager_map, show_mgr, show_team,
-                           cols=["team_name", "alt_wins", "alt_win_pct"],
-                           headers=["Team", "Wins", "Win%"])
-    display["Win%"] = display["Win%"].round(3)
+# ── Tab 5: Luck Index ─────────────────────────────────────────────────────────
+with tab5:
+    st.subheader("Luck Index")
+    st.caption("Luck = Actual Wins − Expected Wins (based on weekly score percentile). Positive = lucky, negative = unlucky.")
+    df = luck_index(matchups_df)
+    display = prep_display(df, manager_map, show_mgr, show_team,
+                           cols=["team_name", "actual_wins", "expected_wins", "luck_score"],
+                           headers=["Team", "Actual W", "Expected W", "Luck Score"])
+    display["Expected W"] = display["Expected W"].round(1)
+    display["Luck Score"] = display["Luck Score"].round(2)
     st.dataframe(display, use_container_width=True, hide_index=True)
+
+    df["label"] = chart_label(df, manager_map, show_mgr, show_team)
+    fig = px.bar(df.sort_values("luck_score"), x="luck_score", y="label",
+                 orientation="h",
+                 title="Luck Score by Team",
+                 labels={"luck_score": "Luck Score", "label": ""},
+                 color="luck_score", color_continuous_scale="RdYlGn")
+    fig.add_vline(x=0, line_dash="dash", line_color="gray")
+    fig.update_layout(coloraxis_showscale=False)
+    st.plotly_chart(fig, use_container_width=True)
