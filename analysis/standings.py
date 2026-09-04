@@ -206,28 +206,31 @@ def swapped_schedule_matrix(matchups_df: pd.DataFrame) -> pd.DataFrame:
 
 def luck_breakdown(matchups_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Decompose each team's record into what their scoring earned and what the
-    draw handed them. All figures are in games.
+    Split a team's record into what their scoring earned and what fortune added,
+    all in games.
 
-    Three components, each an actual minus an expected:
+    Built as a chain of counterfactuals rather than a bag of separate measures.
+    Each link strips one source of luck away from the last:
 
-    schedule_luck  actual H2H wins minus the wins those scores earned against
-                   the field they actually faced each week. Isolates who you
-                   were scheduled against.
-    field_luck     wins earned against that week's field minus wins earned
-                   against the season's whole pool of scores. Isolates whether
-                   your good weeks landed when the league was also scoring.
-    median_luck    actual median wins minus the wins your scores would earn
-                   against the season's median rather than each week's.
+        A  wins actually taken
+        F  wins if every opponent had scored their own average instead
+        D  wins those scores earn against that week's whole field
+        S  wins those scores earn against the season's whole pool of scores
 
-    They are near enough independent to add: across a season the pairwise
-    correlations run under 0.2. Each also sums to about zero across the league,
-    since one team's good fortune is another's bad.
+    which gives three differences that each isolate one thing:
 
-    Opponent form (points opponents scored against you above their own average)
-    is returned for context but deliberately left out of the total: it
-    correlates about -0.75 with schedule luck, being a mechanism for it rather
-    than a separate effect, so adding it would count the same luck twice.
+        opponent form  A - F   opponents played above or below themselves
+        schedule       F - D   which opponent you drew, at their normal level
+        field          D - S   whether the week itself scored high or low
+
+    They telescope, so the three add to A - S exactly, with no residual and
+    nothing counted twice. Measuring schedule luck from F rather than from A is
+    what makes that work: opponent form is removed before the draw is judged.
+    An earlier version compared both against A, and the two then overlapped at
+    a correlation near -0.75. Off this chain it falls to about -0.23.
+
+    median_luck is separate, since median games are a second contest rather
+    than another way of losing the same one.
     """
     df = matchups_df
     n_teams = df["team_id"].nunique()
@@ -237,6 +240,11 @@ def luck_breakdown(matchups_df: pd.DataFrame) -> pd.DataFrame:
     all_scores = np.sort(df["score"].values)
     week_median = df.groupby("week")["score"].median()
     season_median = df["score"].median()
+    per_team = df.groupby("team_id")["score"].agg(["sum", "count"])
+
+    # the opponent's own average, leaving out the game against you
+    opp_norm = ((df["opp_id"].map(per_team["sum"]) - df["opp_score"])
+                / (df["opp_id"].map(per_team["count"]) - 1).replace(0, np.nan))
 
     def beat_that_week(score, week):
         others = list(week_scores.get(week, []))
@@ -245,30 +253,62 @@ def luck_breakdown(matchups_df: pd.DataFrame) -> pd.DataFrame:
         return sum(1 for x in others if x < score) / opponents
 
     def beat_the_season(score):
-        # share of every score posted this season that this one beats
         return np.searchsorted(all_scores, score, side="left") / max(
             len(all_scores) - 1, 1)
 
     work = df.assign(
-        p_week=[beat_that_week(s, w) for s, w in zip(df["score"], df["week"])],
-        p_season=[beat_the_season(s) for s in df["score"]],
+        A=(df["outcome"] == "W").astype(float),
+        F=(df["score"] > opp_norm).astype(float),
+        D=[beat_that_week(s, w) for s, w in zip(df["score"], df["week"])],
+        S=[beat_the_season(s) for s in df["score"]],
         med_win=[1.0 if s > week_median[w] else 0.0
                  for s, w in zip(df["score"], df["week"])],
         med_exp=[1.0 if s > season_median else 0.0 for s in df["score"]],
-        is_win=(df["outcome"] == "W").astype(float),
     )
 
     g = work.groupby(["team_id", "team_name"])
-    out = g.agg(
-        h2h_wins=("is_win", "sum"),
-        xw_week=("p_week", "sum"),
-        xw_season=("p_season", "sum"),
-        median_wins=("med_win", "sum"),
-        xmedian=("med_exp", "sum"),
-    ).reset_index()
+    out = g.agg(h2h_wins=("A", "sum"), w_form=("F", "sum"),
+                w_field=("D", "sum"), w_season=("S", "sum"),
+                median_wins=("med_win", "sum"), xmedian=("med_exp", "sum"),
+                ).reset_index()
 
-    out["schedule_luck"] = out["h2h_wins"] - out["xw_week"]
-    out["field_luck"] = out["xw_week"] - out["xw_season"]
+    out["opp_luck"] = out["h2h_wins"] - out["w_form"]
+    out["schedule_luck"] = out["w_form"] - out["w_field"]
+    out["field_luck"] = out["w_field"] - out["w_season"]
     out["median_luck"] = out["median_wins"] - out["xmedian"]
-    out["opp_form"] = out["team_id"].map(opponent_vs_own_average(df))
+    out["opp_form_pts"] = out["team_id"].map(opponent_vs_own_average(df))
+    return out
+
+
+def luck_total(breakdown: pd.DataFrame, include_median: bool) -> pd.DataFrame:
+    """
+    Add the components up and scale the result against the league.
+
+    The three head-to-head parts telescope, so they are added as they are;
+    weighting them would break the identity that makes them add to a real
+    number of games. The scaling happens after: the total is divided by the
+    spread across the league that season, which turns "1.7 games" into "how
+    unusual is that", and the two are not the same thing. A quiet season and a
+    wild one can produce the same game count and mean very different things.
+    """
+    parts = ["opp_luck", "schedule_luck", "field_luck"]
+    if include_median:
+        parts = parts + ["median_luck"]
+    out = breakdown.copy()
+    out["total_luck"] = out[parts].sum(axis=1)
+    spread = out["total_luck"].std()
+    out["luck_sigma"] = (out["total_luck"] / spread) if spread else 0.0
+
+    def label(z):
+        if z >= 1.5:
+            return "Blessed"
+        if z >= 0.5:
+            return "Fortunate"
+        if z > -0.5:
+            return "Fair"
+        if z > -1.5:
+            return "Hard done by"
+        return "Cursed"
+
+    out["luck_label"] = out["luck_sigma"].map(label)
     return out

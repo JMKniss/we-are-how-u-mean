@@ -8,7 +8,8 @@ import numpy as np
 from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import (
     combined_standings,
-    strength_of_schedule, alternate_schedule_standings, luck_breakdown,
+    strength_of_schedule, alternate_schedule_standings,
+    luck_breakdown, luck_total,
     opponent_vs_own_average,
     swapped_schedule_matrix
 )
@@ -240,16 +241,17 @@ with tab5:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Schedule luck**")
-        st.caption("Did you draw easy opponents? Your wins compared with how "
-                   "many your scores should have won each week.")
-        st.dataframe(small(["h2h_wins", "xw_week", "schedule_luck"],
-                           ["W", "Earned", "Luck"], "schedule_luck"),
+        st.caption("Did you draw easy opponents? Wins you would have had "
+                   "against opponents at their normal level, compared with "
+                   "what your scores earned against the whole week.")
+        st.dataframe(small(["w_form", "w_field", "schedule_luck"],
+                           ["vs Normal", "Earned", "Luck"], "schedule_luck"),
                      use_container_width=True, hide_index=True)
     with c2:
         st.markdown("**Field luck**")
         st.caption("Did your good scores land on low-scoring weeks? Lucky if "
                    "you scored well when the rest of the league did not.")
-        st.dataframe(small(["xw_week", "xw_season", "field_luck"],
+        st.dataframe(small(["w_field", "w_season", "field_luck"],
                            ["vs Week", "vs Season", "Luck"], "field_luck"),
                      use_container_width=True, hide_index=True)
 
@@ -263,33 +265,41 @@ with tab5:
                      use_container_width=True, hide_index=True)
     with c4:
         st.markdown("**Opponent form**")
-        st.caption("Points your opponents scored above their own average. "
-                   "Positive means they played better than usual against you.")
-        st.dataframe(small(["opp_form"], ["Opp vs Own Avg"], "opp_form"),
+        st.caption("Did opponents play above or below their usual level "
+                   "against you? Shown in games, with the points behind it.")
+        st.dataframe(small(["opp_luck", "opp_form_pts"], ["Luck", "Points"],
+                           "opp_luck"),
                      use_container_width=True, hide_index=True)
 
     st.divider()
     st.markdown("**Cumulative luck**")
-    total = lb.copy()
-    parts = ["schedule_luck", "field_luck"]
+    tot = luck_total(lb, official_combined)
+    cols = ["Manager", "opp_luck", "schedule_luck", "field_luck"]
+    heads = ["Manager", "Opponent", "Schedule", "Field"]
     if official_combined:
-        parts.append("median_luck")
-    total["Total"] = total[parts].sum(axis=1)
-    tot_disp = total.sort_values("Total", ascending=False)[
-        ["Manager", "schedule_luck", "field_luck", "median_luck", "Total"]].copy()
-    tot_disp.columns = ["Manager", "Schedule", "Field", "Median", "Total"]
-    for c in ["Schedule", "Field", "Median", "Total"]:
-        tot_disp[c] = tot_disp[c].round(2)
-    if not official_combined:
-        tot_disp = tot_disp.drop(columns=["Median"])
-    st.dataframe(tot_disp, use_container_width=True, hide_index=True)
+        cols.append("median_luck")
+        heads.append("Median")
+    cols += ["total_luck", "luck_sigma", "luck_label"]
+    heads += ["Total", "Rating", ""]
+    td = tot.sort_values("total_luck", ascending=False)[cols].copy()
+    td.columns = heads
+    for c in heads:
+        if c in ("Manager", ""):
+            continue
+        td[c] = td[c].round(2)
+    td["Rating"] = td["Rating"].map(lambda z: f"{z:+.1f}σ")
+    st.dataframe(td, use_container_width=True, hide_index=True)
     st.caption(
-        ("Schedule plus Field plus Median, in games. Median counts from 2025, "
-         "when it became half the record." if official_combined else
-         "Schedule plus Field, in games. Median is left out because it did not "
-         "count toward the standings before 2025.")
-        + " Opponent form is not added in: it is already part of schedule luck, "
-          "so counting it again would double up."
+        ("Opponent + Schedule + Field + Median, in games. "
+         if official_combined else
+         "Opponent + Schedule + Field, in games. Median is left out because it "
+         "did not count toward the standings before 2025. ")
+        + "The first three are steps down a chain, each removing one kind of "
+        "luck from the one before, so they add up exactly with nothing counted "
+        "twice. Rating divides the total by how much luck varied across the "
+        "league this season, so it says how unusual the total is rather than "
+        "just how big: a quiet season and a wild one can hand out the same "
+        "number of games and mean very different things."
     )
 
     # ── How likely that result was, given the score ────────────────────────
