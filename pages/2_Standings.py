@@ -5,10 +5,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import (
-    h2h_standings, median_standings, combined_standings,
+    combined_standings,
     strength_of_schedule, luck_index, alternate_schedule_standings,
     swapped_schedule_matrix
 )
@@ -65,86 +64,26 @@ def _current_standings_display(df):
     return out
 
 
-if official_combined:
-    tab_names = ["Current Standings", "vs Median", "H2H", "Strength of Schedule", "Luck Index", "Alternate Schedule"]
-else:
-    tab_names = ["H2H", "vs Median", "Combined", "Strength of Schedule", "Luck Index", "Alternate Schedule"]
-
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(tab_names)
+tab1, tab4, tab5, tab6 = st.tabs(
+    ["Standings", "Strength of Schedule", "Luck Index", "Alternate Schedule"])
 
 # ── Tab 1 ─────────────────────────────────────────────────────────────────────
 with tab1:
+    st.subheader("Standings")
+    df = combined_standings(matchups_df)
     if official_combined:
-        st.subheader("Current Standings")
-        st.caption("Two games per week: one H2H matchup and one vs-median. Sorted by total wins.")
-        df = combined_standings(matchups_df)
-        st.dataframe(_current_standings_display(df), use_container_width=True, hide_index=True)
+        st.caption("Two games per week: one H2H matchup and one vs-median. "
+                   "Sorted by total wins, which is the official standing from 2025.")
     else:
-        st.subheader("Head-to-Head Standings")
-        df = h2h_standings(matchups_df)
-        display = prep_display(df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "wins", "losses", "points_for", "points_against", "avg_score", "win_pct"],
-                               headers=["Team", "W", "L", "PF", "PA", "Avg Score", "Win%"])
-        display["PF"] = display["PF"].round(1)
-        display["PA"] = display["PA"].round(1)
-        display["Avg Score"] = display["Avg Score"].round(1)
-        display["Win%"] = display["Win%"].round(3)
-        st.dataframe(display, use_container_width=True, hide_index=True)
+        # Median wins were not official before 2025, so the order has to follow
+        # head-to-head or the table would rewrite history. The median column is
+        # still shown, since the games were played either way.
+        df = df.sort_values(["wins", "points_for"], ascending=False)
+        st.caption("Head-to-head decided the standings before 2025, so the order "
+                   "follows H2H. The median column is shown for reference only.")
+    st.dataframe(_current_standings_display(df), use_container_width=True,
+                 hide_index=True)
 
-        df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-        fig = px.bar(df, x="label", y=["wins", "losses"], barmode="group",
-                     labels={"value": "Games", "label": "", "variable": ""},
-                     title="Wins vs Losses", color_discrete_map={"wins": "#2ecc71", "losses": "#e74c3c"})
-        fig.update_layout(xaxis_tickangle=-30)
-        st.plotly_chart(fig, use_container_width=True)
-
-# ── Tab 2: vs Median ──────────────────────────────────────────────────────────
-with tab2:
-    st.subheader("Vs-Median Standings")
-    st.caption("Each week, beating the league median score counts as an additional win.")
-    df = median_standings(matchups_df)
-    df["median_win_pct"] = (df["median_wins"] / (df["median_wins"] + df["median_losses"]).replace(0, float("nan"))).round(3)
-    display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "median_wins", "median_losses", "median_win_pct"],
-                           headers=["Team", "W", "L", "Win%"])
-    st.dataframe(display, use_container_width=True, hide_index=True)
-
-    df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-    fig = px.bar(df, x="label", y="median_wins",
-                 title="Median Wins per Team",
-                 labels={"label": "", "median_wins": "Wins vs Median"},
-                 color="median_wins", color_continuous_scale="Greens")
-    fig.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
-
-# ── Tab 3: H2H (2025+) or Combined (pre-2025) ────────────────────────────────
-with tab3:
-    if official_combined:
-        st.subheader("Head-to-Head Record")
-        st.caption("One game per week against your scheduled opponent only.")
-        df = h2h_standings(matchups_df)
-        display = prep_display(df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "wins", "losses", "win_pct"],
-                               headers=["Team", "W", "L", "Win%"])
-        display["Win%"] = display["Win%"].round(3)
-        st.dataframe(display, use_container_width=True, hide_index=True)
-
-        df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-        fig = px.bar(df, x="label", y=["wins", "losses"], barmode="group",
-                     labels={"value": "Games", "label": "", "variable": ""},
-                     title="H2H Wins vs Losses",
-                     color_discrete_map={"wins": "#2ecc71", "losses": "#e74c3c"})
-        fig.update_layout(xaxis_tickangle=-30)
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.subheader("Combined Standings (H2H + vs Median)")
-        st.caption("Two games per week: one H2H matchup win/loss, one vs-median win/loss.")
-        df = combined_standings(matchups_df)
-        display = prep_display(df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "wins", "median_wins", "total_wins", "total_losses", "total_win_pct"],
-                               headers=["Team", "H2H W", "Median W", "Total W", "Total L", "Win%"])
-        display["Win%"] = display["Win%"].round(3)
-        st.dataframe(display, use_container_width=True, hide_index=True)
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
 with tab4:
