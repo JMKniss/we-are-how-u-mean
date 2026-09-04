@@ -902,7 +902,7 @@ with tab_h2h:
 
     MIN_MEETINGS = 8   # ~5 seasons of history; below this the picks are noise
 
-    st.subheader("Rivalries at a Glance")
+    st.subheader("Matchup Profiles")
     st.caption(
         "Most Played is whoever you have faced most. The rest need at least "
         f"{MIN_MEETINGS} meetings, so a hot streak over two games cannot claim "
@@ -910,7 +910,7 @@ with tab_h2h:
         "do not masquerade as close games."
     )
 
-    riv_rows = []
+    profile_rows = []
     for mgr in sorted(h2h_agg["manager"].unique()):
         d = h2h_agg[h2h_agg["manager"] == mgr]
         q = d[d["games"] >= MIN_MEETINGS]
@@ -934,9 +934,10 @@ with tab_h2h:
         else:
             for c in ("Most Balanced", "Tightest", "Bully", "Bully-ee"):
                 row[c] = "—"
-        riv_rows.append(row)
+        profile_rows.append(row)
 
-    st.dataframe(pd.DataFrame(riv_rows), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(profile_rows), hide_index=True,
+                 use_container_width=True)
 
     st.divider()
     st.divider()
