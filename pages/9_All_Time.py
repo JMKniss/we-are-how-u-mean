@@ -902,7 +902,7 @@ with tab_h2h:
 
     MIN_MEETINGS = 8   # ~5 seasons of history; below this the picks are noise
 
-    st.subheader("Matchup Profiles")
+    st.subheader("Noteworthy Matchups")
     st.caption(
         "Most Played is whoever you have faced most. The rest need at least "
         f"{MIN_MEETINGS} meetings, so a hot streak over two games cannot claim "
