@@ -28,6 +28,42 @@ st.session_state["selected_season"] = season
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
+def rank_stats_all_seasons():
+    """
+    League-wide facts about weekly scoring rank, pooled over every season.
+
+    Per-season samples are far too thin for this: one season gives 13 games per
+    rank, all seasons give about 127. Returns (win rate by rank, rank-vs-rank
+    meeting counts).
+    """
+    frames = []
+    for yr in SEASONS:
+        try:
+            m = get_matchups_df(yr)
+        except Exception:
+            continue
+        reg = m[m["week"] <= season_config(yr)["reg_season_end"]].copy()
+        if reg.empty:
+            continue
+        reg["rank"] = (reg.groupby("week")["score"]
+                       .rank(ascending=False, method="min").astype(int))
+        lookup = reg.set_index(["week", "team_id"])["rank"]
+        reg["opp_rank"] = [lookup.get((w, o)) for w, o in
+                           zip(reg["week"], reg["opp_id"])]
+        frames.append(reg)
+    if not frames:
+        return pd.Series(dtype=float), pd.DataFrame()
+
+    allr = pd.concat(frames, ignore_index=True)
+    # a tie is half a win, which only matters for 2016
+    allr["pts"] = allr["outcome"].map({"W": 1.0, "T": 0.5, "L": 0.0})
+    win_rate = allr.groupby("rank")["pts"].mean() * 100
+    paired = allr.dropna(subset=["opp_rank"])
+    meetings = pd.crosstab(paired["rank"], paired["opp_rank"].astype(int))
+    return win_rate, meetings
+
+
+@st.cache_data(ttl=300)
 def load(season):
     return get_matchups_df(season), get_manager_map(season)
 
@@ -105,7 +141,76 @@ with tab1:
     # average weekly finish, appended after the last week
     rank_tbl["Avg"] = rank_tbl.mean(axis=1).round(1)
     rank_tbl.index.name = ""
-    st.dataframe(rank_tbl, use_container_width=True)
+
+    # Result of each week's matchup, same shape, used only to colour the cells.
+    outcome_tbl = (rank_src.pivot(index="Manager", columns="week",
+                                  values="outcome")
+                   .reindex(rank_tbl.index))
+    outcome_tbl.columns = [f"Wk {int(w)}" for w in outcome_tbl.columns]
+    outcome_tbl["Avg"] = None
+
+    WIN, LOSS, TIE = "#a8d5a2", "#f2a2a2", "#f5e6a8"
+    WIN_L, LOSS_L, TIE_L = "#ddf0dc", "#fadddd", "#fcf5dc"
+
+    def shade(frame, win, loss, tie):
+        """Background colour per cell, driven by that week's result."""
+        def _style(_):
+            out = pd.DataFrame("", index=frame.index, columns=frame.columns)
+            for c in frame.columns:
+                if c == "Avg":
+                    continue
+                out[c] = outcome_tbl[c].map(
+                    {"W": f"background-color: {win}",
+                     "L": f"background-color: {loss}",
+                     "T": f"background-color: {tie}"}).fillna("")
+            return out
+        return _style
+
+    week_cols = [c for c in rank_tbl.columns if c != "Avg"]
+    st.dataframe(
+        rank_tbl.style
+        .apply(shade(rank_tbl, WIN, LOSS, TIE), axis=None)
+        .format({**{c: "{:.0f}" for c in week_cols}, "Avg": "{:.1f}"}),
+        use_container_width=True)
+
+    # ── Expected win rate for the rank you posted ──────────────────────────
+    st.divider()
+    st.subheader("Win Rate for That Rank")
+    win_rate, meetings = rank_stats_all_seasons()
+    if win_rate.empty:
+        st.info("Not enough history to estimate win rates by rank.")
+    else:
+        st.caption(
+            "How often a score of that rank has won, across every season "
+            f"({int(len(SEASONS))} years, about {int(meetings.values.sum() / 2 / 10)} "
+            "games per rank). Shading shows what actually happened: green if "
+            "they won that week, red if they lost. Green on a low number is a "
+            "win they had no business getting."
+        )
+        exp_tbl = rank_tbl[week_cols].apply(
+            lambda col: col.map(win_rate.to_dict()))
+        exp_tbl["Avg"] = exp_tbl.mean(axis=1).round(1)
+        st.dataframe(
+            exp_tbl.style
+            .apply(shade(exp_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
+            # one dict, not chained calls: a second .format() does not merge
+            # with the first and silently leaves columns unformatted
+            .format({**{c: "{:.0f}%" for c in week_cols}, "Avg": "{:.1f}%"}),
+            use_container_width=True)
+
+        # ── How often each rank has met each rank ──────────────────────────
+        st.divider()
+        st.subheader("Rank vs Rank Meetings")
+        st.caption(
+            "How often a team scoring at each rank has faced a team scoring at "
+            "another, across every season. Symmetric by construction, since "
+            "each matchup is counted from both sides."
+        )
+        mm_tbl = meetings.copy()
+        mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
+        mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
+        mm_tbl.index.name = "vs →"
+        st.dataframe(mm_tbl, use_container_width=True)
 
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
