@@ -29,42 +29,6 @@ st.session_state["selected_season"] = season
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
-def rank_stats_all_seasons():
-    """
-    League-wide facts about weekly scoring rank, pooled over every season.
-
-    Per-season samples are far too thin for this: one season gives 13 games per
-    rank, all seasons give about 127. Returns (win rate by rank, rank-vs-rank
-    meeting counts).
-    """
-    frames = []
-    for yr in SEASONS:
-        try:
-            m = get_matchups_df(yr)
-        except Exception:
-            continue
-        reg = m[m["week"] <= season_config(yr)["reg_season_end"]].copy()
-        if reg.empty:
-            continue
-        reg["rank"] = (reg.groupby("week")["score"]
-                       .rank(ascending=False, method="min").astype(int))
-        lookup = reg.set_index(["week", "team_id"])["rank"]
-        reg["opp_rank"] = [lookup.get((w, o)) for w, o in
-                           zip(reg["week"], reg["opp_id"])]
-        frames.append(reg)
-    if not frames:
-        return pd.Series(dtype=float), pd.DataFrame()
-
-    allr = pd.concat(frames, ignore_index=True)
-    # a tie is half a win, which only matters for 2016
-    allr["pts"] = allr["outcome"].map({"W": 1.0, "T": 0.5, "L": 0.0})
-    win_rate = allr.groupby("rank")["pts"].mean() * 100
-    paired = allr.dropna(subset=["opp_rank"])
-    meetings = pd.crosstab(paired["rank"], paired["opp_rank"].astype(int))
-    return win_rate, meetings
-
-
-@st.cache_data(ttl=300)
 def load(season):
     return get_matchups_df(season), get_manager_map(season)
 
@@ -174,55 +138,76 @@ with tab1:
         .format({**{c: "{:.0f}" for c in week_cols}, "Avg": "{:.1f}"}),
         use_container_width=True)
 
-    # ── Expected win rate for the rank you posted ──────────────────────────
+    # ── How likely that result was, given the score ────────────────────────
     st.divider()
-    st.subheader("Win Rate for That Rank")
-    win_rate, meetings = rank_stats_all_seasons()
-    if win_rate.empty:
-        st.info("Not enough history to estimate win rates by rank.")
-    else:
-        st.caption(
-            "How often a score of that rank has won, across every season "
-            f"({int(len(SEASONS))} years, about {int(meetings.values.sum() / 2 / 10)} "
-            "games per rank). Shading shows what actually happened: green if "
-            "they won that week, red if they lost. Green on a low number is a "
-            "win they had no business getting."
-        )
-        exp_tbl = rank_tbl[week_cols].apply(
-            lambda col: col.map(win_rate.to_dict()))
-        exp_tbl["Avg"] = exp_tbl.mean(axis=1).round(1)
-        st.dataframe(
-            exp_tbl.style
-            .apply(shade(exp_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
-            # one dict, not chained calls: a second .format() does not merge
-            # with the first and silently leaves columns unformatted
-            .format({**{c: "{:.0f}%" for c in week_cols}, "Avg": "{:.1f}%"}),
-            use_container_width=True)
+    st.subheader("Chance of Result")
+    st.caption(
+        "How likely the week's result was, given only where the score ranked. "
+        "Rank 10 that loses shows 100%: all nine other managers outscored them, "
+        "so every possible opponent beats them. Rank 6 that wins shows 44%, "
+        "four of the nine being beatable. A low number is a result that needed "
+        "the schedule's help."
+    )
 
-        # ── How often each rank has met each rank ──────────────────────────
-        st.divider()
-        st.subheader("Rank vs Rank Meetings")
-        st.caption(
-            "How often a team scoring at each rank has faced a team scoring at "
-            "another, across every season. Only the upper half is shown: the "
-            "matrix is symmetric, so the lower half repeats it. Every cell is a "
-            "count of matchups, and they sum to the total played. The diagonal "
-            "is not always zero: tied scores share a rank and can meet at it."
-        )
-        # Blank the mirror image rather than print every count twice.
-        mm_tbl = meetings.copy()
-        # A cross-rank matchup lands one row in each of two cells, but a
-        # same-rank matchup lands both its rows in the one diagonal cell, so
-        # the diagonal counts double. Halve it and every cell means matchups.
-        for i in mm_tbl.index:
-            if i in mm_tbl.columns:
-                mm_tbl.loc[i, i] = mm_tbl.loc[i, i] // 2
-        mask = np.tril(np.ones(mm_tbl.shape, dtype=bool), k=-1)
-        mm_tbl = mm_tbl.astype(object).mask(mask, "")
-        mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
-        mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
-        mm_tbl.index.name = "vs →"
-        st.dataframe(mm_tbl, use_container_width=True)
+    n_teams = matchups_df["team_id"].nunique()
+    opponents = max(n_teams - 1, 1)
+
+    # Counted from the actual weekly scores rather than from rank arithmetic,
+    # so tied scores fall out correctly instead of needing a special case.
+    week_scores = {w: g["score"].tolist()
+                   for w, g in matchups_df.groupby("week")}
+
+    def chance(row_score, week, result):
+        others = list(week_scores.get(week, []))
+        others.remove(row_score) if row_score in others else None
+        if result == "W":
+            hits = sum(1 for x in others if x < row_score)
+        elif result == "L":
+            hits = sum(1 for x in others if x > row_score)
+        else:
+            hits = sum(1 for x in others if x == row_score)
+        return hits / opponents * 100
+
+    chance_src = rank_src.assign(
+        chance=[chance(sc, wk, oc) for sc, wk, oc in
+                zip(rank_src["score"], rank_src["week"], rank_src["outcome"])])
+    chance_tbl = (chance_src.pivot(index="Manager", columns="week",
+                                   values="chance")
+                  .reindex(rank_tbl.index))
+    chance_tbl.columns = [f"Wk {int(w)}" for w in chance_tbl.columns]
+    chance_tbl["Avg"] = chance_tbl.mean(axis=1).round(1)
+    st.dataframe(
+        chance_tbl.style
+        .apply(shade(chance_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
+        .format({**{c: "{:.0f}%" for c in week_cols}, "Avg": "{:.1f}%"}),
+        use_container_width=True)
+
+    # ── How often each rank met each rank, this season ─────────────────────
+    st.divider()
+    st.subheader("Rank vs Rank Meetings")
+    st.caption(
+        f"How often a team scoring at each rank faced a team scoring at another "
+        f"in {season}. Only the upper half is shown, since the matrix is "
+        "symmetric. Every cell counts matchups and they sum to the season's "
+        "total. The all-time version lives on the All-Time Records page."
+    )
+    rank_lookup = rank_src.set_index(["week", "team_id"])["rank"]
+    paired = rank_src.assign(
+        opp_rank=[rank_lookup.get((w, o)) for w, o in
+                  zip(rank_src["week"], rank_src["opp_id"])]).dropna(
+        subset=["opp_rank"])
+    meetings = pd.crosstab(paired["rank"], paired["opp_rank"].astype(int))
+    # A same-rank meeting drops both its rows in one diagonal cell, so that
+    # cell counts double; every other cell already equals matchups.
+    for i in meetings.index:
+        if i in meetings.columns:
+            meetings.loc[i, i] = meetings.loc[i, i] // 2
+    mm_tbl = meetings.astype(object).mask(
+        np.tril(np.ones(meetings.shape, dtype=bool), k=-1), "")
+    mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
+    mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
+    mm_tbl.index.name = "vs →"
+    st.dataframe(mm_tbl, use_container_width=True)
 
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────

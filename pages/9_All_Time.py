@@ -293,6 +293,43 @@ def load_bench_records():
     return benched, left
 
 
+@st.cache_data(ttl=300)
+def rank_meetings_all_seasons():
+    """
+    How often each weekly scoring rank has faced each other rank, pooled over
+    every season.
+
+    Deliberately built from the raw seasons rather than the page's filtered
+    frames: ranks are a property of all ten scores in a week, so dropping
+    managers would leave the counts lopsided and no longer symmetric.
+    """
+    frames = []
+    for yr in SEASONS:
+        try:
+            m = get_matchups_df(yr)
+        except Exception:
+            continue
+        reg = m[m["week"] <= season_config(yr)["reg_season_end"]].copy()
+        if reg.empty:
+            continue
+        reg["rank"] = (reg.groupby("week")["score"]
+                       .rank(ascending=False, method="min").astype(int))
+        lookup = reg.set_index(["week", "team_id"])["rank"]
+        reg["opp_rank"] = [lookup.get((w, o)) for w, o in
+                           zip(reg["week"], reg["opp_id"])]
+        frames.append(reg)
+    if not frames:
+        return pd.DataFrame()
+
+    allr = pd.concat(frames, ignore_index=True).dropna(subset=["opp_rank"])
+    meetings = pd.crosstab(allr["rank"], allr["opp_rank"].astype(int))
+    # Same-rank meetings put both rows in one cell, so that cell counts double.
+    for i in meetings.index:
+        if i in meetings.columns:
+            meetings.loc[i, i] = meetings.loc[i, i] // 2
+    return meetings
+
+
 # ── Load ──────────────────────────────────────────────────────────────────────
 with st.spinner("Loading all seasons... this may take a moment on first load."):
     all_matchups_df, season_stats_df, failed_seasons = load_all_seasons()
@@ -1085,6 +1122,29 @@ with tab_h2h:
                 f"{len(meet)} meeting{'s' if len(meet) != 1 else ''}. {summary}"
                 + (f", with {tied} tie{'s' if tied != 1 else ''}." if tied else ".")
             )
+
+    st.divider()
+    st.subheader("Rank vs Rank Meetings")
+    st.caption(
+        "How often a team scoring at each weekly rank has faced a team scoring "
+        "at another, across every season. Only the upper half is shown, since "
+        "the matrix is symmetric. Ranks depend on all ten scores in a week, so "
+        "this table always covers every manager and ignores the Active filter."
+    )
+    all_meetings = rank_meetings_all_seasons()
+    if all_meetings.empty:
+        st.info("No rank data available.")
+    else:
+        rr = all_meetings.astype(object).mask(
+            np.tril(np.ones(all_meetings.shape, dtype=bool), k=-1), "")
+        rr.index = [f"Rank {i}" for i in rr.index]
+        rr.columns = [f"{i}" for i in rr.columns]
+        rr.index.name = "vs →"
+        st.dataframe(rr, use_container_width=True)
+        total = int(sum(v for v in rr.values.flatten() if v != ""))
+        st.caption(f"{total:,} regular season matchups across "
+                   f"{len(SEASONS)} seasons.")
+
 
 
 
