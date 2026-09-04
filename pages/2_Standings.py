@@ -224,9 +224,8 @@ with tab4:
 with tab5:
     st.subheader("Luck")
     st.caption(
-        "Each measure is what happened minus what the scoring earned, in games. "
-        "Positive is lucky. Every one sums to about zero across the league, "
-        "since one manager's good fortune is another's bad."
+        "Each number is wins you got minus wins your scores deserved. "
+        "Positive means lucky, negative means unlucky."
     )
     lb = luck_breakdown(matchups_df)
     lb.insert(0, "Manager", lb["team_id"].map(manager_map).fillna("?"))
@@ -241,15 +240,15 @@ with tab5:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Schedule luck**")
-        st.caption("H2H wins against who you actually faced, versus what those "
-                   "scores earned against that week's field.")
+        st.caption("Did you draw easy opponents? Your wins compared with how "
+                   "many your scores should have won each week.")
         st.dataframe(small(["h2h_wins", "xw_week", "schedule_luck"],
                            ["W", "Earned", "Luck"], "schedule_luck"),
                      use_container_width=True, hide_index=True)
     with c2:
         st.markdown("**Field luck**")
-        st.caption("Whether your scores met a soft week or a bloodbath: that "
-                   "week's field versus the season's whole pool of scores.")
+        st.caption("Did your good scores land on low-scoring weeks? Lucky if "
+                   "you scored well when the rest of the league did not.")
         st.dataframe(small(["xw_week", "xw_season", "field_luck"],
                            ["vs Week", "vs Season", "Luck"], "field_luck"),
                      use_container_width=True, hide_index=True)
@@ -257,15 +256,15 @@ with tab5:
     c3, c4 = st.columns(2)
     with c3:
         st.markdown("**Median luck**")
-        st.caption("Median wins actually taken, versus what those scores would "
-                   "take against the season's median.")
+        st.caption("Median wins you got compared with what your scores usually "
+                   "get. Lucky if you beat the median in weak weeks.")
         st.dataframe(small(["median_wins", "xmedian", "median_luck"],
                            ["Med W", "Earned", "Luck"], "median_luck"),
                      use_container_width=True, hide_index=True)
     with c4:
         st.markdown("**Opponent form**")
-        st.caption("Points opponents scored above their own average against "
-                   "you. Context only, not part of the total below.")
+        st.caption("Points your opponents scored above their own average. "
+                   "Positive means they played better than usual against you.")
         st.dataframe(small(["opp_form"], ["Opp vs Own Avg"], "opp_form"),
                      use_container_width=True, hide_index=True)
 
@@ -285,13 +284,12 @@ with tab5:
         tot_disp = tot_disp.drop(columns=["Median"])
     st.dataframe(tot_disp, use_container_width=True, hide_index=True)
     st.caption(
-        ("Schedule + Field + Median, in games. Median counts from 2025, when it "
-         "became half the record." if official_combined else
-         "Schedule + Field, in games. Median is excluded: it did not count "
-         "toward the standings before 2025.")
-        + " Opponent form is left out on purpose - it correlates about -0.75 "
-          "with schedule luck, being a mechanism for it rather than a separate "
-          "effect, so adding it would count the same luck twice."
+        ("Schedule plus Field plus Median, in games. Median counts from 2025, "
+         "when it became half the record." if official_combined else
+         "Schedule plus Field, in games. Median is left out because it did not "
+         "count toward the standings before 2025.")
+        + " Opponent form is not added in: it is already part of schedule luck, "
+          "so counting it again would double up."
     )
 
     # ── How likely that result was, given the score ────────────────────────
