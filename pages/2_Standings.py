@@ -102,6 +102,8 @@ with tab1:
     # keep the row order the same as the standings table above
     order = [manager_map.get(t, "?") for t in df["team_id"]]
     rank_tbl = rank_tbl.reindex([m for m in order if m in rank_tbl.index])
+    # average weekly finish, appended after the last week
+    rank_tbl["Avg"] = rank_tbl.mean(axis=1).round(1)
     rank_tbl.index.name = ""
     st.dataframe(rank_tbl, use_container_width=True)
 
