@@ -71,6 +71,32 @@ def strength_of_schedule(matchups_df: pd.DataFrame) -> pd.DataFrame:
     return grp
 
 
+def opponent_vs_own_average(matchups_df: pd.DataFrame) -> pd.Series:
+    """
+    Per team: how many points their opponents scored against them relative to
+    what those opponents managed against everyone else.
+
+    The opponent's baseline excludes the game in question, so it is genuinely
+    "what they do against other people". Including it would let the game pull
+    its own baseline toward itself and shrink every result by roughly 1/n.
+
+    Positive means opponents raise their game against you, which is bad luck
+    for you. Negative means they tend to have an off week against you.
+
+    Returns a Series indexed by team_id.
+    """
+    df = matchups_df
+    per_team = df.groupby("team_id")["score"].agg(["sum", "count"])
+
+    opp_sum = df["opp_id"].map(per_team["sum"])
+    opp_n = df["opp_id"].map(per_team["count"])
+    # leave-one-out mean for the opponent, dropping this very game
+    opp_baseline = (opp_sum - df["opp_score"]) / (opp_n - 1).replace(0, np.nan)
+
+    delta = df["opp_score"] - opp_baseline
+    return delta.groupby(df["team_id"]).mean()
+
+
 def luck_index(matchups_df: pd.DataFrame) -> pd.DataFrame:
     """
     Luck score = (actual wins) - (expected wins based on score percentile each week).

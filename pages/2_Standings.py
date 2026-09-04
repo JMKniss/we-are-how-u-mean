@@ -9,6 +9,7 @@ from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import (
     combined_standings,
     strength_of_schedule, luck_index, alternate_schedule_standings,
+    opponent_vs_own_average,
     swapped_schedule_matrix
 )
 from config import SEASONS, DEFAULT_SEASON, season_config
@@ -88,17 +89,26 @@ with tab1:
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
 with tab4:
     st.subheader("Strength of Schedule")
-    st.caption("Average score of opponents faced. Higher = harder schedule.")
+    st.caption(
+        "Avg Opp Score is how much opponents scored against you. "
+        "Opp vs Own Avg compares that to what those same opponents managed "
+        "against everyone else, excluding the game with you: positive means "
+        "they raised their game against you, negative means they tended to "
+        "have an off week."
+    )
     df = strength_of_schedule(matchups_df)
     # Add team's own scoring stats to compare alongside opponent stats
     own = matchups_df.groupby(["team_id", "team_name"])["score"].agg(
         avg_score="mean", total_score="sum"
     ).reset_index()
     df = df.merge(own[["team_id", "avg_score", "total_score"]], on="team_id", how="left")
+    df["opp_vs_own"] = df["team_id"].map(opponent_vs_own_average(matchups_df))
     display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "avg_opp_score", "avg_score", "total_opp_score", "total_score"],
-                           headers=["Team", "Avg Opp Score", "Avg Score", "Total Opp Score", "Total Score"])
-    for col in ["Avg Opp Score", "Avg Score"]:
+                           cols=["team_name", "avg_opp_score", "avg_score",
+                                 "opp_vs_own", "total_opp_score", "total_score"],
+                           headers=["Team", "Avg Opp Score", "Avg Score",
+                                    "Opp vs Own Avg", "Total Opp Score", "Total Score"])
+    for col in ["Avg Opp Score", "Avg Score", "Opp vs Own Avg"]:
         display[col] = display[col].round(2)
     for col in ["Total Opp Score", "Total Score"]:
         display[col] = display[col].round(1)
