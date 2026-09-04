@@ -4,6 +4,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import streamlit as st
 import pandas as pd
+import numpy as np
 import plotly.express as px
 from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import (
@@ -203,10 +204,21 @@ with tab1:
         st.subheader("Rank vs Rank Meetings")
         st.caption(
             "How often a team scoring at each rank has faced a team scoring at "
-            "another, across every season. Symmetric by construction, since "
-            "each matchup is counted from both sides."
+            "another, across every season. Only the upper half is shown: the "
+            "matrix is symmetric, so the lower half repeats it. Every cell is a "
+            "count of matchups, and they sum to the total played. The diagonal "
+            "is not always zero: tied scores share a rank and can meet at it."
         )
+        # Blank the mirror image rather than print every count twice.
         mm_tbl = meetings.copy()
+        # A cross-rank matchup lands one row in each of two cells, but a
+        # same-rank matchup lands both its rows in the one diagonal cell, so
+        # the diagonal counts double. Halve it and every cell means matchups.
+        for i in mm_tbl.index:
+            if i in mm_tbl.columns:
+                mm_tbl.loc[i, i] = mm_tbl.loc[i, i] // 2
+        mask = np.tril(np.ones(mm_tbl.shape, dtype=bool), k=-1)
+        mm_tbl = mm_tbl.astype(object).mask(mask, "")
         mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
         mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
         mm_tbl.index.name = "vs →"
