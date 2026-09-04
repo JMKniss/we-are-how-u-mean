@@ -13,7 +13,8 @@ import pandas as pd
 
 ARCHIVE_DIR = Path(__file__).parent / "archive"
 
-DATASETS = ("matchups", "boxscores", "draft", "standings", "validation")
+DATASETS = ("matchups", "boxscores", "draft", "standings", "validation",
+            "draft_order")
 
 _cache: dict[str, pd.DataFrame] = {}
 _meta: dict | None = None
@@ -49,6 +50,30 @@ def get(name: str, season: int | None = None) -> pd.DataFrame:
     if season is not None:
         df = df[df["season"] == season]
     return df.reset_index(drop=True).copy()
+
+
+def draft_order(season: int) -> list[str]:
+    """
+    The league's own record of who picked where, as a list of ten managers in
+    pick order. Empty strings mark slots nobody recorded.
+
+    Hand-kept rather than derived. ESPN's draft data cannot be trusted for the
+    years the league drafted in person and the commissioner re-entered the
+    teams afterwards: the rosters come out right but the pick order does not.
+    Checked against ESPN for every season, it agrees exactly in 2022, 2023 and
+    2024 and disagrees almost completely in 2019, 2020, 2021 and 2025.
+
+    Falls back to an empty list for seasons with no recorded order, 2016 and
+    2017, where ESPN's data is all there is.
+    """
+    try:
+        df = get("draft_order", season)
+    except FileNotFoundError:
+        return []
+    if df.empty:
+        return []
+    df = df.sort_values("pick")
+    return ["" if pd.isna(m) else str(m) for m in df["manager"]]
 
 
 def seasons_meta() -> dict:

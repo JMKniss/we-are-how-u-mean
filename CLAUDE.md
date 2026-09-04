@@ -85,6 +85,24 @@ using CSV. Do not re-pull to fix one cell.
 There is no "Refresh Data" button in the app. Pages read the archive, so a
 button that cleared the pickle cache would have done nothing.
 
+**`data/archive/draft_order.csv` — the league's own draft order.**
+Hand-kept, one row per (season, pick). Read it with `data.archive.draft_order(year)`.
+
+ESPN's draft data is unreliable for order. The league drafts in person some
+years and the commissioner re-enters the teams afterwards, which gets the
+rosters right but not the pick order. Checked season by season, ESPN agrees
+exactly in 2022, 2023 and 2024, and disagrees almost completely in 2019, 2020,
+2021 and 2025. 2016 and 2017 have no recorded order, so ESPN's is all there is.
+
+2018 has two blank slots, picks 5 and 6. Mitchell and B. Pisarcik held them
+when the order was set, then left; Jason and Scott took the slots, but which
+took which was never recorded. Note that ESPN's own 2018 first round reads as
+a plausible real draft by that year's player values, so it may yet be right
+and the hand-kept order may be the pre-departure plan.
+
+Verification is in the same spirit as the finishes: playoff order is checked
+against `We Are How U Mean Analytics.xlsx`, draft order against this file.
+
 **`data/cache/` — disposable pickle cache. Gitignored.**
 Only relevant when pulling a season not yet archived. Delete freely.
 `league.pkl` is the raw espn-api object graph; nothing reads it any more except
