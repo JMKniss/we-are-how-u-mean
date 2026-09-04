@@ -189,12 +189,19 @@ with tab2:
 
     # Per-team stats table — group by team_id too so prep_display works
     team_stats = df.groupby(["team_id", "team_name"])["score"].agg(
-        Mean="mean", Median="median", Std="std", Min="min", Max="max", Weeks="count"
+        Mean="mean", Median="median", Std="std", Min="min", Max="max"
     ).round(2).reset_index()
+    # Consistency: 1 is the steadiest week to week, so rank by the smallest
+    # spread. It says nothing about scoring well, only about scoring alike.
+    team_stats["Consistency"] = team_stats["Std"].rank(method="min").astype(int)
     display = prep_display(team_stats, manager_map, show_mgr, show_team,
-                           cols=["team_name", "Mean", "Median", "Std", "Min", "Max", "Weeks"],
-                           headers=["Team", "Mean", "Median", "Std Dev", "Min", "Max", "Weeks"])
+                           cols=["team_name", "Mean", "Median", "Min", "Max",
+                                 "Std", "Consistency"],
+                           headers=["Team", "Mean", "Median", "Min", "Max",
+                                    "Std Dev", "Consistency"])
     st.dataframe(display, use_container_width=True, hide_index=True)
+    st.caption("Consistency ranks by standard deviation: 1 is the most "
+               "predictable week to week, not the highest scoring.")
 
 with tab3:
     st.subheader("Season Records")
