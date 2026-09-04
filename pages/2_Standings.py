@@ -90,18 +90,18 @@ with tab1:
     st.caption(
         "Where each manager finished on the weekly scoreboard: 1 is the "
         "highest score that week, 10 the lowest. Ties share the better rank. "
-        "Columns follow the standings order above."
+        "Rows follow the standings order above."
     )
     rank_src = matchups_df.assign(
         rank=matchups_df.groupby("week")["score"]
         .rank(ascending=False, method="min").astype(int),
         Manager=matchups_df["team_id"].map(manager_map).fillna("?"),
     )
-    rank_tbl = rank_src.pivot(index="week", columns="Manager", values="rank")
-    # keep the column order the same as the standings table above
+    rank_tbl = rank_src.pivot(index="Manager", columns="week", values="rank")
+    rank_tbl.columns = [f"Wk {int(w)}" for w in rank_tbl.columns]
+    # keep the row order the same as the standings table above
     order = [manager_map.get(t, "?") for t in df["team_id"]]
-    rank_tbl = rank_tbl[[m for m in order if m in rank_tbl.columns]]
-    rank_tbl.index = [f"Week {int(w)}" for w in rank_tbl.index]
+    rank_tbl = rank_tbl.reindex([m for m in order if m in rank_tbl.index])
     rank_tbl.index.name = ""
     st.dataframe(rank_tbl, use_container_width=True)
 
