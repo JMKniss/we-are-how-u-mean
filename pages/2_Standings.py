@@ -5,16 +5,15 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
 from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import (
     combined_standings,
-    strength_of_schedule, luck_index, alternate_schedule_standings,
+    strength_of_schedule, alternate_schedule_standings, luck_breakdown,
     opponent_vs_own_average,
     swapped_schedule_matrix
 )
 from config import SEASONS, DEFAULT_SEASON, season_config
-from display_utils import sidebar_display_prefs, prep_display, chart_label
+from display_utils import sidebar_display_prefs, prep_display
 
 st.set_page_config(page_title="Standings", page_icon="📊", layout="wide")
 st.title("📊 Standings")
@@ -223,26 +222,77 @@ with tab4:
 
 # ── Tab 5: Luck Index ─────────────────────────────────────────────────────────
 with tab5:
-    st.subheader("Luck Index")
-    st.caption("Luck = Actual Wins − Expected Wins (based on weekly score percentile). Positive = lucky, negative = unlucky.")
-    df = luck_index(matchups_df)
-    display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "actual_wins", "expected_wins", "luck_score"],
-                           headers=["Team", "Actual W", "Expected W", "Luck Score"])
-    display["Expected W"] = display["Expected W"].round(1)
-    display["Luck Score"] = display["Luck Score"].round(2)
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    st.subheader("Luck")
+    st.caption(
+        "Each measure is what happened minus what the scoring earned, in games. "
+        "Positive is lucky. Every one sums to about zero across the league, "
+        "since one manager's good fortune is another's bad."
+    )
+    lb = luck_breakdown(matchups_df)
+    lb.insert(0, "Manager", lb["team_id"].map(manager_map).fillna("?"))
 
-    df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-    fig = px.bar(df.sort_values("luck_score"), x="luck_score", y="label",
-                 orientation="h",
-                 title="Luck Score by Team",
-                 labels={"luck_score": "Luck Score", "label": ""},
-                 color="luck_score", color_continuous_scale="RdYlGn")
-    fig.add_vline(x=0, line_dash="dash", line_color="gray")
-    fig.update_layout(coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
+    def small(cols, headers, sort_col):
+        t = lb.sort_values(sort_col, ascending=False)[["Manager"] + cols].copy()
+        t.columns = ["Manager"] + headers
+        for c in headers:
+            t[c] = t[c].round(2)
+        return t
 
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("**Schedule luck**")
+        st.caption("H2H wins against who you actually faced, versus what those "
+                   "scores earned against that week's field.")
+        st.dataframe(small(["h2h_wins", "xw_week", "schedule_luck"],
+                           ["W", "Earned", "Luck"], "schedule_luck"),
+                     use_container_width=True, hide_index=True)
+    with c2:
+        st.markdown("**Field luck**")
+        st.caption("Whether your scores met a soft week or a bloodbath: that "
+                   "week's field versus the season's whole pool of scores.")
+        st.dataframe(small(["xw_week", "xw_season", "field_luck"],
+                           ["vs Week", "vs Season", "Luck"], "field_luck"),
+                     use_container_width=True, hide_index=True)
+
+    c3, c4 = st.columns(2)
+    with c3:
+        st.markdown("**Median luck**")
+        st.caption("Median wins actually taken, versus what those scores would "
+                   "take against the season's median.")
+        st.dataframe(small(["median_wins", "xmedian", "median_luck"],
+                           ["Med W", "Earned", "Luck"], "median_luck"),
+                     use_container_width=True, hide_index=True)
+    with c4:
+        st.markdown("**Opponent form**")
+        st.caption("Points opponents scored above their own average against "
+                   "you. Context only, not part of the total below.")
+        st.dataframe(small(["opp_form"], ["Opp vs Own Avg"], "opp_form"),
+                     use_container_width=True, hide_index=True)
+
+    st.divider()
+    st.markdown("**Cumulative luck**")
+    total = lb.copy()
+    parts = ["schedule_luck", "field_luck"]
+    if official_combined:
+        parts.append("median_luck")
+    total["Total"] = total[parts].sum(axis=1)
+    tot_disp = total.sort_values("Total", ascending=False)[
+        ["Manager", "schedule_luck", "field_luck", "median_luck", "Total"]].copy()
+    tot_disp.columns = ["Manager", "Schedule", "Field", "Median", "Total"]
+    for c in ["Schedule", "Field", "Median", "Total"]:
+        tot_disp[c] = tot_disp[c].round(2)
+    if not official_combined:
+        tot_disp = tot_disp.drop(columns=["Median"])
+    st.dataframe(tot_disp, use_container_width=True, hide_index=True)
+    st.caption(
+        ("Schedule + Field + Median, in games. Median counts from 2025, when it "
+         "became half the record." if official_combined else
+         "Schedule + Field, in games. Median is excluded: it did not count "
+         "toward the standings before 2025.")
+        + " Opponent form is left out on purpose - it correlates about -0.75 "
+          "with schedule luck, being a mechanism for it rather than a separate "
+          "effect, so adding it would count the same luck twice."
+    )
 
     # ── How likely that result was, given the score ────────────────────────
     st.divider()

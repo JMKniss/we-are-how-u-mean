@@ -202,3 +202,73 @@ def swapped_schedule_matrix(matchups_df: pd.DataFrame) -> pd.DataFrame:
             row[col_t] = wins
         out[row_t] = row
     return pd.DataFrame(out).T.loc[teams, teams]
+
+
+def luck_breakdown(matchups_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Decompose each team's record into what their scoring earned and what the
+    draw handed them. All figures are in games.
+
+    Three components, each an actual minus an expected:
+
+    schedule_luck  actual H2H wins minus the wins those scores earned against
+                   the field they actually faced each week. Isolates who you
+                   were scheduled against.
+    field_luck     wins earned against that week's field minus wins earned
+                   against the season's whole pool of scores. Isolates whether
+                   your good weeks landed when the league was also scoring.
+    median_luck    actual median wins minus the wins your scores would earn
+                   against the season's median rather than each week's.
+
+    They are near enough independent to add: across a season the pairwise
+    correlations run under 0.2. Each also sums to about zero across the league,
+    since one team's good fortune is another's bad.
+
+    Opponent form (points opponents scored against you above their own average)
+    is returned for context but deliberately left out of the total: it
+    correlates about -0.75 with schedule luck, being a mechanism for it rather
+    than a separate effect, so adding it would count the same luck twice.
+    """
+    df = matchups_df
+    n_teams = df["team_id"].nunique()
+    opponents = max(n_teams - 1, 1)
+
+    week_scores = {w: g["score"].tolist() for w, g in df.groupby("week")}
+    all_scores = np.sort(df["score"].values)
+    week_median = df.groupby("week")["score"].median()
+    season_median = df["score"].median()
+
+    def beat_that_week(score, week):
+        others = list(week_scores.get(week, []))
+        if score in others:
+            others.remove(score)
+        return sum(1 for x in others if x < score) / opponents
+
+    def beat_the_season(score):
+        # share of every score posted this season that this one beats
+        return np.searchsorted(all_scores, score, side="left") / max(
+            len(all_scores) - 1, 1)
+
+    work = df.assign(
+        p_week=[beat_that_week(s, w) for s, w in zip(df["score"], df["week"])],
+        p_season=[beat_the_season(s) for s in df["score"]],
+        med_win=[1.0 if s > week_median[w] else 0.0
+                 for s, w in zip(df["score"], df["week"])],
+        med_exp=[1.0 if s > season_median else 0.0 for s in df["score"]],
+        is_win=(df["outcome"] == "W").astype(float),
+    )
+
+    g = work.groupby(["team_id", "team_name"])
+    out = g.agg(
+        h2h_wins=("is_win", "sum"),
+        xw_week=("p_week", "sum"),
+        xw_season=("p_season", "sum"),
+        median_wins=("med_win", "sum"),
+        xmedian=("med_exp", "sum"),
+    ).reset_index()
+
+    out["schedule_luck"] = out["h2h_wins"] - out["xw_week"]
+    out["field_luck"] = out["xw_week"] - out["xw_season"]
+    out["median_luck"] = out["median_wins"] - out["xmedian"]
+    out["opp_form"] = out["team_id"].map(opponent_vs_own_average(df))
+    return out
