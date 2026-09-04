@@ -247,10 +247,57 @@ def compute_playoff_round_wins(_all_matchups_df):
         columns=["season", "manager", "playoff_wins"])
 
 
+@st.cache_data(ttl=300)
+def load_bench_records():
+    """
+    Bench data for the all-time records: the biggest single benched score, and
+    the biggest total left on the bench in one week.
+
+    Player-level data is only needed here, so it is loaded separately rather
+    than on every page render. 2016-2017 carry no bench at all, so they
+    contribute to neither record.
+
+    Returns (top_benched_players, left_on_bench_by_week), both already carrying
+    a manager column so the Active filter can be applied to them.
+    """
+    from data.archive import get as _arc_get
+    from analysis.efficiency import lineup_efficiency
+
+    box = _arc_get("boxscores")
+    if box.empty:
+        empty = pd.DataFrame()
+        return empty, empty
+
+    mgr = {}
+    for season in SEASONS:
+        try:
+            for tid, name in get_manager_map(season).items():
+                mgr[(season, tid)] = name
+        except Exception:
+            pass
+    key = list(zip(box["season"], box["team_id"]))
+    box = box.assign(manager=[mgr.get(k, "?") for k in key])
+
+    benched = (box[box["on_bench"]]
+               .nlargest(200, "points")[["season", "week", "manager",
+                                         "player_name", "position", "points"]]
+               .reset_index(drop=True))
+
+    _, weekly = lineup_efficiency(box)
+    wk_key = list(zip(weekly["season"], weekly["team_id"]))
+    weekly = weekly.assign(manager=[mgr.get(k, "?") for k in wk_key])
+    left = (weekly.dropna(subset=["points_left_on_bench"])
+            [["season", "week", "manager", "actual_score", "optimal_score",
+              "points_left_on_bench"]]
+            .reset_index(drop=True))
+    return benched, left
+
+
 # ── Load ──────────────────────────────────────────────────────────────────────
 with st.spinner("Loading all seasons... this may take a moment on first load."):
     all_matchups_df, season_stats_df, failed_seasons = load_all_seasons()
     playoff_wins_df = compute_playoff_round_wins(all_matchups_df)
+    benched_players_df, left_on_bench_df = load_bench_records()
 
 if failed_seasons:
     with st.expander(f"⚠️ {len(failed_seasons)} season(s) failed to load"):
@@ -339,6 +386,12 @@ if active_only:
     if not playoff_wins_df.empty:
         playoff_wins_df = playoff_wins_df[
             playoff_wins_df["manager"].isin(ACTIVE_MANAGERS)].copy()
+    if not benched_players_df.empty:
+        benched_players_df = benched_players_df[
+            benched_players_df["manager"].isin(ACTIVE_MANAGERS)].copy()
+    if not left_on_bench_df.empty:
+        left_on_bench_df = left_on_bench_df[
+            left_on_bench_df["manager"].isin(ACTIVE_MANAGERS)].copy()
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab_trophy, tab_records, tab_mgr_records, tab_h2h, tab_milestones = st.tabs([
@@ -604,6 +657,49 @@ with tab_records:
     st.dataframe(diff_records, hide_index=True, use_container_width=True)
 
     # ── Win records ────────────────────────────────────────────────────────
+
+    # ── Bench records ──────────────────────────────────────────────────────
+    st.markdown("#### Bench Records")
+
+    bench_rows = []
+    if not benched_players_df.empty:
+        top = benched_players_df[
+            benched_players_df["points"] == benched_players_df["points"].max()]
+        lbl = "Highest Scoring Benched Player" + (" (tie)" if len(top) > 1 else "")
+        for r in top.itertuples():
+            bench_rows.append({
+                "Record": lbl,
+                "Who": f"{r.player_name} ({r.position})",
+                "Manager": r.manager,
+                "Points": f"{r.points:.2f}",
+                "Season": str(int(r.season)),
+                "Week": str(int(r.week)),
+            })
+    if not left_on_bench_df.empty:
+        worst = left_on_bench_df[
+            left_on_bench_df["points_left_on_bench"]
+            == left_on_bench_df["points_left_on_bench"].max()]
+        lbl = "Most Points Left on Bench" + (" (tie)" if len(worst) > 1 else "")
+        for r in worst.itertuples():
+            bench_rows.append({
+                "Record": lbl,
+                "Who": f"scored {r.actual_score:.1f} of a possible {r.optimal_score:.1f}",
+                "Manager": r.manager,
+                "Points": f"{r.points_left_on_bench:.2f}",
+                "Season": str(int(r.season)),
+                "Week": str(int(r.week)),
+            })
+
+    if bench_rows:
+        st.dataframe(pd.DataFrame(bench_rows), hide_index=True,
+                     use_container_width=True)
+        st.caption(
+            "Points Left on Bench is the gap to the best lineup that could "
+            "legally have been fielded, respecting position eligibility. "
+            "2016-2017 are excluded: that data has no bench."
+        )
+    else:
+        st.info("No bench data available for this view.")
 
     # ── Milestone records ──────────────────────────────────────────────────
     st.markdown("#### Milestone Records")

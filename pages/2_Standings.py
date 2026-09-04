@@ -43,27 +43,25 @@ official_combined = season >= 2025
 
 def _current_standings_display(df):
     """
-    Build the Current Standings table with Manager and Team always as separate columns.
-    Sorting stays intact because W and L are kept as separate numeric columns.
+    Build the Current Standings table with Manager and Team as separate columns.
+
+    Each win/loss pair is shown as one record. The frame is already sorted by
+    total wins, and the rows keep that order, so folding W and L together
+    costs nothing.
     """
-    out = df[["team_id", "team_name", "total_wins", "total_losses",
-              "wins", "losses", "median_wins", "median_losses",
-              "points_for", "points_against", "avg_score"]].copy()
-    out.insert(0, "Manager", out["team_id"].map(manager_map).fillna("?"))
-    out = out.drop(columns=["team_id"])
-    out = out.rename(columns={
-        "team_name": "Team",
-        "total_wins": "Total W",
-        "total_losses": "Total L",
-        "wins": "H2H W",
-        "losses": "H2H L",
-        "median_wins": "Median W",
-        "median_losses": "Median L",
-        "points_for": "PF",
-        "points_against": "PA",
-        "avg_score": "Avg",
+    def record(w, l):
+        return w.astype(int).astype(str) + "-" + l.astype(int).astype(str)
+
+    out = pd.DataFrame({
+        "Manager": df["team_id"].map(manager_map).fillna("?"),
+        "Team": df["team_name"],
+        "Total": record(df["total_wins"], df["total_losses"]),
+        "H2H": record(df["wins"], df["losses"]),
+        "Median": record(df["median_wins"], df["median_losses"]),
+        "PF": df["points_for"].round(1),
+        "PA": df["points_against"].round(1),
+        "Avg": df["avg_score"].round(1),
     })
-    out[["PF", "PA", "Avg"]] = out[["PF", "PA", "Avg"]].round(1)
     return out
 
 
@@ -81,13 +79,6 @@ with tab1:
         st.caption("Two games per week: one H2H matchup and one vs-median. Sorted by total wins.")
         df = combined_standings(matchups_df)
         st.dataframe(_current_standings_display(df), use_container_width=True, hide_index=True)
-
-        df["label"] = chart_label(df, manager_map, show_mgr, show_team)
-        fig = go.Figure()
-        fig.add_trace(go.Bar(name="H2H Wins", x=df["label"], y=df["wins"], marker_color="#2ecc71"))
-        fig.add_trace(go.Bar(name="Median Wins", x=df["label"], y=df["median_wins"], marker_color="#3498db"))
-        fig.update_layout(barmode="stack", xaxis_tickangle=-30, title="Total Wins Breakdown (H2H + vs Median)")
-        st.plotly_chart(fig, use_container_width=True)
     else:
         st.subheader("Head-to-Head Standings")
         df = h2h_standings(matchups_df)
