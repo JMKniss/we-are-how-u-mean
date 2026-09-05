@@ -5,6 +5,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import plotly.express as px
 import pandas as pd
+import numpy as np
 from data.espn_client import get_draft_df, get_boxscores_df, get_manager_map
 from analysis.draft import apply_recorded_order
 from config import SEASONS, DEFAULT_SEASON
@@ -62,50 +63,55 @@ teams = sorted(draft_df["team_name"].unique())
 tab1, tab2, tab3 = st.tabs(["Draft Board", "Team Draft Summary", "Draft Value"])
 
 with tab1:
-    st.subheader("Full Draft Board")
-    team_options = ["All Teams"] + teams
-    selected = st.selectbox("Filter by team", team_options)
-    df = draft_df if selected == "All Teams" else draft_df[draft_df["team_name"] == selected]
+    # A column is a manager, not a pick number. The board snakes, so pick 3 is
+    # a different person in round 2 than in round 1 - pivoting on pick_in_round
+    # put a different manager in each column depending on the round's parity.
+    # Keyed on the team, a column is one manager the whole way down and the
+    # snake is just how the picks run: left to right, then back.
+    board_src = draft_df.copy()
+    board_src["manager"] = board_src["team_id"].map(manager_map)
 
-    display = df[["overall_pick", "round", "pick_in_round", "team_name", "player_name", "keeper"]].copy()
-    display["Team"] = display["team_name"].map(label_for)
-    display = display[["overall_pick", "round", "pick_in_round", "Team", "player_name", "keeper"]]
-    display.columns = ["Overall", "Round", "Pick", "Team", "Player", "Keeper"]
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    # Left to right in seat order, which is round 1's order.
+    seat_order = (draft_df[draft_df["round"] == 1]
+                  .sort_values("pick_in_round")["team_id"]
+                  .map(manager_map).tolist())
 
-    # Draft grid (snake style)
-    pivot = draft_df.pivot_table(
-        index="round", columns="pick_in_round",
-        values="player_name", aggfunc="first"
-    )
-    # Head each column with the manager who sat there in round 1, rather than
-    # a bare pick number. The board snakes, so a column is one seat all the way
-    # down and the name is what makes the order legible.
-    seat_names = (draft_df[draft_df["round"] == 1]
-                  .set_index("pick_in_round")["team_id"].map(manager_map).to_dict())
-    pivot.columns = [f"{c}. {seat_names.get(c, '')}".strip(". ")
-                     for c in pivot.columns]
-    st.subheader("Draft Grid")
-    st.dataframe(pivot, use_container_width=True)
+    # aggfunc="first" would quietly drop a player: 2018 had traded picks, so
+    # two managers hold two picks in one round and none in another, and the
+    # board showed 158 of that draft's 160 players. Join instead, so a doubled
+    # cell shows both names and the empty cell opposite it is visibly empty.
+    board = board_src.pivot_table(
+        index="round", columns="manager", values="player_name",
+        aggfunc=lambda names: " / ".join(names))
+    kept = board_src.pivot_table(
+        index="round", columns="manager", values="keeper",
+        aggfunc="max")
+    cols = [m for m in seat_order if m in board.columns]
+    board, kept = board[cols], kept.reindex(columns=cols)
+    board.index.name = "Round"
+
+    if kept.fillna(False).to_numpy().any():
+        # Keepers are shown by colour alone - no column, no marker, nothing to
+        # read. Text colour is set alongside the fill so the cell stays legible
+        # in dark mode, where the grid would otherwise put light text on it.
+        blue = "background-color: #cfe8f7; color: #0b3954"
+        styled = board.style.apply(
+            lambda _: np.where(kept.reindex_like(board).fillna(False), blue, ""),
+            axis=None)
+        st.dataframe(styled, use_container_width=True)
+        st.caption("Blue cells were kept, not drafted.")
+    else:
+        st.dataframe(board, use_container_width=True)
 
 with tab2:
-    st.subheader("Picks by Team")
-    team_pick_counts = draft_df.groupby("team_name").size().reset_index(name="total_picks")
-    keeper_counts = draft_df[draft_df["keeper"]].groupby("team_name").size().reset_index(name="keepers")
-    summary = team_pick_counts.merge(keeper_counts, on="team_name", how="left").fillna(0)
-    summary["keepers"] = summary["keepers"].astype(int)
-    summary["draft_picks"] = summary["total_picks"] - summary["keepers"]
-    summary["Team"] = summary["team_name"].map(label_for)
-    summary_disp = summary[["Team", "total_picks", "keepers", "draft_picks"]].copy()
-    summary_disp.columns = ["Team", "Total Picks", "Keepers", "Draft Picks"]
-    st.dataframe(summary_disp, use_container_width=True, hide_index=True)
-
-    # Per team picks
+    # The old summary above this broke each team's picks into total, keepers
+    # and drafted. With keepers off the page it would have read Total Picks
+    # 17, ten times over, so it is gone rather than kept as filler.
     selected_team = st.selectbox("Team", teams, key="team_draft")
     team_picks = draft_df[draft_df["team_name"] == selected_team][
-        ["round", "pick_in_round", "overall_pick", "player_name", "keeper"]
+        ["round", "overall_pick", "player_name"]
     ].copy()
-    team_picks.columns = ["Round", "Pick in Round", "Overall", "Player", "Keeper"]
+    team_picks.columns = ["Round", "Overall", "Player"]
 
     if not box_df.empty:
         player_pts = box_df[box_df["is_active_slot"]].groupby("player_name")["points"].sum().reset_index()
@@ -130,7 +136,6 @@ with tab3:
                          color="label", hover_name="player_name",
                          title="Points Scored vs Draft Position",
                          labels={"overall_pick": "Draft Pick (Overall)", "season_points": "Season Points", "label": "Team"})
-        import numpy as np
         valid = value_df[value_df["season_points"] > 0]
         if len(valid) > 2:
             z = np.polyfit(valid["overall_pick"], valid["season_points"], 1)
