@@ -6,6 +6,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 from data.espn_client import get_draft_df, get_boxscores_df, get_manager_map
+from analysis.draft import apply_recorded_order
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 
@@ -19,16 +20,27 @@ show_mgr, show_team = sidebar_display_prefs()
 def load(season):
     draft = get_draft_df(season)
     mgr_map = get_manager_map(season)
+    # ESPN's pick order is rebuilt by the commissioner after an in-person
+    # draft and comes out wrong. Reseat the board onto the league's own
+    # record before anything reads a pick number - Best Value and Biggest
+    # Busts both rank on overall_pick, so they were being scored against the
+    # wrong draft position too, not just the board.
+    applied_note = ""
+    if not draft.empty:
+        draft, applied, applied_note = apply_recorded_order(draft, season, mgr_map)
     try:
         box = get_boxscores_df(season)
     except Exception:
         box = pd.DataFrame()
-    return draft, box, mgr_map
+    return draft, box, mgr_map, applied_note
 
 with st.spinner("Loading draft data..."):
-    draft_df, box_df, manager_map = load(season)
+    draft_df, box_df, manager_map, order_note = load(season)
 
 require_data(draft_df, season, "draft data")
+
+if order_note:
+    st.caption(order_note)
 
 # team_name → team_id from draft_df (if present) or box_df
 if "team_id" in draft_df.columns:
@@ -66,7 +78,13 @@ with tab1:
         index="round", columns="pick_in_round",
         values="player_name", aggfunc="first"
     )
-    pivot.columns = [f"Pick {c}" for c in pivot.columns]
+    # Head each column with the manager who sat there in round 1, rather than
+    # a bare pick number. The board snakes, so a column is one seat all the way
+    # down and the name is what makes the order legible.
+    seat_names = (draft_df[draft_df["round"] == 1]
+                  .set_index("pick_in_round")["team_id"].map(manager_map).to_dict())
+    pivot.columns = [f"{c}. {seat_names.get(c, '')}".strip(". ")
+                     for c in pivot.columns]
     st.subheader("Draft Grid")
     st.dataframe(pivot, use_container_width=True)
 

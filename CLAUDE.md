@@ -162,6 +162,34 @@ and the hand-kept order may be the pre-departure plan.
 Verification is in the same spirit as the finishes: playoff order is checked
 against `We Are How U Mean Analytics.xlsx`, draft order against this file.
 
+`analysis/draft.py` applies it. `apply_recorded_order()` reseats the board:
+every team keeps exactly the players ESPN recorded, in the same rounds, and
+only the seat it sat in changes - and with it pick_in_round and overall_pick.
+Draft Review calls it before anything reads a pick number, since Best Value and
+Biggest Busts both rank on overall_pick and were scoring picks against the
+wrong draft position, not just listing them in the wrong order.
+
+It refuses rather than guesses. 2016 and 2017 have no recorded order; 2018 has
+two blank seats and also traded picks, which breaks the one-pick-per-seat-per-
+round assumption the rebuild rests on. Those seasons fall back to ESPN's order
+and the page says so, so a season showing ESPN's order does not silently look
+like a season showing the league's.
+
+The proof it is right: 2022, 2023 and 2024 rebuild byte-identical to ESPN, zero
+picks moved, which is exactly the three seasons where the recorded order and
+ESPN already agreed. 2019, 2020, 2021 and 2025 reseat.
+
+2025 is also what settles which source to believe. ESPN has Matt taking
+Ja'Marr Chase at pick 10; the recorded order has Matt at 1. Chase was the
+consensus first overall that year, and the rest of the recorded first round
+tracks 2025 draft values the same way. ESPN's does not.
+
+One caveat worth knowing. 2019 and 2020 are keeper years, six and five keepers,
+all in round 1. The recorded order is applied to them on the reading that it
+describes seats rather than live picks - the order was given as a plain snake.
+If keepers actually cost a specific round pick and the order described only the
+live picks, those two seasons would need different handling.
+
 **`data/cache/` — disposable pickle cache. Gitignored.**
 Only relevant when pulling a season not yet archived. Delete freely.
 `league.pkl` is the raw espn-api object graph; nothing reads it any more except
