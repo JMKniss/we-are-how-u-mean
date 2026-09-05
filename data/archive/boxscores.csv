@@ -24272,6 +24272,191 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2025,10,10,We Are Rolling High,4575131,Jacory Croskey-Merritt,RB,RB,3.0,8.14,True,False,90.64,101.56,False,ACTIVE,WSH,-1.0
 2025,10,10,We Are Rolling High,4685415,Travis Hunter,WR,IR,0.0,0.0,False,False,90.64,101.56,False,QUESTIONABLE,JAX,-1.0
 2025,10,10,We Are Rolling High,4686361,Cam Little,K,K,7.5,4.42,True,False,90.64,101.56,False,ACTIVE,JAX,-1.0
+2025,11,1,Heroic Inspiration,-16024,Chargers D/ST,D/ST,D/ST,-1.0,7.47,True,False,101.7,108.15,False,NORMAL,LAC,-1.0
+2025,11,1,Heroic Inspiration,12483,Matthew Stafford,QB,QB,13.2,17.79,True,False,101.7,108.15,False,ACTIVE,LAR,-1.0
+2025,11,1,Heroic Inspiration,3116365,Mark Andrews,TE,TE,12.7,5.73,True,False,101.7,108.15,False,ACTIVE,BAL,-1.0
+2025,11,1,Heroic Inspiration,3117256,Dalton Schultz,TE,BE,5.1,6.03,False,True,101.7,108.15,False,QUESTIONABLE,HOU,-1.0
+2025,11,1,Heroic Inspiration,4241389,CeeDee Lamb,WR,WR,12.6,11.89,True,False,101.7,108.15,False,ACTIVE,DAL,-1.0
+2025,11,1,Heroic Inspiration,4243389,Calvin Austin III,WR,BE,0.5,7.78,False,True,101.7,108.15,False,ACTIVE,PIT,-1.0
+2025,11,1,Heroic Inspiration,4258173,Nico Collins,WR,WR,15.2,10.98,True,False,101.7,108.15,False,ACTIVE,HOU,-1.0
+2025,11,1,Heroic Inspiration,4360569,Jordan Mason,RB,BE,10.5,7.42,False,True,101.7,108.15,False,ACTIVE,MIN,-1.0
+2025,11,1,Heroic Inspiration,4362081,Cameron Dicker,K,K,4.0,5.55,True,False,101.7,108.15,False,ACTIVE,LAC,-1.0
+2025,11,1,Heroic Inspiration,4379399,James Cook III,RB,RB,17.4,16.52,True,False,101.7,108.15,False,ACTIVE,BUF,-1.0
+2025,11,1,Heroic Inspiration,4426385,Zach Charbonnet,RB,BE,4.7,7.53,False,True,101.7,108.15,False,QUESTIONABLE,SEA,-1.0
+2025,11,1,Heroic Inspiration,4427728,Bam Knight,RB,BE,10.5,9.29,False,True,101.7,108.15,False,QUESTIONABLE,ARI,-1.0
+2025,11,1,Heroic Inspiration,4428085,Luke Musgrave,TE,BE,-1.1,3.63,False,True,101.7,108.15,False,ACTIVE,GB,-1.0
+2025,11,1,Heroic Inspiration,4429096,Blake Corum,RB,BE,0.5,4.98,False,True,101.7,108.15,False,ACTIVE,LAR,-1.0
+2025,11,1,Heroic Inspiration,4429205,Jordan Addison,WR,RB/WR/TE,8.0,8.53,True,False,101.7,108.15,False,ACTIVE,MIN,-1.0
+2025,11,1,Heroic Inspiration,4429795,Jahmyr Gibbs,RB,RB,14.6,13.97,True,False,101.7,108.15,False,ACTIVE,DET,-1.0
+2025,11,1,Heroic Inspiration,4568490,RJ Harvey,RB,RB/WR/TE,5.0,9.72,True,False,101.7,108.15,False,ACTIVE,DEN,-1.0
+2025,11,1,Heroic Inspiration,4569618,Garrett Wilson,WR,IR,0.0,0.0,False,False,101.7,108.15,False,QUESTIONABLE,NYJ,-1.0
+2025,11,1,Heroic Inspiration,4689114,Jaxson Dart,QB,IR,0.0,0.0,False,False,101.7,108.15,False,ACTIVE,NYG,-1.0
+2025,11,2,Danny Dice Rolls,-16033,Ravens D/ST,D/ST,BE,9.0,6.76,False,True,83.0,121.16,False,NORMAL,BAL,-1.0
+2025,11,2,Danny Dice Rolls,-16009,Packers D/ST,D/ST,D/ST,6.0,8.5,True,False,83.0,121.16,False,NORMAL,GB,-1.0
+2025,11,2,Danny Dice Rolls,3046439,Hunter Henry,TE,BE,4.5,6.7,False,True,83.0,121.16,False,ACTIVE,NE,-1.0
+2025,11,2,Danny Dice Rolls,3121023,Dallas Goedert,TE,TE,2.4,6.41,True,False,83.0,121.16,False,ACTIVE,PHI,-1.0
+2025,11,2,Danny Dice Rolls,3917792,Daniel Jones,QB,BE,0.0,0.0,False,True,83.0,121.16,False,QUESTIONABLE,IND,-1.0
+2025,11,2,Danny Dice Rolls,4035687,Michael Pittman Jr.,WR,BE,0.0,0.0,False,True,83.0,121.16,False,ACTIVE,IND,-1.0
+2025,11,2,Danny Dice Rolls,4040715,Jalen Hurts,QB,QB,13.5,21.35,True,False,83.0,121.16,False,ACTIVE,PHI,-1.0
+2025,11,2,Danny Dice Rolls,4047365,Josh Jacobs,RB,RB,4.0,18.65,True,False,83.0,121.16,False,ACTIVE,GB,-1.0
+2025,11,2,Danny Dice Rolls,4047646,A.J. Brown,WR,WR,4.9,10.49,True,False,83.0,121.16,False,ACTIVE,PHI,-1.0
+2025,11,2,Danny Dice Rolls,4262921,Justin Jefferson,WR,WR,6.1,12.95,True,False,83.0,121.16,False,ACTIVE,MIN,-1.0
+2025,11,2,Danny Dice Rolls,4430871,Sean Tucker,RB,RB/WR/TE,32.0,8.65,True,False,83.0,121.16,False,ACTIVE,TB,-1.0
+2025,11,2,Danny Dice Rolls,4432708,Marvin Harrison Jr.,WR,BE,0.0,0.0,False,True,83.0,121.16,False,QUESTIONABLE,ARI,-1.0
+2025,11,2,Danny Dice Rolls,4569987,Jaylen Warren,RB,RB,6.7,16.34,True,False,83.0,121.16,False,ACTIVE,PIT,-1.0
+2025,11,2,Danny Dice Rolls,4608686,Kyle Monangai,RB,BE,9.7,7.53,False,True,83.0,121.16,False,ACTIVE,CHI,-1.0
+2025,11,2,Danny Dice Rolls,4685702,Quinshon Judkins,RB,RB/WR/TE,5.9,12.5,True,False,83.0,121.16,False,QUESTIONABLE,CLE,-1.0
+2025,11,2,Danny Dice Rolls,4689936,Jake Bates,K,K,1.5,5.32,True,False,83.0,121.16,False,ACTIVE,DET,-1.0
+2025,11,2,Danny Dice Rolls,5083076,Harold Fannin Jr.,TE,BE,2.6,4.95,False,True,83.0,121.16,False,QUESTIONABLE,CLE,-1.0
+2025,11,3,Hunters and renfrow,-16017,Patriots D/ST,D/ST,D/ST,4.0,7.44,True,False,72.24,91.29,False,NORMAL,NE,-1.0
+2025,11,3,Hunters and renfrow,16800,Davante Adams,WR,RB/WR/TE,6.1,11.05,True,False,72.24,91.29,False,ACTIVE,LAR,-1.0
+2025,11,3,Hunters and renfrow,3116385,Joe Mixon,RB,IR,0.0,0.0,False,False,72.24,91.29,False,QUESTIONABLE,HOU,-1.0
+2025,11,3,Hunters and renfrow,3128720,Nick Chubb,RB,BE,1.7,7.71,False,True,72.24,91.29,False,ACTIVE,HOU,-1.0
+2025,11,3,Hunters and renfrow,3139477,Patrick Mahomes,QB,QB,13.34,17.78,True,False,72.24,91.29,False,QUESTIONABLE,KC,-1.0
+2025,11,3,Hunters and renfrow,3886598,Jauan Jennings,WR,WR,5.4,9.69,True,False,72.24,91.29,False,ACTIVE,SF,-1.0
+2025,11,3,Hunters and renfrow,3916148,Tony Pollard,RB,BE,2.6,6.82,False,True,72.24,91.29,False,ACTIVE,TEN,-1.0
+2025,11,3,Hunters and renfrow,3929630,Saquon Barkley,RB,RB,9.0,12.44,True,False,72.24,91.29,False,ACTIVE,PHI,-1.0
+2025,11,3,Hunters and renfrow,4040655,Darnell Mooney,WR,BE,2.4,6.28,False,True,72.24,91.29,False,ACTIVE,ATL,-1.0
+2025,11,3,Hunters and renfrow,4241416,Chuba Hubbard,RB,BE,2.8,4.3,False,True,72.24,91.29,False,ACTIVE,CAR,-1.0
+2025,11,3,Hunters and renfrow,4360248,Kyle Pitts Sr.,TE,BE,1.4,6.16,False,True,72.24,91.29,False,ACTIVE,ATL,-1.0
+2025,11,3,Hunters and renfrow,4361370,Chris Olave,WR,BE,0.0,0.0,False,True,72.24,91.29,False,QUESTIONABLE,NO,-1.0
+2025,11,3,Hunters and renfrow,4361432,Romeo Doubs,WR,RB/WR/TE,5.3,7.76,True,False,72.24,91.29,False,ACTIVE,GB,-1.0
+2025,11,3,Hunters and renfrow,4426388,Jameson Williams,WR,WR,15.7,8.76,True,False,72.24,91.29,False,ACTIVE,DET,-1.0
+2025,11,3,Hunters and renfrow,4427366,Breece Hall,RB,RB,6.4,11.62,True,False,72.24,91.29,False,QUESTIONABLE,NYJ,-1.0
+2025,11,3,Hunters and renfrow,4430027,Sam LaPorta,TE,TE,0.0,0.0,True,False,72.24,91.29,False,QUESTIONABLE,DET,-1.0
+2025,11,3,Hunters and renfrow,4433970,J.J. McCarthy,QB,BE,6.0,17.98,False,True,72.24,91.29,False,QUESTIONABLE,MIN,-1.0
+2025,11,3,Hunters and renfrow,4697745,Tyler Loop,K,K,7.0,4.75,True,False,72.24,91.29,False,ACTIVE,BAL,-1.0
+2025,11,4,Forgotten Burrows,-16023,Steelers D/ST,D/ST,BE,20.0,7.08,False,True,88.62,92.94,False,NORMAL,PIT,-1.0
+2025,11,4,Forgotten Burrows,-16014,Rams D/ST,D/ST,D/ST,9.0,7.14,True,False,88.62,92.94,False,NORMAL,LAR,-1.0
+2025,11,4,Forgotten Burrows,15847,Travis Kelce,TE,RB/WR/TE,15.1,5.73,True,False,88.62,92.94,False,ACTIVE,KC,-1.0
+2025,11,4,Forgotten Burrows,2473037,Jason Myers,K,K,7.0,4.99,True,False,88.62,92.94,False,ACTIVE,SEA,-1.0
+2025,11,4,Forgotten Burrows,3043078,Derrick Henry,RB,RB,18.2,12.65,True,False,88.62,92.94,False,ACTIVE,BAL,-1.0
+2025,11,4,Forgotten Burrows,3121422,Terry McLaurin,WR,IR,0.0,0.0,False,False,88.62,92.94,False,ACTIVE,WSH,-1.0
+2025,11,4,Forgotten Burrows,3150744,Chase McLaughlin,K,BE,5.0,5.04,False,True,88.62,92.94,False,ACTIVE,TB,-1.0
+2025,11,4,Forgotten Burrows,3915511,Joe Burrow,QB,IR,0.0,0.0,False,False,88.62,92.94,False,ACTIVE,CIN,-1.0
+2025,11,4,Forgotten Burrows,4032473,Rashid Shaheed,WR,BE,2.9,6.34,False,True,88.62,92.94,False,ACTIVE,SEA,-1.0
+2025,11,4,Forgotten Burrows,4241474,Brian Robinson Jr.,RB,RB,2.4,4.0,True,False,88.62,92.94,False,ACTIVE,SF,-1.0
+2025,11,4,Forgotten Burrows,4242335,Jonathan Taylor,RB,BE,0.0,0.0,False,True,88.62,92.94,False,ACTIVE,IND,-1.0
+2025,11,4,Forgotten Burrows,4371733,Kenneth Gainwell,RB,BE,22.5,6.2,False,True,88.62,92.94,False,ACTIVE,PIT,-1.0
+2025,11,4,Forgotten Burrows,4428209,Ricky Pearsall,WR,BE,0.0,6.18,False,True,88.62,92.94,False,ACTIVE,SF,-1.0
+2025,11,4,Forgotten Burrows,4429148,Theo Johnson,TE,TE,3.6,6.06,True,False,88.62,92.94,False,QUESTIONABLE,NYG,-1.0
+2025,11,4,Forgotten Burrows,4429615,Zay Flowers,WR,RB/WR/TE,8.3,8.17,True,False,88.62,92.94,False,ACTIVE,BAL,-1.0
+2025,11,4,Forgotten Burrows,4430878,Jaxon Smith-Njigba,WR,WR,11.6,14.49,True,False,88.62,92.94,False,ACTIVE,SEA,-1.0
+2025,11,4,Forgotten Burrows,4431299,Rome Odunze,WR,WR,4.1,10.42,True,False,88.62,92.94,False,ACTIVE,CHI,-1.0
+2025,11,4,Forgotten Burrows,4431611,Caleb Williams,QB,QB,9.32,19.29,True,False,88.62,92.94,False,ACTIVE,CHI,-1.0
+2025,11,4,Forgotten Burrows,4432577,C.J. Stroud,QB,BE,0.0,0.0,False,True,88.62,92.94,False,ACTIVE,HOU,-1.0
+2025,11,5,Constitution Check Downs,-16007,Broncos D/ST,D/ST,BE,7.0,6.27,False,True,104.82,98.75999999999999,False,NORMAL,DEN,-1.0
+2025,11,5,Constitution Check Downs,-16006,Cowboys D/ST,D/ST,D/ST,10.0,8.3,True,False,104.82,98.75999999999999,False,NORMAL,DAL,-1.0
+2025,11,5,Constitution Check Downs,2577417,Dak Prescott,QB,QB,24.32,17.62,True,False,104.82,98.75999999999999,False,ACTIVE,DAL,-1.0
+2025,11,5,Constitution Check Downs,3116165,Chris Godwin Jr.,WR,BE,0.0,0.0,False,True,104.82,98.75999999999999,False,ACTIVE,TB,-1.0
+2025,11,5,Constitution Check Downs,4038941,Justin Herbert,QB,BE,3.34,19.35,False,True,104.82,98.75999999999999,False,ACTIVE,LAC,-1.0
+2025,11,5,Constitution Check Downs,4241478,DeVonta Smith,WR,WR,0.8,9.33,True,False,104.82,98.75999999999999,False,ACTIVE,PHI,-1.0
+2025,11,5,Constitution Check Downs,4360438,Brandon Aiyuk,WR,IR,0.0,0.0,False,False,104.82,98.75999999999999,True,OUT,SF,-1.0
+2025,11,5,Constitution Check Downs,4362238,Chase Brown,RB,RB,12.7,10.92,True,False,104.82,98.75999999999999,False,ACTIVE,CIN,-1.0
+2025,11,5,Constitution Check Downs,4362478,Emari Demercado,RB,BE,2.0,7.48,False,True,104.82,98.75999999999999,False,ACTIVE,ARI,-1.0
+2025,11,5,Constitution Check Downs,4362619,Chris Rodriguez Jr.,RB,RB/WR/TE,8.5,7.85,True,False,104.82,98.75999999999999,False,ACTIVE,WSH,-1.0
+2025,11,5,Constitution Check Downs,4362628,Ja'Marr Chase,WR,WR,3.0,14.0,True,False,104.82,98.75999999999999,False,ACTIVE,CIN,-1.0
+2025,11,5,Constitution Check Downs,4426354,George Pickens,WR,RB/WR/TE,20.4,9.44,True,False,104.82,98.75999999999999,False,ACTIVE,DAL,-1.0
+2025,11,5,Constitution Check Downs,4429025,Quentin Johnston,WR,BE,0.0,8.52,False,True,104.82,98.75999999999999,False,ACTIVE,LAC,-1.0
+2025,11,5,Constitution Check Downs,4430737,Kyren Williams,RB,RB,15.6,11.49,True,False,104.82,98.75999999999999,False,ACTIVE,LAR,-1.0
+2025,11,5,Constitution Check Downs,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,104.82,98.75999999999999,False,ACTIVE,IND,-1.0
+2025,11,5,Constitution Check Downs,4569923,Andy Borregales,K,K,5.5,5.77,True,False,104.82,98.75999999999999,False,ACTIVE,NE,-1.0
+2025,11,5,Constitution Check Downs,4685382,Omarion Hampton,RB,IR,0.0,0.0,False,False,104.82,98.75999999999999,False,ACTIVE,LAC,-1.0
+2025,11,5,Constitution Check Downs,4697815,Rachaad White,RB,BE,6.2,10.73,False,True,104.82,98.75999999999999,False,ACTIVE,TB,-1.0
+2025,11,5,Constitution Check Downs,4723086,Colston Loveland,TE,TE,4.0,4.04,True,False,104.82,98.75999999999999,False,QUESTIONABLE,CHI,-1.0
+2025,11,6,NameOfCurseWarding,-16008,Lions D/ST,D/ST,D/ST,2.0,6.22,True,False,87.1,112.16000000000001,False,NORMAL,DET,-1.0
+2025,11,6,NameOfCurseWarding,15835,Zach Ertz,TE,BE,4.2,5.64,False,True,87.1,112.16000000000001,False,QUESTIONABLE,WSH,-1.0
+2025,11,6,NameOfCurseWarding,2976212,Stefon Diggs,WR,WR,10.5,8.89,True,False,87.1,112.16000000000001,False,ACTIVE,NE,-1.0
+2025,11,6,NameOfCurseWarding,3042519,Aaron Jones Sr.,RB,RB,7.1,10.89,True,False,87.1,112.16000000000001,False,QUESTIONABLE,MIN,-1.0
+2025,11,6,NameOfCurseWarding,3050478,Jake Elliott,K,K,6.0,5.35,True,False,87.1,112.16000000000001,False,ACTIVE,PHI,-1.0
+2025,11,6,NameOfCurseWarding,3059915,Kareem Hunt,RB,BE,12.2,8.65,False,True,87.1,112.16000000000001,False,ACTIVE,KC,-1.0
+2025,11,6,NameOfCurseWarding,3912547,Sam Darnold,QB,BE,4.26,14.7,False,True,87.1,112.16000000000001,False,ACTIVE,SEA,-1.0
+2025,11,6,NameOfCurseWarding,3916433,Jakobi Meyers,WR,BE,6.4,5.55,False,True,87.1,112.16000000000001,False,ACTIVE,JAX,-1.0
+2025,11,6,NameOfCurseWarding,3916945,Darius Slayton,WR,BE,0.0,0.0,False,True,87.1,112.16000000000001,False,ACTIVE,NYG,-1.0
+2025,11,6,NameOfCurseWarding,4038815,Rico Dowdle,RB,RB,10.0,16.61,True,False,87.1,112.16000000000001,False,ACTIVE,CAR,-1.0
+2025,11,6,NameOfCurseWarding,4239996,Travis Etienne Jr.,RB,RB/WR/TE,19.3,11.73,True,False,87.1,112.16000000000001,False,ACTIVE,JAX,-1.0
+2025,11,6,NameOfCurseWarding,4362249,Jayden Reed,WR,IR,0.0,0.0,False,False,87.1,112.16000000000001,False,ACTIVE,GB,-1.0
+2025,11,6,NameOfCurseWarding,4426338,Bo Nix,QB,QB,12.6,17.33,True,False,87.1,112.16000000000001,False,QUESTIONABLE,DEN,-1.0
+2025,11,6,NameOfCurseWarding,4426515,Puka Nacua,WR,WR,7.3,12.64,True,False,87.1,112.16000000000001,False,ACTIVE,LAR,-1.0
+2025,11,6,NameOfCurseWarding,4429059,Woody Marks,RB,RB/WR/TE,5.1,11.82,True,False,87.1,112.16000000000001,False,ACTIVE,HOU,-1.0
+2025,11,6,NameOfCurseWarding,4432665,Brock Bowers,TE,TE,7.2,10.68,True,False,87.1,112.16000000000001,False,QUESTIONABLE,LV,-1.0
+2025,11,6,NameOfCurseWarding,4569173,Rhamondre Stevenson,RB,BE,0.0,0.0,False,True,87.1,112.16000000000001,False,ACTIVE,NE,-1.0
+2025,11,6,NameOfCurseWarding,4683062,Xavier Worthy,WR,BE,2.5,7.67,False,True,87.1,112.16000000000001,False,QUESTIONABLE,KC,-1.0
+2025,11,7,Roll for Yardage,-16034,Texans D/ST,D/ST,D/ST,8.0,7.82,True,False,124.84,123.9,False,NORMAL,HOU,-1.0
+2025,11,7,Roll for Yardage,-16005,Browns D/ST,D/ST,BE,16.0,6.65,False,True,124.84,123.9,False,NORMAL,CLE,-1.0
+2025,11,7,Roll for Yardage,3117251,Christian McCaffrey,RB,RB/WR/TE,30.1,19.91,True,False,124.84,123.9,False,ACTIVE,SF,-1.0
+2025,11,7,Roll for Yardage,3128429,Courtland Sutton,WR,BE,5.9,8.14,False,True,124.84,123.9,False,ACTIVE,DEN,-1.0
+2025,11,7,Roll for Yardage,3953687,Brandon Aubrey,K,K,6.5,5.69,True,False,124.84,123.9,False,ACTIVE,DAL,-1.0
+2025,11,7,Roll for Yardage,4040761,Devin Singletary,RB,BE,16.7,7.68,False,True,124.84,123.9,False,ACTIVE,NYG,-1.0
+2025,11,7,Roll for Yardage,4241463,Jerry Jeudy,WR,BE,2.1,6.85,False,True,124.84,123.9,False,ACTIVE,CLE,-1.0
+2025,11,7,Roll for Yardage,4373678,Khalil Shakir,WR,WR,-0.3,7.67,True,False,124.84,123.9,False,ACTIVE,BUF,-1.0
+2025,11,7,Roll for Yardage,4385690,Dalton Kincaid,TE,IR,0.0,0.0,False,False,124.84,123.9,False,QUESTIONABLE,BUF,-1.0
+2025,11,7,Roll for Yardage,4429013,Tank Bigsby,RB,BE,3.4,1.42,False,True,124.84,123.9,False,ACTIVE,PHI,-1.0
+2025,11,7,Roll for Yardage,4430807,Bijan Robinson,RB,RB,26.3,16.0,True,False,124.84,123.9,False,ACTIVE,ATL,-1.0
+2025,11,7,Roll for Yardage,4431452,Drake Maye,QB,QB,15.44,22.11,True,False,124.84,123.9,False,ACTIVE,NE,-1.0
+2025,11,7,Roll for Yardage,4432710,TreVeyon Henderson,RB,RB,27.3,11.51,True,False,124.84,123.9,False,ACTIVE,NE,-1.0
+2025,11,7,Roll for Yardage,4432773,Brian Thomas Jr.,WR,IR,0.0,0.0,False,False,124.84,123.9,False,ACTIVE,JAX,-1.0
+2025,11,7,Roll for Yardage,4567750,Emeka Egbuka,WR,WR,4.0,11.56,True,False,124.84,123.9,False,ACTIVE,TB,-1.0
+2025,11,7,Roll for Yardage,4595342,Oronde Gadsden,TE,TE,4.1,6.29,True,False,124.84,123.9,False,ACTIVE,LAC,-1.0
+2025,11,7,Roll for Yardage,4685278,Luther Burden III,WR,BE,2.7,3.98,False,True,124.84,123.9,False,ACTIVE,CHI,-1.0
+2025,11,7,Roll for Yardage,4887558,Emanuel Wilson,RB,BE,12.9,4.58,False,True,124.84,123.9,False,ACTIVE,GB,-1.0
+2025,11,7,Roll for Yardage,4890973,Ashton Jeanty,RB,RB/WR/TE,3.4,15.34,True,False,124.84,123.9,False,ACTIVE,LV,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",-16015,Dolphins D/ST,D/ST,D/ST,7.0,6.99,True,False,71.72,93.46000000000001,False,NORMAL,MIA,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",8439,Aaron Rodgers,QB,BE,9.44,18.7,False,True,71.72,93.46000000000001,False,ACTIVE,PIT,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",16737,Mike Evans,WR,IR,0.0,0.0,False,False,71.72,93.46000000000001,False,ACTIVE,TB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",17372,Chris Boswell,K,K,7.0,5.8,True,False,71.72,93.46000000000001,False,ACTIVE,PIT,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",3052587,Baker Mayfield,QB,QB,16.82,17.05,True,False,71.72,93.46000000000001,False,ACTIVE,TB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",3054850,Alvin Kamara,RB,BE,0.0,0.0,False,True,71.72,93.46000000000001,False,QUESTIONABLE,NO,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",3126486,Deebo Samuel,WR,BE,13.7,8.89,False,True,71.72,93.46000000000001,False,ACTIVE,WSH,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4047650,DK Metcalf,WR,RB/WR/TE,4.9,8.96,True,False,71.72,93.46000000000001,False,ACTIVE,PIT,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4242355,Jake Ferguson,TE,BE,7.6,5.61,False,True,71.72,93.46000000000001,False,ACTIVE,DAL,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4243331,Cade Otton,TE,TE,2.8,5.59,True,False,71.72,93.46000000000001,False,ACTIVE,TB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4248528,Christian Watson,WR,BE,16.6,6.4,False,True,71.72,93.46000000000001,False,ACTIVE,GB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4361529,Isiah Pacheco,RB,IR,0.0,0.0,False,False,71.72,93.46000000000001,False,ACTIVE,KC,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4372016,Jaylen Waddle,WR,WR,5.2,11.06,True,False,71.72,93.46000000000001,False,QUESTIONABLE,MIA,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4373626,Tyler Allgeier,RB,BE,7.6,6.32,False,True,71.72,93.46000000000001,False,ACTIVE,ATL,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4430968,Kimani Vidal,RB,RB,1.2,10.86,True,False,71.72,93.46000000000001,False,ACTIVE,LAC,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4431280,Troy Franklin,WR,RB/WR/TE,8.4,8.37,True,False,71.72,93.46000000000001,False,QUESTIONABLE,DEN,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4567048,Kenneth Walker III,RB,RB,17.1,9.2,True,False,71.72,93.46000000000001,False,ACTIVE,SEA,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4569587,Wan'Dale Robinson,WR,BE,3.6,8.22,False,True,71.72,93.46000000000001,False,QUESTIONABLE,NYG,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4612826,Ladd McConkey,WR,WR,1.3,9.58,True,False,71.72,93.46000000000001,False,ACTIVE,LAC,-1.0
+2025,11,9,Paladins of the Pancreas,-16026,Seahawks D/ST,D/ST,D/ST,2.0,4.85,True,False,133.78,104.99,False,NORMAL,SEA,-1.0
+2025,11,9,Paladins of the Pancreas,15818,Keenan Allen,WR,BE,5.3,7.32,False,True,133.78,104.99,False,ACTIVE,LAC,-1.0
+2025,11,9,Paladins of the Pancreas,2576925,Darren Waller,TE,IR,0.0,0.0,False,False,133.78,104.99,False,QUESTIONABLE,MIA,-1.0
+2025,11,9,Paladins of the Pancreas,3040151,George Kittle,TE,TE,18.7,8.84,True,False,133.78,104.99,False,QUESTIONABLE,SF,-1.0
+2025,11,9,Paladins of the Pancreas,3918298,Josh Allen,QB,QB,42.68,20.42,True,False,133.78,104.99,False,QUESTIONABLE,BUF,-1.0
+2025,11,9,Paladins of the Pancreas,3925357,Calvin Ridley,WR,BE,1.3,5.65,False,True,133.78,104.99,False,QUESTIONABLE,TEN,-1.0
+2025,11,9,Paladins of the Pancreas,4034949,Eddy Pineiro,K,K,6.0,5.24,True,False,133.78,104.99,False,ACTIVE,SF,-1.0
+2025,11,9,Paladins of the Pancreas,4241985,J.K. Dobbins,RB,BE,0.0,0.0,False,True,133.78,104.99,False,QUESTIONABLE,DEN,-1.0
+2025,11,9,Paladins of the Pancreas,4360516,Tyrone Tracy Jr.,RB,RB,13.9,9.98,True,False,133.78,104.99,False,ACTIVE,NYG,-1.0
+2025,11,9,Paladins of the Pancreas,4374302,Amon-Ra St. Brown,WR,WR,4.2,12.3,True,False,133.78,104.99,False,ACTIVE,DET,-1.0
+2025,11,9,Paladins of the Pancreas,4429160,De'Von Achane,RB,RB,16.5,21.94,True,False,133.78,104.99,False,ACTIVE,MIA,-1.0
+2025,11,9,Paladins of the Pancreas,4429275,Trey Benson,RB,IR,0.0,0.0,False,False,133.78,104.99,False,QUESTIONABLE,ARI,-1.0
+2025,11,9,Paladins of the Pancreas,4432620,Parker Washington,WR,BE,2.0,7.0,False,True,133.78,104.99,False,ACTIVE,JAX,-1.0
+2025,11,9,Paladins of the Pancreas,4569603,Malik Washington,WR,RB/WR/TE,4.2,7.29,True,False,133.78,104.99,False,QUESTIONABLE,MIA,-1.0
+2025,11,9,Paladins of the Pancreas,4596448,Bucky Irving,RB,BE,0.0,0.0,False,True,133.78,104.99,False,ACTIVE,TB,-1.0
+2025,11,9,Paladins of the Pancreas,4608810,Tez Johnson,WR,RB/WR/TE,0.6,5.91,True,False,133.78,104.99,False,ACTIVE,TB,-1.0
+2025,11,9,Paladins of the Pancreas,4685472,Tetairoa McMillan,WR,WR,25.0,8.22,True,False,133.78,104.99,False,ACTIVE,CAR,-1.0
+2025,11,9,Paladins of the Pancreas,4688813,Josh Downs,WR,BE,0.0,0.0,False,True,133.78,104.99,False,ACTIVE,IND,-1.0
+2025,11,9,Paladins of the Pancreas,4882093,Bhayshul Tuten,RB,BE,13.4,3.83,False,True,133.78,104.99,False,ACTIVE,JAX,-1.0
+2025,11,10,We Are Rolling High,-16011,Colts D/ST,D/ST,BE,0.0,0.0,False,True,83.22,108.5,False,NORMAL,IND,-1.0
+2025,11,10,We Are Rolling High,-16003,Bears D/ST,D/ST,D/ST,6.0,7.96,True,False,83.22,108.5,False,NORMAL,CHI,-1.0
+2025,11,10,We Are Rolling High,11252,Joe Flacco,QB,BE,9.86,16.37,False,True,83.22,108.5,False,ACTIVE,CIN,-1.0
+2025,11,10,We Are Rolling High,3915416,DJ Moore,WR,BE,2.1,6.59,False,True,83.22,108.5,False,ACTIVE,CHI,-1.0
+2025,11,10,We Are Rolling High,3916387,Lamar Jackson,QB,QB,4.72,19.38,True,False,83.22,108.5,False,ACTIVE,BAL,-1.0
+2025,11,10,We Are Rolling High,3917315,Kyler Murray,QB,IR,0.0,0.0,False,False,83.22,108.5,False,QUESTIONABLE,ARI,-1.0
+2025,11,10,We Are Rolling High,4035538,David Montgomery,RB,RB/WR/TE,3.7,8.68,True,False,83.22,108.5,False,ACTIVE,DET,-1.0
+2025,11,10,We Are Rolling High,4239993,Tee Higgins,WR,RB/WR/TE,12.3,8.9,True,False,83.22,108.5,False,ACTIVE,CIN,-1.0
+2025,11,10,We Are Rolling High,4259545,D'Andre Swift,RB,RB,9.0,11.88,True,False,83.22,108.5,False,ACTIVE,CHI,-1.0
+2025,11,10,We Are Rolling High,4360078,Alec Pierce,WR,BE,0.0,0.0,False,True,83.22,108.5,False,ACTIVE,IND,-1.0
+2025,11,10,We Are Rolling High,4361307,Trey McBride,TE,TE,17.5,11.44,True,False,83.22,108.5,False,ACTIVE,ARI,-1.0
+2025,11,10,We Are Rolling High,4361579,Javonte Williams,RB,RB,9.3,13.24,True,False,83.22,108.5,False,QUESTIONABLE,DAL,-1.0
+2025,11,10,We Are Rolling High,4426348,Jayden Daniels,QB,IR,0.0,0.0,False,False,83.22,108.5,False,QUESTIONABLE,WSH,-1.0
+2025,11,10,We Are Rolling High,4426502,Drake London,WR,WR,11.9,12.22,True,False,83.22,108.5,False,ACTIVE,ATL,-1.0
+2025,11,10,We Are Rolling High,4428331,Rashee Rice,WR,WR,3.8,10.13,True,False,83.22,108.5,False,QUESTIONABLE,KC,-1.0
+2025,11,10,We Are Rolling High,4428718,Tre Tucker,WR,BE,10.7,7.28,False,True,83.22,108.5,False,ACTIVE,LV,-1.0
+2025,11,10,We Are Rolling High,4575131,Jacory Croskey-Merritt,RB,BE,3.3,7.32,False,True,83.22,108.5,False,ACTIVE,WSH,-1.0
+2025,11,10,We Are Rolling High,4686361,Cam Little,K,K,5.0,4.67,True,False,83.22,108.5,False,ACTIVE,JAX,-1.0
 2025,12,1,Heroic Inspiration,-16001,Falcons D/ST,D/ST,D/ST,12.0,7.0,True,False,127.82,108.41,False,NORMAL,ATL,-1.0
 2025,12,1,Heroic Inspiration,12483,Matthew Stafford,QB,QB,22.92,19.39,True,False,127.82,108.41,False,ACTIVE,LAR,-1.0
 2025,12,1,Heroic Inspiration,17427,Cairo Santos,K,K,6.0,5.09,True,False,127.82,108.41,False,ACTIVE,CHI,-1.0
@@ -24638,6 +24823,184 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2025,13,10,We Are Rolling High,4428718,Tre Tucker,WR,WR,2.0,6.47,True,False,97.74,94.43999999999998,False,ACTIVE,LV,-1.0
 2025,13,10,We Are Rolling High,4575131,Jacory Croskey-Merritt,RB,RB/WR/TE,2.0,4.56,True,False,97.74,94.43999999999998,False,ACTIVE,WSH,-1.0
 2025,13,10,We Are Rolling High,4686361,Cam Little,K,K,4.0,5.02,True,False,97.74,94.43999999999998,False,ACTIVE,JAX,-1.0
+2025,14,1,Heroic Inspiration,-16001,Falcons D/ST,D/ST,D/ST,2.0,6.08,True,False,121.54,115.89,False,NORMAL,ATL,-1.0
+2025,14,1,Heroic Inspiration,12483,Matthew Stafford,QB,QB,23.24,18.24,True,False,121.54,115.89,False,ACTIVE,LAR,-1.0
+2025,14,1,Heroic Inspiration,3116365,Mark Andrews,TE,TE,0.9,5.91,True,False,121.54,115.89,False,ACTIVE,BAL,-1.0
+2025,14,1,Heroic Inspiration,4241389,CeeDee Lamb,WR,WR,12.1,12.74,True,False,121.54,115.89,False,ACTIVE,DAL,-1.0
+2025,14,1,Heroic Inspiration,4258173,Nico Collins,WR,WR,12.1,10.76,True,False,121.54,115.89,False,ACTIVE,HOU,-1.0
+2025,14,1,Heroic Inspiration,4360569,Jordan Mason,RB,BE,11.2,7.41,False,True,121.54,115.89,False,ACTIVE,MIN,-1.0
+2025,14,1,Heroic Inspiration,4362081,Cameron Dicker,K,K,10.5,5.09,True,False,121.54,115.89,False,ACTIVE,LAC,-1.0
+2025,14,1,Heroic Inspiration,4373678,Khalil Shakir,WR,BE,7.6,7.52,False,True,121.54,115.89,False,ACTIVE,BUF,-1.0
+2025,14,1,Heroic Inspiration,4379399,James Cook III,RB,RB,8.1,19.05,True,False,121.54,115.89,False,ACTIVE,BUF,-1.0
+2025,14,1,Heroic Inspiration,4426385,Zach Charbonnet,RB,RB/WR/TE,6.6,8.26,True,False,121.54,115.89,False,QUESTIONABLE,SEA,-1.0
+2025,14,1,Heroic Inspiration,4429096,Blake Corum,RB,BE,25.1,6.22,False,True,121.54,115.89,False,ACTIVE,LAR,-1.0
+2025,14,1,Heroic Inspiration,4429205,Jordan Addison,WR,BE,6.2,6.9,False,True,121.54,115.89,False,ACTIVE,MIN,-1.0
+2025,14,1,Heroic Inspiration,4429795,Jahmyr Gibbs,RB,RB,30.0,18.62,True,False,121.54,115.89,False,ACTIVE,DET,-1.0
+2025,14,1,Heroic Inspiration,4567096,John Metchie III,WR,BE,3.4,6.09,False,True,121.54,115.89,False,ACTIVE,NYJ,-1.0
+2025,14,1,Heroic Inspiration,4568490,RJ Harvey,RB,RB/WR/TE,16.0,11.14,True,False,121.54,115.89,False,ACTIVE,DEN,-1.0
+2025,14,1,Heroic Inspiration,4569618,Garrett Wilson,WR,IR,0.0,0.0,False,False,121.54,115.89,False,QUESTIONABLE,NYJ,-1.0
+2025,14,1,Heroic Inspiration,4682652,Devin Neal,RB,BE,14.4,9.06,False,True,121.54,115.89,False,QUESTIONABLE,NO,-1.0
+2025,14,1,Heroic Inspiration,4689114,Jaxson Dart,QB,BE,0.0,0.0,False,True,121.54,115.89,False,ACTIVE,NYG,-1.0
+2025,14,2,Danny Dice Rolls,-16015,Dolphins D/ST,D/ST,D/ST,16.0,7.39,True,False,83.4,106.8,False,NORMAL,MIA,-1.0
+2025,14,2,Danny Dice Rolls,3046439,Hunter Henry,TE,BE,0.0,0.0,False,True,83.4,106.8,False,ACTIVE,NE,-1.0
+2025,14,2,Danny Dice Rolls,3121023,Dallas Goedert,TE,BE,7.8,5.17,False,True,83.4,106.8,False,ACTIVE,PHI,-1.0
+2025,14,2,Danny Dice Rolls,3917792,Daniel Jones,QB,BE,0.8,16.91,False,True,83.4,106.8,False,QUESTIONABLE,IND,-1.0
+2025,14,2,Danny Dice Rolls,4035687,Michael Pittman Jr.,WR,RB/WR/TE,7.9,7.34,True,False,83.4,106.8,False,ACTIVE,IND,-1.0
+2025,14,2,Danny Dice Rolls,4040715,Jalen Hurts,QB,QB,0.4,19.1,True,False,83.4,106.8,False,ACTIVE,PHI,-1.0
+2025,14,2,Danny Dice Rolls,4047365,Josh Jacobs,RB,RB,15.2,18.36,True,False,83.4,106.8,False,ACTIVE,GB,-1.0
+2025,14,2,Danny Dice Rolls,4047646,A.J. Brown,WR,WR,10.0,10.38,True,False,83.4,106.8,False,ACTIVE,PHI,-1.0
+2025,14,2,Danny Dice Rolls,4241463,Jerry Jeudy,WR,BE,13.6,5.99,False,True,83.4,106.8,False,ACTIVE,CLE,-1.0
+2025,14,2,Danny Dice Rolls,4262921,Justin Jefferson,WR,WR,1.1,9.82,True,False,83.4,106.8,False,ACTIVE,MIN,-1.0
+2025,14,2,Danny Dice Rolls,4430539,Brenton Strange,TE,TE,2.7,4.97,True,False,83.4,106.8,False,ACTIVE,JAX,-1.0
+2025,14,2,Danny Dice Rolls,4430871,Sean Tucker,RB,BE,8.9,2.28,False,True,83.4,106.8,False,ACTIVE,TB,-1.0
+2025,14,2,Danny Dice Rolls,4432708,Marvin Harrison Jr.,WR,IR,0.0,0.0,False,False,83.4,106.8,False,QUESTIONABLE,ARI,-1.0
+2025,14,2,Danny Dice Rolls,4569987,Jaylen Warren,RB,RB,12.2,10.11,True,False,83.4,106.8,False,ACTIVE,PIT,-1.0
+2025,14,2,Danny Dice Rolls,4608686,Kyle Monangai,RB,BE,7.7,8.54,False,True,83.4,106.8,False,ACTIVE,CHI,-1.0
+2025,14,2,Danny Dice Rolls,4685702,Quinshon Judkins,RB,RB/WR/TE,8.4,13.47,True,False,83.4,106.8,False,QUESTIONABLE,CLE,-1.0
+2025,14,2,Danny Dice Rolls,4689936,Jake Bates,K,K,9.5,5.86,True,False,83.4,106.8,False,ACTIVE,DET,-1.0
+2025,14,2,Danny Dice Rolls,5083076,Harold Fannin Jr.,TE,BE,17.4,5.69,False,True,83.4,106.8,False,QUESTIONABLE,CLE,-1.0
+2025,14,3,Hunters and renfrow,-16017,Patriots D/ST,D/ST,D/ST,0.0,0.0,True,False,57.5,83.92,False,NORMAL,NE,-1.0
+2025,14,3,Hunters and renfrow,16800,Davante Adams,WR,RB/WR/TE,2.9,11.66,True,False,57.5,83.92,False,ACTIVE,LAR,-1.0
+2025,14,3,Hunters and renfrow,3116385,Joe Mixon,RB,IR,0.0,0.0,False,False,57.5,83.92,False,QUESTIONABLE,HOU,-1.0
+2025,14,3,Hunters and renfrow,3128720,Nick Chubb,RB,BE,0.3,4.2,False,True,57.5,83.92,False,ACTIVE,HOU,-1.0
+2025,14,3,Hunters and renfrow,3139477,Patrick Mahomes,QB,QB,5.3,17.65,True,False,57.5,83.92,False,QUESTIONABLE,KC,-1.0
+2025,14,3,Hunters and renfrow,3886598,Jauan Jennings,WR,WR,0.0,0.0,True,False,57.5,83.92,False,ACTIVE,SF,-1.0
+2025,14,3,Hunters and renfrow,3916148,Tony Pollard,RB,BE,28.1,7.99,False,True,57.5,83.92,False,ACTIVE,TEN,-1.0
+2025,14,3,Hunters and renfrow,3929630,Saquon Barkley,RB,RB,18.2,11.35,True,False,57.5,83.92,False,ACTIVE,PHI,-1.0
+2025,14,3,Hunters and renfrow,4040655,Darnell Mooney,WR,BE,0.6,5.84,False,True,57.5,83.92,False,ACTIVE,ATL,-1.0
+2025,14,3,Hunters and renfrow,4241416,Chuba Hubbard,RB,BE,0.0,0.0,False,True,57.5,83.92,False,ACTIVE,CAR,-1.0
+2025,14,3,Hunters and renfrow,4360248,Kyle Pitts Sr.,TE,TE,9.0,5.75,True,False,57.5,83.92,False,ACTIVE,ATL,-1.0
+2025,14,3,Hunters and renfrow,4361370,Chris Olave,WR,RB/WR/TE,3.0,9.08,True,False,57.5,83.92,False,QUESTIONABLE,NO,-1.0
+2025,14,3,Hunters and renfrow,4361432,Romeo Doubs,WR,BE,0.0,6.81,False,True,57.5,83.92,False,ACTIVE,GB,-1.0
+2025,14,3,Hunters and renfrow,4426388,Jameson Williams,WR,WR,10.3,9.87,True,False,57.5,83.92,False,ACTIVE,DET,-1.0
+2025,14,3,Hunters and renfrow,4427366,Breece Hall,RB,RB,4.3,13.56,True,False,57.5,83.92,False,QUESTIONABLE,NYJ,-1.0
+2025,14,3,Hunters and renfrow,4430027,Sam LaPorta,TE,IR,0.0,0.0,False,False,57.5,83.92,False,QUESTIONABLE,DET,-1.0
+2025,14,3,Hunters and renfrow,4433970,J.J. McCarthy,QB,BE,20.42,14.28,False,True,57.5,83.92,False,QUESTIONABLE,MIN,-1.0
+2025,14,3,Hunters and renfrow,4697745,Tyler Loop,K,K,4.5,5.0,True,False,57.5,83.92,False,ACTIVE,BAL,-1.0
+2025,14,4,Forgotten Burrows,-16023,Steelers D/ST,D/ST,BE,4.0,6.51,False,True,107.76,105.60000000000002,False,NORMAL,PIT,-1.0
+2025,14,4,Forgotten Burrows,-16014,Rams D/ST,D/ST,D/ST,6.0,7.59,True,False,107.76,105.60000000000002,False,NORMAL,LAR,-1.0
+2025,14,4,Forgotten Burrows,15847,Travis Kelce,TE,TE,0.8,5.87,True,False,107.76,105.60000000000002,False,ACTIVE,KC,-1.0
+2025,14,4,Forgotten Burrows,2473037,Jason Myers,K,K,9.0,5.17,True,False,107.76,105.60000000000002,False,ACTIVE,SEA,-1.0
+2025,14,4,Forgotten Burrows,3043078,Derrick Henry,RB,RB,10.2,14.88,True,False,107.76,105.60000000000002,False,ACTIVE,BAL,-1.0
+2025,14,4,Forgotten Burrows,3121422,Terry McLaurin,WR,WR,4.1,7.8,True,False,107.76,105.60000000000002,False,ACTIVE,WSH,-1.0
+2025,14,4,Forgotten Burrows,3915511,Joe Burrow,QB,QB,23.36,17.79,True,False,107.76,105.60000000000002,False,ACTIVE,CIN,-1.0
+2025,14,4,Forgotten Burrows,4032473,Rashid Shaheed,WR,BE,12.7,5.57,False,True,107.76,105.60000000000002,False,ACTIVE,SEA,-1.0
+2025,14,4,Forgotten Burrows,4241474,Brian Robinson Jr.,RB,BE,0.0,0.0,False,True,107.76,105.60000000000002,False,ACTIVE,SF,-1.0
+2025,14,4,Forgotten Burrows,4242335,Jonathan Taylor,RB,RB,11.4,17.69,True,False,107.76,105.60000000000002,False,ACTIVE,IND,-1.0
+2025,14,4,Forgotten Burrows,4371733,Kenneth Gainwell,RB,RB/WR/TE,10.2,7.54,True,False,107.76,105.60000000000002,False,ACTIVE,PIT,-1.0
+2025,14,4,Forgotten Burrows,4428209,Ricky Pearsall,WR,BE,0.0,0.0,False,True,107.76,105.60000000000002,False,ACTIVE,SF,-1.0
+2025,14,4,Forgotten Burrows,4429148,Theo Johnson,TE,BE,0.0,0.0,False,True,107.76,105.60000000000002,False,QUESTIONABLE,NYG,-1.0
+2025,14,4,Forgotten Burrows,4429615,Zay Flowers,WR,RB/WR/TE,12.6,7.74,True,False,107.76,105.60000000000002,False,ACTIVE,BAL,-1.0
+2025,14,4,Forgotten Burrows,4430878,Jaxon Smith-Njigba,WR,WR,20.1,13.53,True,False,107.76,105.60000000000002,False,ACTIVE,SEA,-1.0
+2025,14,4,Forgotten Burrows,4431299,Rome Odunze,WR,BE,0.0,0.0,False,True,107.76,105.60000000000002,False,ACTIVE,CHI,-1.0
+2025,14,4,Forgotten Burrows,4431611,Caleb Williams,QB,BE,14.94,16.44,False,True,107.76,105.60000000000002,False,ACTIVE,CHI,-1.0
+2025,14,5,Constitution Check Downs,-16021,Eagles D/ST,D/ST,BE,12.0,7.0,False,True,113.64,108.63000000000001,False,NORMAL,PHI,-1.0
+2025,14,5,Constitution Check Downs,-16007,Broncos D/ST,D/ST,D/ST,11.0,9.23,True,False,113.64,108.63000000000001,False,NORMAL,DEN,-1.0
+2025,14,5,Constitution Check Downs,11122,Matt Prater,K,K,5.5,5.76,True,False,113.64,108.63000000000001,False,ACTIVE,BUF,-1.0
+2025,14,5,Constitution Check Downs,2577417,Dak Prescott,QB,QB,17.44,20.04,True,False,113.64,108.63000000000001,False,ACTIVE,DAL,-1.0
+2025,14,5,Constitution Check Downs,3116165,Chris Godwin Jr.,WR,BE,5.5,6.77,False,True,113.64,108.63000000000001,False,ACTIVE,TB,-1.0
+2025,14,5,Constitution Check Downs,4038941,Justin Herbert,QB,BE,11.16,15.96,False,True,113.64,108.63000000000001,False,ACTIVE,LAC,-1.0
+2025,14,5,Constitution Check Downs,4241478,DeVonta Smith,WR,BE,3.7,7.97,False,True,113.64,108.63000000000001,False,ACTIVE,PHI,-1.0
+2025,14,5,Constitution Check Downs,4360438,Brandon Aiyuk,WR,IR,0.0,0.0,False,False,113.64,108.63000000000001,True,OUT,SF,-1.0
+2025,14,5,Constitution Check Downs,4360761,Michael Wilson,WR,RB/WR/TE,26.2,8.82,True,False,113.64,108.63000000000001,False,ACTIVE,ARI,-1.0
+2025,14,5,Constitution Check Downs,4362238,Chase Brown,RB,RB,15.5,10.49,True,False,113.64,108.63000000000001,False,ACTIVE,CIN,-1.0
+2025,14,5,Constitution Check Downs,4362619,Chris Rodriguez Jr.,RB,BE,5.2,8.28,False,True,113.64,108.63000000000001,False,ACTIVE,WSH,-1.0
+2025,14,5,Constitution Check Downs,4362628,Ja'Marr Chase,WR,WR,5.2,12.22,True,False,113.64,108.63000000000001,False,ACTIVE,CIN,-1.0
+2025,14,5,Constitution Check Downs,4426354,George Pickens,WR,WR,2.7,12.65,True,False,113.64,108.63000000000001,False,ACTIVE,DAL,-1.0
+2025,14,5,Constitution Check Downs,4429025,Quentin Johnston,WR,BE,0.8,5.87,False,True,113.64,108.63000000000001,False,ACTIVE,LAC,-1.0
+2025,14,5,Constitution Check Downs,4430737,Kyren Williams,RB,RB,15.7,11.72,True,False,113.64,108.63000000000001,False,ACTIVE,LAR,-1.0
+2025,14,5,Constitution Check Downs,4431459,Tyler Warren,TE,TE,1.7,7.81,True,False,113.64,108.63000000000001,False,ACTIVE,IND,-1.0
+2025,14,5,Constitution Check Downs,4597500,Adonai Mitchell,WR,BE,2.4,7.02,False,True,113.64,108.63000000000001,False,ACTIVE,NYJ,-1.0
+2025,14,5,Constitution Check Downs,4685382,Omarion Hampton,RB,RB/WR/TE,12.7,9.89,True,False,113.64,108.63000000000001,False,ACTIVE,LAC,-1.0
+2025,14,6,NameOfCurseWarding,-16008,Lions D/ST,D/ST,D/ST,12.0,5.85,True,False,109.08,66.81,False,NORMAL,DET,-1.0
+2025,14,6,NameOfCurseWarding,15835,Zach Ertz,TE,BE,1.1,5.36,False,True,109.08,66.81,False,QUESTIONABLE,WSH,-1.0
+2025,14,6,NameOfCurseWarding,2976212,Stefon Diggs,WR,WR,0.0,0.0,True,False,109.08,66.81,False,ACTIVE,NE,-1.0
+2025,14,6,NameOfCurseWarding,3042519,Aaron Jones Sr.,RB,BE,7.6,9.74,False,True,109.08,66.81,False,QUESTIONABLE,MIN,-1.0
+2025,14,6,NameOfCurseWarding,3050478,Jake Elliott,K,K,8.0,4.54,True,False,109.08,66.81,False,ACTIVE,PHI,-1.0
+2025,14,6,NameOfCurseWarding,3059915,Kareem Hunt,RB,BE,9.0,7.46,False,True,109.08,66.81,False,ACTIVE,KC,-1.0
+2025,14,6,NameOfCurseWarding,3912547,Sam Darnold,QB,BE,22.26,13.98,False,True,109.08,66.81,False,ACTIVE,SEA,-1.0
+2025,14,6,NameOfCurseWarding,3916433,Jakobi Meyers,WR,BE,10.8,6.68,False,True,109.08,66.81,False,ACTIVE,JAX,-1.0
+2025,14,6,NameOfCurseWarding,3916945,Darius Slayton,WR,BE,0.0,0.0,False,True,109.08,66.81,False,ACTIVE,NYG,-1.0
+2025,14,6,NameOfCurseWarding,4038815,Rico Dowdle,RB,RB,0.0,0.0,True,False,109.08,66.81,False,ACTIVE,CAR,-1.0
+2025,14,6,NameOfCurseWarding,4239996,Travis Etienne Jr.,RB,RB/WR/TE,20.2,9.31,True,False,109.08,66.81,False,ACTIVE,JAX,-1.0
+2025,14,6,NameOfCurseWarding,4426338,Bo Nix,QB,QB,15.98,17.58,True,False,109.08,66.81,False,QUESTIONABLE,DEN,-1.0
+2025,14,6,NameOfCurseWarding,4426515,Puka Nacua,WR,WR,28.7,12.84,True,False,109.08,66.81,False,ACTIVE,LAR,-1.0
+2025,14,6,NameOfCurseWarding,4429059,Woody Marks,RB,RB/WR/TE,13.6,9.3,True,False,109.08,66.81,False,ACTIVE,HOU,-1.0
+2025,14,6,NameOfCurseWarding,4432665,Brock Bowers,TE,TE,10.6,7.39,True,False,109.08,66.81,False,QUESTIONABLE,LV,-1.0
+2025,14,6,NameOfCurseWarding,4569173,Rhamondre Stevenson,RB,RB,0.0,0.0,True,False,109.08,66.81,False,ACTIVE,NE,-1.0
+2025,14,6,NameOfCurseWarding,4683062,Xavier Worthy,WR,BE,5.5,6.81,False,True,109.08,66.81,False,QUESTIONABLE,KC,-1.0
+2025,14,7,Roll for Yardage,-16034,Texans D/ST,D/ST,BE,11.0,5.97,False,True,75.36,94.68,False,NORMAL,HOU,-1.0
+2025,14,7,Roll for Yardage,-16005,Browns D/ST,D/ST,D/ST,2.0,7.34,True,False,75.36,94.68,False,NORMAL,CLE,-1.0
+2025,14,7,Roll for Yardage,3046779,Jared Goff,QB,QB,16.16,18.3,True,False,75.36,94.68,False,ACTIVE,DET,-1.0
+2025,14,7,Roll for Yardage,3117251,Christian McCaffrey,RB,BE,0.0,0.0,False,True,75.36,94.68,False,ACTIVE,SF,-1.0
+2025,14,7,Roll for Yardage,3128429,Courtland Sutton,WR,RB/WR/TE,6.2,7.6,True,False,75.36,94.68,False,ACTIVE,DEN,-1.0
+2025,14,7,Roll for Yardage,3953687,Brandon Aubrey,K,K,12.5,5.7,True,False,75.36,94.68,False,ACTIVE,DAL,-1.0
+2025,14,7,Roll for Yardage,4040761,Devin Singletary,RB,BE,0.0,0.0,False,True,75.36,94.68,False,ACTIVE,NYG,-1.0
+2025,14,7,Roll for Yardage,4373626,Tyler Allgeier,RB,BE,6.7,6.18,False,True,75.36,94.68,False,ACTIVE,ATL,-1.0
+2025,14,7,Roll for Yardage,4385690,Dalton Kincaid,TE,TE,10.1,6.24,True,False,75.36,94.68,False,QUESTIONABLE,BUF,-1.0
+2025,14,7,Roll for Yardage,4430807,Bijan Robinson,RB,RB,7.4,15.63,True,False,75.36,94.68,False,ACTIVE,ATL,-1.0
+2025,14,7,Roll for Yardage,4431452,Drake Maye,QB,BE,0.0,0.0,False,True,75.36,94.68,False,ACTIVE,NE,-1.0
+2025,14,7,Roll for Yardage,4432710,TreVeyon Henderson,RB,BE,0.0,0.0,False,True,75.36,94.68,False,ACTIVE,NE,-1.0
+2025,14,7,Roll for Yardage,4432773,Brian Thomas Jr.,WR,WR,8.7,7.46,True,False,75.36,94.68,False,ACTIVE,JAX,-1.0
+2025,14,7,Roll for Yardage,4567750,Emeka Egbuka,WR,WR,1.5,9.27,True,False,75.36,94.68,False,ACTIVE,TB,-1.0
+2025,14,7,Roll for Yardage,4595342,Oronde Gadsden,TE,BE,0.7,5.65,False,True,75.36,94.68,False,ACTIVE,LAC,-1.0
+2025,14,7,Roll for Yardage,4685278,Luther Burden III,WR,RB/WR/TE,7.0,6.36,True,False,75.36,94.68,False,ACTIVE,CHI,-1.0
+2025,14,7,Roll for Yardage,4890973,Ashton Jeanty,RB,RB,3.8,10.78,True,False,75.36,94.68,False,ACTIVE,LV,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",-16027,Buccaneers D/ST,D/ST,D/ST,5.0,7.49,True,False,84.08,85.60000000000001,False,NORMAL,TB,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",16737,Mike Evans,WR,IR,0.0,0.0,False,False,84.08,85.60000000000001,False,ACTIVE,TB,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",17372,Chris Boswell,K,K,6.0,4.72,True,False,84.08,85.60000000000001,False,ACTIVE,PIT,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",3052587,Baker Mayfield,QB,QB,11.08,15.15,True,False,84.08,85.60000000000001,False,ACTIVE,TB,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",3054850,Alvin Kamara,RB,IR,0.0,0.0,False,False,84.08,85.60000000000001,False,QUESTIONABLE,NO,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",3126486,Deebo Samuel,WR,BE,2.7,7.01,False,True,84.08,85.60000000000001,False,ACTIVE,WSH,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4036378,Jordan Love,QB,BE,19.26,17.4,False,True,84.08,85.60000000000001,False,ACTIVE,GB,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4047650,DK Metcalf,WR,WR,14.8,8.17,True,False,84.08,85.60000000000001,False,ACTIVE,PIT,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4242355,Jake Ferguson,TE,TE,5.8,6.03,True,False,84.08,85.60000000000001,False,ACTIVE,DAL,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4248528,Christian Watson,WR,RB/WR/TE,20.9,8.36,True,False,84.08,85.60000000000001,False,ACTIVE,GB,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4361529,Isiah Pacheco,RB,BE,3.0,6.88,False,True,84.08,85.60000000000001,False,ACTIVE,KC,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4372016,Jaylen Waddle,WR,WR,13.1,8.74,True,False,84.08,85.60000000000001,False,QUESTIONABLE,MIA,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4427728,Bam Knight,RB,RB,3.4,8.31,True,False,84.08,85.60000000000001,False,QUESTIONABLE,ARI,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4430968,Kimani Vidal,RB,BE,10.4,5.97,False,True,84.08,85.60000000000001,False,ACTIVE,LAC,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4431280,Troy Franklin,WR,BE,1.1,6.48,False,True,84.08,85.60000000000001,False,QUESTIONABLE,DEN,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4567048,Kenneth Walker III,RB,RB,2.8,10.97,True,False,84.08,85.60000000000001,False,ACTIVE,SEA,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4569587,Wan'Dale Robinson,WR,BE,0.0,0.0,False,True,84.08,85.60000000000001,False,QUESTIONABLE,NYG,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4612826,Ladd McConkey,WR,RB/WR/TE,1.2,7.66,True,False,84.08,85.60000000000001,False,ACTIVE,LAC,-1.0
+2025,14,8,"I Don't Care, I Cast Fireball",4883647,Elic Ayomanor,WR,BE,7.4,4.71,False,True,84.08,85.60000000000001,False,ACTIVE,TEN,-1.0
+2025,14,9,Paladins of the Pancreas,-16026,Seahawks D/ST,D/ST,D/ST,18.0,6.67,True,False,95.04,95.60999999999999,False,NORMAL,SEA,-1.0
+2025,14,9,Paladins of the Pancreas,15818,Keenan Allen,WR,WR,2.2,6.24,True,False,95.04,95.60999999999999,False,ACTIVE,LAC,-1.0
+2025,14,9,Paladins of the Pancreas,2576925,Darren Waller,TE,TE,1.7,4.6,True,False,95.04,95.60999999999999,False,QUESTIONABLE,MIA,-1.0
+2025,14,9,Paladins of the Pancreas,3040151,George Kittle,TE,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,QUESTIONABLE,SF,-1.0
+2025,14,9,Paladins of the Pancreas,3055899,Harrison Butker,K,K,1.5,5.1,True,False,95.04,95.60999999999999,False,ACTIVE,KC,-1.0
+2025,14,9,Paladins of the Pancreas,3918298,Josh Allen,QB,QB,37.84,23.76,True,False,95.04,95.60999999999999,False,QUESTIONABLE,BUF,-1.0
+2025,14,9,Paladins of the Pancreas,4241985,J.K. Dobbins,RB,IR,0.0,0.0,False,False,95.04,95.60999999999999,False,QUESTIONABLE,DEN,-1.0
+2025,14,9,Paladins of the Pancreas,4360516,Tyrone Tracy Jr.,RB,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,ACTIVE,NYG,-1.0
+2025,14,9,Paladins of the Pancreas,4374302,Amon-Ra St. Brown,WR,BE,9.2,12.54,False,True,95.04,95.60999999999999,False,ACTIVE,DET,-1.0
+2025,14,9,Paladins of the Pancreas,4429160,De'Von Achane,RB,RB,16.5,19.01,True,False,95.04,95.60999999999999,False,ACTIVE,MIA,-1.0
+2025,14,9,Paladins of the Pancreas,4429275,Trey Benson,RB,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,QUESTIONABLE,ARI,-1.0
+2025,14,9,Paladins of the Pancreas,4432620,Parker Washington,WR,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,ACTIVE,JAX,-1.0
+2025,14,9,Paladins of the Pancreas,4569603,Malik Washington,WR,BE,1.0,5.38,False,True,95.04,95.60999999999999,False,QUESTIONABLE,MIA,-1.0
+2025,14,9,Paladins of the Pancreas,4596448,Bucky Irving,RB,RB,14.1,13.29,True,False,95.04,95.60999999999999,False,ACTIVE,TB,-1.0
+2025,14,9,Paladins of the Pancreas,4685472,Tetairoa McMillan,WR,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,ACTIVE,CAR,-1.0
+2025,14,9,Paladins of the Pancreas,4688813,Josh Downs,WR,RB/WR/TE,2.3,5.41,True,False,95.04,95.60999999999999,False,ACTIVE,IND,-1.0
+2025,14,9,Paladins of the Pancreas,4877706,Jayden Higgins,WR,WR,3.4,6.1,True,False,95.04,95.60999999999999,False,ACTIVE,HOU,-1.0
+2025,14,9,Paladins of the Pancreas,4882093,Bhayshul Tuten,RB,RB/WR/TE,-2.5,5.43,True,False,95.04,95.60999999999999,False,ACTIVE,JAX,-1.0
+2025,14,10,We Are Rolling High,-16011,Colts D/ST,D/ST,BE,2.0,6.72,False,True,103.16,91.3,False,NORMAL,IND,-1.0
+2025,14,10,We Are Rolling High,-16003,Bears D/ST,D/ST,D/ST,2.0,4.7,True,False,103.16,91.3,False,NORMAL,CHI,-1.0
+2025,14,10,We Are Rolling High,2969939,Jameis Winston,QB,BE,0.0,0.0,False,True,103.16,91.3,False,ACTIVE,NYG,-1.0
+2025,14,10,We Are Rolling High,3915416,DJ Moore,WR,BE,-0.4,8.36,False,True,103.16,91.3,False,ACTIVE,CHI,-1.0
+2025,14,10,We Are Rolling High,3916387,Lamar Jackson,QB,QB,21.06,16.53,True,False,103.16,91.3,False,ACTIVE,BAL,-1.0
+2025,14,10,We Are Rolling High,3917315,Kyler Murray,QB,IR,0.0,0.0,False,False,103.16,91.3,False,QUESTIONABLE,ARI,-1.0
+2025,14,10,We Are Rolling High,4035538,David Montgomery,RB,RB/WR/TE,13.3,8.77,True,False,103.16,91.3,False,ACTIVE,DET,-1.0
+2025,14,10,We Are Rolling High,4239993,Tee Higgins,WR,RB/WR/TE,21.2,8.76,True,False,103.16,91.3,False,ACTIVE,CIN,-1.0
+2025,14,10,We Are Rolling High,4259545,D'Andre Swift,RB,RB,8.2,8.9,True,False,103.16,91.3,False,ACTIVE,CHI,-1.0
+2025,14,10,We Are Rolling High,4360078,Alec Pierce,WR,WR,8.0,7.25,True,False,103.16,91.3,False,ACTIVE,IND,-1.0
+2025,14,10,We Are Rolling High,4361307,Trey McBride,TE,TE,5.8,8.57,True,False,103.16,91.3,False,ACTIVE,ARI,-1.0
+2025,14,10,We Are Rolling High,4361579,Javonte Williams,RB,RB,12.7,11.81,True,False,103.16,91.3,False,QUESTIONABLE,DAL,-1.0
+2025,14,10,We Are Rolling High,4426348,Jayden Daniels,QB,BE,2.72,18.1,False,True,103.16,91.3,False,QUESTIONABLE,WSH,-1.0
+2025,14,10,We Are Rolling High,4426502,Drake London,WR,BE,0.0,0.0,False,True,103.16,91.3,False,ACTIVE,ATL,-1.0
+2025,14,10,We Are Rolling High,4428331,Rashee Rice,WR,WR,3.4,11.18,True,False,103.16,91.3,False,QUESTIONABLE,KC,-1.0
+2025,14,10,We Are Rolling High,4428718,Tre Tucker,WR,BE,2.4,5.62,False,True,103.16,91.3,False,ACTIVE,LV,-1.0
+2025,14,10,We Are Rolling High,4575131,Jacory Croskey-Merritt,RB,BE,3.2,3.48,False,True,103.16,91.3,False,ACTIVE,WSH,-1.0
+2025,14,10,We Are Rolling High,4686361,Cam Little,K,K,7.5,4.83,True,False,103.16,91.3,False,ACTIVE,JAX,-1.0
 2025,15,1,Heroic Inspiration,-16006,Cowboys D/ST,D/ST,D/ST,1.0,8.63,True,False,116.64,117.16,False,NORMAL,DAL,-1.0
 2025,15,1,Heroic Inspiration,12483,Matthew Stafford,QB,BE,19.92,19.66,False,True,116.64,117.16,False,ACTIVE,LAR,-1.0
 2025,15,1,Heroic Inspiration,3116365,Mark Andrews,TE,TE,1.8,6.79,True,False,116.64,117.16,False,ACTIVE,BAL,-1.0
