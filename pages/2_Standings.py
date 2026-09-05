@@ -366,8 +366,10 @@ with tab5:
     for i in meetings.index:
         if i in meetings.columns:
             meetings.loc[i, i] = meetings.loc[i, i] // 2
-    mm_tbl = meetings.astype(object).mask(
-        np.tril(np.ones(meetings.shape, dtype=bool), k=-1), "")
+    # Same reason as the all-time matrix: NA keeps the column one type, so
+    # Arrow serialises it instead of Streamlit having to repair it.
+    mm_tbl = meetings.astype("Int64").where(
+        np.triu(np.ones(meetings.shape, dtype=bool)), pd.NA)
     mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
     mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
     mm_tbl.index.name = "vs →"

@@ -1145,13 +1145,18 @@ with tab_h2h:
     if all_meetings.empty:
         st.info("No rank data available.")
     else:
-        rr = all_meetings.astype(object).mask(
-            np.tril(np.ones(all_meetings.shape, dtype=bool), k=-1), "")
+        upper = np.triu(np.ones(all_meetings.shape, dtype=bool))
+        # Nullable Int64 with pd.NA rather than object with "": the empty
+        # string made the column part text, part integer, which Arrow cannot
+        # serialise. Streamlit noticed and repaired it on the fly, so the
+        # table looked right while printing a pyarrow traceback on every
+        # render. NA is blank in the grid too, and needs no rescue.
+        rr = all_meetings.astype("Int64").where(upper, pd.NA)
         rr.index = [f"Rank {i}" for i in rr.index]
         rr.columns = [f"{i}" for i in rr.columns]
         rr.index.name = "vs →"
         st.dataframe(rr, use_container_width=True)
-        total = int(sum(v for v in rr.values.flatten() if v != ""))
+        total = int(all_meetings.values[upper].sum())
         # Seasons that hold games, not seasons listed in config: SEASONS now
         # includes a season that has not started.
         played = season_stats_df["season"].nunique()
