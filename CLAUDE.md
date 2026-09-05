@@ -35,10 +35,10 @@ ff_app/
     ├── 2_Standings.py
     ├── 3_Scoring.py
     ├── 4_Lineup_Efficiency.py
-    ├── 5_Playoff_Projections.py
-    ├── 6_Playoffs.py
+    ├── 5_Playoffs.py           # bracket + projections, one page
     ├── 7_Draft_Review.py
-    └── 8_Data_Validation.py
+    ├── 8_Data_Validation.py    # hidden from the nav; /Data_Validation still works
+    └── 9_All_Time.py
 ```
 
 ## Branding

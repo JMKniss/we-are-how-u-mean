@@ -53,14 +53,15 @@ PAGES = [
             url_path="Scoring"),
     st.Page("views/4_Lineup_Efficiency.py", title="Lineup Efficiency", icon="🎯",
             url_path="Lineup_Efficiency"),
-    st.Page("views/5_Playoff_Projections.py", title="Playoff Projections", icon="🏆",
-            url_path="Playoff_Projections"),
-    st.Page("views/6_Playoffs.py", title="Playoffs", icon="🏆",
+    st.Page("views/5_Playoffs.py", title="Playoffs", icon="🏆",
             url_path="Playoffs"),
     st.Page("views/7_Draft_Review.py", title="Draft Review", icon="📋",
             url_path="Draft_Review"),
+    # Hidden rather than removed: it is an internal data-quality check, not
+    # something the league needs in the sidebar, but /Data_Validation still
+    # answers for whoever wants it.
     st.Page("views/8_Data_Validation.py", title="Data Validation", icon="🔧",
-            url_path="Data_Validation"),
+            url_path="Data_Validation", visibility="hidden"),
     st.Page("views/9_All_Time.py", title="All-Time Records", icon="📜",
             url_path="All_Time"),
 ]
