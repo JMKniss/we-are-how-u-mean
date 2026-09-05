@@ -154,7 +154,18 @@ def canonical(df: pd.DataFrame) -> pd.DataFrame:
                 lambda v: "" if pd.isna(v) else f"{v:.4f}")
         else:
             t = col.astype(str).str.strip()
-            out[c] = t.mask(t.str.lower().isin(blank), "")
+            t = t.mask(t.str.lower().isin(blank), "")
+            # A column can be numeric in one season and text in another, and
+            # the CSV holds all seasons in one column, so reading it back gives
+            # text for both. 2018's pro_team is ESPN's numeric team id where
+            # later seasons hold "KC" - archived "10" against a fresh 10 made
+            # all 2,556 rows of 2018 look changed. If every value in the column
+            # is a number, compare it as one.
+            num = pd.to_numeric(t, errors="coerce")
+            if (num.notna() | (t == "")).all() and num.notna().any():
+                out[c] = num.map(lambda v: "" if pd.isna(v) else f"{v:.4f}")
+            else:
+                out[c] = t
         out[c] = out[c].fillna("")
     return out
 
