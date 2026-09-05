@@ -7,8 +7,15 @@ services:
   - type: web
     name: we-are-how-u-mean
     runtime: python
-    plan: standard              # 2GB. pandas + scipy + pyarrow on a 512MB
-                                # instance is asking to be OOM-killed.
+    # Starter: 512MB, always on. Measured peak is 258MB with every page and
+    # every season cached in one process, which is the worst the caches get -
+    # st.cache_data is global, so more viewers do not multiply it. Standard's
+    # 2GB was picked on a guess before measuring and is not needed.
+    #
+    # Not free: the free tier sleeps after ~15 minutes idle, and a site checked
+    # a few times a week is then a cold start almost every visit. Plans are a
+    # dropdown in the dashboard, so this is easy to change either way.
+    plan: starter
     region: ohio
     branch: master
     buildCommand: pip install -r requirements.txt
