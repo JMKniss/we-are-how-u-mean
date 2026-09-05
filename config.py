@@ -5,8 +5,32 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / ".env")
 
 LEAGUE_ID = 722346
-SEASONS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
-DEFAULT_SEASON = 2025
+SEASONS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+
+# The season the weekly update tracks. Bump this once a year, in September.
+CURRENT_SEASON = 2026
+
+
+def default_season() -> int:
+    """
+    Newest season that actually holds matchups, for the season picker default.
+
+    Not simply max(SEASONS). A season is listed from the moment it exists on
+    ESPN, which is months before week 1, and landing every page on an empty
+    season would make the app look broken all summer. So the default follows
+    the data and moves to the new season by itself once week 1 is archived.
+    """
+    try:
+        from data import archive
+        played = [s for s in archive.seasons_with_data("matchups") if s in SEASONS]
+        if played:
+            return max(played)
+    except Exception:
+        pass
+    return max(SEASONS)
+
+
+DEFAULT_SEASON = default_season()
 
 ESPN_S2 = os.getenv("ESPN_S2")
 SWID = os.getenv("SWID")
@@ -51,6 +75,7 @@ MANAGER_OVERRIDES: dict[tuple[int, int], str] = {
     (2023, 3): "Kevin",
     (2024, 3): "Kevin",
     (2025, 3): "Kevin",
+    (2026, 3): "Kevin",
 }
 
 

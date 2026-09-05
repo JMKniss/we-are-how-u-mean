@@ -28,6 +28,7 @@ Usage
 """
 import argparse
 import hashlib
+import json
 import shutil
 import sys
 from datetime import datetime
@@ -62,6 +63,31 @@ BUILDERS = {
 
 SORT_HINTS = ("season", "week", "team_id", "overall_pick", "player_id")
 
+# Datasets that hold one row per team per season rather than one row per week.
+#
+# The additive rule fits a log: a week lands once and never legitimately
+# changes. It does not fit a running tally. standings keys on (season,
+# team_id), so a team has exactly one row all year and every week's real
+# result reads as a conflict against it - which --update skips, and the season
+# would sit at 0-0 from the preseason onward while every other dataset filled
+# in around it.
+#
+# So for a season still in progress these are replaced outright each run. Once
+# the season is complete they revert to the ordinary rule and a change needs
+# --force, because by then the row is history and history is what the archive
+# exists to protect.
+SNAPSHOT_DATASETS = {"standings"}
+
+
+def season_complete(season: int) -> bool:
+    """True once the archive holds every week the season is meant to have."""
+    from config import season_config
+    m = load_archive("matchups")
+    if m.empty:
+        return False
+    weeks = m[m["season"] == season]["week"]
+    return len(weeks) > 0 and int(weeks.max()) >= season_config(season)["total_weeks"]
+
 
 def csv_path(name):
     return ARCHIVE / f"{name}.csv"
@@ -76,12 +102,21 @@ def load_archive(name) -> pd.DataFrame:
     return pd.read_csv(p) if p.exists() else pd.DataFrame()
 
 
+_freshened: set = set()
+
+
 def fetch_fresh(name, season) -> pd.DataFrame:
     """Pull from ESPN, bypassing both the archive and the pickle cache."""
     prev = ec.USE_ARCHIVE
     ec.USE_ARCHIVE = False           # else we would just re-read the archive
     try:
-        ec.invalidate_cache(season)  # else we would just re-read the pickle
+        # Clear the pickle once per season, not once per dataset. Doing it per
+        # dataset threw away the League object and the memoised box scores that
+        # the previous dataset had just downloaded, so a five-dataset update
+        # pulled the same season from ESPN five times over.
+        if season not in _freshened:
+            ec.invalidate_cache(season)
+            _freshened.add(season)
         df = getattr(ec, BUILDERS[name])(season)
         if df is None:
             return pd.DataFrame()
@@ -93,6 +128,37 @@ def fetch_fresh(name, season) -> pd.DataFrame:
         ec.USE_ARCHIVE = prev
 
 
+def canonical(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Values rendered as text, so a CSV round trip cannot look like a change.
+
+    The archive is CSV and ESPN is JSON, and the two disagree about types even
+    when they agree about facts. A boolean column holding one NaN reads back as
+    object; percent_owned reads back as float where the API gave int. Compared
+    with DataFrame.equals, which is strict about dtype, that made every single
+    row of a season a conflict: a dry run over 2025 reported 2,704 conflicts
+    across 2,704 rows while not one field actually differed.
+
+    That is worse than a cosmetic bug. The weekly update reports conflicts so a
+    genuine restatement gets a human look, and a report that cries wolf over
+    every row would bury the one line that matters.
+    """
+    out = pd.DataFrame(index=df.index)
+    blank = {"nan", "none", "nat", "<na>", ""}
+    for c in df.columns:
+        col = df[c]
+        if pd.api.types.is_bool_dtype(col):
+            out[c] = col.map({True: "True", False: "False"})
+        elif pd.api.types.is_numeric_dtype(col):
+            out[c] = col.astype(float).round(4).map(
+                lambda v: "" if pd.isna(v) else f"{v:.4f}")
+        else:
+            t = col.astype(str).str.strip()
+            out[c] = t.mask(t.str.lower().isin(blank), "")
+        out[c] = out[c].fillna("")
+    return out
+
+
 def compare(name, existing, fresh, season):
     """Split fresh rows into new / changed / identical against what is archived."""
     keys = [k for k in KEYS[name] if k in fresh.columns]
@@ -101,23 +167,26 @@ def compare(name, existing, fresh, season):
         return fresh, pd.DataFrame(), 0, keys
 
     cols = [c for c in fresh.columns if c in cur.columns]
-    fk = fresh[cols].set_index(keys, drop=False).sort_index()
-    ck = cur[cols].set_index(keys, drop=False).sort_index()
+    fk = fresh[cols].drop_duplicates(subset=keys).set_index(keys).sort_index()
+    ck = cur[cols].drop_duplicates(subset=keys).set_index(keys).sort_index()
 
     new_idx = fk.index.difference(ck.index)
     both_idx = fk.index.intersection(ck.index)
 
-    new = fk.loc[new_idx].reset_index(drop=True) if len(new_idx) else pd.DataFrame(columns=cols)
+    new = (fresh.set_index(keys).loc[new_idx].reset_index()[cols]
+           if len(new_idx) else pd.DataFrame(columns=cols))
 
-    changed_rows = []
-    for idx in both_idx:
-        a = fk.loc[[idx]].reset_index(drop=True)
-        b = ck.loc[[idx]].reset_index(drop=True)
-        if not a.equals(b):
-            changed_rows.append(a)
-    changed = (pd.concat(changed_rows, ignore_index=True)
-               if changed_rows else pd.DataFrame(columns=cols))
-    identical_n = len(both_idx) - len(changed)
+    if len(both_idx):
+        # One vectorised comparison over the whole overlap, rather than
+        # building two single-row DataFrames per row as this used to.
+        a = canonical(fk.loc[both_idx])
+        b = canonical(ck.loc[both_idx])
+        differs = (a != b).any(axis=1)
+        changed = fk.loc[both_idx][differs.values].reset_index()[cols]
+        identical_n = int((~differs).sum())
+    else:
+        changed, identical_n = pd.DataFrame(columns=cols), 0
+
     return new, changed, identical_n, keys
 
 
@@ -131,6 +200,72 @@ def normalise(df, name):
     """Sort by identity keys so two frames compare on content, not row order."""
     keys = [k for k in KEYS[name] if k in df.columns]
     return df.sort_values(keys).reset_index(drop=True) if keys else df.reset_index(drop=True)
+
+
+def refresh_meta(seasons, dry_run=False):
+    """
+    Rewrite seasons.json for the named seasons only.
+
+    Nothing used to write this file, so an additive update could add a week of
+    matchups while the app went on reporting the old week: archive.current_week
+    reads seasons.json, not the CSVs. A new season was worse - absent from
+    seasons.json it had no manager_map, so every page fell through to a live
+    ESPN call for names it should have had on disk.
+
+    current_week here means the last week the archive holds, not ESPN's open
+    scoring period. That is the question the pages are really asking, and it
+    cannot run ahead of the data the way ESPN's own counter does.
+    """
+    from config import season_config, get_manager_name
+
+    path = ARCHIVE / "seasons.json"
+    meta = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    matchups = load_archive("matchups")
+
+    for season in seasons:
+        cfg = season_config(season)
+        weeks = (matchups[matchups["season"] == season]["week"]
+                 if not matchups.empty else pd.Series(dtype=int))
+        entry = {
+            "current_week": int(weeks.max()) if len(weeks) else 0,
+            "reg_season_end": cfg["reg_season_end"],
+            "playoff_weeks": cfg["playoff_weeks"],
+            "total_weeks": cfg["total_weeks"],
+        }
+        try:
+            league = ec.get_league(season)
+            entry["team_count"] = len(league.teams)
+            entry["manager_map"] = {
+                str(t.team_id): get_manager_name(
+                    season, t.team_id,
+                    [o.get("id", "") for o in getattr(t, "owners", [])])
+                for t in league.teams
+            }
+            entry["team_names"] = {
+                str(t.team_id): t.team_name.strip() for t in league.teams
+            }
+        except Exception as e:
+            # Names can be refreshed later; the week pointer is the urgent part.
+            keep = meta.get(str(season), {})
+            for k in ("team_count", "manager_map", "team_names"):
+                if k in keep:
+                    entry[k] = keep[k]
+            print(f"  meta        {season}  names unavailable ({type(e).__name__}), "
+                  f"kept previous")
+
+        was = meta.get(str(season), {}).get("current_week")
+        meta[str(season)] = entry
+        now = entry["current_week"]
+        shown = f"{was} -> {now}" if was != now else str(now)
+        print(f"  meta        {season}  current_week {shown}")
+
+    if dry_run:
+        print("  (dry run - seasons.json not written)")
+        return
+
+    ordered = {k: meta[k] for k in sorted(meta)}
+    path.write_text(json.dumps(ordered, indent=2) + "\n", encoding="utf-8")
+    print(f"  wrote   seasons.json  {len(ordered)} seasons")
 
 
 def do_list():
@@ -165,10 +300,23 @@ def main():
                     help="permit modifying or replacing rows that already exist")
     ap.add_argument("--dry-run", action="store_true", help="show the plan, write nothing")
     ap.add_argument("--list", action="store_true", help="show what the archive holds")
+    ap.add_argument("--meta", action="store_true",
+                    help="refresh seasons.json for the named seasons and exit")
     args = ap.parse_args()
 
     if args.list:
         return do_list()
+
+    if args.meta and not (args.update or args.rebuild):
+        if not args.season:
+            print("error: --meta needs --season. It never rewrites every season.")
+            return 2
+        unknown = [x for x in args.season if x not in SEASONS]
+        if unknown:
+            print(f"error: {unknown} not in config.SEASONS {SEASONS}")
+            return 2
+        refresh_meta(sorted(set(args.season)), args.dry_run)
+        return 0
 
     if not (args.update or args.rebuild):
         ap.print_help()
@@ -220,7 +368,17 @@ def main():
             n_new, n_chg = len(new), len(changed)
 
             if mode == "update":
-                if n_chg and not args.force:
+                live_snapshot = (name in SNAPSHOT_DATASETS
+                                 and not season_complete(season))
+
+                if n_chg and live_snapshot:
+                    print(f"  {name:11} {season}  {n_chg} updated, +{n_new} new "
+                          f"(running tally, season in progress)")
+                    kt = set(changed[keys].apply(tuple, axis=1))
+                    mask = existing[keys].apply(tuple, axis=1).isin(kt)
+                    keep = existing[~mask].copy()
+                    add = pd.concat([new, changed], ignore_index=True)
+                elif n_chg and not args.force:
                     first = changed.iloc[0][keys].to_dict()
                     print(f"  {name:11} {season}  +{n_new} new, {n_chg} CONFLICT "
                           f"(archived rows differ) - conflicts skipped")
@@ -257,7 +415,13 @@ def main():
             existing = planned[name]
 
     if not planned:
-        print("\nNothing to write.")
+        print("\nNo new rows.")
+        if not args.dry_run and not blocked:
+            # Still refresh the metadata. A week where ESPN adds nothing can
+            # still be a week somebody renamed their team, and seasons.json is
+            # where the app reads names from.
+            print("\nrefreshing seasons.json:")
+            refresh_meta(targets)
         return 1 if blocked else 0
 
     if args.dry_run:
@@ -305,7 +469,10 @@ def main():
               "Restore from data/archive/_backups/.")
         return 1
 
-    print("\nDone. If manager or team names changed, refresh seasons.json too.")
+    print("\nrefreshing seasons.json:")
+    refresh_meta(targets)
+
+    print("\nDone.")
     return 0
 
 

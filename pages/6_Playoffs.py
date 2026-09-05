@@ -7,36 +7,34 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import streamlit as st
 import pandas as pd
-from data.espn_client import get_league, get_matchups_df, get_manager_map
+from data.espn_client import get_current_week, get_matchups_df, get_manager_map
 from analysis.standings import h2h_standings, combined_standings
 from config import SEASONS, DEFAULT_SEASON, season_config
-from display_utils import sidebar_display_prefs, prep_display, chart_label
+from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 
 st.set_page_config(page_title="Playoffs", page_icon="🏆", layout="wide")
 st.title("🏆 Playoff Results")
 
-if "selected_season" not in st.session_state:
-    st.session_state["selected_season"] = DEFAULT_SEASON
-season = st.sidebar.selectbox(
-    "Season", SEASONS,
-    index=SEASONS.index(st.session_state["selected_season"])
-)
-st.session_state["selected_season"] = season
+season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
 
 
 @st.cache_data(ttl=300)
 def load(s):
-    return get_league(s), get_matchups_df(s), get_manager_map(s)
+    return get_matchups_df(s), get_manager_map(s), get_current_week(s)
 
 
 with st.spinner("Loading..."):
-    league, matchups_df, manager_map = load(season)
+    matchups_df, manager_map, current_week = load(season)
+
+require_data(matchups_df, season, "matchup data")
 
 cfg = season_config(season)
 pw = cfg["playoff_weeks"]
 reg_end = cfg["reg_season_end"]
-current_week = min(league.current_week, cfg["total_weeks"])
+# Last week the archive holds. Gating the bracket on ESPN's open scoring
+# period instead would let a round look playable a week before it is.
+current_week = min(current_week, cfg["total_weeks"])
 
 # ── Regular season still in progress ─────────────────────────────────────────
 if current_week <= reg_end:

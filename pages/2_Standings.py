@@ -14,18 +14,12 @@ from analysis.standings import (
     swapped_schedule_matrix
 )
 from config import SEASONS, DEFAULT_SEASON, season_config
-from display_utils import sidebar_display_prefs, prep_display
+from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
 
 st.set_page_config(page_title="Standings", page_icon="📊", layout="wide")
 st.title("📊 Standings")
 
-if "selected_season" not in st.session_state:
-    st.session_state["selected_season"] = DEFAULT_SEASON
-season = st.sidebar.selectbox(
-    "Season", SEASONS,
-    index=SEASONS.index(st.session_state["selected_season"])
-)
-st.session_state["selected_season"] = season
+season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
@@ -34,6 +28,8 @@ def load(season):
 
 with st.spinner("Loading..."):
     matchups_df, manager_map = load(season)
+
+require_data(matchups_df, season, "matchup data")
 
 cfg = season_config(season)
 matchups_df = matchups_df[matchups_df["week"] <= cfg["reg_season_end"]].copy()

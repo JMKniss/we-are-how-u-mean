@@ -102,3 +102,41 @@ def chart_label(
         return mgr
     else:
         return team
+
+
+def season_selector(seasons, default_season):
+    """
+    The sidebar season picker, identical on every page.
+
+    Kept here because the season list now runs ahead of the data: a season
+    appears on ESPN months before week 1, so it has to be selectable before it
+    holds anything. Pages pair this with require_data to say so plainly rather
+    than rendering empty tables.
+    """
+    if "selected_season" not in st.session_state:
+        st.session_state["selected_season"] = default_season
+    if st.session_state["selected_season"] not in seasons:
+        st.session_state["selected_season"] = default_season
+    season = st.sidebar.selectbox(
+        "Season", seasons,
+        index=seasons.index(st.session_state["selected_season"]),
+    )
+    st.session_state["selected_season"] = season
+    return season
+
+
+def require_data(df, season, what="data"):
+    """
+    Stop the page with a plain explanation when a season holds nothing yet.
+
+    Without this, an unstarted season reaches the analysis code as an empty
+    frame with no columns and the page dies on a KeyError - which reads as the
+    site being broken rather than the season not having started.
+    """
+    if df is not None and not df.empty:
+        return
+    st.info(
+        f"No {what} for {season} yet. The season page fills in from week 1, "
+        f"and updates every Tuesday once the week is final."
+    )
+    st.stop()

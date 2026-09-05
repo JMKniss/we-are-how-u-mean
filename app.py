@@ -9,6 +9,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
 
+from config import SEASONS
+
 st.set_page_config(
     page_title="We Are How U Mean",
     page_icon="🏈",
@@ -19,7 +21,7 @@ st.set_page_config(
 st.title("🏈 We Are How U Mean")
 st.subheader("Fantasy Football Analytics — 2016 to present")
 
-st.markdown("""
+st.markdown(f"""
 Navigate using the sidebar to explore:
 
 | Page | What you'll find |
@@ -34,7 +36,9 @@ Navigate using the sidebar to explore:
 | **Data Validation** | Verify our calculated scores match ESPN's published totals |
 
 ---
-Use the **Season** selector in the sidebar on any page to switch between seasons (2016–2025).
+Use the **Season** selector in the sidebar on any page to switch between seasons (2016–{max(SEASONS)}).
+
+The current season updates every Tuesday, once the week is final.
 """)
 
 st.info("Select a page from the sidebar to get started.")

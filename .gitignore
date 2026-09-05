@@ -13,3 +13,6 @@ data/cache/
 
 # Local safety backups written by build_archive.py — not part of the record.
 data/archive/_backups/
+
+# Weekly update logs — local run records, not part of the archive.
+logs/

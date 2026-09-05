@@ -76,6 +76,14 @@ def draft_order(season: int) -> list[str]:
     return ["" if pd.isna(m) else str(m) for m in df["manager"]]
 
 
+def seasons_with_data(name: str) -> list[int]:
+    """Seasons this dataset actually holds rows for. Empty if it is absent."""
+    try:
+        return sorted(int(s) for s in _read(name)["season"].unique())
+    except (FileNotFoundError, KeyError):
+        return []
+
+
 def seasons_meta() -> dict:
     """Per-season metadata: current_week, manager_map, team_names, schedule shape."""
     global _meta

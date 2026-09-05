@@ -7,18 +7,12 @@ import plotly.express as px
 import pandas as pd
 from data.espn_client import get_draft_df, get_boxscores_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON
-from display_utils import sidebar_display_prefs, prep_display, chart_label
+from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 
 st.set_page_config(page_title="Draft Review", page_icon="📋", layout="wide")
 st.title("📋 Draft Review")
 
-if "selected_season" not in st.session_state:
-    st.session_state["selected_season"] = DEFAULT_SEASON
-season = st.sidebar.selectbox(
-    "Season", SEASONS,
-    index=SEASONS.index(st.session_state["selected_season"])
-)
-st.session_state["selected_season"] = season
+season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=3600)
@@ -34,9 +28,7 @@ def load(season):
 with st.spinner("Loading draft data..."):
     draft_df, box_df, manager_map = load(season)
 
-if draft_df.empty:
-    st.warning("No draft data available for this season.")
-    st.stop()
+require_data(draft_df, season, "draft data")
 
 # team_name → team_id from draft_df (if present) or box_df
 if "team_id" in draft_df.columns:

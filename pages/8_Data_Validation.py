@@ -12,7 +12,7 @@ import pandas as pd
 import plotly.express as px
 from data.espn_client import get_validation_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON, season_config
-from display_utils import sidebar_display_prefs, prep_display
+from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
 
 st.set_page_config(page_title="Data Validation", page_icon="🔧", layout="wide")
 st.title("🔧 Data Validation")
@@ -23,13 +23,7 @@ st.caption(
 
 TOLERANCE = 0.1  # pts — differences within this are rounding, not errors
 
-if "selected_season" not in st.session_state:
-    st.session_state["selected_season"] = DEFAULT_SEASON
-season = st.sidebar.selectbox(
-    "Season", SEASONS,
-    index=SEASONS.index(st.session_state["selected_season"])
-)
-st.session_state["selected_season"] = season
+season = season_selector(SEASONS, DEFAULT_SEASON)
 all_seasons = st.sidebar.checkbox("Check all seasons at once", value=False)
 show_mgr, show_team = sidebar_display_prefs()
 

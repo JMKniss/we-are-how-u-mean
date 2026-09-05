@@ -41,6 +41,65 @@ ff_app/
     └── 8_Data_Validation.py
 ```
 
+## The weekly update
+
+The archive is the app's only data source in normal use, so keeping the current
+season current is a weekly job rather than something the app does on its own.
+
+```
+python weekly_update.py            # the current season, additive
+python weekly_update.py --dry-run  # report what it would add, write nothing
+```
+
+Or `weekly_update.bat`, which does the same and keeps a log under `logs/`.
+
+**Run it Tuesday, not Monday night.** ESPN restates player points for a day or
+two after the games, and Tuesday midday is when the week has settled.
+
+**It only ever adds.** Weeks the archive already holds are left alone. A week
+ESPN has since restated is reported as a conflict and skipped, so a stat
+correction cannot quietly rewrite a result the league has already argued about.
+Pass `--force` when you have looked at the conflict and decided ESPN is right.
+
+**It refreshes `seasons.json` itself.** That file carries `current_week`, which
+is what the pages read, plus manager and team names. Nothing used to write it,
+so an update could add a week of data while the app went on showing the old one.
+`current_week` there means the last week the archive holds - not ESPN's open
+scoring period, which from Tuesday morning already names a week nobody played.
+
+### Scheduling it for Tuesday noon
+
+Task Scheduler, run as your own user, "Run only when user is logged on" (the
+ESPN cookies live in `ff_app/.env` under your profile):
+
+```
+schtasks /create /tn "FF weekly update" /sc weekly /d TUE /st 12:00 /tr "\"C:\Users\jaymi\code-repository\fantasy-football\ff_app\weekly_update.bat\" --scheduled"
+```
+
+`--scheduled` tells the batch file to skip its final `pause`, which would
+otherwise leave an unattended run waiting on a keypress forever.
+
+The archive is committed to git, so a run is not finished until you commit it:
+
+```
+git add data/archive && git commit -m "Archive 2026 through week N"
+```
+
+### Starting a new season
+
+1. Add the year to `SEASONS` in `config.py` and bump `CURRENT_SEASON`.
+2. Add a `MANAGER_OVERRIDES` entry for any team whose ESPN account owner is not
+   the person actually managing it. Team 3 has needed one every year since 2021.
+3. Check `season_config()` matches. Read `league.settings.matchup_periods`: 2026
+   returns periods 1-13 single-week then 14=[14,15], 15=[16,17], which is the
+   2021+ shape already handled.
+4. Add the year to `data/archive/draft_order.csv` once the draft happens.
+
+`DEFAULT_SEASON` needs no attention. It follows the data rather than the season
+list, so the app stays on the previous season until week 1 is archived - a
+season exists on ESPN months before it holds anything, and defaulting to an
+empty one would make every page look broken all summer.
+
 ## Data storage — archive vs cache
 
 Two distinct layers. Do not conflate them.
@@ -111,10 +170,13 @@ Only relevant when pulling a season not yet archived. Delete freely.
 `USE_ARCHIVE = False` in `data/espn_client.py` bypasses the archive entirely.
 
 ## Data layer — espn_client.py
-- All functions check a local pickle cache before hitting ESPN
+- Reads `data/archive/` first, then the pickle cache, then ESPN. Normal use of
+  the app touches none of ESPN and needs no cookies
 - Cache lives at `data/cache/<season>/`. Delete a folder to force a fresh pull
-- "Refresh Data" button in every page sidebar calls `invalidate_cache(season)` then reruns
-- `get_league(season)` — returns the raw espn-api League object
+- `get_league(season)` — the raw espn-api League object. No page calls this;
+  it means a live ESPN request whenever the pickle is cold
+- `get_current_week(season)` — last week the archive holds. This is what pages
+  should ask, rather than reaching through `get_league` for `current_week`
 - `get_matchups_df(season)` — team-level weekly scores and outcomes (W/L/T)
 - `get_boxscores_df(season)` — player-level data: points, projected, slot, bench/active
 - `get_draft_df(season)` — full draft board with keeper flags
@@ -124,6 +186,11 @@ Only relevant when pulling a season not yet archived. Delete freely.
 
 ## Display utilities — display_utils.py
 All 8 pages use shared helpers for consistent Manager/Team name display:
+- `season_selector(SEASONS, DEFAULT_SEASON)` — the sidebar season picker
+- `require_data(df, season, what)` — stops a page with a plain message when the
+  season holds nothing yet. Every season page calls it right after loading;
+  without it an unstarted season reaches the analysis code as a frame with no
+  columns and dies on a KeyError, which reads as the site being broken
 - `sidebar_display_prefs()` — adds "Show Manager" / "Show Team Name" toggles to sidebar
 - `prep_display(df, manager_map, show_mgr, show_team, cols, headers)` — prepares a display
   DataFrame with a "Manager" or "Team" column as the first column

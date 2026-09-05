@@ -5,35 +5,32 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-from data.espn_client import get_league, get_matchups_df, get_manager_map
+from data.espn_client import get_current_week, get_matchups_df, get_manager_map
 from analysis.standings import h2h_standings, combined_standings, luck_index
 from config import SEASONS, DEFAULT_SEASON, season_config
-from display_utils import sidebar_display_prefs, prep_display, chart_label
+from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 
 st.set_page_config(page_title="Dashboard", page_icon="🏈", layout="wide")
 st.title("🏈 Dashboard")
 
-if "selected_season" not in st.session_state:
-    st.session_state["selected_season"] = DEFAULT_SEASON
-season = st.sidebar.selectbox(
-    "Season", SEASONS,
-    index=SEASONS.index(st.session_state["selected_season"])
-)
-st.session_state["selected_season"] = season
+season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
 def load(season):
-    league = get_league(season)
-    matchups = get_matchups_df(season)
-    mgr_map = get_manager_map(season)
-    return league, matchups, mgr_map
+    return get_matchups_df(season), get_manager_map(season), get_current_week(season)
 
 with st.spinner("Loading league data..."):
-    league, matchups_df, manager_map = load(season)
+    matchups_df, manager_map, current_week = load(season)
+
+require_data(matchups_df, season, "matchup data")
 
 cfg = season_config(season)
-current_week = min(league.current_week, cfg["total_weeks"])
+# get_current_week reads the archive, so this is the last week we hold data
+# for, not the week ESPN currently has open. The page used to load the whole
+# League object just for that number, which meant a live ESPN call - and a
+# season still in progress would name a week with nothing in it.
+current_week = min(current_week, cfg["total_weeks"])
 played_df = matchups_df[matchups_df["week"] <= current_week]
 reg_df = played_df[played_df["week"] <= cfg["reg_season_end"]]
 

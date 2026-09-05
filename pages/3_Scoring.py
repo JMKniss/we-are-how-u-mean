@@ -9,18 +9,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 from data.espn_client import get_matchups_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON
-from display_utils import sidebar_display_prefs, prep_display, chart_label
+from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 
 st.set_page_config(page_title="Scoring", page_icon="📈", layout="wide")
 st.title("📈 Scoring Analysis")
 
-if "selected_season" not in st.session_state:
-    st.session_state["selected_season"] = DEFAULT_SEASON
-season = st.sidebar.selectbox(
-    "Season", SEASONS,
-    index=SEASONS.index(st.session_state["selected_season"])
-)
-st.session_state["selected_season"] = season
+season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
 
 @st.cache_data(ttl=300)
@@ -29,6 +23,8 @@ def load(season):
 
 with st.spinner("Loading..."):
     df, manager_map = load(season)
+
+require_data(df, season, "scoring data")
 
 # team_name → display label helper
 tid_by_name = df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]

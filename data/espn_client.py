@@ -4,6 +4,7 @@ Cache is stored as pickle files in data/cache/<season>/.
 Call invalidate_cache(season) to force a fresh pull.
 Credentials are loaded automatically from config (via .env).
 """
+import functools
 import json
 import os
 import pickle
@@ -58,6 +59,8 @@ def _save(season: int, key: str, obj):
 
 
 def invalidate_cache(season: int):
+    for k in [k for k in _BOX_MEMO if k[1] == season]:
+        del _BOX_MEMO[k]
     d = CACHE_DIR / str(season)
     if d.exists():
         for f in d.glob("*.pkl"):
@@ -84,20 +87,93 @@ def _active_player_sum(lineup) -> float:
     return round(sum(p.points for p in lineup if p.lineupSlot not in ("BE", "IR")), 2)
 
 
+# ── Which weeks have actually been played ────────────────────────────────────
+# ESPN's current_week is the scoring period now open, so from Tuesday morning
+# it already names a week nobody has played. Fetching up to it returns a week
+# of zeroes, and archiving those zeroes is worse than missing the week: the
+# next additive update sees the real scores as a CONFLICT against the archived
+# zeroes and skips them, freezing the week at 0-0 for good.
+#
+# So weeks are judged by whether they hold results, not by their number. A
+# trailing run of empty weeks is the season simply not having got there yet
+# and is dropped quietly. An empty week with played weeks after it is a failed
+# fetch, and that raises - 2025 lost boxscore weeks 11 and 14 to a silent
+# `except: []` here, and neither the app nor the archive said a word.
+
+
+class WeekFetchError(RuntimeError):
+    """A week inside the played range came back empty or failed to fetch."""
+
+
+def _week_points(boxes: list) -> float:
+    """Total points scored in a week, for either box-score shape."""
+    total = 0.0
+    for b in boxes:
+        if isinstance(b, dict):        # legacy path: plain dicts
+            total += float(b.get("home_week_score") or 0)
+            total += float(b.get("away_week_score") or 0)
+        else:                          # espn_api BoxScore objects
+            total += float(getattr(b, "home_score", 0) or 0)
+            total += float(getattr(b, "away_score", 0) or 0)
+    return total
+
+
+def _drop_unplayed_weeks(boxes_by_week: dict, errors: dict, season: int) -> dict:
+    """Keep weeks with results; drop the unplayed tail; raise on interior gaps."""
+    played = {w for w, boxes in boxes_by_week.items() if _week_points(boxes) > 0}
+    if not played:
+        if errors:
+            raise WeekFetchError(
+                f"{season}: every week failed to fetch. First error: "
+                f"{sorted(errors.items())[0][1]}"
+            )
+        return {}
+
+    last = max(played)
+    gaps = sorted(w for w in range(1, last + 1) if w not in played)
+    if gaps:
+        detail = "; ".join(
+            f"wk {w}: {errors.get(w, 'returned no scores')}" for w in gaps
+        )
+        raise WeekFetchError(
+            f"{season}: weeks {gaps} are empty but week {last} has results. "
+            f"This is a failed fetch, not an unplayed week - archiving it would "
+            f"leave a permanent hole. {detail}"
+        )
+    return {w: boxes_by_week[w] for w in sorted(played)}
+
+
+# One archive build asks for matchups, boxscores and validation, and each of
+# them needs every week's box scores. Fetched independently that is three full
+# passes over the season against ESPN, which is most of what a weekly update
+# costs. They are the same bytes, so fetch once per process and hand the same
+# result to all three. Keyed on current_week so a later week invalidates it.
+_BOX_MEMO: dict = {}
+
+
 def _box_scores_all_weeks(league, cfg: dict) -> dict:
     """
-    Fetch box_scores for every week of the season.
-    Returns {week: [box, ...]} — used by both get_matchups_df and get_validation_df
-    so we only hit the ESPN API once per season build.
+    Fetch box_scores for every played week of the season.
+
+    Returns {week: [box, ...]} — used by both get_matchups_df and
+    get_validation_df so we only hit the ESPN API once per season build.
+    Weeks with no results are dropped by _drop_unplayed_weeks.
     """
-    boxes_by_week = {}
+    memo_key = ("modern", league.year, league.current_week)
+    if memo_key in _BOX_MEMO:
+        return _BOX_MEMO[memo_key]
+
+    boxes_by_week, errors = {}, {}
     max_week = min(league.current_week, cfg["total_weeks"])
     for week in range(1, max_week + 1):
         try:
             boxes_by_week[week] = league.box_scores(week=week)
-        except Exception:
+        except Exception as e:
             boxes_by_week[week] = []
-    return boxes_by_week
+            errors[week] = f"{type(e).__name__}: {e}"
+    result = _drop_unplayed_weeks(boxes_by_week, errors, league.year)
+    _BOX_MEMO[memo_key] = result
+    return result
 
 
 def _fetch_week_raw(league, week: int) -> list:
@@ -190,7 +266,11 @@ def _box_scores_all_weeks_legacy(league, cfg: dict) -> dict:
         home_team_id, away_team_id, home_total, away_total,
         home_players, away_players
     """
-    boxes_by_week = {}
+    memo_key = ("legacy", league.year, league.current_week)
+    if memo_key in _BOX_MEMO:
+        return _BOX_MEMO[memo_key]
+
+    boxes_by_week, errors = {}, {}
     max_week = min(league.current_week, cfg["total_weeks"])
     for week in range(1, max_week + 1):
         try:
@@ -228,9 +308,12 @@ def _box_scores_all_weeks_legacy(league, cfg: dict) -> dict:
                     "away_players": away_players,
                 })
             boxes_by_week[week] = matchups
-        except Exception:
+        except Exception as e:
             boxes_by_week[week] = []
-    return boxes_by_week
+            errors[week] = f"{type(e).__name__}: {e}"
+    result = _drop_unplayed_weeks(boxes_by_week, errors, league.year)
+    _BOX_MEMO[memo_key] = result
+    return result
 
 
 def get_matchups_df(season: int) -> pd.DataFrame:
@@ -281,8 +364,7 @@ def get_matchups_df(season: int) -> pd.DataFrame:
         # For 2018, rosterForCurrentScoringPeriod has reliable per-week player sums.
         use_player_sums = (season >= 2018)
 
-        max_week = min(league.current_week, cfg["total_weeks"])
-        for week in range(1, max_week + 1):
+        for week in sorted(boxes_by_week):
             is_playoff = week in pw
             for matchup in boxes_by_week.get(week, []):
                 home_id = matchup["home_team_id"]
@@ -334,8 +416,7 @@ def get_matchups_df(season: int) -> pd.DataFrame:
                     opp.team_id, opp.team_name.strip(), outcome
                 )
 
-        max_week = min(league.current_week, cfg["total_weeks"])
-        for week in range(1, max_week + 1):
+        for week in sorted(boxes_by_week):
             is_playoff = week in pw
             for box in boxes_by_week.get(week, []):
                 home_score = _active_player_sum(box.home_lineup)
@@ -404,7 +485,6 @@ def get_validation_df(season: int) -> pd.DataFrame:
     league = get_league(season)
     cfg = season_config(season)
     pw = cfg["playoff_weeks"]
-    max_week = min(league.current_week, cfg["total_weeks"])
 
     if season < 2018:
         # 2016-2017: only rosterForMatchupPeriod is available, which returns
@@ -423,6 +503,11 @@ def get_validation_df(season: int) -> pd.DataFrame:
         boxes_by_week = _box_scores_all_weeks_legacy(league, cfg)
     else:
         boxes_by_week = _box_scores_all_weeks(league, cfg)
+
+    # Gate the playoff checks on weeks that were actually played, not on
+    # league.current_week. From Tuesday morning current_week names the week
+    # now open, which would let a round look settled before it is.
+    max_week = max(boxes_by_week) if boxes_by_week else 0
     rows = []
 
     team_map = {t.team_id: t.team_name.strip() for t in league.teams}
@@ -669,7 +754,6 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
     cfg = season_config(season)
     team_map = {t.team_id: t.team_name.strip() for t in league.teams}
     rows = []
-    max_week = min(league.current_week, cfg["total_weeks"])
 
     if season < 2018:
         # 2016-2017: build player points from NFL stats (nfl-data-py) since
@@ -687,7 +771,7 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
 
     elif season == 2018:
         boxes_by_week = _box_scores_all_weeks_legacy(league, cfg)
-        for week in range(1, max_week + 1):
+        for week in sorted(boxes_by_week):
             for matchup in boxes_by_week.get(week, []):
                 for team_id, players in [
                     (matchup["home_team_id"], matchup["home_players"]),
@@ -717,12 +801,13 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
                             "percent_owned": p["percent_owned"],
                         })
     else:  # 2019+
-        for week in range(1, max_week + 1):
-            try:
-                boxes = league.box_scores(week=week)
-            except Exception:
-                continue
-            for box in boxes:
+        # Fetch through _box_scores_all_weeks rather than looping box_scores
+        # here. The hand-rolled loop this replaces swallowed fetch failures
+        # with `except: continue`, which is how the 2025 archive ended up
+        # missing boxscore weeks 11 and 14 while every other dataset had them.
+        boxes_by_week = _box_scores_all_weeks(league, cfg)
+        for week in sorted(boxes_by_week):
+            for box in boxes_by_week[week]:
                 for side, lineup, proj in [
                     (box.home_team, box.home_lineup, box.home_projected),
                     (box.away_team, box.away_lineup, box.away_projected),
@@ -792,7 +877,12 @@ def get_current_week(season: int) -> int:
                 return cw
         except Exception:
             pass
-    return get_league(season).current_week
+    try:
+        return get_league(season).current_week
+    except Exception:
+        if USE_ARCHIVE:
+            return 0
+        raise
 
 
 def get_draft_df(season: int) -> pd.DataFrame:
@@ -849,3 +939,32 @@ def get_standings_df(season: int) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     _save(season, "standings_df", df)
     return df
+
+
+# ── App-mode safety net ──────────────────────────────────────────────────────
+# A season the archive has not reached yet falls through to a live ESPN call.
+# That is fine while it works, but ESPN_S2 expires, and when it does the whole
+# page dies on a traceback - which reads to a league mate as the site being
+# broken rather than as a season that has not started.
+#
+# So in app mode (USE_ARCHIVE on) an unreachable season yields an empty frame
+# and the page's require_data says so plainly. Archive builds set USE_ARCHIVE
+# to False and still raise, because a build that quietly wrote nothing would be
+# far worse than one that stopped and said why.
+def _empty_when_unavailable(fn):
+    @functools.wraps(fn)
+    def wrapper(season, *args, **kwargs):
+        try:
+            return fn(season, *args, **kwargs)
+        except Exception:
+            if USE_ARCHIVE:
+                return pd.DataFrame()
+            raise
+    return wrapper
+
+
+get_matchups_df = _empty_when_unavailable(get_matchups_df)
+get_boxscores_df = _empty_when_unavailable(get_boxscores_df)
+get_draft_df = _empty_when_unavailable(get_draft_df)
+get_standings_df = _empty_when_unavailable(get_standings_df)
+get_validation_df = _empty_when_unavailable(get_validation_df)
