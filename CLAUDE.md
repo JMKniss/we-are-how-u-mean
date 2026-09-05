@@ -43,15 +43,30 @@ ff_app/
 
 ## Deployment — wearehowumean.com on Render
 
-The site is a Render web service built from `render.yaml`. Import that
-blueprint once from the Render dashboard; after that every push to `master`
-redeploys automatically.
+A Render **Web Service**, created by hand in the dashboard. Blueprints
+(render.yaml) want a Pro plan, so the settings live here instead of in a file:
 
-```
-buildCommand: pip install -r requirements.txt
-startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
-healthCheckPath: /_stcore/health
-```
+| Setting | Value |
+|---|---|
+| Repository | `JMKniss/we-are-how-u-mean` |
+| Branch | `master` |
+| Root Directory | *(blank — app.py is at the repo root)* |
+| Language | Python 3 |
+| Build Command | `pip install -r requirements.txt` |
+| Start Command | `streamlit run app.py --server.port $PORT --server.address 0.0.0.0` |
+| Health Check Path | `/_stcore/health` |
+| Env var | `PYTHON_VERSION` = `3.12.2` |
+| Env var | `APP_PASSWORD` = *(set to gate the site; unset means public)* |
+
+Auto-deploy on push is a Web Service feature and is on by default, so the
+push-to-deploy loop works exactly as it would have under a blueprint.
+
+**Plan.** Starter, 512MB, always on. Measured peak is 258MB with every page
+loaded for every season in one process, which is the worst the caches get -
+st.cache_data is global, so more viewers do not multiply it. The free tier is
+ruled out by spin-down rather than memory: it sleeps after roughly 15 minutes
+idle, and a site checked a few times a week would cold-start almost every
+visit.
 
 **The server needs no ESPN credentials.** Every page reads
 `data/archive/*.csv`. ESPN_S2 and SWID stay on the machine that runs
@@ -71,7 +86,8 @@ pip install -r requirements.txt -r requirements-build.txt
 That keeps the public/private choice in the dashboard rather than in a commit,
 and no password ever enters the repo. It is one password for ten people with
 no identity behind it - right for keeping scores off the open web, wrong for
-anything that matters.
+anything that matters. Note the GitHub repo is public and the archive is in
+it, so a password on the site does not make the data private on its own.
 
 **`.streamlit/config.toml`** sets `toolbarMode = "viewer"`, which hides the
 Deploy button and the developer menu, and `showErrorDetails = false`, so a
