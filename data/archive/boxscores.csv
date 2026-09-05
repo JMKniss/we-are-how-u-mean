@@ -1406,6 +1406,115 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2016,16,10,ALL DAY Johnnys,14924,T.Y. Hilton,WR,STARTER,12.5,0.0,True,False,,,,,IND,
 2016,16,10,ALL DAY Johnnys,17427,Cairo Santos,K,STARTER,8.0,0.0,True,False,,,,,KC,
 2016,16,10,ALL DAY Johnnys,3116406,Tyreek Hill,WR,STARTER,15.5,0.0,True,False,,,,,KC,
+2016,17,1,Tin Chicken Lives Matter,-16021,Eagles D/ST,D/ST,STARTER,14.0,0.0,True,False,,,,,PHI,
+2016,17,1,Tin Chicken Lives Matter,5362,Antonio Gates,TE,STARTER,11.5,0.0,True,False,,,,,SD,
+2016,17,1,Tin Chicken Lives Matter,9704,Stephen Gostkowski,K,STARTER,9.0,0.0,True,False,,,,,NE,
+2016,17,1,Tin Chicken Lives Matter,12556,Kenny Britt,WR,STARTER,0.0,0.0,True,False,,,,,LA,
+2016,17,1,Tin Chicken Lives Matter,12649,Julian Edelman,WR,STARTER,23.7,0.0,True,False,,,,,NE,
+2016,17,1,Tin Chicken Lives Matter,13934,Antonio Brown,WR,STARTER,0.0,0.0,True,False,,,,,PIT,
+2016,17,1,Tin Chicken Lives Matter,13981,Mark Ingram,RB,STARTER,19.2,0.0,True,False,,,,,NO,
+2016,17,1,Tin Chicken Lives Matter,16724,Blake Bortles,QB,STARTER,14.14,0.0,True,False,,,,,JAX,
+2016,17,1,Tin Chicken Lives Matter,16777,Carlos Hyde,RB,STARTER,0.0,0.0,True,False,,,,,SF,
+2016,17,1,Tin Chicken Lives Matter,2520698,Cameron Meredith,WR,STARTER,10.18,0.0,True,False,,,,,CHI,
+2016,17,1,Tin Chicken Lives Matter,2521161,Zach Zenner,RB,STARTER,17.0,0.0,True,False,,,,,DET,
+2016,17,1,Tin Chicken Lives Matter,2576980,Marcus Mariota,QB,STARTER,0.0,0.0,True,False,,,,,TEN,
+2016,17,1,Tin Chicken Lives Matter,2979477,Tevin Coleman,RB,STARTER,11.9,0.0,True,False,,,,,ATL,
+2016,17,2,I have the tin chicken,-16004,Bengals D/ST,D/ST,STARTER,9.0,0.0,True,False,,,,,CIN,
+2016,17,2,I have the tin chicken,2148,Sebastian Janikowski,K,STARTER,0.0,0.0,True,False,,,,,OAK,
+2016,17,2,I have the tin chicken,5529,Philip Rivers,QB,STARTER,14.86,0.0,True,False,,,,,SD,
+2016,17,2,I have the tin chicken,9592,Vernon Davis,TE,STARTER,4.9,0.0,True,False,,,,,WAS,
+2016,17,2,I have the tin chicken,14269,Dontrelle Inman,WR,STARTER,5.1,0.0,True,False,,,,,SD,
+2016,17,2,I have the tin chicken,15904,Landry Jones,QB,STARTER,21.08,0.0,True,False,,,,,PIT,
+2016,17,2,I have the tin chicken,16803,Jeremy Hill,RB,STARTER,0.0,0.0,True,False,,,,,CIN,
+2016,17,2,I have the tin chicken,17258,Willie Snead,WR,STARTER,8.2,0.0,True,False,,,,,NO,
+2016,17,2,I have the tin chicken,2575408,Robert Kelley,RB,STARTER,3.3,0.0,True,False,,,,,WAS,
+2016,17,2,I have the tin chicken,2577134,Ty Montgomery,WR,STARTER,6.1,0.0,True,False,,,,,GB,
+2016,17,2,I have the tin chicken,2587819,Tyrell Williams,WR,STARTER,7.0,0.0,True,False,,,,,SD,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,-16022,Cardinals D/ST,D/ST,STARTER,25.0,0.0,True,False,,,,,ARI,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,4333,Matt Bryant,K,STARTER,8.0,0.0,True,False,,,,,ATL,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,10475,Greg Olsen,TE,STARTER,2.2,0.0,True,False,,,,,CAR,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,11237,Matt Ryan,QB,STARTER,29.44,0.0,True,False,,,,,ATL,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,11270,Jordy Nelson,WR,STARTER,6.6,0.0,True,False,,,,,GB,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,13213,LeGarrette Blount,RB,STARTER,11.1,0.0,True,False,,,,,NE,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,14129,Bilal Powell,RB,STARTER,19.7,0.0,True,False,,,,,NYJ,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,14193,Jacquizz Rodgers,RB,STARTER,7.9,0.0,True,False,,,,,TB,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,15825,Le'Veon Bell,RB,STARTER,0.0,0.0,True,False,,,,,PIT,
+2016,17,3,Jet Fuel Can't Melt Tin Chickn,16725,Sammy Watkins,WR,STARTER,3.1,0.0,True,False,,,,,BUF,
+2016,17,4,Prestige Worldwide,-16013,Raiders D/ST,D/ST,STARTER,1.0,0.0,True,False,,,,,OAK,
+2016,17,4,Prestige Worldwide,8479,Frank Gore,RB,STARTER,7.6,0.0,True,False,,,,,IND,
+2016,17,4,Prestige Worldwide,11122,Matt Prater,K,STARTER,7.0,0.0,True,False,,,,,DET,
+2016,17,4,Prestige Worldwide,12503,Rashad Jennings,RB,STARTER,11.7,0.0,True,False,,,,,NYG,
+2016,17,4,Prestige Worldwide,13215,Dez Bryant,WR,STARTER,0.0,0.0,True,False,,,,,DAL,
+2016,17,4,Prestige Worldwide,14880,Kirk Cousins,QB,STARTER,11.48,0.0,True,False,,,,,WAS,
+2016,17,4,Prestige Worldwide,15683,Justin Tucker,K,STARTER,4.0,0.0,True,False,,,,,BAL,
+2016,17,4,Prestige Worldwide,15835,Zach Ertz,TE,STARTER,25.9,0.0,True,False,,,,,PHI,
+2016,17,4,Prestige Worldwide,16731,Brandin Cooks,WR,STARTER,1.9,0.0,True,False,,,,,NO,
+2016,17,4,Prestige Worldwide,16800,Davante Adams,WR,STARTER,17.1,0.0,True,False,,,,,GB,
+2016,17,4,Prestige Worldwide,2576623,DeVante Parker,WR,STARTER,4.5,0.0,True,False,,,,,MIA,
+2016,17,4,Prestige Worldwide,2969939,Jameis Winston,QB,STARTER,9.88,0.0,True,False,,,,,TB,
+2016,17,4,Prestige Worldwide,3051392,Ezekiel Elliott,RB,STARTER,0.0,0.0,True,False,,,,,DAL,
+2016,17,5,they got tin chken n philly?,-16026,Seahawks D/ST,D/ST,STARTER,11.0,0.0,True,False,,,,,SEA,
+2016,17,5,they got tin chken n philly?,2580,Drew Brees,QB,STARTER,20.0,0.0,True,False,,,,,NO,
+2016,17,5,they got tin chken n philly?,5528,Larry Fitzgerald,WR,STARTER,10.3,0.0,True,False,,,,,ARI,
+2016,17,5,they got tin chken n philly?,11295,Martellus Bennett,TE,STARTER,9.3,0.0,True,False,,,,,NE,
+2016,17,5,they got tin chken n philly?,13216,Demaryius Thomas,WR,STARTER,4.7,0.0,True,False,,,,,DEN,
+2016,17,5,they got tin chken n philly?,14322,Dan Bailey,K,STARTER,8.0,0.0,True,False,,,,,DAL,
+2016,17,5,they got tin chken n philly?,16737,Mike Evans,WR,STARTER,12.5,0.0,True,False,,,,,TB,
+2016,17,5,they got tin chken n philly?,16766,C.J. Fiedorowicz,TE,STARTER,7.2,0.0,True,False,,,,,HOU,
+2016,17,5,they got tin chken n philly?,16944,Devonta Freeman,RB,STARTER,23.7,0.0,True,False,,,,,ATL,
+2016,17,5,they got tin chken n philly?,2508176,David Johnson,RB,STARTER,4.4,0.0,True,False,,,,,ARI,
+2016,17,6,TINder Chicken Draft Date,-16012,Chiefs D/ST,D/ST,STARTER,7.0,0.0,True,False,,,,,KC,
+2016,17,6,TINder Chicken Draft Date,14005,DeMarco Murray,RB,STARTER,1.9,0.0,True,False,,,,,TEN,
+2016,17,6,TINder Chicken Draft Date,14881,Russell Wilson,QB,STARTER,14.72,0.0,True,False,,,,,SEA,
+2016,17,6,TINder Chicken Draft Date,15788,Tyler Eifert,TE,STARTER,0.0,0.0,True,False,,,,,CIN,
+2016,17,6,TINder Chicken Draft Date,15795,DeAndre Hopkins,WR,STARTER,12.3,0.0,True,False,,,,,HOU,
+2016,17,6,TINder Chicken Draft Date,16020,Spencer Ware,RB,STARTER,0.0,0.0,True,False,,,,,KC,
+2016,17,6,TINder Chicken Draft Date,16732,Eric Ebron,TE,STARTER,6.1,0.0,True,False,,,,,DET,
+2016,17,6,TINder Chicken Draft Date,16790,Jarvis Landry,WR,STARTER,13.6,0.0,True,False,,,,,MIA,
+2016,17,6,TINder Chicken Draft Date,16791,Donte Moncrief,WR,STARTER,0.0,0.0,True,False,,,,,IND,
+2016,17,6,TINder Chicken Draft Date,2576237,Thomas Rawls,RB,STARTER,7.4,0.0,True,False,,,,,SEA,
+2016,17,6,TINder Chicken Draft Date,2577417,Dak Prescott,QB,STARTER,2.38,0.0,True,False,,,,,DAL,
+2016,17,6,TINder Chicken Draft Date,2998120,Josh Lambo,K,STARTER,9.0,0.0,True,False,,,,,SD,
+2016,17,7,The NFL Team Owners,-16017,Patriots D/ST,D/ST,STARTER,7.0,0.0,True,False,,,,,NE,
+2016,17,7,The NFL Team Owners,8439,Aaron Rodgers,QB,STARTER,34.2,0.0,True,False,,,,,GB,
+2016,17,7,The NFL Team Owners,9613,DeAngelo Williams,RB,STARTER,21.4,0.0,True,False,,,,,PIT,
+2016,17,7,The NFL Team Owners,13217,Golden Tate,WR,STARTER,14.4,0.0,True,False,,,,,DET,
+2016,17,7,The NFL Team Owners,13982,Julio Jones,WR,STARTER,15.6,0.0,True,False,,,,,ATL,
+2016,17,7,The NFL Team Owners,15847,Travis Kelce,TE,STARTER,0.8,0.0,True,False,,,,,KC,
+2016,17,7,The NFL Team Owners,15920,Latavius Murray,RB,STARTER,2.5,0.0,True,False,,,,,OAK,
+2016,17,7,The NFL Team Owners,15965,Dustin Hopkins,K,STARTER,3.0,0.0,True,False,,,,,WAS,
+2016,17,7,The NFL Team Owners,16921,Alfred Blue,RB,STARTER,4.0,0.0,True,False,,,,,HOU,
+2016,17,7,The NFL Team Owners,2573300,Jay Ajayi,RB,STARTER,7.9,0.0,True,False,,,,,MIA,
+2016,17,8,Shiver Me Tin Chickens,-16028,Redskins D/ST,D/ST,STARTER,0.0,0.0,True,False,,,,,,
+2016,17,8,Shiver Me Tin Chickens,1097,Adam Vinatieri,K,STARTER,6.0,0.0,True,False,,,,,IND,
+2016,17,8,Shiver Me Tin Chickens,2330,Tom Brady,QB,STARTER,25.64,0.0,True,False,,,,,NE,
+2016,17,8,Shiver Me Tin Chickens,11283,DeSean Jackson,WR,STARTER,3.4,0.0,True,False,,,,,WAS,
+2016,17,8,Shiver Me Tin Chickens,14054,Kyle Rudolph,TE,STARTER,17.7,0.0,True,False,,,,,MIN,
+2016,17,8,Shiver Me Tin Chickens,16763,Jordan Matthews,WR,STARTER,0.0,0.0,True,False,,,,,PHI,
+2016,17,8,Shiver Me Tin Chickens,17133,Isaiah Crowell,RB,STARTER,14.8,0.0,True,False,,,,,CLE,
+2016,17,8,Shiver Me Tin Chickens,2976499,Amari Cooper,WR,STARTER,9.9,0.0,True,False,,,,,OAK,
+2016,17,8,Shiver Me Tin Chickens,2977644,Todd Gurley,RB,STARTER,7.7,0.0,True,False,,,,,LA,
+2016,17,9,Parm Farty Tin Chickens,-16034,Texans D/ST,D/ST,STARTER,8.0,0.0,True,False,,,,,HOU,
+2016,17,9,Parm Farty Tin Chickens,9761,Delanie Walker,TE,STARTER,3.5,0.0,True,False,,,,,TEN,
+2016,17,9,Parm Farty Tin Chickens,10636,Mason Crosby,K,STARTER,7.0,0.0,True,False,,,,,GB,
+2016,17,9,Parm Farty Tin Chickens,11247,Jonathan Stewart,RB,STARTER,13.2,0.0,True,False,,,,,CAR,
+2016,17,9,Parm Farty Tin Chickens,12483,Matthew Stafford,QB,STARTER,19.88,0.0,True,False,,,,,DET,
+2016,17,9,Parm Farty Tin Chickens,12563,Michael Crabtree,WR,STARTER,4.7,0.0,True,False,,,,,OAK,
+2016,17,9,Parm Farty Tin Chickens,14851,Terrelle Pryor Sr.,WR,STARTER,9.4,0.0,True,False,,,,,CLE,
+2016,17,9,Parm Farty Tin Chickens,16733,Odell Beckham Jr.,WR,STARTER,4.4,0.0,True,False,,,,,NYG,
+2016,17,9,Parm Farty Tin Chickens,2976316,Michael Thomas,WR,STARTER,21.6,0.0,True,False,,,,,NO,
+2016,17,9,Parm Farty Tin Chickens,3060022,Jordan Howard,RB,STARTER,13.5,0.0,True,False,,,,,CHI,
+2016,17,10,ALL DAY Johnnys,-16007,Broncos D/ST,D/ST,STARTER,14.0,0.0,True,False,,,,,DEN,
+2016,17,10,ALL DAY Johnnys,11238,Darren McFadden,RB,STARTER,4.7,0.0,True,False,,,,,DAL,
+2016,17,10,ALL DAY Johnnys,12514,LeSean McCoy,RB,STARTER,1.6,0.0,True,False,,,,,BUF,
+2016,17,10,ALL DAY Johnnys,13204,Ryan Mathews,RB,STARTER,0.0,0.0,True,False,,,,,PHI,
+2016,17,10,ALL DAY Johnnys,13232,Jimmy Graham,TE,STARTER,6.4,0.0,True,False,,,,,SEA,
+2016,17,10,ALL DAY Johnnys,13295,Emmanuel Sanders,WR,STARTER,0.0,0.0,True,False,,,,,DEN,
+2016,17,10,ALL DAY Johnnys,13994,Cam Newton,QB,STARTER,8.08,0.0,True,False,,,,,CAR,
+2016,17,10,ALL DAY Johnnys,14885,Doug Martin,RB,STARTER,0.0,0.0,True,False,,,,,TB,
+2016,17,10,ALL DAY Johnnys,14924,T.Y. Hilton,WR,STARTER,9.5,0.0,True,False,,,,,IND,
+2016,17,10,ALL DAY Johnnys,17427,Cairo Santos,K,STARTER,13.0,0.0,True,False,,,,,KC,
+2016,17,10,ALL DAY Johnnys,3116406,Tyreek Hill,WR,STARTER,12.1,0.0,True,False,,,,,KC,
 2017,1,1,Triple Crown Affirmed,-16029,Panthers D/ST,D/ST,STARTER,14.0,0.0,True,False,,,,,CAR,
 2017,1,1,Triple Crown Affirmed,12563,Michael Crabtree,WR,STARTER,8.3,0.0,True,False,,,,,OAK,
 2017,1,1,Triple Crown Affirmed,14880,Kirk Cousins,QB,STARTER,10.6,0.0,True,False,,,,,WAS,
@@ -24345,43 +24454,43 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2025,11,4,Forgotten Burrows,4431299,Rome Odunze,WR,WR,4.1,10.42,True,False,88.62,92.94,False,ACTIVE,CHI,-1.0
 2025,11,4,Forgotten Burrows,4431611,Caleb Williams,QB,QB,9.32,19.29,True,False,88.62,92.94,False,ACTIVE,CHI,-1.0
 2025,11,4,Forgotten Burrows,4432577,C.J. Stroud,QB,BE,0.0,0.0,False,True,88.62,92.94,False,ACTIVE,HOU,-1.0
-2025,11,5,Constitution Check Downs,-16007,Broncos D/ST,D/ST,BE,7.0,6.27,False,True,104.82,98.75999999999999,False,NORMAL,DEN,-1.0
-2025,11,5,Constitution Check Downs,-16006,Cowboys D/ST,D/ST,D/ST,10.0,8.3,True,False,104.82,98.75999999999999,False,NORMAL,DAL,-1.0
-2025,11,5,Constitution Check Downs,2577417,Dak Prescott,QB,QB,24.32,17.62,True,False,104.82,98.75999999999999,False,ACTIVE,DAL,-1.0
-2025,11,5,Constitution Check Downs,3116165,Chris Godwin Jr.,WR,BE,0.0,0.0,False,True,104.82,98.75999999999999,False,ACTIVE,TB,-1.0
-2025,11,5,Constitution Check Downs,4038941,Justin Herbert,QB,BE,3.34,19.35,False,True,104.82,98.75999999999999,False,ACTIVE,LAC,-1.0
-2025,11,5,Constitution Check Downs,4241478,DeVonta Smith,WR,WR,0.8,9.33,True,False,104.82,98.75999999999999,False,ACTIVE,PHI,-1.0
-2025,11,5,Constitution Check Downs,4360438,Brandon Aiyuk,WR,IR,0.0,0.0,False,False,104.82,98.75999999999999,True,OUT,SF,-1.0
-2025,11,5,Constitution Check Downs,4362238,Chase Brown,RB,RB,12.7,10.92,True,False,104.82,98.75999999999999,False,ACTIVE,CIN,-1.0
-2025,11,5,Constitution Check Downs,4362478,Emari Demercado,RB,BE,2.0,7.48,False,True,104.82,98.75999999999999,False,ACTIVE,ARI,-1.0
-2025,11,5,Constitution Check Downs,4362619,Chris Rodriguez Jr.,RB,RB/WR/TE,8.5,7.85,True,False,104.82,98.75999999999999,False,ACTIVE,WSH,-1.0
-2025,11,5,Constitution Check Downs,4362628,Ja'Marr Chase,WR,WR,3.0,14.0,True,False,104.82,98.75999999999999,False,ACTIVE,CIN,-1.0
-2025,11,5,Constitution Check Downs,4426354,George Pickens,WR,RB/WR/TE,20.4,9.44,True,False,104.82,98.75999999999999,False,ACTIVE,DAL,-1.0
-2025,11,5,Constitution Check Downs,4429025,Quentin Johnston,WR,BE,0.0,8.52,False,True,104.82,98.75999999999999,False,ACTIVE,LAC,-1.0
-2025,11,5,Constitution Check Downs,4430737,Kyren Williams,RB,RB,15.6,11.49,True,False,104.82,98.75999999999999,False,ACTIVE,LAR,-1.0
-2025,11,5,Constitution Check Downs,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,104.82,98.75999999999999,False,ACTIVE,IND,-1.0
-2025,11,5,Constitution Check Downs,4569923,Andy Borregales,K,K,5.5,5.77,True,False,104.82,98.75999999999999,False,ACTIVE,NE,-1.0
-2025,11,5,Constitution Check Downs,4685382,Omarion Hampton,RB,IR,0.0,0.0,False,False,104.82,98.75999999999999,False,ACTIVE,LAC,-1.0
-2025,11,5,Constitution Check Downs,4697815,Rachaad White,RB,BE,6.2,10.73,False,True,104.82,98.75999999999999,False,ACTIVE,TB,-1.0
-2025,11,5,Constitution Check Downs,4723086,Colston Loveland,TE,TE,4.0,4.04,True,False,104.82,98.75999999999999,False,QUESTIONABLE,CHI,-1.0
-2025,11,6,NameOfCurseWarding,-16008,Lions D/ST,D/ST,D/ST,2.0,6.22,True,False,87.1,112.16000000000001,False,NORMAL,DET,-1.0
-2025,11,6,NameOfCurseWarding,15835,Zach Ertz,TE,BE,4.2,5.64,False,True,87.1,112.16000000000001,False,QUESTIONABLE,WSH,-1.0
-2025,11,6,NameOfCurseWarding,2976212,Stefon Diggs,WR,WR,10.5,8.89,True,False,87.1,112.16000000000001,False,ACTIVE,NE,-1.0
-2025,11,6,NameOfCurseWarding,3042519,Aaron Jones Sr.,RB,RB,7.1,10.89,True,False,87.1,112.16000000000001,False,QUESTIONABLE,MIN,-1.0
-2025,11,6,NameOfCurseWarding,3050478,Jake Elliott,K,K,6.0,5.35,True,False,87.1,112.16000000000001,False,ACTIVE,PHI,-1.0
-2025,11,6,NameOfCurseWarding,3059915,Kareem Hunt,RB,BE,12.2,8.65,False,True,87.1,112.16000000000001,False,ACTIVE,KC,-1.0
-2025,11,6,NameOfCurseWarding,3912547,Sam Darnold,QB,BE,4.26,14.7,False,True,87.1,112.16000000000001,False,ACTIVE,SEA,-1.0
-2025,11,6,NameOfCurseWarding,3916433,Jakobi Meyers,WR,BE,6.4,5.55,False,True,87.1,112.16000000000001,False,ACTIVE,JAX,-1.0
-2025,11,6,NameOfCurseWarding,3916945,Darius Slayton,WR,BE,0.0,0.0,False,True,87.1,112.16000000000001,False,ACTIVE,NYG,-1.0
-2025,11,6,NameOfCurseWarding,4038815,Rico Dowdle,RB,RB,10.0,16.61,True,False,87.1,112.16000000000001,False,ACTIVE,CAR,-1.0
-2025,11,6,NameOfCurseWarding,4239996,Travis Etienne Jr.,RB,RB/WR/TE,19.3,11.73,True,False,87.1,112.16000000000001,False,ACTIVE,JAX,-1.0
-2025,11,6,NameOfCurseWarding,4362249,Jayden Reed,WR,IR,0.0,0.0,False,False,87.1,112.16000000000001,False,ACTIVE,GB,-1.0
-2025,11,6,NameOfCurseWarding,4426338,Bo Nix,QB,QB,12.6,17.33,True,False,87.1,112.16000000000001,False,QUESTIONABLE,DEN,-1.0
-2025,11,6,NameOfCurseWarding,4426515,Puka Nacua,WR,WR,7.3,12.64,True,False,87.1,112.16000000000001,False,ACTIVE,LAR,-1.0
-2025,11,6,NameOfCurseWarding,4429059,Woody Marks,RB,RB/WR/TE,5.1,11.82,True,False,87.1,112.16000000000001,False,ACTIVE,HOU,-1.0
-2025,11,6,NameOfCurseWarding,4432665,Brock Bowers,TE,TE,7.2,10.68,True,False,87.1,112.16000000000001,False,QUESTIONABLE,LV,-1.0
-2025,11,6,NameOfCurseWarding,4569173,Rhamondre Stevenson,RB,BE,0.0,0.0,False,True,87.1,112.16000000000001,False,ACTIVE,NE,-1.0
-2025,11,6,NameOfCurseWarding,4683062,Xavier Worthy,WR,BE,2.5,7.67,False,True,87.1,112.16000000000001,False,QUESTIONABLE,KC,-1.0
+2025,11,5,Constitution Check Downs,-16007,Broncos D/ST,D/ST,BE,7.0,6.27,False,True,104.82,98.76,False,NORMAL,DEN,-1.0
+2025,11,5,Constitution Check Downs,-16006,Cowboys D/ST,D/ST,D/ST,10.0,8.3,True,False,104.82,98.76,False,NORMAL,DAL,-1.0
+2025,11,5,Constitution Check Downs,2577417,Dak Prescott,QB,QB,24.32,17.62,True,False,104.82,98.76,False,ACTIVE,DAL,-1.0
+2025,11,5,Constitution Check Downs,3116165,Chris Godwin Jr.,WR,BE,0.0,0.0,False,True,104.82,98.76,False,ACTIVE,TB,-1.0
+2025,11,5,Constitution Check Downs,4038941,Justin Herbert,QB,BE,3.34,19.35,False,True,104.82,98.76,False,ACTIVE,LAC,-1.0
+2025,11,5,Constitution Check Downs,4241478,DeVonta Smith,WR,WR,0.8,9.33,True,False,104.82,98.76,False,ACTIVE,PHI,-1.0
+2025,11,5,Constitution Check Downs,4360438,Brandon Aiyuk,WR,IR,0.0,0.0,False,False,104.82,98.76,True,OUT,SF,-1.0
+2025,11,5,Constitution Check Downs,4362238,Chase Brown,RB,RB,12.7,10.92,True,False,104.82,98.76,False,ACTIVE,CIN,-1.0
+2025,11,5,Constitution Check Downs,4362478,Emari Demercado,RB,BE,2.0,7.48,False,True,104.82,98.76,False,ACTIVE,ARI,-1.0
+2025,11,5,Constitution Check Downs,4362619,Chris Rodriguez Jr.,RB,RB/WR/TE,8.5,7.85,True,False,104.82,98.76,False,ACTIVE,WSH,-1.0
+2025,11,5,Constitution Check Downs,4362628,Ja'Marr Chase,WR,WR,3.0,14.0,True,False,104.82,98.76,False,ACTIVE,CIN,-1.0
+2025,11,5,Constitution Check Downs,4426354,George Pickens,WR,RB/WR/TE,20.4,9.44,True,False,104.82,98.76,False,ACTIVE,DAL,-1.0
+2025,11,5,Constitution Check Downs,4429025,Quentin Johnston,WR,BE,0.0,8.52,False,True,104.82,98.76,False,ACTIVE,LAC,-1.0
+2025,11,5,Constitution Check Downs,4430737,Kyren Williams,RB,RB,15.6,11.49,True,False,104.82,98.76,False,ACTIVE,LAR,-1.0
+2025,11,5,Constitution Check Downs,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,104.82,98.76,False,ACTIVE,IND,-1.0
+2025,11,5,Constitution Check Downs,4569923,Andy Borregales,K,K,5.5,5.77,True,False,104.82,98.76,False,ACTIVE,NE,-1.0
+2025,11,5,Constitution Check Downs,4685382,Omarion Hampton,RB,IR,0.0,0.0,False,False,104.82,98.76,False,ACTIVE,LAC,-1.0
+2025,11,5,Constitution Check Downs,4697815,Rachaad White,RB,BE,6.2,10.73,False,True,104.82,98.76,False,ACTIVE,TB,-1.0
+2025,11,5,Constitution Check Downs,4723086,Colston Loveland,TE,TE,4.0,4.04,True,False,104.82,98.76,False,QUESTIONABLE,CHI,-1.0
+2025,11,6,NameOfCurseWarding,-16008,Lions D/ST,D/ST,D/ST,2.0,6.22,True,False,87.1,112.16,False,NORMAL,DET,-1.0
+2025,11,6,NameOfCurseWarding,15835,Zach Ertz,TE,BE,4.2,5.64,False,True,87.1,112.16,False,QUESTIONABLE,WSH,-1.0
+2025,11,6,NameOfCurseWarding,2976212,Stefon Diggs,WR,WR,10.5,8.89,True,False,87.1,112.16,False,ACTIVE,NE,-1.0
+2025,11,6,NameOfCurseWarding,3042519,Aaron Jones Sr.,RB,RB,7.1,10.89,True,False,87.1,112.16,False,QUESTIONABLE,MIN,-1.0
+2025,11,6,NameOfCurseWarding,3050478,Jake Elliott,K,K,6.0,5.35,True,False,87.1,112.16,False,ACTIVE,PHI,-1.0
+2025,11,6,NameOfCurseWarding,3059915,Kareem Hunt,RB,BE,12.2,8.65,False,True,87.1,112.16,False,ACTIVE,KC,-1.0
+2025,11,6,NameOfCurseWarding,3912547,Sam Darnold,QB,BE,4.26,14.7,False,True,87.1,112.16,False,ACTIVE,SEA,-1.0
+2025,11,6,NameOfCurseWarding,3916433,Jakobi Meyers,WR,BE,6.4,5.55,False,True,87.1,112.16,False,ACTIVE,JAX,-1.0
+2025,11,6,NameOfCurseWarding,3916945,Darius Slayton,WR,BE,0.0,0.0,False,True,87.1,112.16,False,ACTIVE,NYG,-1.0
+2025,11,6,NameOfCurseWarding,4038815,Rico Dowdle,RB,RB,10.0,16.61,True,False,87.1,112.16,False,ACTIVE,CAR,-1.0
+2025,11,6,NameOfCurseWarding,4239996,Travis Etienne Jr.,RB,RB/WR/TE,19.3,11.73,True,False,87.1,112.16,False,ACTIVE,JAX,-1.0
+2025,11,6,NameOfCurseWarding,4362249,Jayden Reed,WR,IR,0.0,0.0,False,False,87.1,112.16,False,ACTIVE,GB,-1.0
+2025,11,6,NameOfCurseWarding,4426338,Bo Nix,QB,QB,12.6,17.33,True,False,87.1,112.16,False,QUESTIONABLE,DEN,-1.0
+2025,11,6,NameOfCurseWarding,4426515,Puka Nacua,WR,WR,7.3,12.64,True,False,87.1,112.16,False,ACTIVE,LAR,-1.0
+2025,11,6,NameOfCurseWarding,4429059,Woody Marks,RB,RB/WR/TE,5.1,11.82,True,False,87.1,112.16,False,ACTIVE,HOU,-1.0
+2025,11,6,NameOfCurseWarding,4432665,Brock Bowers,TE,TE,7.2,10.68,True,False,87.1,112.16,False,QUESTIONABLE,LV,-1.0
+2025,11,6,NameOfCurseWarding,4569173,Rhamondre Stevenson,RB,BE,0.0,0.0,False,True,87.1,112.16,False,ACTIVE,NE,-1.0
+2025,11,6,NameOfCurseWarding,4683062,Xavier Worthy,WR,BE,2.5,7.67,False,True,87.1,112.16,False,QUESTIONABLE,KC,-1.0
 2025,11,7,Roll for Yardage,-16034,Texans D/ST,D/ST,D/ST,8.0,7.82,True,False,124.84,123.9,False,NORMAL,HOU,-1.0
 2025,11,7,Roll for Yardage,-16005,Browns D/ST,D/ST,BE,16.0,6.65,False,True,124.84,123.9,False,NORMAL,CLE,-1.0
 2025,11,7,Roll for Yardage,3117251,Christian McCaffrey,RB,RB/WR/TE,30.1,19.91,True,False,124.84,123.9,False,ACTIVE,SF,-1.0
@@ -24401,25 +24510,25 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2025,11,7,Roll for Yardage,4685278,Luther Burden III,WR,BE,2.7,3.98,False,True,124.84,123.9,False,ACTIVE,CHI,-1.0
 2025,11,7,Roll for Yardage,4887558,Emanuel Wilson,RB,BE,12.9,4.58,False,True,124.84,123.9,False,ACTIVE,GB,-1.0
 2025,11,7,Roll for Yardage,4890973,Ashton Jeanty,RB,RB/WR/TE,3.4,15.34,True,False,124.84,123.9,False,ACTIVE,LV,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",-16015,Dolphins D/ST,D/ST,D/ST,7.0,6.99,True,False,71.72,93.46000000000001,False,NORMAL,MIA,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",8439,Aaron Rodgers,QB,BE,9.44,18.7,False,True,71.72,93.46000000000001,False,ACTIVE,PIT,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",16737,Mike Evans,WR,IR,0.0,0.0,False,False,71.72,93.46000000000001,False,ACTIVE,TB,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",17372,Chris Boswell,K,K,7.0,5.8,True,False,71.72,93.46000000000001,False,ACTIVE,PIT,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",3052587,Baker Mayfield,QB,QB,16.82,17.05,True,False,71.72,93.46000000000001,False,ACTIVE,TB,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",3054850,Alvin Kamara,RB,BE,0.0,0.0,False,True,71.72,93.46000000000001,False,QUESTIONABLE,NO,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",3126486,Deebo Samuel,WR,BE,13.7,8.89,False,True,71.72,93.46000000000001,False,ACTIVE,WSH,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4047650,DK Metcalf,WR,RB/WR/TE,4.9,8.96,True,False,71.72,93.46000000000001,False,ACTIVE,PIT,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4242355,Jake Ferguson,TE,BE,7.6,5.61,False,True,71.72,93.46000000000001,False,ACTIVE,DAL,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4243331,Cade Otton,TE,TE,2.8,5.59,True,False,71.72,93.46000000000001,False,ACTIVE,TB,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4248528,Christian Watson,WR,BE,16.6,6.4,False,True,71.72,93.46000000000001,False,ACTIVE,GB,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4361529,Isiah Pacheco,RB,IR,0.0,0.0,False,False,71.72,93.46000000000001,False,ACTIVE,KC,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4372016,Jaylen Waddle,WR,WR,5.2,11.06,True,False,71.72,93.46000000000001,False,QUESTIONABLE,MIA,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4373626,Tyler Allgeier,RB,BE,7.6,6.32,False,True,71.72,93.46000000000001,False,ACTIVE,ATL,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4430968,Kimani Vidal,RB,RB,1.2,10.86,True,False,71.72,93.46000000000001,False,ACTIVE,LAC,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4431280,Troy Franklin,WR,RB/WR/TE,8.4,8.37,True,False,71.72,93.46000000000001,False,QUESTIONABLE,DEN,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4567048,Kenneth Walker III,RB,RB,17.1,9.2,True,False,71.72,93.46000000000001,False,ACTIVE,SEA,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4569587,Wan'Dale Robinson,WR,BE,3.6,8.22,False,True,71.72,93.46000000000001,False,QUESTIONABLE,NYG,-1.0
-2025,11,8,"I Don't Care, I Cast Fireball",4612826,Ladd McConkey,WR,WR,1.3,9.58,True,False,71.72,93.46000000000001,False,ACTIVE,LAC,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",-16015,Dolphins D/ST,D/ST,D/ST,7.0,6.99,True,False,71.72,93.46,False,NORMAL,MIA,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",8439,Aaron Rodgers,QB,BE,9.44,18.7,False,True,71.72,93.46,False,ACTIVE,PIT,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",16737,Mike Evans,WR,IR,0.0,0.0,False,False,71.72,93.46,False,ACTIVE,TB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",17372,Chris Boswell,K,K,7.0,5.8,True,False,71.72,93.46,False,ACTIVE,PIT,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",3052587,Baker Mayfield,QB,QB,16.82,17.05,True,False,71.72,93.46,False,ACTIVE,TB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",3054850,Alvin Kamara,RB,BE,0.0,0.0,False,True,71.72,93.46,False,QUESTIONABLE,NO,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",3126486,Deebo Samuel,WR,BE,13.7,8.89,False,True,71.72,93.46,False,ACTIVE,WSH,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4047650,DK Metcalf,WR,RB/WR/TE,4.9,8.96,True,False,71.72,93.46,False,ACTIVE,PIT,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4242355,Jake Ferguson,TE,BE,7.6,5.61,False,True,71.72,93.46,False,ACTIVE,DAL,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4243331,Cade Otton,TE,TE,2.8,5.59,True,False,71.72,93.46,False,ACTIVE,TB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4248528,Christian Watson,WR,BE,16.6,6.4,False,True,71.72,93.46,False,ACTIVE,GB,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4361529,Isiah Pacheco,RB,IR,0.0,0.0,False,False,71.72,93.46,False,ACTIVE,KC,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4372016,Jaylen Waddle,WR,WR,5.2,11.06,True,False,71.72,93.46,False,QUESTIONABLE,MIA,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4373626,Tyler Allgeier,RB,BE,7.6,6.32,False,True,71.72,93.46,False,ACTIVE,ATL,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4430968,Kimani Vidal,RB,RB,1.2,10.86,True,False,71.72,93.46,False,ACTIVE,LAC,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4431280,Troy Franklin,WR,RB/WR/TE,8.4,8.37,True,False,71.72,93.46,False,QUESTIONABLE,DEN,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4567048,Kenneth Walker III,RB,RB,17.1,9.2,True,False,71.72,93.46,False,ACTIVE,SEA,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4569587,Wan'Dale Robinson,WR,BE,3.6,8.22,False,True,71.72,93.46,False,QUESTIONABLE,NYG,-1.0
+2025,11,8,"I Don't Care, I Cast Fireball",4612826,Ladd McConkey,WR,WR,1.3,9.58,True,False,71.72,93.46,False,ACTIVE,LAC,-1.0
 2025,11,9,Paladins of the Pancreas,-16026,Seahawks D/ST,D/ST,D/ST,2.0,4.85,True,False,133.78,104.99,False,NORMAL,SEA,-1.0
 2025,11,9,Paladins of the Pancreas,15818,Keenan Allen,WR,BE,5.3,7.32,False,True,133.78,104.99,False,ACTIVE,LAC,-1.0
 2025,11,9,Paladins of the Pancreas,2576925,Darren Waller,TE,IR,0.0,0.0,False,False,133.78,104.99,False,QUESTIONABLE,MIA,-1.0
@@ -24894,24 +25003,24 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2025,14,4,Forgotten Burrows,4430878,Jaxon Smith-Njigba,WR,WR,20.1,13.53,True,False,107.76,105.60000000000002,False,ACTIVE,SEA,-1.0
 2025,14,4,Forgotten Burrows,4431299,Rome Odunze,WR,BE,0.0,0.0,False,True,107.76,105.60000000000002,False,ACTIVE,CHI,-1.0
 2025,14,4,Forgotten Burrows,4431611,Caleb Williams,QB,BE,14.94,16.44,False,True,107.76,105.60000000000002,False,ACTIVE,CHI,-1.0
-2025,14,5,Constitution Check Downs,-16021,Eagles D/ST,D/ST,BE,12.0,7.0,False,True,113.64,108.63000000000001,False,NORMAL,PHI,-1.0
-2025,14,5,Constitution Check Downs,-16007,Broncos D/ST,D/ST,D/ST,11.0,9.23,True,False,113.64,108.63000000000001,False,NORMAL,DEN,-1.0
-2025,14,5,Constitution Check Downs,11122,Matt Prater,K,K,5.5,5.76,True,False,113.64,108.63000000000001,False,ACTIVE,BUF,-1.0
-2025,14,5,Constitution Check Downs,2577417,Dak Prescott,QB,QB,17.44,20.04,True,False,113.64,108.63000000000001,False,ACTIVE,DAL,-1.0
-2025,14,5,Constitution Check Downs,3116165,Chris Godwin Jr.,WR,BE,5.5,6.77,False,True,113.64,108.63000000000001,False,ACTIVE,TB,-1.0
-2025,14,5,Constitution Check Downs,4038941,Justin Herbert,QB,BE,11.16,15.96,False,True,113.64,108.63000000000001,False,ACTIVE,LAC,-1.0
-2025,14,5,Constitution Check Downs,4241478,DeVonta Smith,WR,BE,3.7,7.97,False,True,113.64,108.63000000000001,False,ACTIVE,PHI,-1.0
-2025,14,5,Constitution Check Downs,4360438,Brandon Aiyuk,WR,IR,0.0,0.0,False,False,113.64,108.63000000000001,True,OUT,SF,-1.0
-2025,14,5,Constitution Check Downs,4360761,Michael Wilson,WR,RB/WR/TE,26.2,8.82,True,False,113.64,108.63000000000001,False,ACTIVE,ARI,-1.0
-2025,14,5,Constitution Check Downs,4362238,Chase Brown,RB,RB,15.5,10.49,True,False,113.64,108.63000000000001,False,ACTIVE,CIN,-1.0
-2025,14,5,Constitution Check Downs,4362619,Chris Rodriguez Jr.,RB,BE,5.2,8.28,False,True,113.64,108.63000000000001,False,ACTIVE,WSH,-1.0
-2025,14,5,Constitution Check Downs,4362628,Ja'Marr Chase,WR,WR,5.2,12.22,True,False,113.64,108.63000000000001,False,ACTIVE,CIN,-1.0
-2025,14,5,Constitution Check Downs,4426354,George Pickens,WR,WR,2.7,12.65,True,False,113.64,108.63000000000001,False,ACTIVE,DAL,-1.0
-2025,14,5,Constitution Check Downs,4429025,Quentin Johnston,WR,BE,0.8,5.87,False,True,113.64,108.63000000000001,False,ACTIVE,LAC,-1.0
-2025,14,5,Constitution Check Downs,4430737,Kyren Williams,RB,RB,15.7,11.72,True,False,113.64,108.63000000000001,False,ACTIVE,LAR,-1.0
-2025,14,5,Constitution Check Downs,4431459,Tyler Warren,TE,TE,1.7,7.81,True,False,113.64,108.63000000000001,False,ACTIVE,IND,-1.0
-2025,14,5,Constitution Check Downs,4597500,Adonai Mitchell,WR,BE,2.4,7.02,False,True,113.64,108.63000000000001,False,ACTIVE,NYJ,-1.0
-2025,14,5,Constitution Check Downs,4685382,Omarion Hampton,RB,RB/WR/TE,12.7,9.89,True,False,113.64,108.63000000000001,False,ACTIVE,LAC,-1.0
+2025,14,5,Constitution Check Downs,-16021,Eagles D/ST,D/ST,BE,12.0,7.0,False,True,113.64,108.63,False,NORMAL,PHI,-1.0
+2025,14,5,Constitution Check Downs,-16007,Broncos D/ST,D/ST,D/ST,11.0,9.23,True,False,113.64,108.63,False,NORMAL,DEN,-1.0
+2025,14,5,Constitution Check Downs,11122,Matt Prater,K,K,5.5,5.76,True,False,113.64,108.63,False,ACTIVE,BUF,-1.0
+2025,14,5,Constitution Check Downs,2577417,Dak Prescott,QB,QB,17.44,20.04,True,False,113.64,108.63,False,ACTIVE,DAL,-1.0
+2025,14,5,Constitution Check Downs,3116165,Chris Godwin Jr.,WR,BE,5.5,6.77,False,True,113.64,108.63,False,ACTIVE,TB,-1.0
+2025,14,5,Constitution Check Downs,4038941,Justin Herbert,QB,BE,11.16,15.96,False,True,113.64,108.63,False,ACTIVE,LAC,-1.0
+2025,14,5,Constitution Check Downs,4241478,DeVonta Smith,WR,BE,3.7,7.97,False,True,113.64,108.63,False,ACTIVE,PHI,-1.0
+2025,14,5,Constitution Check Downs,4360438,Brandon Aiyuk,WR,IR,0.0,0.0,False,False,113.64,108.63,True,OUT,SF,-1.0
+2025,14,5,Constitution Check Downs,4360761,Michael Wilson,WR,RB/WR/TE,26.2,8.82,True,False,113.64,108.63,False,ACTIVE,ARI,-1.0
+2025,14,5,Constitution Check Downs,4362238,Chase Brown,RB,RB,15.5,10.49,True,False,113.64,108.63,False,ACTIVE,CIN,-1.0
+2025,14,5,Constitution Check Downs,4362619,Chris Rodriguez Jr.,RB,BE,5.2,8.28,False,True,113.64,108.63,False,ACTIVE,WSH,-1.0
+2025,14,5,Constitution Check Downs,4362628,Ja'Marr Chase,WR,WR,5.2,12.22,True,False,113.64,108.63,False,ACTIVE,CIN,-1.0
+2025,14,5,Constitution Check Downs,4426354,George Pickens,WR,WR,2.7,12.65,True,False,113.64,108.63,False,ACTIVE,DAL,-1.0
+2025,14,5,Constitution Check Downs,4429025,Quentin Johnston,WR,BE,0.8,5.87,False,True,113.64,108.63,False,ACTIVE,LAC,-1.0
+2025,14,5,Constitution Check Downs,4430737,Kyren Williams,RB,RB,15.7,11.72,True,False,113.64,108.63,False,ACTIVE,LAR,-1.0
+2025,14,5,Constitution Check Downs,4431459,Tyler Warren,TE,TE,1.7,7.81,True,False,113.64,108.63,False,ACTIVE,IND,-1.0
+2025,14,5,Constitution Check Downs,4597500,Adonai Mitchell,WR,BE,2.4,7.02,False,True,113.64,108.63,False,ACTIVE,NYJ,-1.0
+2025,14,5,Constitution Check Downs,4685382,Omarion Hampton,RB,RB/WR/TE,12.7,9.89,True,False,113.64,108.63,False,ACTIVE,LAC,-1.0
 2025,14,6,NameOfCurseWarding,-16008,Lions D/ST,D/ST,D/ST,12.0,5.85,True,False,109.08,66.81,False,NORMAL,DET,-1.0
 2025,14,6,NameOfCurseWarding,15835,Zach Ertz,TE,BE,1.1,5.36,False,True,109.08,66.81,False,QUESTIONABLE,WSH,-1.0
 2025,14,6,NameOfCurseWarding,2976212,Stefon Diggs,WR,WR,0.0,0.0,True,False,109.08,66.81,False,ACTIVE,NE,-1.0
@@ -24965,24 +25074,24 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2025,14,8,"I Don't Care, I Cast Fireball",4569587,Wan'Dale Robinson,WR,BE,0.0,0.0,False,True,84.08,85.60000000000001,False,QUESTIONABLE,NYG,-1.0
 2025,14,8,"I Don't Care, I Cast Fireball",4612826,Ladd McConkey,WR,RB/WR/TE,1.2,7.66,True,False,84.08,85.60000000000001,False,ACTIVE,LAC,-1.0
 2025,14,8,"I Don't Care, I Cast Fireball",4883647,Elic Ayomanor,WR,BE,7.4,4.71,False,True,84.08,85.60000000000001,False,ACTIVE,TEN,-1.0
-2025,14,9,Paladins of the Pancreas,-16026,Seahawks D/ST,D/ST,D/ST,18.0,6.67,True,False,95.04,95.60999999999999,False,NORMAL,SEA,-1.0
-2025,14,9,Paladins of the Pancreas,15818,Keenan Allen,WR,WR,2.2,6.24,True,False,95.04,95.60999999999999,False,ACTIVE,LAC,-1.0
-2025,14,9,Paladins of the Pancreas,2576925,Darren Waller,TE,TE,1.7,4.6,True,False,95.04,95.60999999999999,False,QUESTIONABLE,MIA,-1.0
-2025,14,9,Paladins of the Pancreas,3040151,George Kittle,TE,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,QUESTIONABLE,SF,-1.0
-2025,14,9,Paladins of the Pancreas,3055899,Harrison Butker,K,K,1.5,5.1,True,False,95.04,95.60999999999999,False,ACTIVE,KC,-1.0
-2025,14,9,Paladins of the Pancreas,3918298,Josh Allen,QB,QB,37.84,23.76,True,False,95.04,95.60999999999999,False,QUESTIONABLE,BUF,-1.0
-2025,14,9,Paladins of the Pancreas,4241985,J.K. Dobbins,RB,IR,0.0,0.0,False,False,95.04,95.60999999999999,False,QUESTIONABLE,DEN,-1.0
-2025,14,9,Paladins of the Pancreas,4360516,Tyrone Tracy Jr.,RB,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,ACTIVE,NYG,-1.0
-2025,14,9,Paladins of the Pancreas,4374302,Amon-Ra St. Brown,WR,BE,9.2,12.54,False,True,95.04,95.60999999999999,False,ACTIVE,DET,-1.0
-2025,14,9,Paladins of the Pancreas,4429160,De'Von Achane,RB,RB,16.5,19.01,True,False,95.04,95.60999999999999,False,ACTIVE,MIA,-1.0
-2025,14,9,Paladins of the Pancreas,4429275,Trey Benson,RB,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,QUESTIONABLE,ARI,-1.0
-2025,14,9,Paladins of the Pancreas,4432620,Parker Washington,WR,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,ACTIVE,JAX,-1.0
-2025,14,9,Paladins of the Pancreas,4569603,Malik Washington,WR,BE,1.0,5.38,False,True,95.04,95.60999999999999,False,QUESTIONABLE,MIA,-1.0
-2025,14,9,Paladins of the Pancreas,4596448,Bucky Irving,RB,RB,14.1,13.29,True,False,95.04,95.60999999999999,False,ACTIVE,TB,-1.0
-2025,14,9,Paladins of the Pancreas,4685472,Tetairoa McMillan,WR,BE,0.0,0.0,False,True,95.04,95.60999999999999,False,ACTIVE,CAR,-1.0
-2025,14,9,Paladins of the Pancreas,4688813,Josh Downs,WR,RB/WR/TE,2.3,5.41,True,False,95.04,95.60999999999999,False,ACTIVE,IND,-1.0
-2025,14,9,Paladins of the Pancreas,4877706,Jayden Higgins,WR,WR,3.4,6.1,True,False,95.04,95.60999999999999,False,ACTIVE,HOU,-1.0
-2025,14,9,Paladins of the Pancreas,4882093,Bhayshul Tuten,RB,RB/WR/TE,-2.5,5.43,True,False,95.04,95.60999999999999,False,ACTIVE,JAX,-1.0
+2025,14,9,Paladins of the Pancreas,-16026,Seahawks D/ST,D/ST,D/ST,18.0,6.67,True,False,95.04,95.61,False,NORMAL,SEA,-1.0
+2025,14,9,Paladins of the Pancreas,15818,Keenan Allen,WR,WR,2.2,6.24,True,False,95.04,95.61,False,ACTIVE,LAC,-1.0
+2025,14,9,Paladins of the Pancreas,2576925,Darren Waller,TE,TE,1.7,4.6,True,False,95.04,95.61,False,QUESTIONABLE,MIA,-1.0
+2025,14,9,Paladins of the Pancreas,3040151,George Kittle,TE,BE,0.0,0.0,False,True,95.04,95.61,False,QUESTIONABLE,SF,-1.0
+2025,14,9,Paladins of the Pancreas,3055899,Harrison Butker,K,K,1.5,5.1,True,False,95.04,95.61,False,ACTIVE,KC,-1.0
+2025,14,9,Paladins of the Pancreas,3918298,Josh Allen,QB,QB,37.84,23.76,True,False,95.04,95.61,False,QUESTIONABLE,BUF,-1.0
+2025,14,9,Paladins of the Pancreas,4241985,J.K. Dobbins,RB,IR,0.0,0.0,False,False,95.04,95.61,False,QUESTIONABLE,DEN,-1.0
+2025,14,9,Paladins of the Pancreas,4360516,Tyrone Tracy Jr.,RB,BE,0.0,0.0,False,True,95.04,95.61,False,ACTIVE,NYG,-1.0
+2025,14,9,Paladins of the Pancreas,4374302,Amon-Ra St. Brown,WR,BE,9.2,12.54,False,True,95.04,95.61,False,ACTIVE,DET,-1.0
+2025,14,9,Paladins of the Pancreas,4429160,De'Von Achane,RB,RB,16.5,19.01,True,False,95.04,95.61,False,ACTIVE,MIA,-1.0
+2025,14,9,Paladins of the Pancreas,4429275,Trey Benson,RB,BE,0.0,0.0,False,True,95.04,95.61,False,QUESTIONABLE,ARI,-1.0
+2025,14,9,Paladins of the Pancreas,4432620,Parker Washington,WR,BE,0.0,0.0,False,True,95.04,95.61,False,ACTIVE,JAX,-1.0
+2025,14,9,Paladins of the Pancreas,4569603,Malik Washington,WR,BE,1.0,5.38,False,True,95.04,95.61,False,QUESTIONABLE,MIA,-1.0
+2025,14,9,Paladins of the Pancreas,4596448,Bucky Irving,RB,RB,14.1,13.29,True,False,95.04,95.61,False,ACTIVE,TB,-1.0
+2025,14,9,Paladins of the Pancreas,4685472,Tetairoa McMillan,WR,BE,0.0,0.0,False,True,95.04,95.61,False,ACTIVE,CAR,-1.0
+2025,14,9,Paladins of the Pancreas,4688813,Josh Downs,WR,RB/WR/TE,2.3,5.41,True,False,95.04,95.61,False,ACTIVE,IND,-1.0
+2025,14,9,Paladins of the Pancreas,4877706,Jayden Higgins,WR,WR,3.4,6.1,True,False,95.04,95.61,False,ACTIVE,HOU,-1.0
+2025,14,9,Paladins of the Pancreas,4882093,Bhayshul Tuten,RB,RB/WR/TE,-2.5,5.43,True,False,95.04,95.61,False,ACTIVE,JAX,-1.0
 2025,14,10,We Are Rolling High,-16011,Colts D/ST,D/ST,BE,2.0,6.72,False,True,103.16,91.3,False,NORMAL,IND,-1.0
 2025,14,10,We Are Rolling High,-16003,Bears D/ST,D/ST,D/ST,2.0,4.7,True,False,103.16,91.3,False,NORMAL,CHI,-1.0
 2025,14,10,We Are Rolling High,2969939,Jameis Winston,QB,BE,0.0,0.0,False,True,103.16,91.3,False,ACTIVE,NYG,-1.0

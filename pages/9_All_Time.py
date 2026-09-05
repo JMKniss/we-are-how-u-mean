@@ -166,6 +166,11 @@ def load_all_seasons():
     for season in SEASONS:
         try:
             matchups = get_matchups_df(season)
+            # SEASONS runs ahead of the data: a season is listed from the
+            # moment it exists on ESPN, months before week 1. That is not a
+            # failure and must not be reported as one.
+            if matchups.empty:
+                continue
             mgr_map = get_manager_map(season)
             cfg = season_config(season)
             reg_end = cfg["reg_season_end"]
@@ -308,6 +313,11 @@ def rank_meetings_all_seasons():
         try:
             m = get_matchups_df(yr)
         except Exception:
+            continue
+        # An empty frame has no columns at all, so m["week"] raises KeyError
+        # rather than returning nothing. The try above covered only the fetch,
+        # so a season with no games yet took the whole page down.
+        if m.empty:
             continue
         reg = m[m["week"] <= season_config(yr)["reg_season_end"]].copy()
         if reg.empty:
@@ -1142,8 +1152,11 @@ with tab_h2h:
         rr.index.name = "vs →"
         st.dataframe(rr, use_container_width=True)
         total = int(sum(v for v in rr.values.flatten() if v != ""))
+        # Seasons that hold games, not seasons listed in config: SEASONS now
+        # includes a season that has not started.
+        played = season_stats_df["season"].nunique()
         st.caption(f"{total:,} regular season matchups across "
-                   f"{len(SEASONS)} seasons.")
+                   f"{played} seasons.")
 
 
 
