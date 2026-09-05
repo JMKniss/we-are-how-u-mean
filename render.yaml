@@ -1,0 +1,26 @@
+# Render blueprint. Import this once from the Render dashboard and the service
+# is created from it; after that every push to master redeploys.
+#
+# The site serves data/archive/*.csv and never calls ESPN, so it needs no
+# credentials. ESPN_S2 and SWID stay on the machine that runs weekly_update.py.
+services:
+  - type: web
+    name: we-are-how-u-mean
+    runtime: python
+    plan: standard              # 2GB. pandas + scipy + pyarrow on a 512MB
+                                # instance is asking to be OOM-killed.
+    region: ohio
+    branch: master
+    buildCommand: pip install -r requirements.txt
+    # $PORT is assigned by Render; 0.0.0.0 so the proxy can reach it.
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    healthCheckPath: /_stcore/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.2"
+      # Set APP_PASSWORD in the Render dashboard to put the site behind a
+      # shared password. Leave it unset and the site is public. Never commit a
+      # value here.
+      - key: APP_PASSWORD
+        sync: false

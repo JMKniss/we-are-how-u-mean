@@ -1,0 +1,18 @@
+# Streamlit settings that apply wherever the app runs, local or deployed.
+
+[server]
+headless = true              # never try to open a browser; required on a server
+
+[browser]
+gatherUsageStats = false
+
+[client]
+# "viewer" hides the developer chrome - the Deploy button and the source/rerun
+# items in the top-right menu. Those are for whoever runs the app, not for the
+# league, and on a public site the Deploy button invites confusion.
+toolbarMode = "viewer"
+showErrorDetails = false     # a traceback on screen helps nobody but us
+
+[theme]
+base = "light"
+primaryColor = "#c8102e"

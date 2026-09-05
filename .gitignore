@@ -16,3 +16,6 @@ data/archive/_backups/
 
 # Weekly update logs — local run records, not part of the archive.
 logs/
+
+# Streamlit secrets — credentials belong in the host env, never the repo.
+.streamlit/secrets.toml

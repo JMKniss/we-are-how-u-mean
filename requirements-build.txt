@@ -1,0 +1,8 @@
+# Building or updating the archive — local only, never installed on the server.
+#
+#   pip install -r requirements.txt -r requirements-build.txt
+#
+# nfl-data-py supplies 2016-2017 player stats, which ESPN's API will not give.
+# Install it with --no-deps if pip starts building pandas from source.
+-r requirements.txt
+nfl-data-py

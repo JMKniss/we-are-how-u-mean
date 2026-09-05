@@ -1,10 +1,19 @@
-espn-api>=0.46.0
+# Runtime dependencies — what the deployed site needs to serve pages.
+#
+# The site reads data/archive/*.csv and never calls ESPN, so nothing here is
+# for fetching data. espn-api is the exception and only because
+# data/espn_client.py imports it at module level; it is never called when the
+# archive answers, which in production it always does.
+#
+# Archive-building needs more than this — see requirements-build.txt. Keeping
+# them apart matters for deployment: nfl-data-py pins its own pandas and drags
+# a source build onto the server for code that never runs there.
 streamlit>=1.58.0
-plotly>=5.0.0
 pandas>=1.4.0
 numpy>=1.23.0
-scipy>=1.10.0
-pyarrow>=7.0.0
-jinja2>=3.1.5  # pandas Styler; pandas 3.x requires >=3.1.5
+scipy>=1.10.0            # optimal-lineup assignment
+plotly>=5.0.0
+pyarrow>=7.0.0           # streamlit serialises dataframes through Arrow
+jinja2>=3.1.5            # pandas Styler; pandas 3.x requires >=3.1.5
 python-dotenv>=1.0.0
-nfl-data-py  # 2016-2017 player stats (install with --no-deps to avoid pandas rebuild)
+espn-api>=0.46.0

@@ -41,6 +41,46 @@ ff_app/
     └── 8_Data_Validation.py
 ```
 
+## Deployment — wearehowumean.com on Render
+
+The site is a Render web service built from `render.yaml`. Import that
+blueprint once from the Render dashboard; after that every push to `master`
+redeploys automatically.
+
+```
+buildCommand: pip install -r requirements.txt
+startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+healthCheckPath: /_stcore/health
+```
+
+**The server needs no ESPN credentials.** Every page reads
+`data/archive/*.csv`. ESPN_S2 and SWID stay on the machine that runs
+`weekly_update.py`, which is the whole reason the archive exists.
+
+**requirements.txt is runtime only.** `requirements-build.txt` adds
+nfl-data-py, which supplies 2016-2017 player stats and is needed only to build
+the archive. It pins its own pandas and can drag a source build onto the
+server for code that never runs there. Locally:
+
+```
+pip install -r requirements.txt -r requirements-build.txt
+```
+
+**Access.** `auth.py` gates the site behind a shared password, but only when
+`APP_PASSWORD` is set in Render's environment. Unset, the site is public.
+That keeps the public/private choice in the dashboard rather than in a commit,
+and no password ever enters the repo. It is one password for ten people with
+no identity behind it - right for keeping scores off the open web, wrong for
+anything that matters.
+
+**`.streamlit/config.toml`** sets `toolbarMode = "viewer"`, which hides the
+Deploy button and the developer menu, and `showErrorDetails = false`, so a
+crash shows the league a plain message instead of a traceback. The detail is
+still in Render's logs.
+
+**Weekly rhythm.** Run `weekly_update.py` locally, commit `data/archive`, push.
+The site has the new week about two minutes later.
+
 ## The weekly update
 
 The archive is the app's only data source in normal use, so keeping the current

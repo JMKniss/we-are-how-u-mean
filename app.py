@@ -24,6 +24,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
 
+# Imported after sys.path is set above, so it resolves from the app root.
+from auth import require_password
+
 st.set_page_config(
     page_title="We Are How U Mean",
     page_icon="🏈",
@@ -33,6 +36,10 @@ st.set_page_config(
     # on a full screen of navigation covering the page, on every single load.
     initial_sidebar_state="auto",
 )
+
+# Runs before any page. Does nothing unless APP_PASSWORD is set, so whether
+# the site is public is a Render setting rather than a code change.
+require_password()
 
 # url_path is set explicitly so existing links keep working. Left to itself,
 # st.Page would name each route after its file and turn /Dashboard into
