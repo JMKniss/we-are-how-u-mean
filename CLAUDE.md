@@ -30,7 +30,7 @@ ff_app/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
 │   └── projections.py      # Monte Carlo playoff simulation, magic numbers
-└── pages/
+└── views/
     ├── 1_Dashboard.py
     ├── 2_Standings.py
     ├── 3_Scoring.py
@@ -332,7 +332,7 @@ All playoff display logic (page 6) and validation (espn_client.py) branch on thi
 
 ## Page-level implementation notes
 
-### pages/3_Scoring.py — Weekly Trends tab
+### views/3_Scoring.py — Weekly Trends tab
 Tab order: Individual Manager Trend (top) → divider → All Teams chart → Score Range band chart.
 
 **Individual Manager Trend chart:**
