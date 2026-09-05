@@ -28,7 +28,10 @@ st.set_page_config(
     page_title="We Are How U Mean",
     page_icon="🏈",
     layout="wide",
-    initial_sidebar_state="expanded",
+    # "auto", not "expanded": Streamlit keeps the sidebar open on a desktop
+    # and collapses it on a narrow screen. Forcing it open meant a phone landed
+    # on a full screen of navigation covering the page, on every single load.
+    initial_sidebar_state="auto",
 )
 
 # url_path is set explicitly so existing links keep working. Left to itself,
