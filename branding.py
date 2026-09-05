@@ -17,10 +17,17 @@ ASSETS = Path(__file__).parent / "assets"
 
 # The full square logo, used for the browser tab.
 LOGO = ASSETS / "logo.png"
-# Just the figure, for setting inline in the title between the words. Falls
-# back to the full logo, which reads oddly there because the logo already
-# contains the words, but is better than a blank.
+# For setting inline in the title, in order of preference:
+#   logo-mark.png    the figure on its blue/red field
+#   logo-figure.png  the same figure with the field dropped
+#   logo.png         the full logo, which reads oddly there because it already
+#                    contains the words, but beats a blank
+#
+# The field stays. Dropping it leaves a white figure on transparency, which is
+# invisible against a white page - the MLB mark works precisely because the
+# figure is a hole in a block of colour rather than a shape in its own right.
 LOGO_MARK = ASSETS / "logo-mark.png"
+LOGO_MARK_ALT = ASSETS / "logo-figure.png"
 
 FALLBACK_ICON = "🏈"
 
@@ -39,7 +46,7 @@ def _data_uri(path_str: str) -> str:
 
 
 def _mark_uri() -> str:
-    for candidate in (LOGO_MARK, LOGO):
+    for candidate in (LOGO_MARK, LOGO_MARK_ALT, LOGO):
         if candidate.exists():
             return _data_uri(str(candidate))
     return ""
