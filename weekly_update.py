@@ -12,10 +12,14 @@ archive is the league's record, and a stat correction three weeks later should
 not silently rewrite a result everybody already argued about. Pass --force
 only when you have looked at the conflict and decided ESPN is right.
 
-Why weekly rather than on demand: a full season pull is roughly 17 weeks of
-box scores for every team, and the app reads CSV, so nothing about normal use
-needs ESPN at all. Adding one week costs one pull and leaves the other nine
-seasons untouched on disk.
+What it writes is additive; what it reads is not. Each run pulls the whole
+season from ESPN, then compares. That is deliberate: pulling only the new week
+would be faster but would never notice ESPN restating week 5, and noticing is
+half the point of a weekly check. The whole season costs about half a minute
+and no other season on disk is read or touched.
+
+The app itself never calls ESPN. It reads data/archive/*.csv, which is why
+this job exists and why nothing else needs cookies.
 
     python weekly_update.py --dry-run     see what it would add, write nothing
     python weekly_update.py --season 2025 update a season other than the current one
