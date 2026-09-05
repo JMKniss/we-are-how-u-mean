@@ -10,8 +10,9 @@ from data.espn_client import get_draft_df, get_boxscores_df, get_manager_map
 from analysis.draft import apply_recorded_order
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from branding import page_icon
 
-st.set_page_config(page_title="Draft Review", page_icon="📋", layout="wide")
+st.set_page_config(page_title="Draft Review", page_icon=page_icon(), layout="wide")
 st.title("📋 Draft Review")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)

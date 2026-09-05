@@ -11,8 +11,9 @@ from data.espn_client import get_current_week, get_matchups_df, get_manager_map
 from analysis.standings import h2h_standings, combined_standings
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from branding import page_icon
 
-st.set_page_config(page_title="Playoffs", page_icon="🏆", layout="wide")
+st.set_page_config(page_title="Playoffs", page_icon=page_icon(), layout="wide")
 st.title("🏆 Playoff Results")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)

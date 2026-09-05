@@ -41,6 +41,25 @@ ff_app/
     └── 8_Data_Validation.py
 ```
 
+## Branding
+
+`branding.py` owns the browser icon and the title block, in one place because
+the icon has to be identical everywhere. Each page calls its own
+st.set_page_config, and page_icon there overrides whatever app.py set - which
+is why the tab used to show a different emoji on each page.
+
+Two files, both optional; everything falls back to the football emoji when
+they are absent, so the app runs the same either way:
+
+- `assets/logo.png` - the browser tab icon, square, on every page.
+- `assets/logo-mark.png` - just the figure, set between the words in the page
+  title. Falls back to logo.png, which reads oddly there because that image
+  already contains the words "WE ARE HOW U MEAN".
+
+`title_html(subtitle)` renders the league name with the figure inline and the
+page name beneath it. It needs unsafe_allow_html because Streamlit has no way
+to put an image inside a heading otherwise.
+
 ## Upcoming matchups and matchup notes
 
 `data/archive/upcoming.csv` holds the one week about to be played: fixtures

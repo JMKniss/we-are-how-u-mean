@@ -11,8 +11,9 @@ from analysis.efficiency import (lineup_efficiency, top_players, projected_vs_ac
                                  player_manager_sequence)
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from branding import page_icon
 
-st.set_page_config(page_title="Lineup Efficiency", page_icon="🎯", layout="wide")
+st.set_page_config(page_title="Lineup Efficiency", page_icon=page_icon(), layout="wide")
 st.title("🎯 Lineup Efficiency")
 st.caption("How well did each manager set their lineup? Optimal score = best possible lineup from their roster.")
 

@@ -10,8 +10,9 @@ import plotly.graph_objects as go
 from data.espn_client import get_matchups_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from branding import page_icon
 
-st.set_page_config(page_title="Scoring", page_icon="📈", layout="wide")
+st.set_page_config(page_title="Scoring", page_icon=page_icon(), layout="wide")
 st.title("📈 Scoring Analysis")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)

@@ -10,9 +10,11 @@ from analysis.standings import h2h_standings, combined_standings, luck_index
 from analysis.matchup_notes import pair_history, notes_for_matchups
 from config import SEASONS, DEFAULT_SEASON, season_config, week_label
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
+from branding import page_icon, title_html
 
-st.set_page_config(page_title="Dashboard", page_icon="🏈", layout="wide")
-st.title("🏈 Dashboard")
+st.set_page_config(page_title="Dashboard", page_icon=page_icon(), layout="wide")
+# The league name carries the branding; "Dashboard" is the subtitle under it.
+st.markdown(title_html("Dashboard"), unsafe_allow_html=True)
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()

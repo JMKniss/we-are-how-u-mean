@@ -26,10 +26,11 @@ import streamlit as st
 
 # Imported after sys.path is set above, so it resolves from the app root.
 from auth import require_password
+from branding import page_icon
 
 st.set_page_config(
     page_title="We Are How U Mean",
-    page_icon="🏈",
+    page_icon=page_icon(),
     layout="wide",
     # "auto", not "expanded": Streamlit keeps the sidebar open on a desktop
     # and collapses it on a narrow screen. Forcing it open meant a phone landed

@@ -12,8 +12,9 @@ from data.espn_client import get_matchups_df, get_manager_map
 from analysis.standings import h2h_standings, combined_standings
 from config import SEASONS, season_config
 from display_utils import sidebar_display_prefs
+from branding import page_icon
 
-st.set_page_config(page_title="All-Time Records", page_icon="📜", layout="wide")
+st.set_page_config(page_title="All-Time Records", page_icon=page_icon(), layout="wide")
 st.title("📜 All-Time Records")
 
 show_mgr, show_team = sidebar_display_prefs()
