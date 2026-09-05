@@ -51,6 +51,7 @@ KEYS = {
     "validation": ["season", "week", "team_id", "check_type", "label"],
     "draft":      ["season", "overall_pick"],
     "standings":  ["season", "team_id"],
+    "upcoming":   ["season", "team_id"],
 }
 
 BUILDERS = {
@@ -59,6 +60,7 @@ BUILDERS = {
     "draft":      "get_draft_df",
     "standings":  "get_standings_df",
     "validation": "get_validation_df",
+    "upcoming":   "get_upcoming_df",
 }
 
 SORT_HINTS = ("season", "week", "team_id", "overall_pick", "player_id")
@@ -76,7 +78,11 @@ SORT_HINTS = ("season", "week", "team_id", "overall_pick", "player_id")
 # the season is complete they revert to the ordinary rule and a change needs
 # --force, because by then the row is history and history is what the archive
 # exists to protect.
-SNAPSHOT_DATASETS = {"standings"}
+# upcoming holds one week and is replaced wholesale each run - last
+# week's fixtures are not a record worth keeping, and keying it on
+# (season, team_id) means a new week would otherwise read as a conflict
+# against the old one and be skipped.
+SNAPSHOT_DATASETS = {"standings", "upcoming"}
 
 
 def season_complete(season: int) -> bool:

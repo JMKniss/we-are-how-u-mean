@@ -14,7 +14,7 @@ import pandas as pd
 ARCHIVE_DIR = Path(__file__).parent / "archive"
 
 DATASETS = ("matchups", "boxscores", "draft", "standings", "validation",
-            "draft_order")
+            "draft_order", "upcoming")
 
 _cache: dict[str, pd.DataFrame] = {}
 _meta: dict | None = None

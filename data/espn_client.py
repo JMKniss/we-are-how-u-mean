@@ -885,6 +885,60 @@ def get_current_week(season: int) -> int:
         raise
 
 
+def get_upcoming_df(season: int) -> pd.DataFrame:
+    """
+    The week about to be played: who faces whom, and ESPN's projected scores.
+
+    Deliberately not routed through _drop_unplayed_weeks, which exists to throw
+    exactly this week away. Everywhere else an unplayed week is a week of
+    zeroes that must never reach the archive; here it is the whole point, and
+    it is kept in its own dataset so it can never be mistaken for a result.
+
+    The deployed site has no ESPN credentials, so this is captured by the
+    weekly job and read back from data/archive/upcoming.csv like everything
+    else. Projections are therefore a Tuesday snapshot and will drift as
+    players are ruled out later in the week.
+
+    Returns an empty frame once the season is over, which is what tells the
+    Dashboard to show no matchup table at all.
+    """
+    arc = _from_archive("upcoming", season)
+    if arc is not None:
+        return arc
+
+    league = get_league(season)
+    cfg = season_config(season)
+    week = min(league.current_week, cfg["total_weeks"])
+    if week < 1 or league.current_week > cfg["total_weeks"]:
+        return pd.DataFrame()
+
+    try:
+        boxes = league.box_scores(week=week)
+    except Exception:
+        return pd.DataFrame()
+
+    rows = []
+    for box in boxes:
+        for team, proj, opp, opp_proj in [
+            (box.home_team, box.home_projected, box.away_team, box.away_projected),
+            (box.away_team, box.away_projected, box.home_team, box.home_projected),
+        ]:
+            if team is None or opp is None:
+                continue
+            rows.append({
+                "season": season,
+                "week": week,
+                "team_id": team.team_id,
+                "team_name": team.team_name.strip(),
+                "projected": round(float(proj or 0), 2),
+                "opp_id": opp.team_id,
+                "opp_name": opp.team_name.strip(),
+                "opp_projected": round(float(opp_proj or 0), 2),
+                "is_playoff": week in cfg["playoff_weeks"],
+            })
+    return pd.DataFrame(rows)
+
+
 def get_draft_df(season: int) -> pd.DataFrame:
     arc = _from_archive("draft", season)
     if arc is not None:
@@ -968,3 +1022,4 @@ get_boxscores_df = _empty_when_unavailable(get_boxscores_df)
 get_draft_df = _empty_when_unavailable(get_draft_df)
 get_standings_df = _empty_when_unavailable(get_standings_df)
 get_validation_df = _empty_when_unavailable(get_validation_df)
+get_upcoming_df = _empty_when_unavailable(get_upcoming_df)

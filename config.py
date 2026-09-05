@@ -138,3 +138,23 @@ def season_config(season: int) -> dict:
             "playoff_weeks": [13, 14, 15, 16],
             "total_weeks": 16,
         }
+
+
+def week_label(season: int, week: int) -> str:
+    """
+    How a week should be named on screen: "Week 5", or the playoff round.
+
+    Rounds are derived from season_config rather than assumed, because the
+    shape has never been constant. Most seasons run two two-week rounds;
+    2022 ran a one-week Round 1 and a two-week final. Calling week 15 of 2022
+    "Round 1" and week 15 of 2023 "Round 1" would be wrong in one of them.
+    """
+    cfg = season_config(season)
+    pw = cfg["playoff_weeks"]
+    if week not in pw:
+        return f"Week {week}"
+
+    if len(pw) == 3:                     # 2022: 1-week round 1, 2-week final
+        return "Playoff Round 1" if week == pw[0] else "Playoff Round 2"
+    # Standard: two weeks per round.
+    return "Playoff Round 1" if week in pw[:2] else "Playoff Round 2"

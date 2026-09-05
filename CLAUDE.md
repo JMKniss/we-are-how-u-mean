@@ -41,6 +41,44 @@ ff_app/
     └── 8_Data_Validation.py
 ```
 
+## Upcoming matchups and matchup notes
+
+`data/archive/upcoming.csv` holds the one week about to be played: fixtures
+plus ESPN's projected scores. It is the only dataset that deliberately
+captures a week with no results in it - everywhere else that is the thing
+`_drop_unplayed_weeks` exists to prevent, so it is kept apart where it can
+never be mistaken for a result.
+
+It is a snapshot, replaced wholesale each run rather than appended. Keyed on
+(season, team_id), a new week would otherwise read as a conflict against last
+week's and be skipped.
+
+Two consequences worth knowing:
+
+- Projections are a Tuesday snapshot and drift as players are ruled out later
+  in the week. Re-run `weekly_update.py` to refresh them.
+- Once a season ends nothing replaces the file, so the last week's fixtures
+  would sit there looking like a game still to come. The Dashboard guards
+  against that by showing the table only when the upcoming week is actually
+  ahead of the last played week, which is also what hides it for a finished
+  season.
+
+`analysis/matchup_notes.py` writes the "matchups to watch" lines. Every note
+is one sentence - **A vs B** is historically the <adjective> matchup <scope>,
+<detail> - from a fixed set of rules, each backed by a number in the archive.
+Scope distinguishes a league-wide extreme from merely the most extreme of the
+games being played this week, because those are different claims.
+
+Rules are ranked by distance from the league's middle in standard deviations
+and the top three shown, one per pair so the same two managers are not called
+out repeatedly. At least one always appears: if nothing is unusual, the
+tightest of the week's games is still true.
+
+Hard-coded rather than written weekly by a model, deliberately. The sentence
+shape is fixed, so the work is ranking rather than writing; the numbers come
+from data already computed and can be checked; and the site updates from a git
+push with nothing else in the loop.
+
 ## Deployment — wearehowumean.com on Render
 
 A Render **Web Service**, created by hand in the dashboard. Blueprints
