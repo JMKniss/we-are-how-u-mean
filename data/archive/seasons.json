@@ -1,14 +1,14 @@
 {
   "2016": {
     "current_week": 17,
-    "reg_season_end": 12,
+    "reg_season_end": 13,
     "playoff_weeks": [
-      13,
       14,
       15,
-      16
+      16,
+      17
     ],
-    "total_weeks": 16,
+    "total_weeks": 17,
     "team_count": 10,
     "manager_map": {
       "1": "Johnny",
@@ -216,7 +216,7 @@
     }
   },
   "2022": {
-    "current_week": 18,
+    "current_week": 17,
     "reg_season_end": 14,
     "playoff_weeks": [
       15,
@@ -355,6 +355,42 @@
       "7": "Roll for Yardage",
       "8": "I Don't Care, I Cast Fireball",
       "9": "Paladins of the Pancreas",
+      "10": "We Are Rolling High"
+    }
+  },
+  "2026": {
+    "current_week": 0,
+    "reg_season_end": 13,
+    "playoff_weeks": [
+      14,
+      15,
+      16,
+      17
+    ],
+    "total_weeks": 17,
+    "team_count": 10,
+    "manager_map": {
+      "1": "Johnny",
+      "2": "Tim",
+      "3": "Kevin",
+      "4": "David",
+      "5": "Matt",
+      "6": "Scott",
+      "7": "Jason",
+      "8": "Brian",
+      "9": "Tyler",
+      "10": "JT"
+    },
+    "team_names": {
+      "1": "Heroic Inspiration",
+      "2": "Danny Dice Rolls",
+      "3": "Hunters and renfrow",
+      "4": "Forgotten Burrows",
+      "5": "Constitution Check Downs",
+      "6": "NameOfCurseWarding",
+      "7": "Roll for Yardage",
+      "8": "I Don't Care, I Cast Fireball",
+      "9": "The Spanish Inquisition",
       "10": "We Are Rolling High"
     }
   }
