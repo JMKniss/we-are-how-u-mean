@@ -1,6 +1,15 @@
 """
 We Are How U Mean — Fantasy Football Analytics
 Main Streamlit entry point.
+
+Navigation is declared here with st.navigation rather than left to Streamlit's
+pages/ auto-discovery. Auto-discovery always lists the entry script itself as
+a page, so the sidebar carried an "app" tab above Dashboard that existed only
+to explain the other tabs. Declaring the pages drops that tab and lets
+Dashboard be what the app opens on.
+
+Pages still live in pages/ and still set their own page config; that file
+layout is unchanged, only how they are listed.
 """
 import sys
 from pathlib import Path
@@ -9,8 +18,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
 
-from config import SEASONS
-
 st.set_page_config(
     page_title="We Are How U Mean",
     page_icon="🏈",
@@ -18,27 +25,27 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("🏈 We Are How U Mean")
-st.subheader("Fantasy Football Analytics — 2016 to present")
+# url_path is set explicitly so existing links keep working. Left to itself,
+# st.Page would name each route after its file and turn /Dashboard into
+# /1_Dashboard. The default page is served at / and takes no url_path.
+PAGES = [
+    st.Page("pages/1_Dashboard.py", title="Dashboard", icon="🏈", default=True),
+    st.Page("pages/2_Standings.py", title="Standings", icon="📊",
+            url_path="Standings"),
+    st.Page("pages/3_Scoring.py", title="Scoring", icon="📈",
+            url_path="Scoring"),
+    st.Page("pages/4_Lineup_Efficiency.py", title="Lineup Efficiency", icon="🎯",
+            url_path="Lineup_Efficiency"),
+    st.Page("pages/5_Playoff_Projections.py", title="Playoff Projections", icon="🏆",
+            url_path="Playoff_Projections"),
+    st.Page("pages/6_Playoffs.py", title="Playoffs", icon="🏆",
+            url_path="Playoffs"),
+    st.Page("pages/7_Draft_Review.py", title="Draft Review", icon="📋",
+            url_path="Draft_Review"),
+    st.Page("pages/8_Data_Validation.py", title="Data Validation", icon="🔧",
+            url_path="Data_Validation"),
+    st.Page("pages/9_All_Time.py", title="All-Time Records", icon="📜",
+            url_path="All_Time"),
+]
 
-st.markdown(f"""
-Navigate using the sidebar to explore:
-
-| Page | What you'll find |
-|---|---|
-| **Dashboard** | Current week matchups, standings snapshot, weekly scoring trends |
-| **Standings** | H2H, vs-median, combined, strength of schedule, luck index, alternate schedule |
-| **Scoring** | Weekly trends, score distributions, best/worst scores, head-to-head records |
-| **Lineup Efficiency** | Optimal vs actual lineups, bench waste, top players, projection accuracy |
-| **Playoff Projections** | Monte Carlo playoff odds, magic numbers |
-| **Playoffs** | Bracket results with per-week and cumulative round scores |
-| **Draft Review** | Full draft board, team draft summaries, best value picks and busts |
-| **Data Validation** | Verify our calculated scores match ESPN's published totals |
-
----
-Use the **Season** selector in the sidebar on any page to switch between seasons (2016–{max(SEASONS)}).
-
-The current season updates every Tuesday, once the week is final.
-""")
-
-st.info("Select a page from the sidebar to get started.")
+st.navigation(PAGES).run()
