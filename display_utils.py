@@ -112,17 +112,22 @@ def season_selector(seasons, default_season):
     appears on ESPN months before week 1, so it has to be selectable before it
     holds anything. Pages pair this with require_data to say so plainly rather
     than rendering empty tables.
+
+    Bound to session state by key rather than driven by index. The two are
+    alternatives and mixing them is what made this need two clicks: index was
+    read from session state at the top of the run, session state was only
+    written at the bottom, so on the rerun a selection triggered, index still
+    named the previous season. Streamlit saw the widget's parameters change
+    and reset it to index, throwing the click away. The second click stuck
+    because by then index had caught up.
+
+    With a key, the widget and session state are the same value, so there is
+    nothing to fall out of step. Seed it before the widget - assigning after
+    would be writing over what the person just chose.
     """
-    if "selected_season" not in st.session_state:
+    if st.session_state.get("selected_season") not in seasons:
         st.session_state["selected_season"] = default_season
-    if st.session_state["selected_season"] not in seasons:
-        st.session_state["selected_season"] = default_season
-    season = st.sidebar.selectbox(
-        "Season", seasons,
-        index=seasons.index(st.session_state["selected_season"]),
-    )
-    st.session_state["selected_season"] = season
-    return season
+    return st.sidebar.selectbox("Season", seasons, key="selected_season")
 
 
 def require_data(df, season, what="data"):
