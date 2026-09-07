@@ -307,8 +307,8 @@ def luck_total(breakdown: pd.DataFrame, include_median: bool) -> pd.DataFrame:
         if z > -0.5:
             return "Fair"
         if z > -1.5:
-            return "Oof"
-        return "Cursed"
+            return "Unlucky"
+        return "Oof"
 
     out["luck_label"] = out["luck_sigma"].map(label)
     return out
