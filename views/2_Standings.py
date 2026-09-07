@@ -238,18 +238,23 @@ with tab5:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Schedule luck**")
-        st.caption("Did you draw easy opponents? Wins you would have had "
-                   "against opponents at their normal level, compared with "
-                   "what your scores earned against the whole week.")
+        st.caption("Did you draw easy opponents? Schedule Wins is what your "
+                   "scores were worth against the opponents you actually drew, "
+                   "with each playing at their usual level. Expected Wins is "
+                   "what the same scores were worth against the whole league. "
+                   "Both are fractions of a win, because outscoring six of nine "
+                   "teams is not a whole number of anything.")
         st.dataframe(small(["w_form", "w_field", "schedule_luck"],
-                           ["vs Normal", "Earned", "Luck"], "schedule_luck"),
+                           ["Schedule Wins", "Expected Wins", "Luck"],
+                           "schedule_luck"),
                      use_container_width=True, hide_index=True)
     with c2:
         st.markdown("**Field luck**")
         st.caption("Did your good scores land on low-scoring weeks? Lucky if "
                    "you scored well when the rest of the league did not.")
         st.dataframe(small(["w_field", "w_season", "field_luck"],
-                           ["vs Week", "vs Season", "Luck"], "field_luck"),
+                           ["Expected Wins", "vs Whole Season", "Luck"],
+                           "field_luck"),
                      use_container_width=True, hide_index=True)
 
     c3, c4 = st.columns(2)
@@ -258,7 +263,8 @@ with tab5:
         st.caption("Median wins you got compared with what your scores usually "
                    "get. Lucky if you beat the median in weak weeks.")
         st.dataframe(small(["median_wins", "xmedian", "median_luck"],
-                           ["Med W", "Earned", "Luck"], "median_luck"),
+                           ["Median Wins", "Expected Wins", "Luck"],
+                           "median_luck"),
                      use_container_width=True, hide_index=True)
     with c4:
         st.markdown("**Opponent form**")
