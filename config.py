@@ -22,9 +22,16 @@ def default_season() -> int:
     """
     try:
         from data import archive
-        played = [s for s in archive.seasons_with_data("matchups") if s in SEASONS]
-        if played:
-            return max(played)
+        # "Has data" means results OR fixtures. A drafted season with week 1
+        # still to come holds no matchups but does hold the week ahead, and
+        # that is the page people want the moment the season starts - waiting
+        # for the first result would leave everyone landing on last year
+        # during the one week they most want this year.
+        seasons = set(archive.seasons_with_data("matchups"))
+        seasons |= set(archive.seasons_with_data("upcoming"))
+        live = [s for s in seasons if s in SEASONS]
+        if live:
+            return max(live)
     except Exception:
         pass
     return max(SEASONS)
@@ -53,7 +60,11 @@ OWNER_ID_TO_NAME: dict[str, str] = {
     "{1EFD3F04-30CE-476A-BD3F-0430CE876ADC}": "Tim",
     "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}": "Mikey",      # manager 2016–2020; commissioner 2021+
     "{6D28D6E9-2FA9-4D39-A8D6-E92FA9FD39B8}": "David",
-    "{9C7796AD-8649-410E-B796-AD8649710E5F}": "Matt",
+    "{9C7796AD-8649-410E-B796-AD8649710E5F}": "Matt",     # old account, 2016-2025
+    # New account from 2026. Identified rather than told: team 5 has been
+    # Matt's every season, and the league's own recorded 2026 draft order puts
+    # Matt fourth, which is exactly the seat ESPN has team 5 picking from.
+    "{B09B07F5-55E9-4C04-8AB1-FF251BFBE7AE}": "Matt",
     "{DD56970C-7653-4D41-8BA6-F3C49DA6BCA2}": "Mitchell",   # 2016–2017 only
     "{CB90A2B3-75BB-4FE4-9AC9-496FD82753E5}": "Scott",
     "{4C19A325-EB2F-45C2-99A3-25EB2F05C212}": "B. Pisarcik", # 2016–2017 only

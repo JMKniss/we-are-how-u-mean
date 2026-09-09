@@ -34,6 +34,7 @@ class Note:
     text: str
     sigma: float          # how far from the league's middle, for ranking
     rule: str
+    pair: tuple           # unordered, so one matchup is one entry however it reads
 
 
 def pair_key(a: str, b: str) -> tuple:
@@ -166,6 +167,7 @@ def notes_for_matchups(week_pairs, history: pd.DataFrame, limit: int = 3) -> lis
             text=_fmt(row["a"], row["b"], adjective, scope, describe(row)),
             sigma=_sigma(row[column], qualified[column]),
             rule=rule,
+            pair=pair_key(row["a"], row["b"]),
         ))
 
     # A streak is about now rather than all time, so it gets its own sentence.
@@ -179,17 +181,20 @@ def notes_for_matchups(week_pairs, history: pd.DataFrame, limit: int = 3) -> lis
                       historic=False),
             sigma=float(r["streak"]) / 2.0,
             rule="streak",
+            pair=pair_key(r["a"], r["b"]),
         ))
 
     # One rule per pair, keeping its strongest claim, so the same two managers
-    # are not called out three times in a row.
+    # are not called out twice. Deduped on the unordered pair rather than on
+    # the rendered text: the streak note names the winner first and the others
+    # run alphabetically, so "Tim vs Kevin" and "Kevin vs Tim" both survived a
+    # text comparison and the same matchup appeared twice in a row.
     notes.sort(key=lambda n: n.sigma, reverse=True)
     seen, kept = set(), []
     for n in notes:
-        pair = n.text.split("**")[1]
-        if pair in seen:
+        if n.pair in seen:
             continue
-        seen.add(pair)
+        seen.add(n.pair)
         kept.append(n)
 
     strong = [n for n in kept if n.sigma >= INTERESTING_SIGMA]

@@ -467,8 +467,13 @@ def main():
             continue
         now = load_archive(name)
         now_untouched = now[~now["season"].isin(targets)]
-        a = normalise(prev, name)
-        b = normalise(now_untouched[prev.columns], name)
+        # canonical, not .equals(): equals is strict about dtype, and adding a
+        # live season can promote a column across every other season without
+        # changing a value. 2026's real playoff_pct odds turned an int column
+        # float, so 2016-2025's 0 became 0.0 and this check cried wolf over
+        # 100 rows whose largest actual difference was 0.0.
+        a = canonical(normalise(prev, name))
+        b = canonical(normalise(now_untouched[prev.columns], name))
         same = a.equals(b)
         print(f"  {name:11} {'unchanged' if same else 'CHANGED - INVESTIGATE'} "
               f"({len(prev):,} rows outside {targets})")

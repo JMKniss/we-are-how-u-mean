@@ -47,12 +47,20 @@ def load_history():
 with st.spinner("Loading league data..."):
     matchups_df, manager_map, current_week, upcoming_df = load(season)
 
-require_data(matchups_df, season, "matchup data")
+# No require_data here. A drafted season with week 1 still to come has no
+# matchups and is exactly when the fixtures below matter most - stopping the
+# page on "no matchup data" hid the one section built for this moment. Only
+# the standings and season records below need games actually played.
+if upcoming_df.empty and matchups_df.empty:
+    require_data(matchups_df, season, "matchup data")
 
 cfg = season_config(season)
 current_week = min(current_week, cfg["total_weeks"])
-played_df = matchups_df[matchups_df["week"] <= current_week]
-reg_df = played_df[played_df["week"] <= cfg["reg_season_end"]]
+if matchups_df.empty:
+    played_df = reg_df = matchups_df
+else:
+    played_df = matchups_df[matchups_df["week"] <= current_week]
+    reg_df = played_df[played_df["week"] <= cfg["reg_season_end"]]
 
 
 def name(mgr, team):
@@ -66,7 +74,7 @@ def name(mgr, team):
 # week. upcoming.csv holds one week and is replaced each Tuesday, but once a
 # season ends nothing replaces it, so the final week's fixtures would sit there
 # looking like a game still to come.
-last_played = int(played_df["week"].max()) if not played_df.empty else 0
+last_played = int(played_df["week"].max()) if len(played_df) else 0
 upcoming = upcoming_df
 if not upcoming.empty and int(upcoming["week"].iloc[0]) <= last_played:
     upcoming = pd.DataFrame()
@@ -104,6 +112,13 @@ if not upcoming.empty:
     st.divider()
 
 # ── Quick stats ───────────────────────────────────────────────────────────────
+if reg_df.empty:
+    st.info(
+        f"No games played in {season} yet. Standings and season records "
+        f"appear here once week 1 is final."
+    )
+    st.stop()
+
 col1, col2, col3 = st.columns(3)
 col1.metric("Reg Season Avg Score", f"{reg_df['score'].mean():.1f}" if not reg_df.empty else "—")
 
