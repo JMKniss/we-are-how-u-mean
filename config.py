@@ -61,9 +61,10 @@ OWNER_ID_TO_NAME: dict[str, str] = {
     "{3DDE7D6A-D569-4D2C-9E7D-6AD5693D2CCA}": "Mikey",      # manager 2016–2020; commissioner 2021+
     "{6D28D6E9-2FA9-4D39-A8D6-E92FA9FD39B8}": "David",
     "{9C7796AD-8649-410E-B796-AD8649710E5F}": "Matt",     # old account, 2016-2025
-    # New account from 2026. Identified rather than told: team 5 has been
-    # Matt's every season, and the league's own recorded 2026 draft order puts
-    # Matt fourth, which is exactly the seat ESPN has team 5 picking from.
+    # New account from 2026, confirmed by Jason. Worked out before asking:
+    # team 5 has been Matt's every season, and the league's recorded 2026
+    # draft order puts Matt fourth, which is the seat ESPN has team 5 picking
+    # from. Without this he resolves as "Unknown" on every page.
     "{B09B07F5-55E9-4C04-8AB1-FF251BFBE7AE}": "Matt",
     "{DD56970C-7653-4D41-8BA6-F3C49DA6BCA2}": "Mitchell",   # 2016–2017 only
     "{CB90A2B3-75BB-4FE4-9AC9-496FD82753E5}": "Scott",
