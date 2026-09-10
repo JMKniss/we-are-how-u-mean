@@ -168,7 +168,8 @@ Deploy button and the developer menu, and `showErrorDetails = false`, so a
 crash shows the league a plain message instead of a traceback. The detail is
 still in Render's logs.
 
-**Weekly rhythm.** Run `weekly_update.py` locally, commit `data/archive`, push.
+**Weekly rhythm.** Run `weekly_update.py` locally, commit `data/archive` on
+`master`, push (see Git workflow for keeping `dev` in step).
 The site has the new week about two minutes later.
 
 ## The weekly update
@@ -434,5 +435,21 @@ All playoff display logic (page 6) and validation (espn_client.py) branch on thi
 
 ## Git workflow
 - Repo: https://github.com/JMKniss/we-are-how-u-mean
-- Default branch: main
-- Feature branches for changes, PRs to merge into main
+- Default branch: `master`. Render deploys every push to it, so **a push to
+  `master` is a release** to the league.
+- Day-to-day work happens on `dev`. Commit there as often as is useful; pushing
+  `dev` backs it up to GitHub and deploys nothing.
+- Test on `dev` with `streamlit run app.py` (localhost:8501) — the same app and
+  archive the site serves.
+- To ship: `python check.py` (full sweep), then
+  `git switch master && git merge dev && git push`, then `git switch dev`.
+- Never merge or push to `master` unless the user says to ship. Committing on
+  `dev` needs no such go-ahead.
+- Exception: the weekly archive commit goes straight to `master` (it is data,
+  checked by `weekly_update.py`, and the league expects it). Afterwards run
+  `git switch dev && git merge master` so `dev` does not fall behind.
+- A bad release is undone with `git revert <sha>` on `master` and a push.
+
+Why: before this, every session committed and pushed on `master`, so a
+multi-commit session redeployed the site several times and nothing was seen
+running before the league saw it.
