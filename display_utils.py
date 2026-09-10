@@ -124,10 +124,25 @@ def season_selector(seasons, default_season):
     With a key, the widget and session state are the same value, so there is
     nothing to fall out of step. Seed it before the widget - assigning after
     would be writing over what the person just chose.
+
+    But the choice itself lives in "selected_season", which no widget owns,
+    and the picker's own key is only a copy. Streamlit deletes a widget's
+    session state at the end of any run where that widget was not drawn, and
+    every page draws its own picker - so a picker keyed straight to
+    "selected_season" lost the season on every page switch, and each page
+    landed on the default or on 2016 depending on timing. A plain key
+    survives navigation; on_change carries a new pick back into it before
+    the rerun reads it.
     """
     if st.session_state.get("selected_season") not in seasons:
         st.session_state["selected_season"] = default_season
-    return st.sidebar.selectbox("Season", seasons, key="selected_season")
+    st.session_state["_season_picker"] = st.session_state["selected_season"]
+
+    def _keep():
+        st.session_state["selected_season"] = st.session_state["_season_picker"]
+
+    return st.sidebar.selectbox("Season", seasons, key="_season_picker",
+                                on_change=_keep)
 
 
 def require_data(df, season, what="data"):
