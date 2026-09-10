@@ -92,7 +92,7 @@ with tab1:
                    "follows H2H. Median and Vs All are shown for reference "
                    "only; Vs All is the record if you had played every other "
                    "team every week.")
-    st.dataframe(_current_standings_display(df), use_container_width=True,
+    st.dataframe(_current_standings_display(df), width="stretch",
                  hide_index=True)
 
     st.divider()
@@ -144,7 +144,7 @@ with tab1:
         rank_tbl.style
         .apply(shade(rank_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
         .format({**{c: "{:.0f}" for c in week_cols}, "Avg": "{:.1f}"}),
-        use_container_width=True)
+        width="stretch")
 
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
@@ -173,7 +173,7 @@ with tab4:
         display[col] = display[col].round(2)
     for col in ["Total Opp Score", "Total Score"]:
         display[col] = display[col].round(1)
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    st.dataframe(display, width="stretch", hide_index=True)
 
     st.divider()
     weeks_played = matchups_df["week"].nunique()
@@ -211,7 +211,7 @@ with tab4:
     ss_row["TS"] = ""
     rows.append(ss_row)
 
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
     st.caption(
         "**TS** (Team Strength) = that team's average wins across all 10 schedules. "
         "**SS** (Schedule Strength) = average wins any team would get playing that "
@@ -247,7 +247,7 @@ with tab5:
         st.dataframe(small(["w_form", "w_field", "schedule_luck"],
                            ["Schedule Wins", "Expected Wins", "Luck"],
                            "schedule_luck"),
-                     use_container_width=True, hide_index=True)
+                     width="stretch", hide_index=True)
     with c2:
         st.markdown("**Field luck**")
         st.caption("Did your good scores land on low-scoring weeks? Lucky if "
@@ -255,7 +255,7 @@ with tab5:
         st.dataframe(small(["w_field", "w_season", "field_luck"],
                            ["Expected Wins", "vs Whole Season", "Luck"],
                            "field_luck"),
-                     use_container_width=True, hide_index=True)
+                     width="stretch", hide_index=True)
 
     c3, c4 = st.columns(2)
     with c3:
@@ -265,14 +265,14 @@ with tab5:
         st.dataframe(small(["median_wins", "xmedian", "median_luck"],
                            ["Median Wins", "Expected Wins", "Luck"],
                            "median_luck"),
-                     use_container_width=True, hide_index=True)
+                     width="stretch", hide_index=True)
     with c4:
         st.markdown("**Opponent form**")
         st.caption("Did opponents play above or below their usual level "
                    "against you? Shown in games, with the points behind it.")
         st.dataframe(small(["opp_luck", "opp_form_pts"], ["Luck", "Points"],
                            "opp_luck"),
-                     use_container_width=True, hide_index=True)
+                     width="stretch", hide_index=True)
 
     st.divider()
     st.markdown("**Cumulative luck**")
@@ -291,7 +291,7 @@ with tab5:
             continue
         td[c] = td[c].round(2)
     td["Rating"] = td["Rating"].map(lambda z: f"{z:+.1f}σ")
-    st.dataframe(td, use_container_width=True, hide_index=True)
+    st.dataframe(td, width="stretch", hide_index=True)
     st.caption(
         ("Opponent + Schedule + Field + Median, in games. "
          if official_combined else
@@ -350,7 +350,7 @@ with tab5:
         chance_tbl.style
         .apply(shade(chance_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
         .format({**{c: "{:.0f}%" for c in week_cols}, "Avg": "{:.1f}%"}),
-        use_container_width=True)
+        width="stretch")
 
 
     # ── How often each rank met each rank, this season ─────────────────────
@@ -380,4 +380,4 @@ with tab5:
     mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
     mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
     mm_tbl.index.name = "vs →"
-    st.dataframe(mm_tbl, use_container_width=True)
+    st.dataframe(mm_tbl, width="stretch")

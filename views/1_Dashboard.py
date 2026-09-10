@@ -94,7 +94,7 @@ if not upcoming.empty:
             "Projection": f"{r.projected:.1f} – {r.opp_projected:.1f}",
             "Away": name(manager_map.get(r.opp_id, "?"), r.opp_name),
         })
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
     # ── Matchups to watch ────────────────────────────────────────────────────
     history = load_history()
@@ -169,7 +169,7 @@ display = prep_display(
 )
 for c in ("PF", "PA", "Avg"):
     display[c] = display[c].round(1)
-st.dataframe(display, use_container_width=True, hide_index=True)
+st.dataframe(display, width="stretch", hide_index=True)
 st.caption(
     "Wins vs Expected compares the head-to-head record with what those scores "
     "usually earn against the rest of the league. Positive means the schedule "

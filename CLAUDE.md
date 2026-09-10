@@ -1,11 +1,66 @@
 # We Are How U Mean — Fantasy Football Analytics App
 
 ## What this is
-A Streamlit web app for analyzing a 10-team ESPN fantasy football league (ID: 722346).
-Pulls all data live from ESPN's API — no manual data entry. Built from scratch in June 2026
-to replace a manual Jupyter notebook workflow.
+A Streamlit web app for a 10-team ESPN fantasy football league (ID: 722346), live at
+wearehowumean.com. It reads a committed CSV archive, not ESPN — the only thing that talks
+to ESPN is the weekly update, run by hand. Built from scratch in June 2026 to replace a
+manual Jupyter notebook workflow.
 
 The legacy notebook analysis lives in a separate repo: https://github.com/JMKniss/fantasy-league-stats
+
+## Start here
+
+Nothing in this file is a snapshot, deliberately. Anything dated would be
+wrong within a week and worse than absent, because a stale fact reads as a
+current one. To see where the project actually stands:
+
+```
+python build_archive.py --list     what the archive holds, season by season
+python check.py --quick            do the pages still render
+git log --oneline -15              what was done recently, and why
+```
+
+Commit messages here carry the reasoning, not just the change. A "why is this
+like this" question is usually answered faster by `git log -S<thing>` than by
+reading the code around it.
+
+## Verifying a change
+
+`python check.py` renders every page against every season and prints one line
+each. Scale it to what changed — a full sweep after a caption edit is wasted
+time and wasted context:
+
+| Changed | Run |
+|---|---|
+| `config.py`, `display_utils.py`, `app.py`, `branding.py`, `data/`, `analysis/` | `python check.py` |
+| one page | `python check.py Standings` |
+| a caption, a label, a colour | nothing; the file parsing is enough |
+
+It catches the three things that have actually broken this app: an exception
+on some seasons but not others, a dataframe Streamlit silently repairs before
+serialising, and a page that renders nothing at all.
+
+## Keeping this file current
+
+This is a living document and the only thing that makes a fresh session
+productive. Update it in the same commit as the change, never afterwards:
+
+| When you change | Update the section |
+|---|---|
+| how a season's schedule or playoff shape works | Season quirks |
+| where data comes from, or how it is stored | Data storage, Data layer |
+| the weekly job, the deploy, the archive's shape | The weekly update, Deployment |
+| something you had to think about | Key design decisions — say *why*, not what |
+| a page's structure or what it shows | Page-level implementation notes |
+
+Two rules that keep it from rotting:
+
+- **No status notes.** If a fact will be wrong next month, it belongs in git
+  or in the archive, not here. "Currently on 2026 week 1" is a bug.
+- **Record the reasoning, not the outcome.** The outcome is visible in the
+  code. What is expensive to rediscover is why the obvious approach was
+  wrong — those notes are what stop a later session re-making a decision that
+  has already been paid for.
 
 ## How to run
 ```

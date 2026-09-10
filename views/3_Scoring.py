@@ -108,7 +108,7 @@ with tab1:
         hovermode="x unified", xaxis=dict(dtick=1, range=[0.5, max_week + 0.5]),
         title=f"{display_name} — Weekly Scoring with Trendlines",
     )
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, width="stretch")
 
     # Slope metrics below the chart
     if m_full is not None or m_l5 is not None:
@@ -144,7 +144,7 @@ with tab1:
     ))
     fig.update_layout(height=480, xaxis_title="Week", yaxis_title="Points",
                       hovermode="x unified", xaxis=dict(dtick=1))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     weekly_stats = df.groupby("week")["score"].agg(["min", "max", "mean", "median"]).reset_index()
     fig2 = go.Figure([
@@ -158,7 +158,7 @@ with tab1:
     ])
     fig2.update_layout(title="Weekly Score Range (band = low to high)", height=300,
                        xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, width="stretch")
 
 with tab2:
     st.subheader("Score Distributions")
@@ -171,7 +171,7 @@ with tab2:
                      title="Score Distribution by Team",
                      labels={"label": "Team", "score": "Points"})
         fig.update_layout(xaxis_tickangle=-30, showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     with col2:
         fig = px.histogram(df, x="score", nbins=30, title="Overall Score Distribution",
@@ -182,7 +182,7 @@ with tab2:
         y_norm = norm.pdf(x_range, mu, sigma) * len(df) * (df["score"].max() - df["score"].min()) / 30
         fig.add_trace(go.Scatter(x=x_range, y=y_norm, mode="lines", name="Normal fit",
                                  line=dict(color="red", width=2)))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     # Per-team stats table — group by team_id too so prep_display works
     team_stats = df.groupby(["team_id", "team_name"])["score"].agg(
@@ -196,7 +196,7 @@ with tab2:
                                  "Std", "Consistency"],
                            headers=["Team", "Mean", "Median", "Min", "Max",
                                     "Std Dev", "Consistency"])
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    st.dataframe(display, width="stretch", hide_index=True)
     st.caption("Consistency ranks by standard deviation: 1 is the most "
                "predictable week to week, not the highest scoring.")
 
@@ -224,7 +224,7 @@ with tab3:
         disp = prep_display(top_scores, manager_map, show_mgr, show_team,
                             cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
                             headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
-        st.dataframe(disp, use_container_width=True, hide_index=True)
+        st.dataframe(disp, width="stretch", hide_index=True)
 
     with col2:
         st.markdown("**5 Lowest Individual Scores**")
@@ -233,7 +233,7 @@ with tab3:
         disp = prep_display(low_scores, manager_map, show_mgr, show_team,
                             cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
                             headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
-        st.dataframe(disp, use_container_width=True, hide_index=True)
+        st.dataframe(disp, width="stretch", hide_index=True)
 
     st.markdown("**Top 5 Highest-Scoring Matchups**")
     # Build a canonical pair key (lower team_id first) so each matchup only appears once
@@ -252,7 +252,7 @@ with tab3:
     disp = prep_display(top_matchups, manager_map, show_mgr, show_team,
                         cols=["team_name", "week_label", "score", "opp_name", "opp_score", "matchup_total"],
                         headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Total"])
-    st.dataframe(disp, use_container_width=True, hide_index=True)
+    st.dataframe(disp, width="stretch", hide_index=True)
 
 with tab4:
     st.subheader("Season H2H Record Matrix")
@@ -269,4 +269,4 @@ with tab4:
                 w = (rows["outcome"] == "W").sum()
                 l = (rows["outcome"] == "L").sum()
                 matrix.loc[lbl, opp_lbl] = f"{w}-{l}"
-    st.dataframe(matrix, use_container_width=True)
+    st.dataframe(matrix, width="stretch")

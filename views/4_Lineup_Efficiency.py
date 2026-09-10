@@ -68,7 +68,7 @@ with tab1:
                                      "avg_left_on_bench", "total_left_on_bench"],
                                headers=["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
                                         "Avg Left on Bench", "Total Left on Bench"])
-        st.dataframe(display, use_container_width=True)
+        st.dataframe(display, width="stretch")
 
         summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
         fig = px.bar(summary.sort_values("avg_efficiency"), x="avg_efficiency", y="label",
@@ -79,7 +79,7 @@ with tab1:
         fig.add_vline(x=summary["avg_efficiency"].mean(), line_dash="dash", line_color="gray",
                       annotation_text="League Avg")
         fig.update_layout(coloraxis_showscale=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         col1, col2 = st.columns(2)
         with col1:
@@ -89,14 +89,14 @@ with tab1:
                           labels={"label": "", "total_left_on_bench": "Points"},
                           color="total_left_on_bench", color_continuous_scale="Reds")
             fig2.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
-            st.plotly_chart(fig2, use_container_width=True)
+            st.plotly_chart(fig2, width="stretch")
 
         with col2:
             fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
                               text="label", title="Actual Score vs Efficiency",
                               labels={"avg_actual": "Avg Actual Score", "avg_efficiency": "Efficiency %"})
             fig3.update_traces(textposition="top center")
-            st.plotly_chart(fig3, use_container_width=True)
+            st.plotly_chart(fig3, width="stretch")
 
 with tab2:
     if not efficiency_available:
@@ -124,14 +124,14 @@ with tab2:
                                      mode="lines+markers", line=dict(color="orange")))
             fig.update_layout(barmode="group", title=f"{lbl} — Actual vs Optimal by Week",
                               xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         if selected_team != "All Teams":
             tdf = weekly[weekly["team_name"] == selected_team][
                 ["week", "actual_score", "optimal_score", "points_left_on_bench", "efficiency_pct"]
             ].round(2)
             tdf.columns = ["Week", "Actual", "Optimal", "Left on Bench", "Eff%"]
-            st.dataframe(tdf, use_container_width=True, hide_index=True)
+            st.dataframe(tdf, width="stretch", hide_index=True)
 
 with tab3:
     st.subheader("Top Scoring Players")
@@ -173,7 +173,7 @@ with tab3:
             "Weeks": top["weeks_played"],
         })
         disp.index = range(1, len(disp) + 1)
-        st.dataframe(disp, use_container_width=True,
+        st.dataframe(disp, width="stretch",
                      column_config={"Pos": st.column_config.TextColumn("Pos", width="small")})
 
 with tab4:
@@ -193,7 +193,7 @@ with tab4:
                                cols=["team_name", "avg_projected", "times_beat_proj", "beat_proj_pct"],
                                headers=["Team", "Avg Proj", "Times Beat Proj", "Beat Proj %"])
         display["Avg Proj"] = display["Avg Proj"].round(1)
-        st.dataframe(display, use_container_width=True, hide_index=True)
+        st.dataframe(display, width="stretch", hide_index=True)
 
         proj_df["label"] = chart_label(proj_df, manager_map, show_mgr, show_team)
         fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
@@ -202,4 +202,4 @@ with tab4:
                      color="avg_proj_diff", color_continuous_scale="RdYlGn")
         fig.add_vline(x=0, line_dash="dash", line_color="gray")
         fig.update_layout(coloraxis_showscale=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")

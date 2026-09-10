@@ -94,7 +94,7 @@ with tab1:
         max_abs_diff=("abs_diff", "max"),
     ).reset_index().round(3)
     summary.columns = ["Season", "Check Type", "Checks", "Mismatches", "Avg Diff", "Max |Diff|"]
-    st.dataframe(summary, use_container_width=True, hide_index=True)
+    st.dataframe(summary, width="stretch", hide_index=True)
 
     fig = px.bar(
         summary, x="Season", y="Max |Diff|", color="Check Type", barmode="group",
@@ -103,7 +103,7 @@ with tab1:
     )
     fig.add_hline(y=TOLERANCE, line_dash="dash", line_color="red",
                   annotation_text=f"Tolerance ({TOLERANCE} pts)")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 with tab2:
     st.subheader("Regular Season — Player Sum vs ESPN Reported")
@@ -125,7 +125,7 @@ with tab2:
                 lambda row: ["background-color: #fff3cd" if row["Status"] == "⚠️ MISMATCH" else "" for _ in row],
                 axis=1,
             ),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -134,7 +134,7 @@ with tab2:
         fig.add_vline(x=0, line_dash="solid", line_color="gray")
         fig.add_vline(x=TOLERANCE, line_dash="dash", line_color="orange", annotation_text="+tol")
         fig.add_vline(x=-TOLERANCE, line_dash="dash", line_color="orange", annotation_text="-tol")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
 with tab3:
     st.subheader("Playoff Reconciliation")
@@ -171,7 +171,7 @@ with tab3:
                 lambda row: ["background-color: #fff3cd" if row["Status"] == "⚠️ MISMATCH" else "" for _ in row],
                 axis=1,
             ),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -202,7 +202,7 @@ with tab4:
                                combined_mgr_map, show_mgr, show_team,
                                cols=["team_name", "season", "check_type", "week", "our_score", "espn_score", "diff"],
                                headers=["Team", "Season", "Check Type", "Week", "Our Score", "ESPN Score", "Diff"])
-        st.dataframe(display, use_container_width=True, hide_index=True)
+        st.dataframe(display, width="stretch", hide_index=True)
 
         st.markdown("**Possible causes of mismatches:**")
         st.markdown("""

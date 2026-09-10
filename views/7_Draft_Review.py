@@ -99,10 +99,10 @@ with tab1:
         styled = board.style.apply(
             lambda _: np.where(kept.reindex_like(board).fillna(False), blue, ""),
             axis=None)
-        st.dataframe(styled, use_container_width=True)
+        st.dataframe(styled, width="stretch")
         st.caption("Blue cells were kept, not drafted.")
     else:
-        st.dataframe(board, use_container_width=True)
+        st.dataframe(board, width="stretch")
 
 with tab2:
     # The old summary above this broke each team's picks into total, keepers
@@ -119,7 +119,7 @@ with tab2:
         player_pts.columns = ["Player", "Season Points"]
         team_picks = team_picks.merge(player_pts, on="Player", how="left")
 
-    st.dataframe(team_picks, use_container_width=True, hide_index=True)
+    st.dataframe(team_picks, width="stretch", hide_index=True)
 
 with tab3:
     st.subheader("Draft Value Analysis")
@@ -144,7 +144,7 @@ with tab3:
             x_line = sorted(valid["overall_pick"].unique())
             fig.add_scatter(x=x_line, y=p(x_line), mode="lines", name="Trend",
                             line=dict(dash="dash", color="gray"))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         value_df["value_score"] = value_df["season_points"] / (value_df["overall_pick"] ** 0.5 + 1)
         best_value = value_df.nlargest(15, "value_score")[
@@ -152,11 +152,11 @@ with tab3:
         ].round(2)
         best_value.columns = ["Pick", "Round", "Player", "Team", "Season Pts", "Value Score"]
         st.subheader("Best Value Picks")
-        st.dataframe(best_value, use_container_width=True, hide_index=True)
+        st.dataframe(best_value, width="stretch", hide_index=True)
 
         busts = value_df[value_df["overall_pick"] <= 30].nsmallest(10, "season_points")[
             ["overall_pick", "round", "player_name", "label", "season_points"]
         ].round(2)
         busts.columns = ["Pick", "Round", "Player", "Team", "Season Pts"]
         st.subheader("Biggest Busts (Top 30 picks)")
-        st.dataframe(busts, use_container_width=True, hide_index=True)
+        st.dataframe(busts, width="stretch", hide_index=True)

@@ -220,7 +220,7 @@ def render_bracket():
             row[" "] = "✅ W" if won else ("❌ L" if all_done else "")
             rows.append(row)
 
-        st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
 
 
     # ── Regular season seedings table ─────────────────────────────────────────────
@@ -234,7 +234,7 @@ def render_bracket():
                                  cols=["team_name", "seed", "wins", "losses", "points_for"],
                                  headers=["Team", "Seed", "W", "L", "PF"])
     seed_disp["PF"] = seed_disp["PF"].round(1)
-    st.dataframe(seed_disp, hide_index=True, use_container_width=True)
+    st.dataframe(seed_disp, hide_index=True, width="stretch")
 
     st.divider()
 
@@ -349,7 +349,7 @@ def render_projections():
         display = prep_display(sim_df, manager_map, show_mgr, show_team,
                                cols=["team_name", "current_wins", "current_losses", "playoff_pct"],
                                headers=["Team", "Current W", "Current L", "Playoff Odds %"])
-        st.dataframe(display, use_container_width=True, hide_index=True)
+        st.dataframe(display, width="stretch", hide_index=True)
 
         sim_df["label"] = chart_label(sim_df, manager_map, show_mgr, show_team)
         colors = ["#2ecc71" if p >= 50 else "#e74c3c" if p < 20 else "#f39c12"
@@ -364,7 +364,7 @@ def render_projections():
         fig.add_hline(y=50, line_dash="dash", line_color="gray", annotation_text="50%")
         fig.update_layout(title="Playoff Probability by Team", xaxis_tickangle=-30,
                           yaxis_title="Playoff Probability %", yaxis_range=[0, 105])
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     with tab2:
         st.subheader("Scoring Distribution by Team")
@@ -390,13 +390,13 @@ def render_projections():
                 "Games": len(scores),
             })
         params_df = pd.DataFrame(team_params).sort_values("Mean", ascending=False)
-        st.dataframe(params_df, use_container_width=True, hide_index=True)
+        st.dataframe(params_df, width="stretch", hide_index=True)
 
         fig = px.scatter(params_df, x="Mean", y="Std Dev", text="Team", size="Games",
                          title="Mean Score vs Consistency (lower Std Dev = more consistent)",
                          labels={"Mean": "Average Score", "Std Dev": "Std Deviation (consistency)"})
         fig.update_traces(textposition="top center")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     with tab3:
         st.subheader("Magic Numbers")
@@ -425,7 +425,7 @@ def render_projections():
                                       cols=["team_name", wins_col, losses_col, "magic_number", "games_left"],
                                       headers=["Team", "W", "L", "Magic Number", "Wins Left"])
             magic_disp["Clinched"] = standings["magic_number"].values == 0
-            st.dataframe(magic_disp, use_container_width=True, hide_index=True)
+            st.dataframe(magic_disp, width="stretch", hide_index=True)
 
             standings["max_possible_wins"] = standings[wins_col] + weeks_remaining * wins_per_week
             standings["eliminated"] = standings["max_possible_wins"] < cutoff_wins + 1

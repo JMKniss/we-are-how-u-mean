@@ -536,7 +536,7 @@ with tab_trophy:
               .drop(columns="_wins")
               .reset_index(drop=True))
     career.index = range(1, len(career) + 1)
-    st.dataframe(career, use_container_width=True)
+    st.dataframe(career, width="stretch")
 
     # 2015 has no game data, so its champion and sacko show up in Finishes only.
     # Name only the ones actually on screen, since Active view may hide them.
@@ -614,7 +614,7 @@ with tab_records:
         weekly_records.append({"Record": low_lbl, "Manager": r["manager"],
                                 "Season": str(int(r["season"])), "Week": str(int(r["week"])),
                                 "Score": f"{r['score']:.2f}"})
-    st.dataframe(pd.DataFrame(weekly_records), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(weekly_records), hide_index=True, width="stretch")
 
     # ── Scoring season records ─────────────────────────────────────────────
     st.markdown("#### Season Scoring Records (Regular Season Only)")
@@ -632,7 +632,7 @@ with tab_records:
     all_scoring_rows = []
     for label, col, largest in scoring_record_specs:
         all_scoring_rows += season_record_rows(label, season_stats_df, col, largest)
-    st.dataframe(pd.DataFrame(all_scoring_rows), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(all_scoring_rows), hide_index=True, width="stretch")
 
     st.markdown("#### Single-Season Win Records")
 
@@ -650,7 +650,7 @@ with tab_records:
         wins_record_rows("Most Reg Season Wins",   season_stats_df, "reg_wins", largest=True) +
         wins_record_rows("Fewest Reg Season Wins", season_stats_df, "reg_wins", largest=False)
     )
-    st.dataframe(win_records, hide_index=True, use_container_width=True)
+    st.dataframe(win_records, hide_index=True, width="stretch")
 
     # A perfect season is winning out and then taking the title; a perfect
     # disaster is losing out and then finishing last. Both are computed rather
@@ -702,7 +702,7 @@ with tab_records:
         diff_rows("Biggest Win Margin", reg_matchups_win_side, largest=True) +
         diff_rows("Closest Game", reg_matchups_win_side, largest=False)
     )
-    st.dataframe(diff_records, hide_index=True, use_container_width=True)
+    st.dataframe(diff_records, hide_index=True, width="stretch")
 
     # ── Win records ────────────────────────────────────────────────────────
 
@@ -740,7 +740,7 @@ with tab_records:
 
     if bench_rows:
         st.dataframe(pd.DataFrame(bench_rows), hide_index=True,
-                     use_container_width=True)
+                     width="stretch")
         st.caption(
             "Points Left on Bench is the gap to the best lineup that could "
             "legally have been fielded, respecting position eligibility. "
@@ -799,7 +799,7 @@ with tab_records:
                 "Weeks to Achieve": str(weeks),
             })
     st.dataframe(pd.DataFrame(milestone_rows), hide_index=True,
-                 use_container_width=True)
+                 width="stretch")
     st.caption(
         "Weeks counts regular season games played, ties included. Playoff "
         f"appearances are seasons seeded in the top {PLAYOFF_SPOTS}, counted at "
@@ -902,7 +902,7 @@ with tab_mgr_records:
     col_config = {disp: st.column_config.TextColumn(disp, width=150)
                   for disp, key, src, largest in col_specs}
     st.dataframe(pd.DataFrame(display_rows), hide_index=True,
-                 use_container_width=True, column_config=col_config)
+                 width="stretch", column_config=col_config)
 
     st.divider()
 
@@ -961,7 +961,7 @@ with tab_mgr_records:
         # numeric columns must be formatted explicitly or they print as
         # 30.800000 instead of 30.8.
         ).format({"Win%": "{:.1f}", "Avg Diff": "{:.2f}"})
-        st.dataframe(styled, hide_index=True, use_container_width=True)
+        st.dataframe(styled, hide_index=True, width="stretch")
         st.caption(
             f"{pick}, {n} season{'s' if n != 1 else ''}. Ties are excluded from "
             "win% and from the average row. Playoffs marks a top-"
@@ -1013,7 +1013,7 @@ with tab_h2h:
                             values="record")
               .fillna("—"))
     matrix.index.name = "vs →"
-    st.dataframe(matrix, use_container_width=True)
+    st.dataframe(matrix, width="stretch")
 
     st.divider()
     st.subheader("Head-to-Head Records")
@@ -1042,7 +1042,7 @@ with tab_h2h:
         "avg_diff": "Avg Diff",      # signed: who is ahead, and by how much
         "absmar": "Avg Margin",      # unsigned: how close the games actually are
     })
-    st.dataframe(disp, hide_index=True, use_container_width=True)
+    st.dataframe(disp, hide_index=True, width="stretch")
 
     MIN_MEETINGS = 8   # ~5 seasons of history; below this the picks are noise
 
@@ -1081,7 +1081,7 @@ with tab_h2h:
         profile_rows.append(row)
 
     st.dataframe(pd.DataFrame(profile_rows), hide_index=True,
-                 use_container_width=True)
+                 width="stretch")
 
     st.divider()
     st.divider()
@@ -1125,7 +1125,7 @@ with tab_h2h:
                     "Winner": winner,
                 })
             st.dataframe(pd.DataFrame(games), hide_index=True,
-                         use_container_width=True)
+                         width="stretch")
             summary = f"{mgr_a} leads {a_w}-{b_w}" if a_w > b_w else (
                 f"{mgr_b} leads {b_w}-{a_w}" if b_w > a_w else
                 f"All square at {a_w}-{b_w}")
@@ -1156,7 +1156,7 @@ with tab_h2h:
         rr.index = [f"Rank {i}" for i in rr.index]
         rr.columns = [f"{i}" for i in rr.columns]
         rr.index.name = "vs →"
-        st.dataframe(rr, use_container_width=True)
+        st.dataframe(rr, width="stretch")
         total = int(all_meetings.values[upper].sum())
         # Seasons that hold games, not seasons listed in config: SEASONS now
         # includes a season that has not started.
@@ -1216,13 +1216,13 @@ with tab_milestones:
     st.markdown("#### Wins")
     if win_milestones:
         win_table = milestone_table("cum_wins", win_milestones, "W")
-        st.dataframe(win_table, hide_index=True, use_container_width=True)
+        st.dataframe(win_table, hide_index=True, width="stretch")
     else:
         st.info("Not enough wins recorded yet.")
 
     st.markdown("#### Losses")
     if loss_milestones:
         loss_table = milestone_table("cum_losses", loss_milestones, "L")
-        st.dataframe(loss_table, hide_index=True, use_container_width=True)
+        st.dataframe(loss_table, hide_index=True, width="stretch")
     else:
         st.info("Not enough losses recorded yet.")
