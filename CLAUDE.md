@@ -51,7 +51,7 @@ productive. Update it in the same commit as the change, never afterwards:
 | where data comes from, or how it is stored | Data storage, Data layer |
 | the weekly job, the deploy, the archive's shape | The weekly update, Deployment |
 | something you had to think about | Key design decisions — say *why*, not what |
-| a page's structure or what it shows | Page-level implementation notes |
+| a page's structure or what it shows | that page's docstring |
 
 Two rules that keep it from rotting:
 
@@ -96,62 +96,24 @@ ff_app/
     └── 9_All_Time.py
 ```
 
-## Branding
+## Where the detail lives
 
-`branding.py` owns the browser icon and the title block, in one place because
-the icon has to be identical everywhere. Each page calls its own
-st.set_page_config, and page_icon there overrides whatever app.py set - which
-is why the tab used to show a different emoji on each page.
+This file holds what no single source file reveals: the season quirks, ESPN's
+oddities, the weekly workflow, and why the awkward decisions were made. Detail
+that belongs to one file lives in that file's docstring, so it is read when
+the file is opened rather than loaded into every session:
 
-Two files, both optional; everything falls back to the football emoji when
-they are absent, so the app runs the same either way:
+| Topic | Read |
+|---|---|
+| Data layer, read order, caching | `data/espn_client.py` |
+| Upcoming fixtures and projections | `get_upcoming_df` in `data/espn_client.py` |
+| Matchups-to-watch notes | `analysis/matchup_notes.py` |
+| Browser icon and title | `branding.py`, `assets/README.md` |
+| Shared page helpers | `display_utils.py` |
+| A page's own behaviour | that page's docstring in `views/` |
 
-- `assets/logo.png` - the browser tab icon, square, on every page.
-- `assets/logo-mark.png` - just the figure, set between the words in the page
-  title. Falls back to logo.png, which reads oddly there because that image
-  already contains the words "WE ARE HOW U MEAN".
-
-`title_html(subtitle)` renders the league name with the figure inline and the
-page name beneath it. It needs unsafe_allow_html because Streamlit has no way
-to put an image inside a heading otherwise.
-
-## Upcoming matchups and matchup notes
-
-`data/archive/upcoming.csv` holds the one week about to be played: fixtures
-plus ESPN's projected scores. It is the only dataset that deliberately
-captures a week with no results in it - everywhere else that is the thing
-`_drop_unplayed_weeks` exists to prevent, so it is kept apart where it can
-never be mistaken for a result.
-
-It is a snapshot, replaced wholesale each run rather than appended. Keyed on
-(season, team_id), a new week would otherwise read as a conflict against last
-week's and be skipped.
-
-Two consequences worth knowing:
-
-- Projections are a Tuesday snapshot and drift as players are ruled out later
-  in the week. Re-run `weekly_update.py` to refresh them.
-- Once a season ends nothing replaces the file, so the last week's fixtures
-  would sit there looking like a game still to come. The Dashboard guards
-  against that by showing the table only when the upcoming week is actually
-  ahead of the last played week, which is also what hides it for a finished
-  season.
-
-`analysis/matchup_notes.py` writes the "matchups to watch" lines. Every note
-is one sentence - **A vs B** is historically the <adjective> matchup <scope>,
-<detail> - from a fixed set of rules, each backed by a number in the archive.
-Scope distinguishes a league-wide extreme from merely the most extreme of the
-games being played this week, because those are different claims.
-
-Rules are ranked by distance from the league's middle in standard deviations
-and the top three shown, one per pair so the same two managers are not called
-out repeatedly. At least one always appears: if nothing is unusual, the
-tightest of the week's games is still true.
-
-Hard-coded rather than written weekly by a model, deliberately. The sentence
-shape is fixed, so the work is ranking rather than writing; the numbers come
-from data already computed and can be checked; and the site updates from a git
-push with nothing else in the loop.
+Keep it that way: when a section here starts describing one file, move it
+into that file.
 
 ## Deployment — wearehowumean.com on Render
 
@@ -365,34 +327,6 @@ Only relevant when pulling a season not yet archived. Delete freely.
 
 `USE_ARCHIVE = False` in `data/espn_client.py` bypasses the archive entirely.
 
-## Data layer — espn_client.py
-- Reads `data/archive/` first, then the pickle cache, then ESPN. Normal use of
-  the app touches none of ESPN and needs no cookies
-- Cache lives at `data/cache/<season>/`. Delete a folder to force a fresh pull
-- `get_league(season)` — the raw espn-api League object. No page calls this;
-  it means a live ESPN request whenever the pickle is cold
-- `get_current_week(season)` — last week the archive holds. This is what pages
-  should ask, rather than reaching through `get_league` for `current_week`
-- `get_matchups_df(season)` — team-level weekly scores and outcomes (W/L/T)
-- `get_boxscores_df(season)` — player-level data: points, projected, slot, bench/active
-- `get_draft_df(season)` — full draft board with keeper flags
-- `get_standings_df(season)` — final standings metadata from ESPN
-- `get_manager_map(season)` — {team_id: manager_name} for the season
-- `get_validation_df(season)` — comparison of our calculated scores vs ESPN's published totals
-
-## Display utilities — display_utils.py
-All 8 pages use shared helpers for consistent Manager/Team name display:
-- `season_selector(SEASONS, DEFAULT_SEASON)` — the sidebar season picker
-- `require_data(df, season, what)` — stops a page with a plain message when the
-  season holds nothing yet. Every season page calls it right after loading;
-  without it an unstarted season reaches the analysis code as a frame with no
-  columns and dies on a KeyError, which reads as the site being broken
-- `sidebar_display_prefs()` — adds "Show Manager" / "Show Team Name" toggles to sidebar
-- `prep_display(df, manager_map, show_mgr, show_team, cols, headers)` — prepares a display
-  DataFrame with a "Manager" or "Team" column as the first column
-- `chart_label(df, manager_map, show_mgr, show_team)` — returns a Series of display labels
-  for use in Plotly chart legends and hover text
-
 ## ESPN credentials
 - 2024 and 2025 are public (no auth needed)
 - 2019–2023 require ESPN_S2 and SWID cookies (private league)
@@ -497,39 +431,6 @@ from a normal distribution for each remaining game. 10,000 sims by default.
 
 **3-week vs 4-week playoff format detection:** `len(pw) == 3` identifies the 2022 format.
 All playoff display logic (page 6) and validation (espn_client.py) branch on this.
-
-## Page-level implementation notes
-
-### views/3_Scoring.py — Weekly Trends tab
-Tab order: Individual Manager Trend (top) → divider → All Teams chart → Score Range band chart.
-
-**Individual Manager Trend chart:**
-- Dropdown includes all manager names plus `"— League Median —"` as the first option.
-- When a manager is selected: plots their weekly scores (blue) + league average (light gray dotted) + season trendline (blue dashed) + last-5 trendline (orange dashed).
-- When League Median is selected: plots weekly median (purple) + season trendline (purple dashed) + last-5 trendline (orange dashed). League Average line is hidden (redundant).
-- Last-5 trendline only appears once the subject has 6+ weeks of data (active-season guard).
-- Slope values (`+X.X pts/wk`) displayed as `st.metric` chips below the chart — not as on-chart annotations — to avoid overlap with the legend.
-- X-axis is capped at the last week played (`range=[0.5, max_week + 0.5]`).
-
-## Analysis modules
-
-### standings.py
-- `h2h_standings(df)` — standard record, PF, PA, avg score
-- `median_standings(df)` — wins/losses vs weekly league median
-- `combined_standings(df)` — H2H + median combined (2 games/week)
-- `strength_of_schedule(df)` — avg opponent score faced
-- `luck_index(df)` — actual wins vs expected wins by score percentile
-- `alternate_schedule_standings(df)` — wins if you played everyone every week
-- `weekly_scores_wide(df)` — pivot to wide format for charting
-
-### efficiency.py
-- `lineup_efficiency(df)` — actual vs optimal score, bench waste, per week and season summary
-- `top_players(df, position, top_n)` — leaderboard of player season totals
-- `projected_vs_actual(df)` — how often each team beats ESPN's projection
-
-### projections.py
-- `simulate_playoffs(df, ...)` — Monte Carlo, returns playoff % per team
-- `win_probability_by_score(score, opp_mean, opp_std)` — single-game win prob via normal CDF
 
 ## Git workflow
 - Repo: https://github.com/JMKniss/we-are-how-u-mean

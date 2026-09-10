@@ -17,6 +17,13 @@ Rules are ranked by how far the pair sits from the league's middle, in
 standard deviations, and the top few are shown. At least one always is: if
 nothing stands out, the tightest of this week's games is still a true thing to
 say about them.
+
+One note per pair, so the same two managers are not called out twice.
+
+Hard-coded rather than written each week by a model, deliberately. The
+sentence shape is fixed, so the work is ranking rather than writing; the
+numbers come from data already computed and can be checked; and the site
+updates from a git push with nothing else in the loop.
 """
 from dataclasses import dataclass
 

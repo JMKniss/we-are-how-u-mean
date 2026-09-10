@@ -1,3 +1,16 @@
+"""
+Scoring - weekly trends, distributions, best and worst, head-to-head scores.
+
+Weekly Trends, Individual Manager Trend chart:
+- The dropdown lists every manager, with "- League Median -" first.
+- A manager plots their weekly scores, the league average (dotted), a season
+  trendline and a last-5 trendline. League Median plots the weekly median and
+  both trendlines, and hides the average line as redundant.
+- The last-5 trendline appears only from six weeks of data onward.
+- Slopes show as st.metric chips below the chart, not on-chart annotations,
+  which collided with the legend.
+- The x-axis stops at the last week played.
+"""
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))

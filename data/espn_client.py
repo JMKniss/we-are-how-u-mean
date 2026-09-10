@@ -1,8 +1,16 @@
 """
-ESPN data layer — fetches and caches all league data.
-Cache is stored as pickle files in data/cache/<season>/.
-Call invalidate_cache(season) to force a fresh pull.
-Credentials are loaded automatically from config (via .env).
+ESPN data layer.
+
+Every getter reads in this order: data/archive/*.csv, then the pickle cache in
+data/cache/<season>/, then ESPN. In normal use the archive always answers, so
+the app needs no ESPN cookies and never calls ESPN; only the weekly update
+does, by setting USE_ARCHIVE = False. invalidate_cache(season) drops a stale
+pickle - which matters, since a cold pickle from before a draft makes the
+league look undrafted.
+
+Pages should ask get_current_week(), which is the last week the archive
+holds, rather than reaching through get_league() for current_week: that is
+ESPN's open scoring period and runs a week ahead of the data.
 """
 import functools
 import json
