@@ -80,6 +80,7 @@ ff_app/
 ├── data/
 │   ├── espn_client.py      # All ESPN API calls + pickle cache
 │   ├── legacy_stats.py     # nfl-data-py stats for 2016-2017 seasons
+│   ├── trade_inference.py  # rebuilds a finished season's trades from weekly rosters
 │   └── cache/<year>/       # Cached .pkl files — gitignored, auto-created
 ├── analysis/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
@@ -109,6 +110,7 @@ the file is opened rather than loaded into every session:
 | Data layer, read order, caching | `data/espn_client.py` |
 | Upcoming fixtures and projections | `get_upcoming_df` in `data/espn_client.py` |
 | Waivers, drops, trades: sources, shape, gaps | `get_transactions_df` in `data/espn_client.py` |
+| Rebuilding past trades, and the evidence for it | `data/trade_inference.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
@@ -194,14 +196,13 @@ ESPN has since restated is reported as a conflict and skipped, so a stat
 correction cannot quietly rewrite a result the league has already argued about.
 Pass `--force` when you have looked at the conflict and decided ESPN is right.
 
-**Skipping weeks loses trades for good.** Transactions are archived from two
-ESPN sources, and the one holding trades - the league activity feed - is
-deleted once the season ends (2025's already answers "does not exist"). Waiver
-history stays on ESPN; trade details do not. A season's trades exist only in
-what the weekly runs captured, so they must run through to the final week.
-Transactions start in 2026; earlier seasons have none archived, and
-`build_archive.py` refuses to build a finished season's rather than write one
-with no trades in it.
+**Keep it running to the final week, for the trades.** The only ESPN source
+that records a trade's players - the league activity feed - is deleted once
+the season ends (2025's already answers "does not exist"). Waiver history
+stays on ESPN. A finished season's trades can still be rebuilt from its weekly
+rosters (`data/trade_inference.py`, marked `source=inferred`), and 2025 was
+built that way, but that is a deduction checked against ESPN's acceptances,
+and a weekly capture from the feed is a record.
 
 **It refreshes `seasons.json` itself.** That file carries `current_week`, which
 is what the pages read, plus manager and team names. Nothing used to write it,

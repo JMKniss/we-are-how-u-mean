@@ -50,7 +50,7 @@ def waiver_moves(tx: pd.DataFrame) -> pd.DataFrame:
         })
     out = pd.DataFrame(rows, columns=cols)
     out["bid"] = pd.to_numeric(out["bid"], errors="coerce").astype("Int64")
-    return out.sort_values(["executed_at", "transaction_id"], ignore_index=True)
+    return out.sort_values(["week", "executed_at", "transaction_id"], ignore_index=True)
 
 
 def trade_sides(tx: pd.DataFrame) -> pd.DataFrame:
@@ -61,9 +61,11 @@ def trade_sides(tx: pd.DataFrame) -> pd.DataFrame:
     the team cut to make roster room as part of the deal, which went to the
     free-agent pool rather than to the other side. partners are the other
     team ids in the trade - usually one, but nothing here assumes two teams.
+    inferred is True when any part of the trade was worked out from weekly
+    rosters rather than recorded by ESPN, and notes carries the reasons.
     """
     cols = ["transaction_id", "season", "week", "executed_at", "team_id",
-            "receives", "sends", "dropped", "partners"]
+            "receives", "sends", "dropped", "partners", "inferred", "notes"]
     if tx is None or tx.empty:
         return pd.DataFrame(columns=cols)
     trades = tx[tx["kind"] == "trade"]
@@ -88,6 +90,10 @@ def trade_sides(tx: pd.DataFrame) -> pd.DataFrame:
                 "dropped": g.loc[(g["action"] == "drop") & (g["from_team_id"] == team),
                                  "player_name"].tolist(),
                 "partners": [t for t in teams if t != team],
+                "inferred": bool((g.get("source", pd.Series(dtype=str)) == "inferred").any()),
+                "notes": sorted({n for n in g.get("note", pd.Series(dtype=str)).dropna()
+                                 if str(n).strip()}),
             })
     return (pd.DataFrame(rows, columns=cols)
-            .sort_values(["executed_at", "transaction_id", "team_id"], ignore_index=True))
+            .sort_values(["week", "executed_at", "transaction_id", "team_id"],
+                         ignore_index=True))

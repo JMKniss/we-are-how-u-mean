@@ -1117,27 +1117,26 @@ def get_transactions_df(season: int) -> pd.DataFrame:
     tells a $0 bid from a player picked up for nothing after waivers cleared:
     both have no money attached, and only the transaction type separates
     them. bid is the FAAB amount for waiver claims and blank for everything
-    else. A drop with no add is kind free_agent, the way ESPN files it.
+    else. A drop with no add is kind free_agent.
 
-    Two sources, because neither holds everything:
+    Waiver, free-agent and drop moves come from mTransactions2, one request per
+    scoring period, which carries the transaction type and the bid. ESPN keeps
+    those for past seasons (checked back to 2019). Trades are harder:
 
-    - Waiver and free-agent moves come from mTransactions2, one request per
-      scoring period, which carries the transaction type and the bid. It keeps
-      them for past seasons too (checked back to 2019).
-    - Trades come from the league activity feed. mTransactions2 does list
-      trades, but by the end of 2025 it had dropped the player lists from 12
-      of the season's 13 accepted trades: the acceptances remain, pointing at
-      proposals it no longer returns under any filter tried. The feed has the
-      players. But ESPN deletes a league's feed once the season is over - 2025
-      answers "This Communication Group does not exist" - so a season's trades
-      can only be captured while it is live.
+    - While a season is live they come from the league activity feed.
+      mTransactions2 does list trades, but by the end of 2025 it had dropped
+      the player lists from 12 of the season's 13 accepted trades. The feed
+      has them, but ESPN deletes it once the season is over - 2025 answers
+      "This Communication Group does not exist".
+    - For a finished season they are rebuilt from the weekly rosters in the
+      archived boxscores, checked against the acceptances ESPN still keeps.
+      data/trade_inference.py has the method and the evidence for it.
 
-    That second point is why this is archived weekly, and why building a
-    finished season raises TransactionsUnavailable rather than writing
-    waivers with no trades: a season with an empty trades record would read
-    as a season nobody traded in. Backfilling past seasons needs trades
-    reconstructed from week-to-week roster changes in boxscores, which is a
-    separate job.
+    source says which: espn for a move ESPN recorded, inferred for one worked
+    out from the rosters. note explains any inferred row that needed a
+    judgment - a drop ESPN never logged, a player traded twice in one week, a
+    vetoed trade the commissioner entered by hand. The feed is still preferred
+    while it exists, because it is a record rather than a deduction.
 
     Only transactions that went through are kept. Cancelled and failed claims,
     declined and vetoed trades, and lineup moves are all left out.
@@ -1181,30 +1180,83 @@ def get_transactions_df(season: int) -> pd.DataFrame:
     def position(pid):
         return _PRO_POSITION.get(players.get(pid, {}).get("defaultPositionId"), "")
 
-    rows = []
+    # Standalone drops are filed as ROSTER, not FREEAGENT. Leaving ROSTER out
+    # lost most drops that came without an add, and made every one of those
+    # players look, from the rosters, like he had been traded away.
+    moves = []
     for t in raw.values():
-        if t.get("status") != "EXECUTED" or t["type"] not in ("WAIVER", "FREEAGENT"):
+        if t.get("status") != "EXECUTED" or t["type"] not in ("WAIVER", "FREEAGENT", "ROSTER"):
             continue
         kind = "waiver" if t["type"] == "WAIVER" else "free_agent"
-        when = t.get("processDate") or t.get("proposedDate")
         for item in t.get("items", []):
             if item["type"] not in ("ADD", "DROP"):
                 continue
-            rows.append({
-                "season": season,
+            moves.append({
+                "ms": int(t.get("processDate") or t.get("proposedDate")),
                 "week": int(t["scoringPeriodId"]),
-                "executed_at": _eastern(when),
                 "transaction_id": t["id"],
                 "kind": kind,
                 "action": item["type"].lower(),
                 "from_team_id": int(item["fromTeamId"]),
                 "to_team_id": int(item["toTeamId"]),
                 "player_id": int(item["playerId"]),
-                "player_name": name(item["playerId"]),
-                "position": position(item["playerId"]),
                 "bid": t.get("bidAmount", 0) if kind == "waiver" else None,
+                "source": "espn",
+                "note": "",
             })
 
+    try:
+        trades = _feed_trades(league, raw, season)
+    except TransactionsUnavailable:
+        # The season is over and its feed with it: work the trades out from
+        # the weekly rosters instead. See data/trade_inference.py.
+        from data import archive
+        from data.trade_inference import infer_trades
+        box = archive.get("boxscores", season)
+        if box.empty:
+            raise TransactionsUnavailable(
+                f"{season}: no activity feed and no archived boxscores to "
+                f"rebuild trades from")
+        legs, loose, remove, notes = infer_trades(season, box, moves, raw)
+        for line in notes:
+            print(f"  trades      {season}  {line}")
+        moves = [m for m in moves if (m["transaction_id"], m["player_id"]) not in remove]
+        trades = ([{**l, "kind": "trade", "bid": None} for l in legs]
+                  + [{**l, "kind": "free_agent", "bid": None} for l in loose])
+
+    rows = []
+    for m in moves + trades:
+        pid = m["player_id"]
+        rows.append({
+            "season": season,
+            "week": m["week"],
+            "executed_at": _eastern(m["ms"]) if m.get("ms") is not None else None,
+            "transaction_id": m["transaction_id"],
+            "kind": m["kind"],
+            "action": m["action"],
+            "from_team_id": m["from_team_id"],
+            "to_team_id": m["to_team_id"],
+            "player_id": pid,
+            "player_name": name(pid),
+            "position": position(pid),
+            "bid": m["bid"],
+            "source": m["source"],
+            "note": m["note"],
+        })
+
+    df = pd.DataFrame(rows, columns=TRANSACTION_COLUMNS)
+    df["bid"] = df["bid"].astype("Int64")
+    return df.sort_values(["executed_at", "transaction_id", "action", "player_id"],
+                          ignore_index=True)
+
+
+TRANSACTION_COLUMNS = ["season", "week", "executed_at", "transaction_id", "kind",
+                       "action", "from_team_id", "to_team_id", "player_id",
+                       "player_name", "position", "bid", "source", "note"]
+
+
+def _feed_trades(league, raw: dict, season: int) -> list:
+    """A live season's trades, from the activity feed. Raises once it is gone."""
     # The feed carries no scoring period, so a trade takes the period of the
     # latest move ESPN recorded at or before it. FUTURE_ROSTER is left out of
     # that timeline: it is a lineup set ahead for a later week and would pull
@@ -1218,6 +1270,7 @@ def get_transactions_df(season: int) -> pd.DataFrame:
         earlier = [p for when, p in timeline if when <= ms]
         return earlier[-1] if earlier else (timeline[0][1] if timeline else 1)
 
+    trades = []
     for topic in _activity_trade_topics(league):
         when = int(topic["date"])
         for m in topic["messages"]:
@@ -1236,27 +1289,13 @@ def get_transactions_df(season: int) -> pd.DataFrame:
                 raise ValueError(
                     f"{season}: trade message not understood, topic {topic.get('id')}: "
                     f"{json.dumps(m)[:400]}")
-            rows.append({
-                "season": season,
-                "week": period_at(when),
-                "executed_at": _eastern(when),
-                "transaction_id": topic["id"],
-                "kind": "trade",
-                "action": "trade" if mtype == _MSG_TRADED else "drop",
-                "from_team_id": src,
-                "to_team_id": dst,
-                "player_id": pid,
-                "player_name": name(pid),
-                "position": position(pid),
-                "bid": None,
+            trades.append({
+                "ms": when, "week": period_at(when), "transaction_id": topic["id"],
+                "kind": "trade", "action": "trade" if mtype == _MSG_TRADED else "drop",
+                "from_team_id": src, "to_team_id": dst, "player_id": pid,
+                "bid": None, "source": "espn", "note": "",
             })
-
-    cols = ["season", "week", "executed_at", "transaction_id", "kind", "action",
-            "from_team_id", "to_team_id", "player_id", "player_name", "position", "bid"]
-    df = pd.DataFrame(rows, columns=cols)
-    df["bid"] = df["bid"].astype("Int64")
-    return df.sort_values(["executed_at", "transaction_id", "action", "player_id"],
-                          ignore_index=True)
+    return trades
 
 
 # ── App-mode safety net ──────────────────────────────────────────────────────

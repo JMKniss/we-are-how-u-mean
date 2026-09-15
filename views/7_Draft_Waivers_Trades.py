@@ -205,6 +205,9 @@ def minus(names, suffix=""):
 
 
 def when(executed_at: str) -> str:
+    # Blank for a drop ESPN never logged: the rosters show the week, not the day.
+    if pd.isna(executed_at):
+        return ""
     d = pd.Timestamp(executed_at)
     return f"{d:%a %b} {d.day}"
 
@@ -258,9 +261,10 @@ with tab4:
             rank = shown["bid"].astype("float").fillna(-1)
             rank = rank.where(shown["adds"].str.len() > 0, -2)
             shown = (shown.assign(_rank=rank)
-                     .sort_values(["_rank", "executed_at"], ascending=False))
+                     .sort_values(["_rank", "week", "executed_at"], ascending=False))
         else:
-            shown = shown.sort_values("executed_at", ascending=order == "Oldest first")
+            shown = shown.sort_values(["week", "executed_at"],
+                                      ascending=order == "Oldest first")
 
         table = pd.concat([
             pd.DataFrame({"Week": shown["week"], "Date": shown["executed_at"].map(when)}),
@@ -289,10 +293,12 @@ with tab5:
         st.caption(f"{n} trade{'s' if n != 1 else ''}")
 
         # Newest trade first, each trade's sides kept together.
-        sides = sides.sort_values(["executed_at", "transaction_id", "team_id"],
-                                  ascending=[False, False, True])
+        sides = sides.sort_values(["week", "executed_at", "transaction_id", "team_id"],
+                                  ascending=[False, False, False, True])
         table = pd.concat([
-            pd.DataFrame({"Week": sides["week"], "Date": sides["executed_at"].map(when)}),
+            pd.DataFrame({"Week": sides["week"],
+                          "Date": [when(d) + (" ≈" if inf else "")
+                                   for d, inf in zip(sides["executed_at"], sides["inferred"])]}),
             who(sides),
             pd.DataFrame({
                 "Receives": [", ".join(plus(r)) for r in sides["receives"]],
@@ -303,3 +309,16 @@ with tab5:
             }, index=sides.index),
         ], axis=1)
         st.table(table.set_index("Week"))
+
+        if sides["inferred"].any():
+            st.caption(
+                "≈ rebuilt from week-to-week rosters. ESPN does not keep the "
+                "players in a finished season's trades, so they are worked out "
+                "from who changed teams without a recorded move, and checked "
+                "against the trades ESPN says were accepted.")
+            flagged = sides.drop_duplicates("transaction_id")
+            flagged = flagged[flagged["notes"].str.len() > 0]
+            for _, t in flagged.iterrows():
+                teams = " & ".join(manager_map.get(x, "?")
+                                   for x in sorted([t["team_id"], *t["partners"]]))
+                st.caption(f"Week {t['week']}, {teams}: {'; '.join(t['notes'])}.")
