@@ -95,6 +95,7 @@ if not upcoming.empty:
             "Away": name(manager_map.get(r.opp_id, "?"), r.opp_name),
         })
     st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    st.caption("Projections based on highest projected startable lineup per ESPN projections")
 
     # ── Matchups to watch ────────────────────────────────────────────────────
     history = load_history()

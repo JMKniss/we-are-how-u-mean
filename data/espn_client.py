@@ -909,6 +909,14 @@ def get_upcoming_df(season: int) -> pd.DataFrame:
 
     Returns an empty frame once the season is over, which is what tells the
     Dashboard to show no matchup table at all.
+
+    `projected` is the best lineup each team could start, not ESPN's total for
+    the lineup as set. The snapshot is taken Tuesday, before most managers
+    have touched their lineups, so ESPN's own figure mostly measures last
+    week's decisions: a bench WR projected above the starting flex still counts
+    zero. Starters are re-picked from ESPN's player projections under the
+    league's slot rules (the same assignment Lineup Efficiency uses), leaving
+    out IR-slotted players and anyone already ruled out.
     """
     arc = _from_archive("upcoming", season)
     if arc is not None:
@@ -925,11 +933,41 @@ def get_upcoming_df(season: int) -> pd.DataFrame:
     except Exception:
         return pd.DataFrame()
 
+    from analysis.efficiency import optimal_lineup_points, season_slot_requirements
+
+    # The slot rules come from this week's lineups themselves - the most common
+    # starting signature across the league, so one manager's empty slot does
+    # not shrink everyone's lineup. A week-1 snapshot has no archived boxscores
+    # to learn them from, and espn-api's position_slot_counts pairs labels to
+    # counts by position in a list, which is not something to lean on.
+    lineups = [lu for box in boxes
+               for lu in (box.home_lineup, box.away_lineup) if lu]
+    slot_counts = season_slot_requirements(pd.DataFrame(
+        {"week": week, "team_id": i, "slot": p.lineupSlot,
+         "is_active_slot": p.lineupSlot not in ("BE", "IR")}
+        for i, lineup in enumerate(lineups) for p in lineup
+    ))
+
+    unavailable = {"OUT", "INJURY_RESERVE", "SUSPENSION"}
+
+    def best_projected(lineup, espn_proj):
+        pool = [p for p in (lineup or [])
+                if p.lineupSlot != "IR" and p.injuryStatus not in unavailable]
+        if not slot_counts or not pool:
+            return round(float(espn_proj or 0), 2)
+        return optimal_lineup_points(
+            [p.position for p in pool],
+            [float(p.projected_points or 0) for p in pool],
+            slot_counts,
+        )
+
     rows = []
     for box in boxes:
+        home = best_projected(box.home_lineup, box.home_projected)
+        away = best_projected(box.away_lineup, box.away_projected)
         for team, proj, opp, opp_proj in [
-            (box.home_team, box.home_projected, box.away_team, box.away_projected),
-            (box.away_team, box.away_projected, box.home_team, box.home_projected),
+            (box.home_team, home, box.away_team, away),
+            (box.away_team, away, box.home_team, home),
         ]:
             if team is None or opp is None:
                 continue
@@ -938,10 +976,10 @@ def get_upcoming_df(season: int) -> pd.DataFrame:
                 "week": week,
                 "team_id": team.team_id,
                 "team_name": team.team_name.strip(),
-                "projected": round(float(proj or 0), 2),
+                "projected": proj,
                 "opp_id": opp.team_id,
                 "opp_name": opp.team_name.strip(),
-                "opp_projected": round(float(opp_proj or 0), 2),
+                "opp_projected": opp_proj,
                 "is_playoff": week in cfg["playoff_weeks"],
             })
     return pd.DataFrame(rows)
