@@ -1659,3 +1659,13 @@ season,week,team_id,team_name,score,opp_id,opp_name,opp_score,outcome,is_playoff
 2025,17,8,"I Don't Care, I Cast Fireball",85.34,6,NameOfCurseWarding,107.68,L,True
 2025,17,9,Paladins of the Pancreas,97.48,5,Constitution Check Downs,127.78,L,True
 2025,17,10,We Are Rolling High,94.42,1,Heroic Inspiration,80.76,W,True
+2026,1,1,Rapidash to the Endzone,121.16,9,SlowKing Henry and Company,132.06,L,False
+2026,1,2,Machampionship Bound,121.22,3,Nine tails is hot,109.26,W,False
+2026,1,3,Nine tails is hot,109.26,2,Machampionship Bound,121.22,L,False
+2026,1,4,Pickenschuuuuuuuuuu,107.76,5,This isnt my final Eveelotution,125.56,L,False
+2026,1,5,This isnt my final Eveelotution,125.56,4,Pickenschuuuuuuuuuu,107.76,W,False
+2026,1,6,GottaCatchaBall,115.32,10,We Are Rolling High,148.56,L,False
+2026,1,7,J’Diglett Morgoones,145.3,8,SheGloomOnMyWeedleTilIMuk,99.4,W,False
+2026,1,8,SheGloomOnMyWeedleTilIMuk,99.4,7,J’Diglett Morgoones,145.3,L,False
+2026,1,9,SlowKing Henry and Company,132.06,1,Rapidash to the Endzone,121.16,W,False
+2026,1,10,We Are Rolling High,148.56,6,GottaCatchaBall,115.32,W,False
