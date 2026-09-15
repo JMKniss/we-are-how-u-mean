@@ -203,7 +203,8 @@ with tab2:
     ).round(2).reset_index()
     # Consistency: 1 is the steadiest week to week, so rank by the smallest
     # spread. It says nothing about scoring well, only about scoring alike.
-    team_stats["Consistency"] = team_stats["Std"].rank(method="min").astype(int)
+    # One game has no spread, so Std is NaN until week 2; Int64 leaves it blank.
+    team_stats["Consistency"] = team_stats["Std"].rank(method="min").astype("Int64")
     display = prep_display(team_stats, manager_map, show_mgr, show_team,
                            cols=["team_name", "Mean", "Median", "Min", "Max",
                                  "Std", "Consistency"],
