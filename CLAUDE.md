@@ -84,14 +84,15 @@ ff_app/
 ├── analysis/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
-│   └── projections.py      # Monte Carlo playoff simulation, magic numbers
+│   ├── projections.py      # Monte Carlo playoff simulation, magic numbers
+│   └── transactions.py     # Waiver moves and trade sides from the transactions log
 └── views/
     ├── 1_Dashboard.py
     ├── 2_Standings.py
     ├── 3_Scoring.py
     ├── 4_Lineup_Efficiency.py
     ├── 5_Playoffs.py           # bracket + projections, one page
-    ├── 7_Draft_Review.py
+    ├── 7_Draft_Waivers_Trades.py   # draft tabs + waiver and trade trackers; still /Draft_Review
     ├── 8_Data_Validation.py    # hidden from the nav; /Data_Validation still works
     └── 9_All_Time.py
 ```
@@ -107,6 +108,7 @@ the file is opened rather than loaded into every session:
 |---|---|
 | Data layer, read order, caching | `data/espn_client.py` |
 | Upcoming fixtures and projections | `get_upcoming_df` in `data/espn_client.py` |
+| Waivers, drops, trades: sources, shape, gaps | `get_transactions_df` in `data/espn_client.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
@@ -192,6 +194,15 @@ ESPN has since restated is reported as a conflict and skipped, so a stat
 correction cannot quietly rewrite a result the league has already argued about.
 Pass `--force` when you have looked at the conflict and decided ESPN is right.
 
+**Skipping weeks loses trades for good.** Transactions are archived from two
+ESPN sources, and the one holding trades - the league activity feed - is
+deleted once the season ends (2025's already answers "does not exist"). Waiver
+history stays on ESPN; trade details do not. A season's trades exist only in
+what the weekly runs captured, so they must run through to the final week.
+Transactions start in 2026; earlier seasons have none archived, and
+`build_archive.py` refuses to build a finished season's rather than write one
+with no trades in it.
+
 **It refreshes `seasons.json` itself.** That file carries `current_week`, which
 is what the pages read, plus manager and team names. Nothing used to write it,
 so an update could add a week of data while the app went on showing the old one.
@@ -238,7 +249,7 @@ Two distinct layers. Do not conflate them.
 **`data/archive/` — the permanent record. Committed to git.**
 Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
-plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
+`transactions.csv`, plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
 
 This is the source of truth for completed seasons. It is read *before* the pickle
 cache and *before* ESPN, so day-to-day use needs no cookies and no network.
@@ -351,7 +362,7 @@ Only relevant when pulling a season not yet archived. Delete freely.
 | 2018 | ESPN API (rosterForCurrentScoringPeriod) | 100% exact |
 | 2019–2025 | ESPN API (box_scores) | 100% exact |
 
-Pages 4 (Lineup Efficiency) and 7 (Draft Review) show a warning banner when 2016 or 2017
+Pages 4 (Lineup Efficiency) and 7 (Draft, Waivers & Trades) show a warning banner when 2016 or 2017
 is selected, noting that player data may not be 100% accurate.
 
 ## Season quirks

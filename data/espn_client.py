@@ -1041,6 +1041,224 @@ def get_standings_df(season: int) -> pd.DataFrame:
     return df
 
 
+# ── Transactions: waiver claims, free-agent moves, drops, trades ─────────────
+
+class TransactionsUnavailable(RuntimeError):
+    """ESPN no longer serves the record needed to build a season's transactions."""
+
+
+# defaultPositionId on ESPN's player list. Not the lineup-slot POSITION_MAP,
+# which numbers positions differently and would call every WR a RB.
+_PRO_POSITION = {1: "QB", 2: "RB", 3: "WR", 4: "TE", 5: "K", 16: "D/ST"}
+
+# The executed moves the activity feed carries a trade as: 244 is one player
+# changing hands, 239 a player dropped to make room as part of the deal.
+_MSG_TRADED, _MSG_TRADE_DROP = 244, 239
+
+
+def _eastern(ms) -> str:
+    return (pd.Timestamp(int(ms), unit="ms", tz="UTC")
+            .tz_convert("America/New_York").strftime("%Y-%m-%d %H:%M:%S"))
+
+
+def _activity_trade_topics(league) -> list:
+    """Every trade topic in the league's activity feed, newest first."""
+    from espn_api.requests.espn_requests import ESPNInvalidLeague
+    topics, offset, page = [], 0, 25
+    while True:
+        filters = {"topics": {
+            "filterType": {"value": ["ACTIVITY_TRANSACTIONS"]},
+            "limit": page, "limitPerMessageSet": {"value": 25}, "offset": offset,
+            "sortMessageDate": {"sortPriority": 1, "sortAsc": False},
+            "sortFor": {"sortPriority": 2, "sortAsc": False},
+            "filterIncludeMessageTypeIds": {"value": [_MSG_TRADED, _MSG_TRADE_DROP]},
+        }}
+        try:
+            data = league.espn_request.league_get(
+                extend="/communication/",
+                params={"view": "kona_league_communication"},
+                headers={"x-fantasy-filter": json.dumps(filters)})
+        except ESPNInvalidLeague as e:
+            raise TransactionsUnavailable(
+                f"{league.year}: ESPN's activity feed is gone ({e}). It is only "
+                f"served for the live season, and trades cannot be rebuilt "
+                f"without it - see get_transactions_df.") from e
+        batch = data.get("topics", [])
+        topics += batch
+        if len(batch) < page:
+            return [t for t in topics
+                    if any(m.get("messageTypeId") == _MSG_TRADED
+                           for m in t.get("messages", []))]
+        offset += page
+
+
+def get_transactions_df(season: int) -> pd.DataFrame:
+    """
+    Every player movement of the season: one row per player per transaction.
+
+    A row is a player going from one team to another, with team 0 standing for
+    the free-agent pool. So a waiver claim that drops someone is two rows, an
+    add (0 -> team) and a drop (team -> 0), sharing a transaction_id, and a
+    two-for-one trade is three rows, one per player, each with the team that
+    sent him and the team that got him. Nothing is stored per manager: "what
+    did Matt receive" is to_team_id == Matt's team, and "sent" is
+    from_team_id. That keeps a trade from being recorded twice, once from each
+    side, where the two copies could drift apart.
+
+    It is shaped for the analysis this exists for, which is judging how moves
+    paid off. player_id joins straight onto boxscores, and boxscores already
+    knows, week by week, which roster a player sat on and what he scored there.
+    That weekly roster is the truth about when a player was actually yours;
+    `week` here is ESPN's scoring period when the move went through, and a
+    Wednesday waiver claim is already stamped with the week about to be
+    played. executed_at is exact, in US Eastern time.
+
+    kind is waiver, free_agent or trade. The waiver/free_agent split is what
+    tells a $0 bid from a player picked up for nothing after waivers cleared:
+    both have no money attached, and only the transaction type separates
+    them. bid is the FAAB amount for waiver claims and blank for everything
+    else. A drop with no add is kind free_agent, the way ESPN files it.
+
+    Two sources, because neither holds everything:
+
+    - Waiver and free-agent moves come from mTransactions2, one request per
+      scoring period, which carries the transaction type and the bid. It keeps
+      them for past seasons too (checked back to 2019).
+    - Trades come from the league activity feed. mTransactions2 does list
+      trades, but by the end of 2025 it had dropped the player lists from 12
+      of the season's 13 accepted trades: the acceptances remain, pointing at
+      proposals it no longer returns under any filter tried. The feed has the
+      players. But ESPN deletes a league's feed once the season is over - 2025
+      answers "This Communication Group does not exist" - so a season's trades
+      can only be captured while it is live.
+
+    That second point is why this is archived weekly, and why building a
+    finished season raises TransactionsUnavailable rather than writing
+    waivers with no trades: a season with an empty trades record would read
+    as a season nobody traded in. Backfilling past seasons needs trades
+    reconstructed from week-to-week roster changes in boxscores, which is a
+    separate job.
+
+    Only transactions that went through are kept. Cancelled and failed claims,
+    declined and vetoed trades, and lineup moves are all left out.
+    """
+    if USE_ARCHIVE:
+        arc = _from_archive("transactions", season)
+        if arc is not None:
+            return arc
+        # Tracking started with a live season, so most seasons have no rows,
+        # and falling through to ESPN would make every page view of 2019 a
+        # live call for data ESPN cannot give back anyway.
+        try:
+            from data import archive
+            if archive.has("transactions"):
+                return pd.DataFrame()
+        except Exception:
+            pass
+
+    league = get_league(season)
+    cfg = season_config(season)
+    last_period = min(max(int(league.current_week), 1), cfg["total_weeks"])
+
+    # One period at a time: the view returns only the period asked for. Some
+    # records repeat across periods (preseason roster moves came back in all
+    # eighteen for 2026), so de-duplicate on id, keeping the first sighting.
+    raw = {}
+    for period in range(0, last_period + 1):
+        data = league.espn_request.league_get(
+            params={"view": "mTransactions2", "scoringPeriodId": period})
+        for t in data.get("transactions", []):
+            raw.setdefault(t["id"], t)
+
+    players = {p["id"]: p for p in league.espn_request.get_pro_players()}
+
+    def name(pid):
+        n = league.player_map.get(pid)
+        if isinstance(n, str):
+            return n
+        return players.get(pid, {}).get("fullName") or f"Unknown ({pid})"
+
+    def position(pid):
+        return _PRO_POSITION.get(players.get(pid, {}).get("defaultPositionId"), "")
+
+    rows = []
+    for t in raw.values():
+        if t.get("status") != "EXECUTED" or t["type"] not in ("WAIVER", "FREEAGENT"):
+            continue
+        kind = "waiver" if t["type"] == "WAIVER" else "free_agent"
+        when = t.get("processDate") or t.get("proposedDate")
+        for item in t.get("items", []):
+            if item["type"] not in ("ADD", "DROP"):
+                continue
+            rows.append({
+                "season": season,
+                "week": int(t["scoringPeriodId"]),
+                "executed_at": _eastern(when),
+                "transaction_id": t["id"],
+                "kind": kind,
+                "action": item["type"].lower(),
+                "from_team_id": int(item["fromTeamId"]),
+                "to_team_id": int(item["toTeamId"]),
+                "player_id": int(item["playerId"]),
+                "player_name": name(item["playerId"]),
+                "position": position(item["playerId"]),
+                "bid": t.get("bidAmount", 0) if kind == "waiver" else None,
+            })
+
+    # The feed carries no scoring period, so a trade takes the period of the
+    # latest move ESPN recorded at or before it. FUTURE_ROSTER is left out of
+    # that timeline: it is a lineup set ahead for a later week and would pull
+    # a trade forward.
+    timeline = sorted(
+        (int(t.get("processDate") or t.get("proposedDate")), int(t["scoringPeriodId"]))
+        for t in raw.values()
+        if t["type"] != "FUTURE_ROSTER" and (t.get("processDate") or t.get("proposedDate")))
+
+    def period_at(ms):
+        earlier = [p for when, p in timeline if when <= ms]
+        return earlier[-1] if earlier else (timeline[0][1] if timeline else 1)
+
+    for topic in _activity_trade_topics(league):
+        when = int(topic["date"])
+        for m in topic["messages"]:
+            mtype = m.get("messageTypeId")
+            if mtype == _MSG_TRADED:
+                src, dst = m.get("from"), m.get("to")
+            elif mtype == _MSG_TRADE_DROP:
+                src, dst = m.get("for"), 0
+            else:
+                continue
+            pid = m.get("targetId")
+            # Stop rather than archive a half-understood trade. The feed is
+            # gone after the season, so a bad row cannot be re-pulled later,
+            # but a failed build can be fixed and re-run while it still exists.
+            if not all(isinstance(v, int) for v in (src, dst, pid)):
+                raise ValueError(
+                    f"{season}: trade message not understood, topic {topic.get('id')}: "
+                    f"{json.dumps(m)[:400]}")
+            rows.append({
+                "season": season,
+                "week": period_at(when),
+                "executed_at": _eastern(when),
+                "transaction_id": topic["id"],
+                "kind": "trade",
+                "action": "trade" if mtype == _MSG_TRADED else "drop",
+                "from_team_id": src,
+                "to_team_id": dst,
+                "player_id": pid,
+                "player_name": name(pid),
+                "position": position(pid),
+                "bid": None,
+            })
+
+    cols = ["season", "week", "executed_at", "transaction_id", "kind", "action",
+            "from_team_id", "to_team_id", "player_id", "player_name", "position", "bid"]
+    df = pd.DataFrame(rows, columns=cols)
+    df["bid"] = df["bid"].astype("Int64")
+    return df.sort_values(["executed_at", "transaction_id", "action", "player_id"],
+                          ignore_index=True)
+
+
 # ── App-mode safety net ──────────────────────────────────────────────────────
 # A season the archive has not reached yet falls through to a live ESPN call.
 # That is fine while it works, but ESPN_S2 expires, and when it does the whole
@@ -1069,3 +1287,4 @@ get_draft_df = _empty_when_unavailable(get_draft_df)
 get_standings_df = _empty_when_unavailable(get_standings_df)
 get_validation_df = _empty_when_unavailable(get_validation_df)
 get_upcoming_df = _empty_when_unavailable(get_upcoming_df)
+get_transactions_df = _empty_when_unavailable(get_transactions_df)

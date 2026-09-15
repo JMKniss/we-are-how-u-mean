@@ -1,0 +1,15 @@
+season,week,executed_at,transaction_id,kind,action,from_team_id,to_team_id,player_id,player_name,position,bid
+2026,1,2026-09-09 03:01:20,07a8a282-70d6-442d-9fe7-0e68fd7dca28,waiver,add,0,5,-16030,Jaguars D/ST,D/ST,0
+2026,1,2026-09-09 03:01:20,07a8a282-70d6-442d-9fe7-0e68fd7dca28,waiver,drop,5,0,3042519,Aaron Jones Sr.,RB,0
+2026,1,2026-09-09 03:01:20,79227b61-c105-45c8-9c9f-75997536c77b,waiver,add,0,8,4040655,Darnell Mooney,WR,0
+2026,1,2026-09-09 03:01:20,79227b61-c105-45c8-9c9f-75997536c77b,waiver,drop,8,0,4569603,Malik Washington,WR,0
+2026,1,2026-09-09 06:26:04,82297c70-f818-443b-b643-a88878f9cbc1,free_agent,add,0,7,-16010,Titans D/ST,D/ST,
+2026,1,2026-09-09 09:58:01,255566aa-3cd9-4999-bfdb-915a23b32d03,free_agent,add,0,8,4689114,Jaxson Dart,QB,
+2026,1,2026-09-09 09:58:01,255566aa-3cd9-4999-bfdb-915a23b32d03,free_agent,drop,8,0,4040655,Darnell Mooney,WR,
+2026,1,2026-09-09 13:19:53,b8f12135-7b93-42dd-b969-02b8ba3f8d0e,free_agent,add,0,9,4429022,Kayshon Boutte,WR,
+2026,1,2026-09-09 13:19:53,b8f12135-7b93-42dd-b969-02b8ba3f8d0e,free_agent,drop,9,0,4912218,Cyrus Allen,WR,
+2026,1,2026-09-09 16:54:04,43327f9a-ebcc-45be-aead-cefda8a17357,free_agent,add,0,7,2577417,Dak Prescott,QB,
+2026,1,2026-09-09 16:54:04,43327f9a-ebcc-45be-aead-cefda8a17357,free_agent,drop,7,0,4870847,Ja'Kobi Lane,WR,
+2026,1,2026-09-10 18:04:40,ef0f62ca-f88b-4a07-92d9-332a75a04739,free_agent,add,0,7,4242355,Jake Ferguson,TE,
+2026,1,2026-09-10 19:54:16,2a4af7b8-ca6b-4c58-9f37-785a5ae2bc01,free_agent,add,0,1,3042519,Aaron Jones Sr.,RB,
+2026,1,2026-09-10 19:54:16,2a4af7b8-ca6b-4c58-9f37-785a5ae2bc01,free_agent,drop,1,0,4710855,Konata Mumpfield,WR,

@@ -52,6 +52,7 @@ KEYS = {
     "draft":      ["season", "overall_pick"],
     "standings":  ["season", "team_id"],
     "upcoming":   ["season", "team_id"],
+    "transactions": ["season", "transaction_id", "player_id"],
 }
 
 BUILDERS = {
@@ -61,9 +62,18 @@ BUILDERS = {
     "standings":  "get_standings_df",
     "validation": "get_validation_df",
     "upcoming":   "get_upcoming_df",
+    "transactions": "get_transactions_df",
 }
 
 SORT_HINTS = ("season", "week", "team_id", "overall_pick", "player_id")
+
+# Datasets whose rows belong together in an order SORT_HINTS would break.
+# Transactions have no team_id, so the hints fall through to player_id and
+# scatter a waiver claim's add and drop across the week. Kept in the order
+# the moves happened, a git diff reads like the league's activity log.
+SORT_OVERRIDE = {
+    "transactions": ("season", "executed_at", "transaction_id", "action", "player_id"),
+}
 
 # Datasets that hold one row per team per season rather than one row per week.
 #
@@ -207,9 +217,9 @@ def compare(name, existing, fresh, season):
     return new, changed, identical_n, keys
 
 
-def sort_frame(df):
+def sort_frame(df, name=None):
     """Canonical row order. Stable across rebuilds so git diffs stay minimal."""
-    cols = [c for c in SORT_HINTS if c in df.columns]
+    cols = [c for c in SORT_OVERRIDE.get(name, SORT_HINTS) if c in df.columns]
     return df.sort_values(cols).reset_index(drop=True) if cols else df.reset_index(drop=True)
 
 
@@ -428,7 +438,7 @@ def main():
                         if not existing.empty else pd.DataFrame())
                 merged = pd.concat([keep, fresh], ignore_index=True)
 
-            planned[name] = sort_frame(merged)
+            planned[name] = sort_frame(merged, name)
             existing = planned[name]
 
     if not planned:

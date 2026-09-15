@@ -1,3 +1,17 @@
+"""
+Draft, Waivers & Trades - how every roster was built, from the draft onward.
+
+Draft Board, Team Draft Summary and Draft Value read the draft. Waivers and
+Trades read data/archive/transactions.csv, which the weekly update fills in;
+see get_transactions_df for how it is recorded and why it only exists from the
+2026 season on.
+
+Both transaction tabs are tables rather than dataframes because each move is
+shown in one cell with a green + beside what came in and a red - beside what
+went out, and st.table renders Markdown colour where st.dataframe shows the
+raw text. The sort is chosen with a control instead of a column header for the
+same reason.
+"""
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -6,14 +20,17 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 import numpy as np
-from data.espn_client import get_draft_df, get_boxscores_df, get_manager_map
+from data import archive
+from data.espn_client import (get_draft_df, get_boxscores_df, get_manager_map,
+                              get_transactions_df)
 from analysis.draft import apply_recorded_order
+from analysis.transactions import waiver_moves, trade_sides
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 from branding import page_icon
 
-st.set_page_config(page_title="Draft Review", page_icon=page_icon(), layout="wide")
-st.title("📋 Draft Review")
+st.set_page_config(page_title="Draft, Waivers & Trades", page_icon=page_icon(), layout="wide")
+st.title("📋 Draft, Waivers & Trades")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
@@ -34,15 +51,12 @@ def load(season):
         box = get_boxscores_df(season)
     except Exception:
         box = pd.DataFrame()
-    return draft, box, mgr_map, applied_note
+    return draft, box, mgr_map, applied_note, get_transactions_df(season)
 
 with st.spinner("Loading draft data..."):
-    draft_df, box_df, manager_map, order_note = load(season)
+    draft_df, box_df, manager_map, order_note, tx_df = load(season)
 
 require_data(draft_df, season, "draft data")
-
-if order_note:
-    st.caption(order_note)
 
 # team_name → team_id from draft_df (if present) or box_df
 if "team_id" in draft_df.columns:
@@ -61,9 +75,12 @@ def label_for(tname: str) -> str:
 
 teams = sorted(draft_df["team_name"].unique())
 
-tab1, tab2, tab3 = st.tabs(["Draft Board", "Team Draft Summary", "Draft Value"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    ["Draft Board", "Team Draft Summary", "Draft Value", "Waivers", "Trades"])
 
 with tab1:
+    if order_note:
+        st.caption(order_note)
     # A column is a manager, not a pick number. The board snakes, so pick 3 is
     # a different person in round 2 than in round 1 - pivoting on pick_in_round
     # put a different manager in each column depending on the round's parity.
@@ -160,3 +177,129 @@ with tab3:
         busts.columns = ["Pick", "Round", "Player", "Team", "Season Pts"]
         st.subheader("Biggest Busts (Top 30 picks)")
         st.dataframe(busts, width="stretch", hide_index=True)
+
+
+# ── Waivers and Trades ───────────────────────────────────────────────────────
+
+LEAGUE = "Whole league"
+team_names = archive.team_names(season) or (
+    draft_df[["team_id", "team_name"]].drop_duplicates()
+    .set_index("team_id")["team_name"].to_dict())
+team_by_manager = {m: tid for tid, m in manager_map.items()}
+
+
+def md_escape(text: str) -> str:
+    # $ matters most: two in one cell and Streamlit reads the span between
+    # them as LaTeX.
+    for ch in "\\`*_[]$~:<>#|":
+        text = text.replace(ch, "\\" + ch)
+    return text
+
+
+def plus(names):
+    return [f":green[**+**] {md_escape(n)}" for n in names]
+
+
+def minus(names, suffix=""):
+    return [f":red[**−**] {md_escape(n)}{suffix}" for n in names]
+
+
+def when(executed_at: str) -> str:
+    d = pd.Timestamp(executed_at)
+    return f"{d:%a %b} {d.day}"
+
+
+def who(frame: pd.DataFrame) -> pd.DataFrame:
+    """Manager and/or Team columns, following the sidebar display toggles."""
+    out = pd.DataFrame(index=frame.index)
+    if show_mgr:
+        out["Manager"] = frame["team_id"].map(manager_map).fillna("?")
+    if show_team:
+        out["Team"] = frame["team_id"].map(team_names).fillna("?").map(md_escape)
+    return out
+
+
+def manager_picker(label: str, key: str, team_ids) -> int | None:
+    """Selectbox of the managers who appear; returns a team_id, None for all."""
+    present = sorted(manager_map[t] for t in set(team_ids) if t in manager_map)
+    choice = st.selectbox(label, [LEAGUE] + present, key=key)
+    return None if choice == LEAGUE else team_by_manager[choice]
+
+
+def not_tracked(what: str):
+    tracked = archive.seasons_with_data("transactions")
+    since = f" Tracking began in {tracked[0]}." if tracked else ""
+    if season in tracked:
+        st.info(f"No {what} yet in {season}. The weekly update adds them every Tuesday.")
+    else:
+        st.info(f"{what.capitalize()} are not recorded for {season}.{since}")
+
+
+with tab4:
+    moves = waiver_moves(tx_df)
+    if moves.empty:
+        not_tracked("waiver moves")
+    else:
+        c1, c2 = st.columns(2)
+        with c1:
+            team = manager_picker("Manager", "waiver_manager", moves["team_id"])
+        with c2:
+            order = st.radio("Sort", ["Newest first", "Oldest first", "FAAB spent"],
+                             horizontal=True, key="waiver_sort")
+        shown = moves if team is None else moves[moves["team_id"] == team]
+
+        claims = shown[shown["kind"] == "waiver"]
+        st.caption(f"{len(shown)} moves · {len(claims)} waiver claims · "
+                   f"\\${int(claims['bid'].fillna(0).sum())} FAAB spent")
+
+        if order == "FAAB spent":
+            # A $0 claim still outranks a free pickup, and a bare drop spent
+            # nothing at all; newest first within each.
+            rank = shown["bid"].astype("float").fillna(-1)
+            rank = rank.where(shown["adds"].str.len() > 0, -2)
+            shown = (shown.assign(_rank=rank)
+                     .sort_values(["_rank", "executed_at"], ascending=False))
+        else:
+            shown = shown.sort_values("executed_at", ascending=order == "Oldest first")
+
+        table = pd.concat([
+            pd.DataFrame({"Week": shown["week"], "Date": shown["executed_at"].map(when)}),
+            who(shown),
+            pd.DataFrame({
+                "Waiver Move": [" &nbsp; ".join(plus(a) + minus(d))
+                                for a, d in zip(shown["adds"], shown["drops"])],
+                # FA is a pickup after waivers cleared; $0 is a claim that won
+                # with no money on it. A bare drop has no bid either way.
+                "Bid": ["" if not a else "FA" if k != "waiver" else f"\\${int(b)}"
+                        for a, k, b in zip(shown["adds"], shown["kind"], shown["bid"])],
+            }, index=shown.index),
+        ], axis=1)
+        st.table(table.set_index("Week"))
+
+with tab5:
+    sides = trade_sides(tx_df)
+    if sides.empty:
+        not_tracked("trades")
+    else:
+        with st.columns(2)[0]:
+            team = manager_picker("Manager", "trade_manager", sides["team_id"])
+        if team is not None:
+            sides = sides[sides["team_id"] == team]
+        n = sides["transaction_id"].nunique()
+        st.caption(f"{n} trade{'s' if n != 1 else ''}")
+
+        # Newest trade first, each trade's sides kept together.
+        sides = sides.sort_values(["executed_at", "transaction_id", "team_id"],
+                                  ascending=[False, False, True])
+        table = pd.concat([
+            pd.DataFrame({"Week": sides["week"], "Date": sides["executed_at"].map(when)}),
+            who(sides),
+            pd.DataFrame({
+                "Receives": [", ".join(plus(r)) for r in sides["receives"]],
+                "Sends": [", ".join(minus(s) + minus(d, " (dropped)"))
+                          for s, d in zip(sides["sends"], sides["dropped"])],
+                "With": [", ".join(manager_map.get(p, "?") for p in ps)
+                         for ps in sides["partners"]],
+            }, index=sides.index),
+        ], axis=1)
+        st.table(table.set_index("Week"))
