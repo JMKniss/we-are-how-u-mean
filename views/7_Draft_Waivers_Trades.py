@@ -231,11 +231,14 @@ def manager_picker(label: str, key: str, team_ids) -> int | None:
 
 def not_tracked(what: str):
     tracked = archive.seasons_with_data("transactions")
-    since = f" Tracking began in {tracked[0]}." if tracked else ""
     if season in tracked:
         st.info(f"No {what} yet in {season}. The weekly update adds them every Tuesday.")
+    elif tracked and season < tracked[0]:
+        # 2016 and 2017: ESPN kept no transactions, and their archived
+        # rosters are starters only, so there is nothing to rebuild from.
+        st.info(f"ESPN kept no record of {what} before {tracked[0]}.")
     else:
-        st.info(f"{what.capitalize()} are not recorded for {season}.{since}")
+        st.info(f"{what.capitalize()} are not recorded for {season}.")
 
 
 with tab4:

@@ -200,9 +200,10 @@ Pass `--force` when you have looked at the conflict and decided ESPN is right.
 that records a trade's players - the league activity feed - is deleted once
 the season ends (2025's already answers "does not exist"). Waiver history
 stays on ESPN. A finished season's trades can still be rebuilt from its weekly
-rosters (`data/trade_inference.py`, marked `source=inferred`), and 2025 was
-built that way, but that is a deduction checked against ESPN's acceptances,
-and a weekly capture from the feed is a record.
+rosters (`data/trade_inference.py`, marked `source=inferred`), and 2018-2025
+were built that way, but that is a deduction checked against ESPN's trade
+records, and a weekly capture from the feed is a record. 2016-2017 have no
+transactions at all: ESPN kept none, and their rosters are starters only.
 
 **It refreshes `seasons.json` itself.** That file carries `current_week`, which
 is what the pages read, plus manager and team names. Nothing used to write it,

@@ -1121,7 +1121,7 @@ def get_transactions_df(season: int) -> pd.DataFrame:
 
     Waiver, free-agent and drop moves come from mTransactions2, one request per
     scoring period, which carries the transaction type and the bid. ESPN keeps
-    those for past seasons (checked back to 2019). Trades are harder:
+    those for past seasons back to 2018, and nothing before. Trades are harder:
 
     - While a season is live they come from the league activity feed.
       mTransactions2 does list trades, but by the end of 2025 it had dropped
@@ -1217,7 +1217,19 @@ def get_transactions_df(season: int) -> pd.DataFrame:
             raise TransactionsUnavailable(
                 f"{season}: no activity feed and no archived boxscores to "
                 f"rebuild trades from")
-        legs, loose, remove, notes = infer_trades(season, box, moves, raw)
+        # The draft is the roster before week 1. It carries names, not ids,
+        # so resolve them through that season's boxscores, then ESPN's map;
+        # the few that neither knows are left out rather than guessed.
+        draft = archive.get("draft", season)
+        by_name = dict(zip(box["player_name"], box["player_id"]))
+        week0 = {}
+        for pname, team in zip(draft["player_name"], draft["team_id"]):
+            # player_map maps both ways, so a name that is not a player comes
+            # back as None or as another name, never as a number.
+            pid = by_name.get(pname, league.player_map.get(pname))
+            if pid is not None and not isinstance(pid, str):
+                week0[int(pid)] = int(team)
+        legs, loose, remove, notes = infer_trades(season, box, moves, raw, week0)
         for line in notes:
             print(f"  trades      {season}  {line}")
         moves = [m for m in moves if (m["transaction_id"], m["player_id"]) not in remove]
