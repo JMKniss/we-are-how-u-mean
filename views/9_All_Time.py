@@ -1,5 +1,10 @@
 """
 All-Time Records — cross-season stats, records, and manager history.
+
+Trades & Waiver Data averages each manager's waiver adds and trades over
+completed seasons only - a season in progress is a running tally and would
+drag every average down - and lists the per-season counts, including the
+current season, for one manager or the whole league.
 """
 import sys
 from pathlib import Path
@@ -8,7 +13,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import numpy as np
-from data.espn_client import get_matchups_df, get_manager_map
+from data import archive
+from data.espn_client import get_matchups_df, get_manager_map, get_transactions_df
+from analysis.transactions import move_counts
 from analysis.standings import h2h_standings, combined_standings
 from config import SEASONS, season_config
 from display_utils import sidebar_display_prefs
@@ -223,6 +230,27 @@ def load_all_seasons():
 
 
 @st.cache_data(ttl=300)
+def load_move_counts():
+    """
+    One row per (season, manager): waiver adds and trades, for every season
+    the archive holds transactions for. complete is False for a season still
+    being played, whose counts are a running tally.
+    """
+    rows = []
+    for season in archive.seasons_with_data("transactions"):
+        mgr_map = get_manager_map(season)
+        tx = get_transactions_df(season)
+        c = move_counts(tx, mgr_map)
+        c["season"] = season
+        c["manager"] = c["team_id"].map(mgr_map)
+        c["complete"] = (archive.current_week(season) or 0) >= season_config(season)["total_weeks"]
+        c["league_trades"] = (tx.loc[tx["kind"] == "trade", "transaction_id"].nunique()
+                              if not tx.empty else 0)
+        rows.append(c)
+    return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+@st.cache_data(ttl=300)
 def compute_playoff_round_wins(_all_matchups_df):
     """
     Returns DataFrame {season, manager, playoff_wins}.
@@ -390,7 +418,7 @@ if "alltime_view" not in st.session_state:
     st.session_state["alltime_view"] = VIEW_ACTIVE
 
 
-VIEW_TAB_KEYS = ("trophy", "records", "mgr", "h2h", "milestones")
+VIEW_TAB_KEYS = ("trophy", "records", "mgr", "h2h", "milestones", "moves")
 
 
 def _view_changed(changed_key: str):
@@ -442,12 +470,13 @@ if active_only:
             left_on_bench_df["manager"].isin(ACTIVE_MANAGERS)].copy()
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab_trophy, tab_records, tab_mgr_records, tab_h2h, tab_milestones = st.tabs([
+tab_trophy, tab_records, tab_mgr_records, tab_h2h, tab_milestones, tab_moves = st.tabs([
     "🏆 Trophy Case",
     "📊 League Records",
     "👤 Manager Records",
     "⚔️ Head to Head",
     "🎯 Milestones",
+    "🔄 Trades & Waiver Data",
 ])
 
 
@@ -1226,3 +1255,68 @@ with tab_milestones:
         st.dataframe(loss_table, hide_index=True, width="stretch")
     else:
         st.info("Not enough losses recorded yet.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 7: TRADES & WAIVER DATA
+# ══════════════════════════════════════════════════════════════════════════════
+with tab_moves:
+    view_toggle("moves")
+    counts_df = load_move_counts()
+    if counts_df.empty:
+        st.info("No transactions are archived yet.")
+    else:
+        first, last = int(counts_df["season"].min()), int(counts_df["season"].max())
+        in_progress = sorted(counts_df.loc[~counts_df["complete"], "season"].unique())
+
+        st.subheader("Average per Season")
+        # A season still being played is a running tally, and averaging it in
+        # would pull every manager down for no reason but the calendar.
+        done = counts_df[counts_df["complete"]]
+        if active_only:
+            done = done[done["manager"].isin(ACTIVE_MANAGERS)]
+        avg = (done.groupby("manager")
+               .agg(Seasons=("season", "nunique"),
+                    waiver_total=("waiver_adds", "sum"),
+                    trade_total=("trades", "sum"))
+               .reset_index())
+        avg["Avg Waiver Adds"] = (avg["waiver_total"] / avg["Seasons"]).round(1)
+        avg["Avg Trades"] = (avg["trade_total"] / avg["Seasons"]).round(1)
+        avg = (avg.rename(columns={"manager": "Manager", "waiver_total": "Total Waiver Adds",
+                                   "trade_total": "Total Trades"})
+               [["Manager", "Seasons", "Avg Waiver Adds", "Avg Trades",
+                 "Total Waiver Adds", "Total Trades"]]
+               .sort_values("Avg Waiver Adds", ascending=False))
+        st.dataframe(avg, hide_index=True, width="stretch",
+                     column_config={c: st.column_config.NumberColumn(c, format="%.1f")
+                                    for c in ("Avg Waiver Adds", "Avg Trades")})
+        note = (f"Completed seasons from {first}; ESPN kept no transactions before it. "
+                "A waiver add is any player added, by claim or free-agent pickup; "
+                "drops are not counted. A trade counts once for each manager in it, "
+                "however many players moved.")
+        if in_progress:
+            note += f" {', '.join(map(str, in_progress))} is still in progress and left out."
+        st.caption(note)
+
+        st.divider()
+        st.subheader("Season by Season")
+        ALL = "All managers"
+        pool = counts_df if not active_only else counts_df[counts_df["manager"].isin(ACTIVE_MANAGERS)]
+        pick = st.selectbox("Manager", [ALL] + sorted(pool["manager"].unique()),
+                            key="moves_mgr")
+        if pick == ALL:
+            by_season = (counts_df.groupby("season")
+                         .agg(waiver_adds=("waiver_adds", "sum"),
+                              trades=("league_trades", "first"))
+                         .reset_index())
+        else:
+            by_season = counts_df[counts_df["manager"] == pick][["season", "waiver_adds", "trades"]]
+        by_season = by_season.sort_values("season").rename(columns={
+            "season": "Season", "waiver_adds": "Waiver Adds", "trades": "Trades"})
+        by_season["Season"] = by_season["Season"].map(
+            lambda y: f"{y} (in progress)" if y in in_progress else str(y))
+        st.dataframe(by_season, hide_index=True, width="stretch")
+        st.caption("All managers is the whole league, whichever view is chosen: "
+                   "trades are counted once each, not once per side."
+                   if pick == ALL else
+                   f"Seasons {pick} managed from {first} on.")

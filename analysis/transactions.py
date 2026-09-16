@@ -97,3 +97,29 @@ def trade_sides(tx: pd.DataFrame) -> pd.DataFrame:
     return (pd.DataFrame(rows, columns=cols)
             .sort_values(["week", "executed_at", "transaction_id", "team_id"],
                          ignore_index=True))
+
+
+def move_counts(tx: pd.DataFrame, manager_map: dict[int, str]) -> pd.DataFrame:
+    """
+    Waiver adds and trades per team for one season, every team listed.
+
+    A waiver add is a player added, waiver claim or free-agent pickup alike,
+    with or without a drop alongside - three players claimed at one deadline
+    are three adds, and a bare drop is none. A trade counts once per team in
+    it however many players moved, so a league total is the number of distinct
+    trades, not the sum of this column. Teams with no moves get zeros rather
+    than no row, which is what an average over seasons needs.
+    """
+    counts = pd.DataFrame({"team_id": sorted(manager_map)})
+    if tx is None or tx.empty:
+        return counts.assign(waiver_adds=0, trades=0)
+    adds = tx[(tx["kind"] != "trade") & (tx["action"] == "add")]
+    moved = tx[(tx["kind"] == "trade") & (tx["action"] == "trade")]
+    in_trade = pd.concat([moved[["transaction_id", "from_team_id"]].set_axis(["tid", "team_id"], axis=1),
+                          moved[["transaction_id", "to_team_id"]].set_axis(["tid", "team_id"], axis=1)])
+    in_trade = in_trade[in_trade["team_id"] != FREE_AGENT_POOL]
+    counts["waiver_adds"] = counts["team_id"].map(
+        adds.groupby("to_team_id").size()).fillna(0).astype(int)
+    counts["trades"] = counts["team_id"].map(
+        in_trade.groupby("team_id")["tid"].nunique()).fillna(0).astype(int)
+    return counts

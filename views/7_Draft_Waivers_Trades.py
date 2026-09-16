@@ -11,6 +11,10 @@ shown in one cell with a green + beside what came in and a red - beside what
 went out, and st.table renders Markdown colour where st.dataframe shows the
 raw text. The sort is chosen with a control instead of a column header for the
 same reason.
+
+Both tabs end with the same per-manager count of waiver adds and trades for
+the season (analysis.transactions.move_counts), so either tab answers "who is
+most active" without switching.
 """
 import sys
 from pathlib import Path
@@ -24,7 +28,7 @@ from data import archive
 from data.espn_client import (get_draft_df, get_boxscores_df, get_manager_map,
                               get_transactions_df)
 from analysis.draft import apply_recorded_order
-from analysis.transactions import waiver_moves, trade_sides
+from analysis.transactions import waiver_moves, trade_sides, move_counts
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 from branding import page_icon
@@ -241,6 +245,29 @@ def not_tracked(what: str):
         st.info(f"{what.capitalize()} are not recorded for {season}.")
 
 
+def counts_table():
+    """Waiver adds and trades per manager this season, under both tabs."""
+    if tx_df.empty:
+        return
+    counts = move_counts(tx_df, manager_map)
+    st.divider()
+    st.subheader(f"{season} Moves by Manager")
+    table = pd.concat([who(counts), pd.DataFrame({
+        "Waiver Adds": counts["waiver_adds"], "Trades": counts["trades"]})], axis=1)
+    # who() escapes team names for the Markdown tables above; a dataframe
+    # shows the backslashes, so undo that here.
+    if "Team" in table:
+        table["Team"] = counts["team_id"].map(team_names).fillna("?")
+    st.dataframe(table.sort_values("Waiver Adds", ascending=False),
+                 hide_index=True, width="stretch")
+    n_trades = tx_df.loc[tx_df["kind"] == "trade", "transaction_id"].nunique()
+    st.caption(
+        f"{int(counts['waiver_adds'].sum())} waiver adds and {n_trades} "
+        f"trade{'s' if n_trades != 1 else ''} league-wide. A waiver add is any "
+        "player added, by claim or free-agent pickup; drops are not counted. "
+        "A trade counts once for each manager in it, however many players moved.")
+
+
 with tab4:
     moves = waiver_moves(tx_df)
     if moves.empty:
@@ -282,6 +309,7 @@ with tab4:
             }, index=shown.index),
         ], axis=1)
         st.table(table.set_index("Week"))
+    counts_table()
 
 with tab5:
     sides = trade_sides(tx_df)
@@ -325,3 +353,4 @@ with tab5:
                 teams = " & ".join(manager_map.get(x, "?")
                                    for x in sorted([t["team_id"], *t["partners"]]))
                 st.caption(f"Week {t['week']}, {teams}: {'; '.join(t['notes'])}.")
+    counts_table()
