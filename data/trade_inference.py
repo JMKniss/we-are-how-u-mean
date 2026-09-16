@@ -22,8 +22,10 @@ source=inferred, and anything that needed a judgment is explained in `note`.
 Built this way for 2018-2025. Checked against the per-team trade counts ESPN
 keeps in standings.csv, every team matches in 2020-2024; 2025 differs only by
 the hand-entered trade below, which ESPN counts as drops and adds; 2018 only
-by a trade of draft picks, which moves no players; 2019 is one trade short
-between teams 2 and 6 that neither the rosters nor ESPN's records show.
+by an empty DRAFT_TRADE record between teams 2 and 3; 2019 by a trade between
+teams 2 and 6 that was accepted but, per the league, never happened - no
+player moved and no roster shows it. Both are ESPN counting something that
+was not a trade, and neither is archived.
 Drops match ESPN's counts too. Adds run a few high in some seasons with no
 pattern found - ESPN's acquisition tally looks like a running count, not a
 count of the log.
@@ -112,9 +114,11 @@ def infer_trades(season: int, box, moves: list, raw: dict, week0: dict | None = 
     for t in raw.values():
         if t["type"] not in ("TRADE_ACCEPT", "TRADE_UPHOLD", "TRADE_VETO"):
             continue
-        # A trade of draft picks moves no players. Left in, it has no player
-        # list to rule it out and fits any trade at all - 2018's pick swap
-        # between 2 and 3 claimed the Julio Jones trade that way.
+        # DRAFT_TRADE records move no players. The league has never traded
+        # picks; 2018's lone one, between 2 and 3 the day after the draft,
+        # names no pick numbers and was presumably a draft-order correction.
+        # Left in, it has no player list to rule it out and fits any trade at
+        # all - it claimed the Julio Jones trade that way.
         if t.get("items") and all(i["type"] == "DRAFT_TRADE" for i in t["items"]):
             continue
         listed = frozenset((i["fromTeamId"], i["toTeamId"], i["playerId"])
