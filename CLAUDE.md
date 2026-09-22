@@ -81,6 +81,7 @@ ff_app/
 │   ├── espn_client.py      # All ESPN API calls + pickle cache
 │   ├── legacy_stats.py     # nfl-data-py stats for 2016-2017 seasons
 │   ├── trade_inference.py  # rebuilds a finished season's trades from weekly rosters
+│   ├── game_status.py      # did each player play, at game time (nflverse; build-time only)
 │   └── cache/<year>/       # Cached .pkl files — gitignored, auto-created
 ├── analysis/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
@@ -111,6 +112,7 @@ the file is opened rather than loaded into every session:
 | Upcoming fixtures and projections | `get_upcoming_df` in `data/espn_client.py` |
 | Waivers, drops, trades: sources, shape, gaps | `get_transactions_df` in `data/espn_client.py` |
 | Rebuilding past trades, and the evidence for it | `data/trade_inference.py` |
+| Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
@@ -151,8 +153,9 @@ visit.
 `weekly_update.py`, which is the whole reason the archive exists.
 
 **requirements.txt is runtime only.** `requirements-build.txt` adds
-nfl-data-py, which supplies 2016-2017 player stats and is needed only to build
-the archive. It pins its own pandas and can drag a source build onto the
+nfl-data-py, which supplies 2016-2017 player stats and every season's game
+status, and is needed only to build the archive - including the weekly
+update, which runs locally. It pins its own pandas and can drag a source build onto the
 server for code that never runs there. Locally:
 
 ```
@@ -196,12 +199,26 @@ ESPN has since restated is reported as a conflict and skipped, so a stat
 correction cannot quietly rewrite a result the league has already argued about.
 Pass `--force` when you have looked at the conflict and decided ESPN is right.
 
-**Injury conflicts are expected, and never a reason to force.** ESPN reports
-a player's *current* injury status, so every past week's boxscore rows drift
-from what was archived. The archived value is the record of that week (healthy
-week 1, OUT week 2, healthy week 3 must stay three different rows), kept for a
-future injury-impact analysis. Note it is the status on the Tuesday of capture,
-not game day: a player hurt during the game reads OUT for a week he played.
+**Injury status comes from the NFL, not ESPN.** `game_status.csv` records
+whether each rostered player played that week, at game time: Healthy,
+Mid-Game Injury, Out, IR, Suspended, Bye, Inactive. It is built from nflverse
+by `data/game_status.py`, whose docstring has the rules and the evidence.
+ESPN's injury field was dropped from boxscores because it is the status on
+the day of the pull: a Tuesday capture stamped a player hurt on Sunday as OUT
+for the game he started, and every later pull restated every past week.
+
+The weekly update adds a week's game status once nflverse has published its
+snap counts, normally by Tuesday; if they are late, that week lands on the
+next run. The season in progress detects mid-game injuries from snaps
+(source=snaps, about 95% precise); nflverse publishes exact per-play
+participation after the season, so **once a season is over, rebuild it**:
+
+```
+python build_archive.py --season 2026 --dataset game_status --rebuild --force
+```
+
+A derived-only run like that needs no ESPN cookies and leaves seasons.json
+alone.
 
 **Keep it running to the final week, for the trades.** The only ESPN source
 that records a trade's players - the league activity feed - is deleted once
@@ -258,7 +275,7 @@ Two distinct layers. Do not conflate them.
 **`data/archive/` — the permanent record. Committed to git.**
 Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
-`transactions.csv`, plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
+`transactions.csv`, `game_status.csv` (from nflverse, not ESPN), plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
 
 This is the source of truth for completed seasons. It is read *before* the pickle
 cache and *before* ESPN, so day-to-day use needs no cookies and no network.

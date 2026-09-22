@@ -53,6 +53,7 @@ KEYS = {
     "standings":  ["season", "team_id"],
     "upcoming":   ["season", "team_id"],
     "transactions": ["season", "transaction_id", "player_id"],
+    "game_status": ["season", "week", "player_id"],
 }
 
 BUILDERS = {
@@ -63,7 +64,15 @@ BUILDERS = {
     "validation": "get_validation_df",
     "upcoming":   "get_upcoming_df",
     "transactions": "get_transactions_df",
+    "game_status": "get_game_status_df",
 }
+
+# Datasets built from other archived data plus nflverse, never from ESPN.
+# game_status classifies the players in a season's boxscores, so it is built
+# from the boxscores this run has planned - which include the week just
+# pulled - and needs neither cookies nor an ESPN pull to backfill a past
+# season. It must come after boxscores in BUILDERS.
+DERIVED = {"game_status"}
 
 SORT_HINTS = ("season", "week", "team_id", "overall_pick", "player_id")
 
@@ -159,6 +168,16 @@ def fetch_fresh(name, season) -> pd.DataFrame:
         return df
     finally:
         ec.USE_ARCHIVE = prev
+
+
+def derive(name, season, planned) -> pd.DataFrame:
+    """Build a DERIVED dataset from this run's planned boxscores, else the archive's."""
+    from data.game_status import get_game_status_df
+    box = planned.get("boxscores")
+    if box is None:
+        box = load_archive("boxscores")
+    df = get_game_status_df(season, box)
+    return df if df is not None else pd.DataFrame()
 
 
 def canonical(df: pd.DataFrame) -> pd.DataFrame:
@@ -395,12 +414,16 @@ def main():
 
     planned = {}
     blocked = False
+    # A run of derived datasets alone has nothing to say about seasons.json,
+    # and refreshing it would pull every named season's league from ESPN.
+    derived_only = set(datasets) <= DERIVED
 
     for name in datasets:
         existing = load_archive(name)
         for season in targets:
             try:
-                fresh = fetch_fresh(name, season)
+                fresh = (derive(name, season, planned) if name in DERIVED
+                         else fetch_fresh(name, season))
             except Exception as e:
                 print(f"  {name:11} {season}  FETCH FAILED {type(e).__name__}: {e}")
                 blocked = True
@@ -461,7 +484,7 @@ def main():
 
     if not planned:
         print("\nNo new rows.")
-        if not args.dry_run and not blocked:
+        if not args.dry_run and not blocked and not derived_only:
             # Still refresh the metadata. A week where ESPN adds nothing can
             # still be a week somebody renamed their team, and seasons.json is
             # where the app reads names from.
@@ -519,8 +542,9 @@ def main():
               "Restore from data/archive/_backups/.")
         return 1
 
-    print("\nrefreshing seasons.json:")
-    refresh_meta(targets)
+    if not derived_only:
+        print("\nrefreshing seasons.json:")
+        refresh_meta(targets)
 
     print("\nDone.")
     return 0

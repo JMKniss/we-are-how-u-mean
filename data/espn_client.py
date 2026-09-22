@@ -252,8 +252,6 @@ def _parse_roster_legacy(entries: list, starters_only: bool = False) -> list:
             "points": round(float(actual or 0), 2),
             "projected": round(float(projected or 0), 2),
             "is_active": is_active,
-            "injured": player.get("injured", False),
-            "injury_status": player.get("injuryStatus", "ACTIVE"),
             "pro_team": player.get("proTeamId"),
             "percent_owned": pi.get("percentOwned", 0),
         })
@@ -803,8 +801,6 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
                             "projected": p["projected"],
                             "is_active_slot": p["is_active"],
                             "on_bench": p["slot"] == "BE",
-                            "injured": p["injured"],
-                            "injury_status": p["injury_status"],
                             "pro_team": p["pro_team"],
                             "percent_owned": p["percent_owned"],
                         })
@@ -837,8 +833,9 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
                             "projected": player.projected_points,
                             "is_active_slot": player.lineupSlot not in ("BE", "IR"),
                             "on_bench": player.lineupSlot == "BE",
-                            "injured": player.injured,
-                            "injury_status": player.injuryStatus,
+                            # No injury status: ESPN's is the player's status on
+                            # the day of the pull, not the game. Whether he played
+                            # is game_status (data/game_status.py).
                             "pro_team": player.proTeam,
                             "percent_owned": player.percent_owned,
                         })
