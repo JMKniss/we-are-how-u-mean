@@ -113,11 +113,25 @@ DECIMALS = 2
 
 
 def round_numbers(df: pd.DataFrame) -> pd.DataFrame:
-    """Float columns rounded to DECIMALS; everything else untouched."""
+    """
+    Numeric columns rounded to DECIMALS; everything else untouched.
+
+    A column can reach here as object rather than float: stacking this
+    season's fresh rows on the archived ones mixes ints and floats (2026's
+    playoff_pct against earlier seasons' 0), and a dtype check alone let
+    56.974999999999994 through. So an object column holding nothing but
+    numbers is treated as the number column it is. Booleans are not numbers.
+    """
     out = df.copy()
     for c in out.columns:
-        if pd.api.types.is_float_dtype(out[c]):
-            out[c] = out[c].round(DECIMALS)
+        col = out[c]
+        if pd.api.types.is_object_dtype(col):
+            vals = col.dropna()
+            if len(vals) and all(isinstance(v, (int, float)) and not isinstance(v, bool)
+                                 for v in vals):
+                col = pd.to_numeric(col)
+        if pd.api.types.is_float_dtype(col):
+            out[c] = col.round(DECIMALS)
     return out
 
 
