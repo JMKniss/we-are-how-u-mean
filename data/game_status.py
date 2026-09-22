@@ -6,7 +6,7 @@ boxscores, with one of seven statuses:
 
   Healthy          played, and was not knocked out of the game
   Mid-Game Injury  played, was injured during a play, and never returned
-                   while his team ran at least MIN_PLAYS_AFTER more plays
+                   while his team ran at least one more offensive play
   Out              did not play, injured or ill: on that week's injury
                    report, or the 2020-21 COVID list
   IR               did not play, on a medical reserve list: IR, IR with
@@ -22,10 +22,17 @@ suspension or a healthy scratch leaking in. Illness counts with injury
 because the effect on a fantasy team is the same and so is the bad luck -
 which matters most in 2020, when the COVID list emptied lineups weekly.
 
-A player hurt with nothing left to play is not a Mid-Game Injury. Garrett
-Wilson was "injured during the play" on the Jets' last snap of 2025 week 1,
-with 25 seconds left; he never returned because there was nothing to return
-to. If an injury like that is real, it shows up as next week's Out.
+injury_weight says how much of the game a Mid-Game Injury cost: the share
+of his team's offensive plays run after the play he was hurt on. Hurt on the
+opening snap is about 0.99, at halftime about 0.5, on the last drive a few
+hundredths. It is blank on every other status. Offensive plays are runs,
+passes, kneels, spikes and plays wiped out by penalty - the plays a snap
+count counts.
+
+A player hurt with nothing left to play is not a Mid-Game Injury at all.
+Garrett Wilson was "injured during the play" on the Jets' last snap of 2025
+week 1; he missed nothing, so his weight would be 0 and he stays Healthy.
+If an injury like that is real, it shows up as next week's Out.
 
 Why not ESPN. ESPN's injury field is the player's status when you ask, not
 when the game was played, so a Tuesday pull stamps last week with this week's
@@ -75,8 +82,6 @@ _PARTICIPATION = ("https://github.com/nflverse/nflverse-data/releases/download/"
 _SUSPENDED_CODES = {"R40"}
 _ILL_CODES = {"R59"}
 _LEFT_SQUAD_CODES = {"R06"}
-
-MIN_PLAYS_AFTER = 3
 
 _INJURED = re.compile(r"([A-Z]{2,3})-(\d{1,2})-[^ ]+? was injured during the play")
 
@@ -194,17 +199,23 @@ def get_game_status_df(season: int, boxscores: pd.DataFrame) -> pd.DataFrame:
     offense = pbp[pbp["play_type"].isin(["pass", "run", "qb_kneel", "qb_spike", "no_play"])]
     off_plays = {k: g["play_id"].to_numpy() for k, g in offense.groupby(["game_id", "posteam"])}
 
+    def missed_share(game, play, team):
+        plays = off_plays.get((game, team), [])
+        return (plays > play).sum() / len(plays) if len(plays) else 0.0
+
     def no_return(week, gsis):
         game, play, team = injured[(week, gsis)]
-        if int((off_plays.get((game, team), []) > play).sum()) < MIN_PLAYS_AFTER:
-            return False, "participation" if last_on is not None else "snaps"
-        if last_on is not None and game in part_games:
-            return last_on.get((game, gsis), -1) <= play, "participation"
+        src = "participation" if last_on is not None and game in part_games else "snaps"
+        weight = missed_share(game, play, team)
+        if weight == 0:
+            return False, src, None
+        if src == "participation":
+            return last_on.get((game, gsis), -1) <= play, src, weight
         if last_touch.get((game, gsis), -1) > play:
-            return False, "snaps"
+            return False, src, None
         _, off_snaps = snap_of.get((week, gsis), (0, 0))
         before = int((off_plays.get((game, team), []) <= play).sum())
-        return (off_snaps or 0) <= before, "snaps"
+        return (off_snaps or 0) <= before, src, weight
 
     # team_desc lists every abbreviation a franchise has had (Rams: STL, LA,
     # LAR), so keep only the one that played this season.
@@ -225,7 +236,7 @@ def get_game_status_df(season: int, boxscores: pd.DataFrame) -> pd.DataFrame:
             team = nick.get(str(name).replace(" D/ST", "").strip().lower())
             status = "Bye" if team and team not in teams_playing.get(week, set()) \
                 else "Healthy"
-            rows.append((season, week, pid, name, status, source))
+            rows.append((season, week, pid, name, status, source, None))
             continue
 
         gsis = espn_to_gsis.get(int(pid))
@@ -234,11 +245,13 @@ def get_game_status_df(season: int, boxscores: pd.DataFrame) -> pd.DataFrame:
         _, rstat, code = ros_of.get((week, gsis), (None, None, None))
         team = team_in(week, gsis)
 
+        weight = None
         if played:
             status = "Healthy"
             if (week, gsis) in injured:
-                gone, source = no_return(week, gsis)
-                status = "Mid-Game Injury" if gone else "Healthy"
+                gone, source, w = no_return(week, gsis)
+                if gone:
+                    status, weight = "Mid-Game Injury", round(float(w), 2)
         elif team and team not in teams_playing.get(week, set()):
             status = "Bye"
         elif rstat == "SUS" or code in _SUSPENDED_CODES:
@@ -251,7 +264,7 @@ def get_game_status_df(season: int, boxscores: pd.DataFrame) -> pd.DataFrame:
             status = "Out"
         else:
             status = "Inactive"
-        rows.append((season, week, pid, name, status, source))
+        rows.append((season, week, pid, name, status, source, weight))
 
     return pd.DataFrame(rows, columns=["season", "week", "player_id", "player_name",
-                                       "status", "source"])
+                                       "status", "source", "injury_weight"])
