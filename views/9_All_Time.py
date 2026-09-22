@@ -1,6 +1,15 @@
 """
 All-Time Records — cross-season stats, records, and manager history.
 
+A season still in its regular season counts in two ways. Anything built from
+single games - weekly highs and lows, margins, bench records, career totals,
+head to head, win milestones - takes it live, so a record set on Sunday shows
+on Tuesday. Anything that describes a whole season - season scoring and win
+records, best and worst season, playoff appearances, the Season by Season
+average - waits until its regular season is over, because a running tally is
+not a season: two games in, everyone without a win would share the record
+for fewest wins.
+
 Trades & Waiver Data averages each manager's waiver adds and trades over
 completed seasons only - a season in progress is a running tally and would
 drag every average down - and lists the per-season counts, including the
@@ -168,6 +177,11 @@ def load_all_seasons():
     Returns (all_matchups_df, season_stats_df, failed_seasons).
     all_matchups_df: every game row across all seasons with 'manager'/'opp_manager' columns.
     season_stats_df: one row per (season, manager) with reg-season aggregates + final_standing.
+
+    reg_complete is False while a season's regular season is still being
+    played. Its totals are a running tally and its seed is only where the
+    table stands today, so season-long records and playoff appearances must
+    skip it. Weekly and per-game records take it as it comes.
     """
     all_matchups, season_stats_rows, failed = [], [], []
 
@@ -182,6 +196,7 @@ def load_all_seasons():
             mgr_map = get_manager_map(season)
             cfg = season_config(season)
             reg_end = cfg["reg_season_end"]
+            reg_complete = (archive.current_week(season) or 0) >= reg_end
 
             m = matchups.copy()
             m["manager"] = m["team_id"].map(mgr_map)
@@ -205,6 +220,7 @@ def load_all_seasons():
                 pf = round(grp["score"].sum(), 2)
                 pa = round(grp["opp_score"].sum(), 2)
                 games = wins + losses
+                seed = seed_map.get(team_id, 0)
                 season_stats_rows.append({
                     "season": season,
                     "team_id": team_id,
@@ -219,7 +235,9 @@ def load_all_seasons():
                     "point_diff": round(pf - pa, 2),
                     "avg_diff": round((pf - pa) / games, 2) if games > 0 else 0.0,
                     "final_standing": final_standing,
-                    "seed": seed_map.get(team_id, 0),
+                    "seed": seed,
+                    "reg_complete": reg_complete,
+                    "made_playoffs": reg_complete and 1 <= seed <= PLAYOFF_SPOTS,
                 })
         except Exception as e:
             failed.append((season, str(e)))
@@ -401,6 +419,11 @@ else:
 
 season_stats_df["full_wins"] = season_stats_df["reg_wins"] + season_stats_df["playoff_wins"]
 
+# Seasons whose regular season is still being played, named in captions.
+IN_PROGRESS = sorted(int(y) for y in
+                     season_stats_df.loc[~season_stats_df["reg_complete"], "season"].unique())
+IN_PROGRESS_TXT = ", ".join(map(str, IN_PROGRESS))
+
 # ── Active vs Legacy view ─────────────────────────────────────────────────────
 # "Active" means a manager who played in the most recent season with data.
 # Filtering is applied to the SUBJECT of every table, never to opponents, so an
@@ -553,7 +576,7 @@ with tab_trophy:
             "Games": games,
             "Record": record,
             "Win%": round(wins / decided * 100, 1) if decided else 0.0,
-            "Playoffs": (int((g["seed"].between(1, PLAYOFF_SPOTS)).sum())
+            "Playoffs": (int(g["made_playoffs"].sum())
                          + legacy_playoffs.get(mgr, 0)),
             "Finishes": "  ".join(parts),
         })
@@ -583,8 +606,10 @@ with tab_trophy:
     st.caption(
         f"Regular season head-to-head only; median wins are not counted. "
         f"Win% excludes ties, which the record still shows. "
-        f"Playoffs counts seasons seeded in the top {PLAYOFF_SPOTS}. "
-        f"Finishes: {MEDAL[1]} 1st · {MEDAL[2]} 2nd · {MEDAL[3]} 3rd · {SACKO} last. "
+        f"Playoffs counts seasons seeded in the top {PLAYOFF_SPOTS}"
+        + (f"; {IN_PROGRESS_TXT} counts once its regular season ends. "
+           if IN_PROGRESS else ". ")
+        + f"Finishes: {MEDAL[1]} 1st · {MEDAL[2]} 2nd · {MEDAL[3]} 3rd · {SACKO} last. "
         + legacy_2015_note
     )
 
@@ -645,6 +670,13 @@ with tab_records:
                                 "Score": f"{r['score']:.2f}"})
     st.dataframe(pd.DataFrame(weekly_records), hide_index=True, width="stretch")
 
+    # Season-long records need the season to be over. Mid-season, "fewest
+    # wins" is every manager still on zero and "lowest total PF" is whoever
+    # has played two games, neither of which is a season.
+    done_stats = season_stats_df[season_stats_df["reg_complete"]]
+    in_progress_note = (f"{IN_PROGRESS_TXT} is left out until its regular season ends."
+                        if IN_PROGRESS else "")
+
     # ── Scoring season records ─────────────────────────────────────────────
     st.markdown("#### Season Scoring Records (Regular Season Only)")
     # Per-game records first, then totals, each kept as its own block.
@@ -660,8 +692,10 @@ with tab_records:
     ]
     all_scoring_rows = []
     for label, col, largest in scoring_record_specs:
-        all_scoring_rows += season_record_rows(label, season_stats_df, col, largest)
+        all_scoring_rows += season_record_rows(label, done_stats, col, largest)
     st.dataframe(pd.DataFrame(all_scoring_rows), hide_index=True, width="stretch")
+    if in_progress_note:
+        st.caption(in_progress_note)
 
     st.markdown("#### Single-Season Win Records")
 
@@ -676,15 +710,15 @@ with tab_records:
                 for _, r in rows.iterrows()]
 
     win_records = pd.DataFrame(
-        wins_record_rows("Most Reg Season Wins",   season_stats_df, "reg_wins", largest=True) +
-        wins_record_rows("Fewest Reg Season Wins", season_stats_df, "reg_wins", largest=False)
+        wins_record_rows("Most Reg Season Wins",   done_stats, "reg_wins", largest=True) +
+        wins_record_rows("Fewest Reg Season Wins", done_stats, "reg_wins", largest=False)
     )
     st.dataframe(win_records, hide_index=True, width="stretch")
 
     # A perfect season is winning out and then taking the title; a perfect
     # disaster is losing out and then finishing last. Both are computed rather
     # than asserted, so the caption stays honest if either ever happens.
-    _ws = season_stats_df.copy()
+    _ws = done_stats.copy()
     _ws["games"] = _ws["reg_wins"] + _ws["reg_losses"]
     _last = (_ws[_ws["final_standing"] > 0]
              .groupby("season")["final_standing"].max().to_dict())
@@ -710,7 +744,7 @@ with tab_records:
     else:
         caption = f"Perfect seasons: {_who(perfect)}. Perfect disasters: {_who(disaster)}."
 
-    st.caption(caption)
+    st.caption(" ".join(c for c in (caption, in_progress_note) if c))
 
     # ── Matchup differential records ───────────────────────────────────────
     st.markdown("#### Matchup Differentials (Regular Season)")
@@ -796,7 +830,7 @@ with tab_records:
     if "reg_ties" not in _se.columns:
         _se["reg_ties"] = 0
     _se["_games"] = _se["reg_wins"] + _se["reg_losses"] + _se["reg_ties"]
-    _se["_made"] = _se["seed"].between(1, PLAYOFF_SPOTS).astype(int)
+    _se["_made"] = _se["made_playoffs"].astype(int)
     _se["cum_made"] = _se.groupby("manager")["_made"].cumsum()
     _se["cum_games"] = _se.groupby("manager")["_games"].cumsum()
 
@@ -847,6 +881,8 @@ with tab_mgr_records:
         "Regular season only. Records rank by win percentage, not win count, "
         "because season length has varied from 12 to 14 games. "
         "⭐ = most extreme across all managers."
+        + (f" {IN_PROGRESS_TXT} is left out until its regular season ends."
+           if IN_PROGRESS else "")
     )
 
     st_df = season_stats_df.copy()
@@ -875,10 +911,13 @@ with tab_mgr_records:
         ("Low Diff/G",   "_low_pd",    "avg_diff", False),
     ]
 
-    managers = sorted(st_df["manager"].unique())
+    # Best and worst seasons are whole seasons only; the one in progress still
+    # shows in Season by Season below, marked as such.
+    done_st = st_df[st_df["reg_complete"]]
+    managers = sorted(done_st["manager"].unique())
     raw_rows = []
     for mgr in managers:
-        m_df = st_df[st_df["manager"] == mgr]
+        m_df = done_st[done_st["manager"] == mgr]
         if m_df.empty:
             continue
         row = {"Manager": mgr}
@@ -949,39 +988,43 @@ with tab_mgr_records:
     season_rows = []
     for _, r in m_df.iterrows():
         g = int(r["reg_wins"]) + int(r["reg_losses"]) + int(r.get("reg_ties", 0))
-        made = 1 <= int(r["seed"]) <= PLAYOFF_SPOTS if r["seed"] else False
+        live = not r["reg_complete"]
         season_rows.append({
-            "Season": str(int(r["season"])),
+            "Season": f"{int(r['season'])} (in progress)" if live else str(int(r["season"])),
             "Record": record_str(r),
             "Win%": win_pct(int(r["reg_wins"]), int(r["reg_losses"])),
-            "Playoffs": "✅" if made else "❌",
+            "Playoffs": "—" if live else ("✅" if r["made_playoffs"] else "❌"),
             "PF (/g)": f"{r['pf']:.1f} ({r['pf'] / g:.1f})" if g else "—",
             "PA (/g)": f"{r['pa']:.1f} ({r['pa'] / g:.1f})" if g else "—",
             "Avg Diff": round(float(r["avg_diff"]), 2),
             "Finish": finish_label(r["final_standing"]),
         })
 
+    # The average is over whole seasons; the one in progress keeps its row
+    # above but would drag every per-season figure towards zero.
+    done_m = m_df[m_df["reg_complete"]]
     if season_rows:
-        n = len(m_df)
-        aw, al = m_df["reg_wins"].mean(), m_df["reg_losses"].mean()
-        tot_g = (m_df["reg_wins"] + m_df["reg_losses"] + m_df.get("reg_ties", 0)).sum()
-        placed = m_df[m_df["final_standing"] > 0]["final_standing"]
-        made_n = int(sum(1 for _, r in m_df.iterrows()
-                         if r["seed"] and 1 <= int(r["seed"]) <= PLAYOFF_SPOTS))
-        avg_row = {
-            "Season": "Average",
-            "Record": f"{aw:.1f} W, {al:.1f} L",
-            "Win%": win_pct(aw, al),
-            "Playoffs": f"{made_n} of {n}",
-            "PF (/g)": f"{m_df['pf'].mean():.1f} ({m_df['pf'].sum() / tot_g:.1f})" if tot_g else "—",
-            "PA (/g)": f"{m_df['pa'].mean():.1f} ({m_df['pa'].sum() / tot_g:.1f})" if tot_g else "—",
-            "Avg Diff": round(float(m_df["avg_diff"].mean()), 2),
-            "Finish": f"{placed.mean():.1f}" if not placed.empty else "—",
-        }
+        table_rows = list(season_rows)
+        n = len(done_m)
+        if n:
+            aw, al = done_m["reg_wins"].mean(), done_m["reg_losses"].mean()
+            tot_g = (done_m["reg_wins"] + done_m["reg_losses"] + done_m["reg_ties"]).sum()
+            placed = done_m[done_m["final_standing"] > 0]["final_standing"]
+            made_n = int(done_m["made_playoffs"].sum())
+            table_rows.append({
+                "Season": "Average",
+                "Record": f"{aw:.1f} W, {al:.1f} L",
+                "Win%": win_pct(aw, al),
+                "Playoffs": f"{made_n} of {n}",
+                "PF (/g)": f"{done_m['pf'].mean():.1f} ({done_m['pf'].sum() / tot_g:.1f})" if tot_g else "—",
+                "PA (/g)": f"{done_m['pa'].mean():.1f} ({done_m['pa'].sum() / tot_g:.1f})" if tot_g else "—",
+                "Avg Diff": round(float(done_m["avg_diff"].mean()), 2),
+                "Finish": f"{placed.mean():.1f}" if not placed.empty else "—",
+            })
         # Average sits last, and is bolded so it reads as a summary rather than
         # another season. Needs jinja2 >= 3.1.5 for the pandas Styler.
-        season_table = pd.DataFrame(season_rows + [avg_row])
-        avg_idx = len(season_table) - 1
+        season_table = pd.DataFrame(table_rows)
+        avg_idx = len(season_table) - 1 if n else -1
         styled = season_table.style.apply(
             lambda row: ["font-weight: bold"] * len(row)
             if row.name == avg_idx else [""] * len(row),
@@ -991,10 +1034,13 @@ with tab_mgr_records:
         # 30.800000 instead of 30.8.
         ).format({"Win%": "{:.1f}", "Avg Diff": "{:.2f}"})
         st.dataframe(styled, hide_index=True, width="stretch")
+        live = len(m_df) - n
         st.caption(
-            f"{pick}, {n} season{'s' if n != 1 else ''}. Ties are excluded from "
-            "win% and from the average row. Playoffs marks a top-"
-            f"{PLAYOFF_SPOTS} seed. Finish on the Average row is the mean placing."
+            f"{pick}, {n} completed season{'s' if n != 1 else ''}"
+            + (" plus one in progress, which the average leaves out" if live else "")
+            + ". Ties are excluded from win% and from the average row. Playoffs "
+            f"marks a top-{PLAYOFF_SPOTS} seed. Finish on the Average row is the "
+            "mean placing."
         )
 
 
