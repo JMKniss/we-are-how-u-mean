@@ -1758,23 +1758,23 @@ season,overall_pick,round,pick_in_round,team_id,team_name,player_name,keeper
 2026,141,15,1,7,J’Diglett Morgoones,Brandon Aubrey,False
 2026,160,16,10,7,J’Diglett Morgoones,Ja'Kobi Lane,False
 2026,161,17,1,7,J’Diglett Morgoones,Chris Bell,False
-2026,6,1,6,8,SheGloomOnMyWeedleTilIMuk,Puka Nacua,False
-2026,15,2,5,8,SheGloomOnMyWeedleTilIMuk,De'Von Achane,False
-2026,26,3,6,8,SheGloomOnMyWeedleTilIMuk,Rashee Rice,False
-2026,35,4,5,8,SheGloomOnMyWeedleTilIMuk,Cam Skattebo,False
-2026,46,5,6,8,SheGloomOnMyWeedleTilIMuk,David Montgomery,False
-2026,55,6,5,8,SheGloomOnMyWeedleTilIMuk,DJ Moore,False
-2026,66,7,6,8,SheGloomOnMyWeedleTilIMuk,Jaylen Warren,False
-2026,75,8,5,8,SheGloomOnMyWeedleTilIMuk,J.K. Dobbins,False
-2026,86,9,6,8,SheGloomOnMyWeedleTilIMuk,Courtland Sutton,False
-2026,95,10,5,8,SheGloomOnMyWeedleTilIMuk,Jordan Addison,False
-2026,106,11,6,8,SheGloomOnMyWeedleTilIMuk,Matthew Stafford,False
-2026,115,12,5,8,SheGloomOnMyWeedleTilIMuk,Tre Tucker,False
-2026,126,13,6,8,SheGloomOnMyWeedleTilIMuk,Braelon Allen,False
-2026,135,14,5,8,SheGloomOnMyWeedleTilIMuk,Broncos D/ST,False
-2026,146,15,6,8,SheGloomOnMyWeedleTilIMuk,Travis Kelce,False
-2026,155,16,5,8,SheGloomOnMyWeedleTilIMuk,Cam Little,False
-2026,166,17,6,8,SheGloomOnMyWeedleTilIMuk,Malik Washington,False
+2026,6,1,6,8,Team Rocket,Puka Nacua,False
+2026,15,2,5,8,Team Rocket,De'Von Achane,False
+2026,26,3,6,8,Team Rocket,Rashee Rice,False
+2026,35,4,5,8,Team Rocket,Cam Skattebo,False
+2026,46,5,6,8,Team Rocket,David Montgomery,False
+2026,55,6,5,8,Team Rocket,DJ Moore,False
+2026,66,7,6,8,Team Rocket,Jaylen Warren,False
+2026,75,8,5,8,Team Rocket,J.K. Dobbins,False
+2026,86,9,6,8,Team Rocket,Courtland Sutton,False
+2026,95,10,5,8,Team Rocket,Jordan Addison,False
+2026,106,11,6,8,Team Rocket,Matthew Stafford,False
+2026,115,12,5,8,Team Rocket,Tre Tucker,False
+2026,126,13,6,8,Team Rocket,Braelon Allen,False
+2026,135,14,5,8,Team Rocket,Broncos D/ST,False
+2026,146,15,6,8,Team Rocket,Travis Kelce,False
+2026,155,16,5,8,Team Rocket,Cam Little,False
+2026,166,17,6,8,Team Rocket,Malik Washington,False
 2026,3,1,3,9,SlowKing Henry and Company,Ja'Marr Chase,False
 2026,18,2,8,9,SlowKing Henry and Company,Derrick Henry,False
 2026,23,3,3,9,SlowKing Henry and Company,Drake London,False
@@ -1792,20 +1792,20 @@ season,overall_pick,round,pick_in_round,team_id,team_name,player_name,keeper
 2026,143,15,3,9,SlowKing Henry and Company,Malachi Fields,False
 2026,158,16,8,9,SlowKing Henry and Company,Steelers D/ST,False
 2026,163,17,3,9,SlowKing Henry and Company,Tyler Loop,False
-2026,2,1,2,10,We Are Rolling High,Bijan Robinson,False
-2026,19,2,9,10,We Are Rolling High,Ashton Jeanty,False
-2026,22,3,2,10,We Are Rolling High,Zay Flowers,False
-2026,39,4,9,10,We Are Rolling High,Tetairoa McMillan,False
-2026,42,5,2,10,We Are Rolling High,Bucky Irving,False
-2026,59,6,9,10,We Are Rolling High,Joe Burrow,False
-2026,62,7,2,10,We Are Rolling High,Mike Evans,False
-2026,79,8,9,10,We Are Rolling High,DK Metcalf,False
-2026,82,9,2,10,We Are Rolling High,George Kittle,False
-2026,99,10,9,10,We Are Rolling High,Tony Pollard,False
-2026,102,11,2,10,We Are Rolling High,Jakobi Meyers,False
-2026,119,12,9,10,We Are Rolling High,Romeo Doubs,False
-2026,122,13,2,10,We Are Rolling High,Khalil Shakir,False
-2026,139,14,9,10,We Are Rolling High,Zach Charbonnet,False
-2026,142,15,2,10,We Are Rolling High,Vikings D/ST,False
-2026,159,16,9,10,We Are Rolling High,Jared Goff,False
-2026,162,17,2,10,We Are Rolling High,Trey Smack,False
+2026,2,1,2,10,Brock,Bijan Robinson,False
+2026,19,2,9,10,Brock,Ashton Jeanty,False
+2026,22,3,2,10,Brock,Zay Flowers,False
+2026,39,4,9,10,Brock,Tetairoa McMillan,False
+2026,42,5,2,10,Brock,Bucky Irving,False
+2026,59,6,9,10,Brock,Joe Burrow,False
+2026,62,7,2,10,Brock,Mike Evans,False
+2026,79,8,9,10,Brock,DK Metcalf,False
+2026,82,9,2,10,Brock,George Kittle,False
+2026,99,10,9,10,Brock,Tony Pollard,False
+2026,102,11,2,10,Brock,Jakobi Meyers,False
+2026,119,12,9,10,Brock,Romeo Doubs,False
+2026,122,13,2,10,Brock,Khalil Shakir,False
+2026,139,14,9,10,Brock,Zach Charbonnet,False
+2026,142,15,2,10,Brock,Vikings D/ST,False
+2026,159,16,9,10,Brock,Jared Goff,False
+2026,162,17,2,10,Brock,Trey Smack,False
