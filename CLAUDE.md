@@ -196,6 +196,13 @@ ESPN has since restated is reported as a conflict and skipped, so a stat
 correction cannot quietly rewrite a result the league has already argued about.
 Pass `--force` when you have looked at the conflict and decided ESPN is right.
 
+**Injury conflicts are expected, and never a reason to force.** ESPN reports
+a player's *current* injury status, so every past week's boxscore rows drift
+from what was archived. The archived value is the record of that week (healthy
+week 1, OUT week 2, healthy week 3 must stay three different rows), kept for a
+future injury-impact analysis. Note it is the status on the Tuesday of capture,
+not game day: a player hurt during the game reads OUT for a week he played.
+
 **Keep it running to the final week, for the trades.** The only ESPN source
 that records a trade's players - the league activity feed - is deleted once
 the season ends (2025's already answers "does not exist"). Waiver history
@@ -281,6 +288,11 @@ Guarantees:
 Row order is canonical (sorted by identity keys), so a `git diff` after an
 update shows only rows that genuinely changed. A weekly update that finds
 nothing new writes nothing at all.
+
+Every number is stored to the hundredth (`DECIMALS` in `build_archive.py`),
+because ESPN never shows more. A third decimal was either precision the league
+never saw (2018's raw projections) or float noise, and either way the archive
+disagreed with the site it records.
 
 To correct a single wrong value, edit the CSV directly — that is the point of
 using CSV. Do not re-pull to fix one cell.

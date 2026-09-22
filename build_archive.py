@@ -94,6 +94,23 @@ SORT_OVERRIDE = {
 # against the old one and be skipped.
 SNAPSHOT_DATASETS = {"standings", "upcoming"}
 
+# Every number is stored to the hundredth. ESPN shows points, projections and
+# odds to two places and never more, so a third decimal is either precision
+# the league has never seen (2018's projections came back as 6.7474) or float
+# noise (94.18999999999998). Either way the archive would disagree with the
+# site it records. canonical() compares at the same precision, so values that
+# agree to the hundredth are the same fact.
+DECIMALS = 2
+
+
+def round_numbers(df: pd.DataFrame) -> pd.DataFrame:
+    """Float columns rounded to DECIMALS; everything else untouched."""
+    out = df.copy()
+    for c in out.columns:
+        if pd.api.types.is_float_dtype(out[c]):
+            out[c] = out[c].round(DECIMALS)
+    return out
+
 
 def season_complete(season: int) -> bool:
     """True once the archive holds every week the season is meant to have."""
@@ -166,8 +183,8 @@ def canonical(df: pd.DataFrame) -> pd.DataFrame:
         if pd.api.types.is_bool_dtype(col):
             out[c] = col.map({True: "True", False: "False"})
         elif pd.api.types.is_numeric_dtype(col):
-            out[c] = col.astype(float).round(4).map(
-                lambda v: "" if pd.isna(v) else f"{v:.4f}")
+            out[c] = col.astype(float).round(DECIMALS).map(
+                lambda v: "" if pd.isna(v) else f"{v:.{DECIMALS}f}")
         else:
             t = col.astype(str).str.strip()
             t = t.mask(t.str.lower().isin(blank), "")
@@ -179,7 +196,8 @@ def canonical(df: pd.DataFrame) -> pd.DataFrame:
             # is a number, compare it as one.
             num = pd.to_numeric(t, errors="coerce")
             if (num.notna() | (t == "")).all() and num.notna().any():
-                out[c] = num.map(lambda v: "" if pd.isna(v) else f"{v:.4f}")
+                out[c] = num.round(DECIMALS).map(
+                    lambda v: "" if pd.isna(v) else f"{v:.{DECIMALS}f}")
             else:
                 out[c] = t
         out[c] = out[c].fillna("")
@@ -466,7 +484,7 @@ def main():
             b = BACKUPS / f"{name}.{stamp}.csv"
             shutil.copy2(p, b)
             print(f"  backup  _backups/{b.name}")
-        df.to_csv(p, index=False)
+        round_numbers(df).to_csv(p, index=False)
         print(f"  wrote   {p.name}  {len(df):,} rows")
 
     print("\nverifying untouched seasons:")
