@@ -54,6 +54,7 @@ KEYS = {
     "upcoming":   ["season", "team_id"],
     "transactions": ["season", "transaction_id", "player_id"],
     "game_status": ["season", "week", "player_id"],
+    "player_weeks": ["season", "week", "player_id"],
 }
 
 BUILDERS = {
@@ -65,6 +66,7 @@ BUILDERS = {
     "upcoming":   "get_upcoming_df",
     "transactions": "get_transactions_df",
     "game_status": "get_game_status_df",
+    "player_weeks": "get_player_weeks_df",
 }
 
 # Datasets built from other archived data plus nflverse, never from ESPN.
@@ -73,6 +75,12 @@ BUILDERS = {
 # pulled - and needs neither cookies nor an ESPN pull to backfill a past
 # season. It must come after boxscores in BUILDERS.
 DERIVED = {"game_status"}
+
+# Pulled from ESPN, but for the players in the season's boxscores, so like
+# game_status it is handed the boxscores this run has planned - a player first
+# rostered this week needs his earlier weeks pulled in the same run. Must come
+# after boxscores in BUILDERS.
+NEEDS_BOXSCORES = {"player_weeks"}
 
 SORT_HINTS = ("season", "week", "team_id", "overall_pick", "player_id")
 
@@ -161,7 +169,7 @@ def load_archive(name) -> pd.DataFrame:
 _freshened: set = set()
 
 
-def fetch_fresh(name, season) -> pd.DataFrame:
+def fetch_fresh(name, season, planned=None) -> pd.DataFrame:
     """Pull from ESPN, bypassing both the archive and the pickle cache."""
     prev = ec.USE_ARCHIVE
     ec.USE_ARCHIVE = False           # else we would just re-read the archive
@@ -173,7 +181,13 @@ def fetch_fresh(name, season) -> pd.DataFrame:
         if season not in _freshened:
             ec.invalidate_cache(season)
             _freshened.add(season)
-        df = getattr(ec, BUILDERS[name])(season)
+        if name in NEEDS_BOXSCORES:
+            box = (planned or {}).get("boxscores")
+            if box is None:
+                box = load_archive("boxscores")
+            df = getattr(ec, BUILDERS[name])(season, box[box["season"] == season])
+        else:
+            df = getattr(ec, BUILDERS[name])(season)
         if df is None:
             return pd.DataFrame()
         df = df.copy()
@@ -192,6 +206,27 @@ def derive(name, season, planned) -> pd.DataFrame:
         box = load_archive("boxscores")
     df = get_game_status_df(season, box)
     return df if df is not None else pd.DataFrame()
+
+
+def report_player_weeks(pw, box, season):
+    """
+    How far ESPN's player card agrees with boxscores for the weeks both hold.
+
+    boxscores is the authority for a rostered week (see get_player_weeks_df),
+    so a difference here changes nothing that is written. It is printed because
+    the two came from different ESPN endpoints, and a disagreement means one of
+    them is wrong - worth a look before the week is committed.
+    """
+    box = box[box["season"] == season].drop_duplicates(["week", "player_id"])
+    m = box.merge(pw, on=["week", "player_id"], how="left", suffixes=("", "_card"))
+    card = m["points_card"].notna()
+    differ = m[card & ((m["points"] - m["points_card"]).abs() > 0.01)]
+    holes = m[~card & (m["points"].abs() > 0.01)]
+    print(f"  {'player_weeks':11} {season}  card vs boxscores: {int(card.sum()) - len(differ):,} agree, "
+          f"{len(differ)} differ, {len(holes)} scored week(s) missing from the card")
+    for _, r in pd.concat([differ, holes]).head(5).iterrows():
+        print(f"{'':19}wk {r['week']:>2} {r['player_name']}: boxscores {r['points']}, "
+              f"card {r['points_card']}")
 
 
 def canonical(df: pd.DataFrame) -> pd.DataFrame:
@@ -437,7 +472,7 @@ def main():
         for season in targets:
             try:
                 fresh = (derive(name, season, planned) if name in DERIVED
-                         else fetch_fresh(name, season))
+                         else fetch_fresh(name, season, planned))
             except Exception as e:
                 print(f"  {name:11} {season}  FETCH FAILED {type(e).__name__}: {e}")
                 blocked = True
@@ -445,6 +480,10 @@ def main():
             if fresh.empty:
                 print(f"  {name:11} {season}  no data returned - skipped")
                 continue
+
+            if name == "player_weeks":
+                report_player_weeks(fresh, planned.get("boxscores", load_archive("boxscores")),
+                                    season)
 
             new, changed, identical_n, keys = compare(name, existing, fresh, season)
             n_new, n_chg = len(new), len(changed)

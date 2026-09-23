@@ -113,6 +113,7 @@ the file is opened rather than loaded into every session:
 | Waivers, drops, trades: sources, shape, gaps | `get_transactions_df` in `data/espn_client.py` |
 | Rebuilding past trades, and the evidence for it | `data/trade_inference.py` |
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
+| Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
@@ -220,6 +221,12 @@ python build_archive.py --season 2026 --dataset game_status --rebuild --force
 A derived-only run like that needs no ESPN cookies and leaves seasons.json
 alone.
 
+**It fills in free-agent weeks as it goes.** `player_weeks.csv` covers every
+player in the season's box scores, so a player first rostered in week 5 has
+his weeks 1-4 added in the same run. Each write prints how ESPN's player card
+agrees with the box scores; a line saying they differ is worth a look before
+committing.
+
 **Keep it running to the final week, for the trades.** The only ESPN source
 that records a trade's players - the league activity feed - is deleted once
 the season ends (2025's already answers "does not exist"). Waiver history
@@ -275,7 +282,15 @@ Two distinct layers. Do not conflate them.
 **`data/archive/` — the permanent record. Committed to git.**
 Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
-`transactions.csv`, `game_status.csv` (from nflverse, not ESPN), plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
+`transactions.csv`, `game_status.csv` (from nflverse, not ESPN), `player_weeks.csv`,
+plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
+
+`player_weeks.csv` is what each player scored every week, rostered or not, with
+receptions; `boxscores.csv` is who had him and where he sat. They overlap on
+rostered weeks, where boxscores is the authority. It exists because a draft
+pick is judged on the player's whole season, free-agent weeks included, and
+because receptions let a non-PPR season be rescored to half-PPR. 2018 onward
+only - ESPN has no weekly player stats before that.
 
 This is the source of truth for completed seasons. It is read *before* the pickle
 cache and *before* ESPN, so day-to-day use needs no cookies and no network.

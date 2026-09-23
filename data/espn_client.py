@@ -845,6 +845,74 @@ def get_boxscores_df(season: int) -> pd.DataFrame:
     return df
 
 
+def get_player_weeks_df(season: int, boxscores: pd.DataFrame = None) -> pd.DataFrame:
+    """
+    What every player the league ever rostered scored each week, rostered or not.
+
+    boxscores only knows a player while he is on a roster. A player drafted,
+    dropped in week 2 and picked back up in week 5 has no weeks 2-4 there, and
+    judging a draft pick on the player's full season - the draft value's rule,
+    so that a drop counts against the manager rather than the pick - needs them.
+    This file is those weeks, and the rostered ones too, because it also
+    carries receptions, which boxscores does not. Receptions are what let a
+    non-PPR season be rescored as half-PPR when a later season's draft value
+    curve is fitted across both (2026 moved to half-PPR).
+
+    The players are everyone in the season's boxscores plus everyone drafted,
+    since a pick dropped before week 1 is on no roster at all. Weeks run to the
+    last week boxscores holds, so an unplayed week never lands here.
+
+    Source is ESPN's player card, scored with the league's own settings for
+    that season. For rostered weeks it agrees with boxscores to the hundredth
+    (checked 2018, 2021, 2025: zero differences), but it has holes - the card
+    has no entry at all for a bye week, and none for week 1 of Emmanuel Sanders
+    in 2019 or Rashid Shaheed in 2025, which both played - each changed NFL
+    teams that season, which is the likely cause. So boxscores stays the authority for a rostered
+    week, and a reader wanting a player's season takes rostered weeks from
+    there and only the rest from here. build_archive reports both kinds of
+    disagreement whenever it writes this file.
+
+    2016-2017 are absent: ESPN kept no weekly player stats for them.
+    """
+    arc = _from_archive("player_weeks", season)
+    if arc is not None:
+        return arc
+    if season < 2018:
+        return pd.DataFrame()
+    if boxscores is None:
+        boxscores = get_boxscores_df(season)
+    box = boxscores[boxscores["season"] == season] if "season" in boxscores else boxscores
+    if box.empty:
+        return pd.DataFrame()
+
+    league = get_league(season)
+    last = int(box["week"].max())
+    ids = set(box["player_id"].astype(int))
+    ids |= {p.playerId for p in league.draft if p.playerId}
+    ids = sorted(ids)
+
+    rows = []
+    for i in range(0, len(ids), 50):
+        got = league.player_info(playerId=ids[i:i + 50])
+        if got is None:
+            continue
+        for p in (got if isinstance(got, list) else [got]):
+            for week, st in p.stats.items():
+                if not (1 <= week <= last) or "points" not in st:
+                    continue
+                rows.append({
+                    "season": season,
+                    "week": week,
+                    "player_id": p.playerId,
+                    "player_name": p.name,
+                    "position": p.position,
+                    "pro_team": p.proTeam,
+                    "points": st["points"],
+                    "receptions": st.get("breakdown", {}).get("receivingReceptions", 0),
+                })
+    return pd.DataFrame(rows)
+
+
 def get_manager_map(season: int) -> dict[int, str]:
     """
     Returns {team_id: manager_name} for a given season.
