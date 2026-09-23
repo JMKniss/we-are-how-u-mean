@@ -69,10 +69,10 @@ completed seasons before it.
 
 Injury games are the regular-season games a player missed hurt - Out or IR
 in game_status.csv, which covers his free-agent weeks too - plus the share of
-a game each mid-game injury cost. The page flags a bust who missed three or
-more: enough to be an injury season, not one missed week excusing a player
-who was a bust in his own right. It explains a bust; it does not change the
-value, since the pick still cost what it cost.
+a game each mid-game injury cost. Biggest Busts shows the count, so an injury
+season reads as one; it was a Y/N at three games first, but an N read as
+"not injured" for a player who had missed two. It explains a bust; it does
+not change the value, since the pick still cost what it cost.
 
 2016 and 2017 get nothing: ESPN kept only starters and season totals, so
 neither free-agent weeks nor a replacement level can be measured.

@@ -211,13 +211,14 @@ with tab3:
                                   show_team, cols, headers).round(2),
                      width="stretch", hide_index=True)
 
-        # Three games missed is an injury season, not one bad week excusing
-        # a player who was a bust on his own. See analysis/draft_value.py.
-        picks["Injured"] = np.where(picks["injury_games"] >= 3, "Y", "N")
+        # A count rather than a Y/N: an N read as "not injured" for a player
+        # who missed two games. See analysis/draft_value.py.
         st.subheader("Biggest Busts")
         st.dataframe(prep_display(picks.nsmallest(10, "value"), manager_map, show_mgr,
-                                  show_team, cols + ["Injured"], headers + ["Injured"]).round(2),
+                                  show_team, cols + ["injury_games"],
+                                  headers + ["Games Missed"]).round(2),
                      width="stretch", hide_index=True)
+        st.caption("Partial games missed indicates player was hurt mid-game")
 
 
 # ── Waivers and Trades ───────────────────────────────────────────────────────
