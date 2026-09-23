@@ -203,8 +203,11 @@ correction cannot quietly rewrite a result the league has already argued about.
 Pass `--force` when you have looked at the conflict and decided ESPN is right.
 
 **Injury status comes from the NFL, not ESPN.** `game_status.csv` records
-whether each rostered player played that week, at game time: Healthy,
-Mid-Game Injury, Out, IR, Suspended, Bye, Inactive. It is built from nflverse
+whether each player played that week, at game time: Healthy,
+Mid-Game Injury, Out, IR, Suspended, Bye, Inactive - for rostered weeks and,
+from 2018, the free-agent weeks of anyone in `player_weeks.csv`, so it is
+built after that file. Filter to boxscores when only rostered weeks matter.
+It is built from nflverse
 by `data/game_status.py`, whose docstring has the rules and the evidence.
 ESPN's injury field was dropped from boxscores because it is the status on
 the day of the pull: a Tuesday capture stamped a player hurt on Sunday as OUT

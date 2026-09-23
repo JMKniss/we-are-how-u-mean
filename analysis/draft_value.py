@@ -67,6 +67,13 @@ reception_points). 2018-2025 were all frozen on the same 2018-2025 fit when
 this was built. A season in progress gets a provisional curve from the
 completed seasons before it.
 
+Injury games are the regular-season games a player missed hurt - Out or IR
+in game_status.csv, which covers his free-agent weeks too - plus the share of
+a game each mid-game injury cost. The page flags a bust who missed three or
+more: enough to be an injury season, not one missed week excusing a player
+who was a bust in his own right. It explains a bust; it does not change the
+value, since the pick still cost what it cost.
+
 2016 and 2017 get nothing: ESPN kept only starters and season totals, so
 neither free-agent weeks nor a replacement level can be measured.
 """
@@ -158,7 +165,7 @@ def pick_vor(season: int, rec_pts: float | None = None, draft: pd.DataFrame | No
     by_name = totals.drop_duplicates("player_name").set_index("player_name")
     picks = draft.copy()
     picks["position"] = picks["player_name"].map(by_name["position"])
-    for c in ("points", "games", "ppg"):
+    for c in ("player_id", "points", "games", "ppg"):
         picks[c] = picks["player_name"].map(by_name[c]).fillna(0)
     picks["games"] = picks["games"].astype(int)
     picks = picks[picks["position"].isin(POSITIONS)].copy()
@@ -209,17 +216,29 @@ def freeze(season: int, fit_seasons: list[int] | None = None) -> bool:
     return True
 
 
+def injury_games(season: int) -> pd.Series:
+    """Regular-season games each player missed injured, by player_id."""
+    if not archive.has("game_status", season):
+        return pd.Series(dtype=float)
+    gs = archive.get("game_status", season)
+    gs = gs[gs["week"] <= regular_weeks(season)]
+    missed = gs["status"].isin(["Out", "IR"]).astype(float)
+    missed += gs["injury_weight"].where(gs["status"] == "Mid-Game Injury", 0).fillna(0)
+    return missed.groupby(gs["player_id"]).sum()
+
+
 def draft_value(season: int, draft: pd.DataFrame | None = None) -> tuple[pd.DataFrame, dict, bool]:
     """
     Each QB/RB/WR/TE pick's value per game against its season's curve.
 
-    Returns (picks, curve, frozen). Adds expected, value, and dropped - whether
-    the drafting team cut him at any point that season.
+    Returns (picks, curve, frozen). Adds expected, value, injury_games, and
+    dropped - whether the drafting team cut him at any point that season.
     """
     curve, frozen = curve_for(season)
     picks = pick_vor(season, draft=draft)
     picks["expected"] = curve["intercept"] + curve["slope"] * np.log(picks["overall_pick"])
     picks["value"] = picks["vor"] - picks["expected"]
+    picks["injury_games"] = picks["player_id"].map(injury_games(season)).fillna(0.0)
 
     tx = archive.get("transactions", season) if archive.has("transactions", season) else pd.DataFrame()
     if tx.empty:

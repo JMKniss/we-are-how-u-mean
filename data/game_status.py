@@ -1,8 +1,12 @@
 """
-Whether each rostered player actually played, week by week, at game time.
+Whether each player actually played, week by week, at game time.
 
 One row per (season, week, player_id) for every player in that week's
-boxscores, with one of seven statuses:
+boxscores, and for every other week of anyone in player_weeks.csv - so a
+player's free-agent weeks are classified too, byes included. Draft value
+needs that: a pick dropped after getting hurt spent his IR weeks on
+waivers, and without them his season read as a failure rather than an
+injury. Each row has one of seven statuses:
 
   Healthy          played, and was not knocked out of the game
   Mid-Game Injury  played, was injured during a play, and never returned
@@ -102,6 +106,30 @@ def _participation(season: int) -> pd.DataFrame | None:
     except Exception:
         return None
     return p.rename(columns={"nflverse_game_id": "game_id"})
+
+
+def players_to_classify(season: int, boxscores: pd.DataFrame,
+                        player_weeks: pd.DataFrame) -> pd.DataFrame:
+    """
+    The (week, player) rows to classify: every boxscores row, plus every
+    other week of the season for each player in player_weeks, up to the last
+    week boxscores holds. Points come from the card where it has the week and
+    are 0 where it does not - a bye, or a week he did not play.
+    """
+    box = boxscores[boxscores["season"] == season]
+    if box.empty or player_weeks is None or player_weeks.empty:
+        return box
+    pw = player_weeks[player_weeks["season"] == season]
+    names = pw.drop_duplicates("player_id").set_index("player_id")["player_name"]
+    grid = pd.MultiIndex.from_product(
+        [range(1, int(box["week"].max()) + 1), names.index], names=["week", "player_id"])
+    have = pd.MultiIndex.from_frame(box[["week", "player_id"]])
+    extra = grid.difference(have).to_frame(index=False)
+    extra["season"] = season
+    extra["player_name"] = extra["player_id"].map(names)
+    extra = extra.merge(pw[["week", "player_id", "points"]], on=["week", "player_id"], how="left")
+    extra["points"] = extra["points"].fillna(0.0)
+    return pd.concat([box, extra], ignore_index=True)
 
 
 def get_game_status_df(season: int, boxscores: pd.DataFrame) -> pd.DataFrame:

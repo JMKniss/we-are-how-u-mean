@@ -176,7 +176,7 @@ with tab3:
             labels={"overall_pick": "Draft Pick (Overall)",
                     "vor": "Points per Game Above Replacement", "label": "Team",
                     "position": "Pos", "games": "Games", "ppg": "Pts/G",
-                    "expected": "Expected/G", "value": "Value/G"})
+                    "expected": "Expected", "value": "Value"})
         # Hollow per point rather than px's symbol=, which splits every team
         # into a kept and a dropped legend entry. px keeps row order within a
         # colour, so each trace's points line up with its team's rows.
@@ -201,20 +201,22 @@ with tab3:
                         line=dict(dash="dash", color="gray"))
         st.plotly_chart(fig, width="stretch")
 
-        picks["Dropped?"] = np.where(picks["dropped"], "Yes", "")
         cols = ["overall_pick", "round", "player_name", "position", "team_name",
-                "games", "ppg", "vor", "expected", "value", "Dropped?"]
+                "games", "ppg", "vor", "expected", "value"]
         headers = ["Pick", "Round", "Player", "Pos", "Team",
-                   "Games", "Pts/G", "Over Repl./G", "Expected/G", "Value/G", "Dropped?"]
+                   "Games", "Pts/G", "Over Repl.", "Expected", "Value"]
 
         st.subheader("Best Value Picks")
         st.dataframe(prep_display(picks.nlargest(15, "value"), manager_map, show_mgr,
                                   show_team, cols, headers).round(2),
                      width="stretch", hide_index=True)
 
+        # Three games missed is an injury season, not one bad week excusing
+        # a player who was a bust on his own. See analysis/draft_value.py.
+        picks["Injured"] = np.where(picks["injury_games"] >= 3, "Y", "N")
         st.subheader("Biggest Busts")
         st.dataframe(prep_display(picks.nsmallest(10, "value"), manager_map, show_mgr,
-                                  show_team, cols, headers).round(2),
+                                  show_team, cols + ["Injured"], headers + ["Injured"]).round(2),
                      width="stretch", hide_index=True)
 
 

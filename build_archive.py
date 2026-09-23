@@ -65,15 +65,16 @@ BUILDERS = {
     "validation": "get_validation_df",
     "upcoming":   "get_upcoming_df",
     "transactions": "get_transactions_df",
-    "game_status": "get_game_status_df",
     "player_weeks": "get_player_weeks_df",
+    "game_status": "get_game_status_df",
 }
 
 # Datasets built from other archived data plus nflverse, never from ESPN.
 # game_status classifies the players in a season's boxscores, so it is built
 # from the boxscores this run has planned - which include the week just
 # pulled - and needs neither cookies nor an ESPN pull to backfill a past
-# season. It must come after boxscores in BUILDERS.
+# season. It also classifies the free-agent weeks of everyone in
+# player_weeks, so it must come after both in BUILDERS.
 DERIVED = {"game_status"}
 
 # Pulled from ESPN, but for the players in the season's boxscores, so like
@@ -200,11 +201,14 @@ def fetch_fresh(name, season, planned=None) -> pd.DataFrame:
 
 def derive(name, season, planned) -> pd.DataFrame:
     """Build a DERIVED dataset from this run's planned boxscores, else the archive's."""
-    from data.game_status import get_game_status_df
+    from data.game_status import get_game_status_df, players_to_classify
     box = planned.get("boxscores")
     if box is None:
         box = load_archive("boxscores")
-    df = get_game_status_df(season, box)
+    pw = planned.get("player_weeks")
+    if pw is None:
+        pw = load_archive("player_weeks")
+    df = get_game_status_df(season, players_to_classify(season, box, pw))
     return df if df is not None else pd.DataFrame()
 
 
