@@ -381,6 +381,27 @@ def refresh_meta(seasons, dry_run=False):
     print(f"  wrote   seasons.json  {len(ordered)} seasons")
 
 
+def freeze_draft_value(seasons):
+    """
+    Fix a completed season's draft value curve, once.
+
+    The curve is refitted on every season through the one being frozen, so
+    left live it would move each year and change values the league had already
+    seen - 2026 would have re-scored 2024. Freezing at completion keeps a
+    season's values its own. Runs after seasons.json is refreshed, because that
+    is where "complete" is read from. See analysis/draft_value.py.
+    """
+    from data import archive
+    from analysis import draft_value
+    archive.clear()
+    for season in seasons:
+        try:
+            if draft_value.freeze(season):
+                print(f"  froze   draft value curve for {season}")
+        except Exception as e:
+            print(f"  draft value curve for {season} not frozen: {type(e).__name__}: {e}")
+
+
 def do_list():
     print(f"archive: {ARCHIVE}")
     for name in BUILDERS:
@@ -543,6 +564,7 @@ def main():
             # where the app reads names from.
             print("\nrefreshing seasons.json:")
             refresh_meta(targets)
+            freeze_draft_value(targets)
         return 1 if blocked else 0
 
     if args.dry_run:
@@ -598,6 +620,7 @@ def main():
     if not derived_only:
         print("\nrefreshing seasons.json:")
         refresh_meta(targets)
+        freeze_draft_value(targets)
 
     print("\nDone.")
     return 0

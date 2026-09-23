@@ -87,6 +87,7 @@ ff_app/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
 │   ├── projections.py      # Monte Carlo playoff simulation, magic numbers
+│   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
 │   └── transactions.py     # Waiver moves and trade sides from the transactions log
 └── views/
     ├── 1_Dashboard.py
@@ -114,6 +115,7 @@ the file is opened rather than loaded into every session:
 | Rebuilding past trades, and the evidence for it | `data/trade_inference.py` |
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
+| Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
@@ -269,6 +271,9 @@ git add data/archive && git commit -m "Archive 2026 through week N"
    returns periods 1-13 single-week then 14=[14,15], 15=[16,17], which is the
    2021+ shape already handled.
 4. Add the year to `data/archive/draft_order.csv` once the draft happens.
+5. If the scoring settings changed, check `reception_points()` in `config.py`.
+   Draft value rescores earlier seasons into the new scoring through it, and
+   receptions are the only offensive setting it can rescore.
 
 `DEFAULT_SEASON` needs no attention. It follows the data rather than the season
 list, so the app stays on the previous season until week 1 is archived - a
@@ -291,6 +296,11 @@ rostered weeks, where boxscores is the authority. It exists because a draft
 pick is judged on the player's whole season, free-agent weeks included, and
 because receptions let a non-PPR season be rescored to half-PPR. 2018 onward
 only - ESPN has no weekly player stats before that.
+
+`draft_value_curves.csv` holds each completed season's draft value curve,
+written once by `build_archive.py` the first time a run finds the season
+complete, and never rewritten, so a later season cannot re-score an earlier
+one. Delete a row only to deliberately refit that season.
 
 This is the source of truth for completed seasons. It is read *before* the pickle
 cache and *before* ESPN, so day-to-day use needs no cookies and no network.

@@ -152,6 +152,20 @@ def season_config(season: int) -> dict:
         }
 
 
+def reception_points(season: int) -> float:
+    """
+    Points per reception. The league was non-PPR through 2025 and moved to
+    half-PPR in 2026.
+
+    The only offensive scoring change that matters across seasons: 2024 also
+    halved the fumble-lost penalty, worth a point or two a season. Kicker and
+    D/ST scoring moved in 2022 and 2023, but draft value leaves both out.
+    Receptions are what the draft value curve rescores across, so a season
+    that changes this needs it recorded here.
+    """
+    return 0.5 if season >= 2026 else 0.0
+
+
 def week_label(season: int, week: int) -> str:
     """
     How a week should be named on screen: "Week 5", or the playoff round.

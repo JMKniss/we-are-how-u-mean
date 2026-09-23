@@ -12,7 +12,12 @@ went out, and st.table renders Markdown colour where st.dataframe shows the
 raw text. The sort is chosen with a control instead of a column header for the
 same reason.
 
-Both tabs end with the same per-manager count of waiver adds and trades for
+Draft Value plots each pick's points above replacement against the curve of
+what that slot normally returns; the method, and why each part of it is the
+way it is, is in analysis/draft_value.py. It is empty for 2016-2017, which
+kept too little to measure a replacement level.
+
+Both transaction tabs end with the same per-manager count of waiver adds and trades for
 the season (analysis.transactions.move_counts), so either tab answers "who is
 most active" without switching.
 """
@@ -28,6 +33,7 @@ from data import archive
 from data.espn_client import (get_draft_df, get_boxscores_df, get_manager_map,
                               get_transactions_df)
 from analysis.draft import apply_recorded_order
+from analysis import draft_value
 from analysis.transactions import waiver_moves, trade_sides, move_counts
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
@@ -56,6 +62,10 @@ def load(season):
     except Exception:
         box = pd.DataFrame()
     return draft, box, mgr_map, applied_note, get_transactions_df(season)
+
+@st.cache_data(ttl=3600)
+def load_value(season):
+    return draft_value.draft_value(season)
 
 with st.spinner("Loading draft data..."):
     draft_df, box_df, manager_map, order_note, tx_df = load(season)
@@ -143,44 +153,69 @@ with tab2:
     st.dataframe(team_picks, width="stretch", hide_index=True)
 
 with tab3:
-    st.subheader("Draft Value Analysis")
-    st.caption("How many points did each pick actually score? Earlier picks should score more.")
+    st.subheader("Draft Value")
+    st.caption("Draft value data only considers players taken in the draft. "
+               "Undrafted waiver adds are evaluated separately.")
+    st.caption("A pick's value is the points he scored per game above a replacement "
+               "starter at his position, minus what a pick in that slot normally "
+               "returns based on league history (adjusted for scoring changes we've "
+               "made year-to-year).")
 
-    if box_df.empty:
-        st.info("Box score data needed for draft value analysis. Loading box scores may take a moment.")
+    if not draft_value.supported(season):
+        st.info("There is not enough preserved data to perform this analysis.")
     else:
-        player_pts = box_df[box_df["is_active_slot"]].groupby("player_name")["points"].sum().reset_index()
-        player_pts.columns = ["player_name", "season_points"]
-        value_df = draft_df.merge(player_pts, on="player_name", how="left").fillna(0)
-        value_df["label"] = value_df["team_name"].map(label_for)
+        picks, curve, frozen = load_value(season)
 
-        fig = px.scatter(value_df, x="overall_pick", y="season_points",
-                         color="label", hover_name="player_name",
-                         title="Points Scored vs Draft Position",
-                         labels={"overall_pick": "Draft Pick (Overall)", "season_points": "Season Points", "label": "Team"})
-        valid = value_df[value_df["season_points"] > 0]
-        if len(valid) > 2:
-            z = np.polyfit(valid["overall_pick"], valid["season_points"], 1)
-            p = np.poly1d(z)
-            x_line = sorted(valid["overall_pick"].unique())
-            fig.add_scatter(x=x_line, y=p(x_line), mode="lines", name="Trend",
-                            line=dict(dash="dash", color="gray"))
+        picks["label"] = chart_label(picks, manager_map, show_mgr, show_team)
+        fig = px.scatter(
+            picks, x="overall_pick", y="vor", color="label",
+            hover_name="player_name",
+            hover_data={"position": True, "games": True, "ppg": ":.2f",
+                        "expected": ":.2f", "value": ":.2f", "label": False},
+            title="Points per Game Above Replacement vs Draft Position",
+            labels={"overall_pick": "Draft Pick (Overall)",
+                    "vor": "Points per Game Above Replacement", "label": "Team",
+                    "position": "Pos", "games": "Games", "ppg": "Pts/G",
+                    "expected": "Expected/G", "value": "Value/G"})
+        # Hollow per point rather than px's symbol=, which splits every team
+        # into a kept and a dropped legend entry. px keeps row order within a
+        # colour, so each trace's points line up with its team's rows.
+        # The legend draws a trace's first point, so a team whose first pick
+        # was dropped showed hollow there too. Each team's legend entry is a
+        # solid stand-in instead, grouped with its trace so clicks still work.
+        fig.update_traces(marker=dict(size=9, line=dict(width=1.5)))
+        for trace in list(fig.data):
+            dropped = picks.loc[picks["label"] == trace.name, "dropped"]
+            trace.marker.symbol = np.where(dropped, "circle-open", "circle").tolist()
+            trace.legendgroup, trace.showlegend = trace.name, False
+            fig.add_scatter(x=[None], y=[None], mode="markers", name=trace.name,
+                            legendgroup=trace.name,
+                            marker=dict(symbol="circle", size=9, color=trace.marker.color,
+                                        line=dict(width=1.5)))
+        fig.add_scatter(x=[None], y=[None], mode="markers", name="Hollow: dropped by drafter",
+                        marker=dict(symbol="circle-open", size=9, color="gray",
+                                    line=dict(width=1.5)))
+        x_line = np.arange(1, int(picks["overall_pick"].max()) + 1)
+        fig.add_scatter(x=x_line, y=curve["intercept"] + curve["slope"] * np.log(x_line),
+                        mode="lines", name="Expected at this pick",
+                        line=dict(dash="dash", color="gray"))
         st.plotly_chart(fig, width="stretch")
 
-        value_df["value_score"] = value_df["season_points"] / (value_df["overall_pick"] ** 0.5 + 1)
-        best_value = value_df.nlargest(15, "value_score")[
-            ["overall_pick", "round", "player_name", "label", "season_points", "value_score"]
-        ].round(2)
-        best_value.columns = ["Pick", "Round", "Player", "Team", "Season Pts", "Value Score"]
-        st.subheader("Best Value Picks")
-        st.dataframe(best_value, width="stretch", hide_index=True)
+        picks["Dropped?"] = np.where(picks["dropped"], "Yes", "")
+        cols = ["overall_pick", "round", "player_name", "position", "team_name",
+                "games", "ppg", "vor", "expected", "value", "Dropped?"]
+        headers = ["Pick", "Round", "Player", "Pos", "Team",
+                   "Games", "Pts/G", "Over Repl./G", "Expected/G", "Value/G", "Dropped?"]
 
-        busts = value_df[value_df["overall_pick"] <= 30].nsmallest(10, "season_points")[
-            ["overall_pick", "round", "player_name", "label", "season_points"]
-        ].round(2)
-        busts.columns = ["Pick", "Round", "Player", "Team", "Season Pts"]
-        st.subheader("Biggest Busts (Top 30 picks)")
-        st.dataframe(busts, width="stretch", hide_index=True)
+        st.subheader("Best Value Picks")
+        st.dataframe(prep_display(picks.nlargest(15, "value"), manager_map, show_mgr,
+                                  show_team, cols, headers).round(2),
+                     width="stretch", hide_index=True)
+
+        st.subheader("Biggest Busts")
+        st.dataframe(prep_display(picks.nsmallest(10, "value"), manager_map, show_mgr,
+                                  show_team, cols, headers).round(2),
+                     width="stretch", hide_index=True)
 
 
 # ── Waivers and Trades ───────────────────────────────────────────────────────
