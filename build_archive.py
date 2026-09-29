@@ -52,6 +52,8 @@ KEYS = {
     "draft":      ["season", "overall_pick"],
     "standings":  ["season", "team_id"],
     "upcoming":   ["season", "team_id"],
+    "schedule":   ["season", "week", "team_id"],
+    "rosters":    ["season", "team_id", "player_id"],
     "transactions": ["season", "transaction_id", "player_id"],
     "game_status": ["season", "week", "player_id"],
     "player_weeks": ["season", "week", "player_id"],
@@ -64,6 +66,8 @@ BUILDERS = {
     "standings":  "get_standings_df",
     "validation": "get_validation_df",
     "upcoming":   "get_upcoming_df",
+    "schedule":   "get_schedule_df",
+    "rosters":    "get_rosters_df",
     "transactions": "get_transactions_df",
     "player_weeks": "get_player_weeks_df",
     "game_status": "get_game_status_df",
@@ -109,8 +113,9 @@ SORT_OVERRIDE = {
 # upcoming holds one week and is replaced wholesale each run - last
 # week's fixtures are not a record worth keeping, and keying it on
 # (season, team_id) means a new week would otherwise read as a conflict
-# against the old one and be skipped.
-SNAPSHOT_DATASETS = {"standings", "upcoming"}
+# against the old one and be skipped. rosters is the same: who is on which
+# team today, for the playoff simulator, and boxscores already keeps history.
+SNAPSHOT_DATASETS = {"standings", "upcoming", "rosters"}
 
 # Every number is stored to the hundredth. ESPN shows points, projections and
 # odds to two places and never more, so a third decimal is either precision

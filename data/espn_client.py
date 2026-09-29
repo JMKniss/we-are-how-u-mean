@@ -1050,6 +1050,93 @@ def get_upcoming_df(season: int) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def get_schedule_df(season: int) -> pd.DataFrame:
+    """
+    Every regular-season fixture, played or not: (season, week, team_id, opp_id).
+
+    matchups.csv holds only weeks already played, because an unplayed week is
+    a week of zeroes. The playoff simulator needs the weeks still to come, and
+    before this existed it looked for them in matchups, found none, simulated
+    no games at all, and reported the current top four as 100% certain.
+
+    The schedule is fixed at the draft, so this is an ordinary additive log:
+    the first run writes the whole regular season and later runs change
+    nothing. Completed seasons do not need it - their fixtures are in
+    matchups - which is what analysis.projections.fixtures() falls back to.
+
+    team.schedule is one opponent per matchup period, and every regular-season
+    period in every season has been a single week, so period i is week i.
+    """
+    arc = _from_archive("schedule", season)
+    if arc is not None:
+        return arc
+
+    league = get_league(season)
+    reg_end = season_config(season)["reg_season_end"]
+    rows = []
+    for team in league.teams:
+        for i, opp in enumerate(team.schedule[:reg_end], start=1):
+            rows.append({"season": season, "week": i,
+                         "team_id": team.team_id, "opp_id": opp.team_id})
+    return pd.DataFrame(rows)
+
+
+def get_rosters_df(season: int) -> pd.DataFrame:
+    """
+    Every rostered player as of the weekly update, with what the player-level
+    playoff simulator needs to project him: ESPN's per-game projection, next
+    week's projection, his NFL bye and his injury designation.
+
+    A snapshot, replaced each run like upcoming.csv. A roster from last week
+    is not a record of anything - boxscores already holds who was on which
+    team every week - and the simulator only ever wants the current one.
+
+    bye_week is the week missing from the player's NFL schedule. It is taken
+    per NFL team rather than per player, so a player whose card came back
+    without a schedule (it happens for a D/ST now and then) still gets his
+    team's bye.
+    """
+    arc = _from_archive("rosters", season)
+    if arc is not None:
+        return arc
+
+    league = get_league(season)
+    cfg = season_config(season)
+    if league.current_week > cfg["reg_season_end"]:
+        return pd.DataFrame()
+    next_week = league.current_week
+
+    bye_by_team = {}
+    for team in league.teams:
+        for p in team.roster:
+            sched = getattr(p, "schedule", None) or {}
+            weeks = {int(w) for w in sched}
+            if weeks:
+                missing = sorted(set(range(1, max(weeks) + 1)) - weeks)
+                if missing:
+                    bye_by_team[p.proTeam] = missing[0]
+
+    rows = []
+    for team in league.teams:
+        for p in team.roster:
+            nxt = (p.stats or {}).get(next_week, {}).get("projected_points")
+            rows.append({
+                "season": season,
+                "team_id": team.team_id,
+                "player_id": p.playerId,
+                "player_name": p.name,
+                "position": p.position,
+                "pro_team": p.proTeam,
+                "slot": p.lineupSlot,
+                "injury_status": p.injuryStatus,
+                "proj_avg": round(float(p.projected_avg_points or 0), 2),
+                "proj_week": next_week,
+                "proj_next": round(float(nxt), 2) if nxt is not None else None,
+                "bye_week": bye_by_team.get(p.proTeam),
+            })
+    return pd.DataFrame(rows)
+
+
 def get_draft_df(season: int) -> pd.DataFrame:
     arc = _from_archive("draft", season)
     if arc is not None:
@@ -1403,4 +1490,6 @@ get_draft_df = _empty_when_unavailable(get_draft_df)
 get_standings_df = _empty_when_unavailable(get_standings_df)
 get_validation_df = _empty_when_unavailable(get_validation_df)
 get_upcoming_df = _empty_when_unavailable(get_upcoming_df)
+get_schedule_df = _empty_when_unavailable(get_schedule_df)
+get_rosters_df = _empty_when_unavailable(get_rosters_df)
 get_transactions_df = _empty_when_unavailable(get_transactions_df)

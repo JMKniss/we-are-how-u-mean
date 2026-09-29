@@ -86,7 +86,7 @@ ff_app/
 ├── analysis/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
-│   ├── projections.py      # Monte Carlo playoff simulation, magic numbers
+│   ├── projections.py      # playoff odds (team and player models), magic numbers
 │   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
 │   └── transactions.py     # Waiver moves and trade sides from the transactions log
 └── views/
@@ -116,6 +116,7 @@ the file is opened rather than loaded into every session:
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
+| Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
@@ -291,7 +292,17 @@ Two distinct layers. Do not conflate them.
 Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
 `transactions.csv`, `game_status.csv` (from nflverse, not ESPN), `player_weeks.csv`,
+`schedule.csv`, `rosters.csv`, `upcoming.csv`,
 plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
+
+`matchups.csv` holds only weeks already played, so the weeks still to come live
+in `schedule.csv` - every regular-season fixture, written once at the first
+update of a season. The playoff simulator once looked for future games in
+matchups, found none, and called the current top four 100% certain.
+Completed seasons need no schedule rows; their fixtures are all in matchups.
+`rosters.csv` is a snapshot like `upcoming.csv`, replaced each run: who is on
+which team today, with ESPN's projections, NFL byes and injury designations,
+for the player-level playoff simulator.
 
 `player_weeks.csv` is what each player scored every week, rostered or not, with
 receptions; `boxscores.csv` is who had him and where he sat. They overlap on
@@ -497,8 +508,15 @@ Outperforming that = lucky schedule; underperforming = unlucky.
 **Alternate schedule:** For each team, count wins vs every other team every week (N-1 games
 per week). Reveals whether a team's record reflects their scoring or their schedule.
 
-**Monte Carlo playoff sim:** Uses each team's mean/std from games played so far. Samples
-from a normal distribution for each remaining game. 10,000 sims by default.
+**Monte Carlo playoff sim:** Two models, read side by side - one from team scores,
+one from rosters, byes and injuries. The team model does not take a team's early
+average at face value: after three weeks it predicts the rest of the season worse
+than the league average does, so it is shrunk hard toward it. The reasoning and
+the backtest are in `analysis/projections.py`.
+
+**Magic numbers are arithmetic, not simulation.** A spot is clinched only when fewer
+than N other teams can still reach your win total if they win out; counting teams
+ahead of fifth place's *current* wins declared 3-0 teams clinched in week 3.
 
 **3-week vs 4-week playoff format detection:** `len(pw) == 3` identifies the 2022 format.
 All playoff display logic (page 6) and validation (espn_client.py) branch on this.

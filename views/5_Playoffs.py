@@ -16,13 +16,22 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from data.espn_client import get_current_week, get_matchups_df, get_manager_map
+from data import archive
+from data.espn_client import (get_current_week, get_matchups_df, get_manager_map,
+                              get_schedule_df, get_rosters_df, get_boxscores_df)
 from analysis.standings import h2h_standings, combined_standings
-from analysis.projections import simulate_playoffs
+from analysis.efficiency import lineup_efficiency, season_slot_requirements
+from analysis.projections import (fixtures, simulate_team_model, simulate_player_model,
+                                  odds_by_week, fit_player_spread, fit_injury_rates,
+                                  team_efficiency, magic_numbers, PRIOR_GAMES)
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import (season_selector, require_data, sidebar_display_prefs,
                            prep_display, chart_label)
 from branding import page_icon
+
+# The player model is ~20x the work of the team model per simulation; past
+# 5,000 its odds move by tenths of a percent and the page waits seconds.
+PLAYER_SIMS_CAP = 5000
 
 st.set_page_config(page_title="Playoffs", page_icon=page_icon(), layout="wide")
 st.title("🏆 Playoffs")
@@ -312,129 +321,233 @@ def render_bracket():
             show_match(t1, t2, pw)
 
 
+@st.cache_data(ttl=300)
+def team_odds(s, spots, n):
+    m = get_matchups_df(s)
+    reg_end = season_config(s)["reg_season_end"]
+    fx = fixtures(m, get_schedule_df(s), reg_end)
+    return simulate_team_model(m, fx, reg_end, median_game=s >= 2025,
+                               playoff_spots=spots, n_simulations=n)
+
+
+@st.cache_data(ttl=300)
+def team_odds_by_week(s, spots):
+    m = get_matchups_df(s)
+    reg_end = season_config(s)["reg_season_end"]
+    fx = fixtures(m, get_schedule_df(s), reg_end)
+    return odds_by_week(m, fx, reg_end, median_game=s >= 2025, playoff_spots=spots)
+
+
+@st.cache_data(ttl=3600)
+def player_model_inputs():
+    """Position spreads and injury rates, fitted on every archived season."""
+    pw, gs, box = archive.get("player_weeks"), archive.get("game_status"), archive.get("boxscores")
+    return fit_player_spread(pw, gs), fit_injury_rates(box, gs)
+
+
+@st.cache_data(ttl=300)
+def player_odds(s, spots, n):
+    rosters = get_rosters_df(s)
+    m = get_matchups_df(s)
+    reg_end = season_config(s)["reg_season_end"]
+    if rosters.empty or m.empty or m["week"].max() >= reg_end:
+        return None
+    box = get_boxscores_df(s)
+    _, eff_weeks = lineup_efficiency(box)
+    spread, injury = player_model_inputs()
+    fx = fixtures(m, get_schedule_df(s), reg_end)
+    return simulate_player_model(
+        m, fx, rosters, reg_end, median_game=s >= 2025,
+        slot_counts=season_slot_requirements(box), spread=spread, injury=injury,
+        efficiency=team_efficiency(eff_weeks), playoff_spots=spots, n_simulations=n)
+
+
 def render_projections():
     reg_season_weeks = cfg["reg_season_end"]
     reg_df = matchups_df[matchups_df["week"] <= reg_season_weeks]
     weeks_played = reg_df["week"].nunique()
     weeks_remaining = max(0, reg_season_weeks - weeks_played)
+    median_game = season >= 2025
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Regular Season Weeks", reg_season_weeks)
     col2.metric("Weeks Played", weeks_played)
     col3.metric("Weeks Remaining", weeks_remaining)
 
+    n_sims = st.sidebar.slider("Simulations", 1000, 50000, 10000, 1000)
+    playoff_spots = st.sidebar.slider("Playoff spots", 2, 6, 4)
+    player_sims = min(n_sims, PLAYER_SIMS_CAP)
+
     st.divider()
 
-    # team_name → team_id lookup for tables without team_id
-    tid_by_name = matchups_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
+    tab1, tab2, tab3, tab4 = st.tabs(["Playoff Odds", "Odds by Week",
+                                      "Score Distribution", "Magic Numbers"])
 
-    tab1, tab2, tab3 = st.tabs(["Playoff Odds", "Score Distribution", "Magic Numbers"])
+    with st.spinner("Simulating..."):
+        team_df = team_odds(season, playoff_spots, n_sims)
+        player_df = player_odds(season, playoff_spots, player_sims)
 
     with tab1:
         st.subheader("Monte Carlo Playoff Simulation")
-        st.caption("10,000 simulations of remaining regular season games based on each team's scoring distribution.")
-
-        n_sims = st.sidebar.slider("Simulations", 1000, 50000, 10000, 1000)
-        playoff_spots = st.sidebar.slider("Playoff spots", 2, 6, 4)
-
         if weeks_remaining == 0:
-            st.info("Regular season is complete. Showing final playoff picture.")
+            st.info("Regular season is complete. Showing the final playoff picture.")
+        st.caption(
+            f"Each model plays out the remaining schedule {n_sims:,} times"
+            + (f" (the player model {player_sims:,})"
+               if player_df is not None and player_sims < n_sims else "")
+            + ". **Team model**: each team's weekly scores so far, pulled toward "
+            "the league average, because a few weeks of scores say less about a "
+            "team than they seem to. **Player model**: the current rosters, week "
+            "by week: ESPN's player projections, NFL byes, injuries, the best "
+            "lineup each team can field, and how close its manager usually gets "
+            "to that lineup."
+            + (" Median wins count, as they do in the standings." if median_game else "")
+        )
 
-        with st.spinner("Simulating..."):
-            sim_df = simulate_playoffs(
-                reg_df, reg_season_weeks=cfg["reg_season_end"],
-                playoff_spots=playoff_spots, n_simulations=n_sims
-            )
-
-        display = prep_display(sim_df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "current_wins", "current_losses", "playoff_pct"],
-                               headers=["Team", "Current W", "Current L", "Playoff Odds %"])
+        odds = team_df.drop(columns="seed_dist").rename(columns={
+            "playoff_pct": "team_pct", "exp_wins": "team_exp_wins", "first_pct": "team_first"})
+        if player_df is not None:
+            odds = odds.merge(player_df[["team_id", "playoff_pct", "exp_wins", "first_pct"]]
+                              .rename(columns={"playoff_pct": "player_pct",
+                                               "exp_wins": "player_exp_wins",
+                                               "first_pct": "player_first"}),
+                              on="team_id")
+            odds["blend_pct"] = ((odds["team_pct"] + odds["player_pct"]) / 2).round(1)
+            odds = odds.sort_values("blend_pct", ascending=False).reset_index(drop=True)
+            cols = ["team_name", "current_wins", "current_losses", "team_pct",
+                    "player_pct", "blend_pct", "player_exp_wins", "player_first"]
+            headers = ["Team", "W", "L", "Team Model %", "Player Model %",
+                       "Average %", "Proj. Wins", "#1 Seed %"]
+        else:
+            cols = ["team_name", "current_wins", "current_losses", "team_pct",
+                    "team_exp_wins", "team_first"]
+            headers = ["Team", "W", "L", "Playoff Odds %", "Proj. Wins", "#1 Seed %"]
+            if weeks_remaining:
+                st.caption("The player model needs this season's roster snapshot, "
+                           "which the weekly update captures.")
+        display = prep_display(odds, manager_map, show_mgr, show_team, cols=cols, headers=headers)
         st.dataframe(display, width="stretch", hide_index=True)
+        if player_df is not None:
+            st.caption("Proj. Wins and #1 Seed % are from the player model"
+                       + (" and count median wins." if median_game else "."))
 
-        sim_df["label"] = chart_label(sim_df, manager_map, show_mgr, show_team)
-        colors = ["#2ecc71" if p >= 50 else "#e74c3c" if p < 20 else "#f39c12"
-                  for p in sim_df["playoff_pct"]]
-        fig = go.Figure(go.Bar(
-            x=sim_df["label"],
-            y=sim_df["playoff_pct"],
-            marker_color=colors,
-            text=[f"{p}%" for p in sim_df["playoff_pct"]],
-            textposition="outside",
+        odds["label"] = chart_label(odds, manager_map, show_mgr, show_team)
+        fig = go.Figure()
+        fig.add_bar(x=odds["label"], y=odds["team_pct"], name="Team model",
+                    marker_color="#3498db", text=[f"{p:.0f}%" for p in odds["team_pct"]],
+                    textposition="outside")
+        if player_df is not None:
+            fig.add_bar(x=odds["label"], y=odds["player_pct"], name="Player model",
+                        marker_color="#e67e22", text=[f"{p:.0f}%" for p in odds["player_pct"]],
+                        textposition="outside")
+        fig.update_layout(title="Playoff Probability by Team", barmode="group",
+                          xaxis_tickangle=-30, yaxis_title="Playoff Probability %",
+                          yaxis_range=[0, 110], legend_title_text="")
+        st.plotly_chart(fig, width="stretch")
+
+        st.markdown("#### Where each team finishes")
+        seed_src = player_df if player_df is not None else team_df
+        st.caption("Probability of each final seed"
+                   + (", player model." if player_df is not None else "."))
+        seed_mat = np.vstack(seed_src["seed_dist"].values) * 100
+        fig = go.Figure(go.Heatmap(
+            z=seed_mat, x=list(range(1, seed_mat.shape[1] + 1)),
+            y=chart_label(seed_src, manager_map, show_mgr, show_team),
+            colorscale="Blues", zmin=0, zmax=100, showscale=False,
+            text=[[f"{v:.0f}" if v >= 0.5 else "" for v in row] for row in seed_mat],
+            texttemplate="%{text}",
+            hovertemplate="%{y}<br>Seed %{x}: %{z:.1f}%<extra></extra>",
         ))
-        fig.add_hline(y=50, line_dash="dash", line_color="gray", annotation_text="50%")
-        fig.update_layout(title="Playoff Probability by Team", xaxis_tickangle=-30,
-                          yaxis_title="Playoff Probability %", yaxis_range=[0, 105])
+        fig.add_vline(x=playoff_spots + 0.5, line_dash="dash", line_color="gray")
+        fig.update_layout(yaxis_autorange="reversed", xaxis_title="Final seed",
+                          xaxis_dtick=1, xaxis_side="top", margin=dict(t=40, b=10),
+                          height=80 + 36 * len(seed_src))
         st.plotly_chart(fig, width="stretch")
 
     with tab2:
-        st.subheader("Scoring Distribution by Team")
-        st.caption("Based on scores from games played so far. Used by the simulator.")
-
-        team_params = []
-        for team in reg_df["team_name"].unique():
-            scores = reg_df[reg_df["team_name"] == team]["score"].values
-            tid = tid_by_name.get(team)
-            mgr = manager_map.get(tid, "?") if tid is not None else "?"
-            if show_mgr and show_team:
-                lbl = f"{mgr} — {team}"
-            elif show_mgr:
-                lbl = mgr
-            else:
-                lbl = team
-            team_params.append({
-                "Team": lbl,
-                "Mean": round(scores.mean(), 2),
-                "Std Dev": round(scores.std(), 2),
-                "Min": round(scores.min(), 2),
-                "Max": round(scores.max(), 2),
-                "Games": len(scores),
-            })
-        params_df = pd.DataFrame(team_params).sort_values("Mean", ascending=False)
-        st.dataframe(params_df, width="stretch", hide_index=True)
-
-        fig = px.scatter(params_df, x="Mean", y="Std Dev", text="Team", size="Games",
-                         title="Mean Score vs Consistency (lower Std Dev = more consistent)",
-                         labels={"Mean": "Average Score", "Std Dev": "Std Deviation (consistency)"})
-        fig.update_traces(textposition="top center")
+        st.subheader("Playoff Odds After Each Week")
+        st.caption("Team model, re-run as the season stood after each week. "
+                   "Week 0 is before a game was played, when only the schedule "
+                   "separates the teams.")
+        with st.spinner("Replaying the season..."):
+            trend = team_odds_by_week(season, playoff_spots)
+        trend["label"] = chart_label(trend, manager_map, show_mgr, show_team)
+        fig = px.line(trend, x="after_week", y="playoff_pct", color="label", markers=True,
+                      labels={"after_week": "After week", "playoff_pct": "Playoff odds %",
+                              "label": ""})
+        fig.update_layout(yaxis_range=[-2, 102], xaxis_dtick=1)
         st.plotly_chart(fig, width="stretch")
 
     with tab3:
-        st.subheader("Magic Numbers")
-        st.caption("Wins needed to clinch a playoff spot (approximate).")
+        st.subheader("Scoring Distribution by Team")
+        st.caption("Scores from games played so far. Team Model Avg is the "
+                   "average the team model plays with: the team's own, pulled "
+                   f"toward the league's as if that were {PRIOR_GAMES} extra games."
+                   + (" Player Model Avg is the player model's average simulated "
+                      "score over the remaining weeks, byes and injuries included."
+                      if player_df is not None else ""))
 
+        stats = reg_df.groupby(["team_id", "team_name"])["score"].agg(
+            ["mean", "std", "min", "max", "count"]).reset_index()
+        stats = stats.merge(team_df[["team_id", "proj_mean"]], on="team_id")
+        cols = ["team_name", "mean", "std", "min", "max", "count", "proj_mean"]
+        headers = ["Team", "Mean", "Std Dev", "Min", "Max", "Games", "Team Model Avg"]
+        if player_df is not None:
+            stats = stats.merge(player_df[["team_id", "proj_mean"]]
+                                .rename(columns={"proj_mean": "player_mean"}), on="team_id")
+            cols.append("player_mean")
+            headers.append("Player Model Avg")
+        stats = stats.sort_values("mean", ascending=False).round(2)
+        params_df = prep_display(stats, manager_map, show_mgr, show_team,
+                                 cols=cols, headers=headers)
+        st.dataframe(params_df, width="stretch", hide_index=True)
+
+        stats["label"] = chart_label(stats, manager_map, show_mgr, show_team)
+        fig = px.scatter(stats, x="mean", y="std", text="label", size="count",
+                         title="Mean Score vs Consistency (lower Std Dev = more consistent)",
+                         labels={"mean": "Average Score", "std": "Std Deviation (consistency)"})
+        fig.update_traces(textposition="top center")
+        st.plotly_chart(fig, width="stretch")
+
+    with tab4:
+        st.subheader("Magic Numbers")
         if weeks_remaining == 0:
             st.info("Regular season complete.")
+            return
+
+        if median_game:
+            standings = combined_standings(reg_df)
+            wins_col, losses_col, per_week = "total_wins", "total_losses", 2
         else:
-            if season >= 2025:
-                standings = combined_standings(reg_df)
-                wins_col = "total_wins"
-                losses_col = "total_losses"
-                # Each remaining week offers 2 possible combined wins (H2H + median)
-                wins_per_week = 2
-            else:
-                standings = h2h_standings(reg_df)
-                wins_col = "wins"
-                losses_col = "losses"
-                wins_per_week = 1
+            standings = h2h_standings(reg_df)
+            wins_col, losses_col, per_week = "wins", "losses", 1
+        games_left = weeks_remaining * per_week
+        magic = magic_numbers(standings, wins_col, losses_col, games_left, playoff_spots)
 
-            cutoff_wins = standings.iloc[playoff_spots][wins_col] if len(standings) > playoff_spots else 0
-            standings["magic_number"] = (cutoff_wins + 1 - standings[wins_col]).clip(lower=0)
-            standings["games_left"] = weeks_remaining * wins_per_week
+        st.caption(
+            f"**Magic #**: wins by this team, or losses by the rival that matters, "
+            f"that guarantee a top-{playoff_spots} finish whatever else happens. "
+            f"**Elimination #**: this team's losses, or that rival's wins, that "
+            f"knock it out. Each team has {games_left} "
+            f"{'results (H2H + median)' if median_game else 'games'} left. Both "
+            f"assume the points-for tiebreak goes against you, and neither knows "
+            f"that rivals still have to play each other, so a team can be safe "
+            f"a week before its number reaches zero. The simulation accounts for that."
+        )
+        magic_disp = prep_display(
+            magic, manager_map, show_mgr, show_team,
+            cols=["team_name", wins_col, losses_col, "magic_number", "elim_number", "status"],
+            headers=["Team", "W", "L", "Magic #", "Elimination #", "Status"])
+        st.dataframe(magic_disp, width="stretch", hide_index=True)
 
-            magic_disp = prep_display(standings, manager_map, show_mgr, show_team,
-                                      cols=["team_name", wins_col, losses_col, "magic_number", "games_left"],
-                                      headers=["Team", "W", "L", "Magic Number", "Wins Left"])
-            magic_disp["Clinched"] = standings["magic_number"].values == 0
-            st.dataframe(magic_disp, width="stretch", hide_index=True)
-
-            standings["max_possible_wins"] = standings[wins_col] + weeks_remaining * wins_per_week
-            standings["eliminated"] = standings["max_possible_wins"] < cutoff_wins + 1
-            elim = standings[standings["eliminated"]]["team_name"].tolist()
-            if elim:
-                st.error(f"Eliminated from playoffs: {', '.join(elim)}")
-            clinched = standings[standings["magic_number"] == 0]["team_name"].tolist()
-            if clinched:
-                st.success(f"Playoff spot clinched: {', '.join(clinched)}")
+        clinched = magic[magic["status"] == "Clinched"]["team_name"].tolist()
+        elim = magic[magic["status"] == "Eliminated"]["team_name"].tolist()
+        if clinched:
+            st.success(f"Playoff spot clinched: {', '.join(clinched)}")
+        if elim:
+            st.error(f"Eliminated from playoffs: {', '.join(elim)}")
+        if not clinched and not elim:
+            st.caption("Nobody has clinched or been eliminated yet.")
 
 
 tab_bracket, tab_projections = st.tabs(["Bracket", "Projections"])
