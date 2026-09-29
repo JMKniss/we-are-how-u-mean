@@ -25994,3 +25994,182 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,2,10,Brock,4685472,Tetairoa McMillan,WR,WR,12.6,11.36,True,False,100.58,118.26,CAR,-1.0
 2026,2,10,Brock,4869461,Trey Smack,K,K,5.0,5.26,True,False,100.58,118.26,GB,-1.0
 2026,2,10,Brock,4890973,Ashton Jeanty,RB,RB,8.3,15.83,True,False,100.58,118.26,LV,-1.0
+2026,3,1,Rapidash to the Endzone,-16034,Texans D/ST,D/ST,D/ST,10.0,7.02,True,False,137.72,121.54,HOU,-1.0
+2026,3,1,Rapidash to the Endzone,2971573,Ka'imi Fairbairn,K,K,3.5,5.49,True,False,137.72,121.54,HOU,-1.0
+2026,3,1,Rapidash to the Endzone,3042519,Aaron Jones Sr.,RB,RB,11.7,12.68,True,False,137.72,121.54,MIN,-1.0
+2026,3,1,Rapidash to the Endzone,3126486,Deebo Samuel Sr.,WR,BE,15.4,10.45,False,True,137.72,121.54,SF,-1.0
+2026,3,1,Rapidash to the Endzone,3918298,Josh Allen,QB,QB,16.96,23.27,True,False,137.72,121.54,BUF,-1.0
+2026,3,1,Rapidash to the Endzone,4360939,Rashod Bateman,WR,BE,4.7,7.33,False,True,137.72,121.54,BAL,-1.0
+2026,3,1,Rapidash to the Endzone,4429025,Quentin Johnston,WR,BE,5.5,9.11,False,True,137.72,121.54,LAC,-1.0
+2026,3,1,Rapidash to the Endzone,4430737,Kyren Williams,RB,RB/WR/TE,18.8,11.71,True,False,137.72,121.54,LAR,-1.0
+2026,3,1,Rapidash to the Endzone,4430878,Jaxon Smith-Njigba,WR,WR,30.36,17.14,True,False,137.72,121.54,SEA,-1.0
+2026,3,1,Rapidash to the Endzone,4432620,Parker Washington,WR,WR,11.5,12.31,True,False,137.72,121.54,JAX,-1.0
+2026,3,1,Rapidash to the Endzone,4567750,Emeka Egbuka,WR,RB/WR/TE,8.7,10.44,True,False,137.72,121.54,TB,-1.0
+2026,3,1,Rapidash to the Endzone,4678008,Jonathon Brooks,RB,IR,0.0,0.0,False,False,137.72,121.54,CAR,-1.0
+2026,3,1,Rapidash to the Endzone,4685382,Omarion Hampton,RB,RB,5.6,13.78,True,False,137.72,121.54,LAC,-1.0
+2026,3,1,Rapidash to the Endzone,4685512,Jadarian Price,RB,BE,0.7,11.21,False,True,137.72,121.54,SEA,-1.0
+2026,3,1,Rapidash to the Endzone,4701936,Matthew Golden,WR,BE,18.5,9.47,False,True,137.72,121.54,GB,-1.0
+2026,3,1,Rapidash to the Endzone,4702555,Jonah Coleman,RB,IR,0.0,0.0,False,False,137.72,121.54,DEN,-1.0
+2026,3,1,Rapidash to the Endzone,4832800,Denzel Boston,WR,BE,7.1,9.22,False,True,137.72,121.54,CLE,-1.0
+2026,3,1,Rapidash to the Endzone,5083076,Harold Fannin Jr.,TE,TE,20.6,7.7,True,False,137.72,121.54,CLE,-1.0
+2026,3,2,Machampionship Bound,-16029,Panthers D/ST,D/ST,D/ST,4.0,7.25,True,False,115.6,123.0,CAR,-1.0
+2026,3,2,Machampionship Bound,16800,Davante Adams,WR,WR,17.2,13.02,True,False,115.6,123.0,LAR,-1.0
+2026,3,2,Machampionship Bound,3117251,Christian McCaffrey,RB,RB,19.6,18.53,True,False,115.6,123.0,SF,-1.0
+2026,3,2,Machampionship Bound,3117256,Dalton Schultz,TE,RB/WR/TE,4.5,8.56,True,False,115.6,123.0,HOU,-1.0
+2026,3,2,Machampionship Bound,3917232,Tyler Bass,K,K,4.5,5.67,True,False,115.6,123.0,BUF,-1.0
+2026,3,2,Machampionship Bound,4040715,Jalen Hurts,QB,BE,12.62,19.53,False,True,115.6,123.0,PHI,-1.0
+2026,3,2,Machampionship Bound,4360689,Tyler Shough,QB,QB,23.8,18.66,True,False,115.6,123.0,NO,-1.0
+2026,3,2,Machampionship Bound,4361307,Trey McBride,TE,TE,12.0,12.79,True,False,115.6,123.0,ARI,-1.0
+2026,3,2,Machampionship Bound,4361370,Chris Olave,WR,WR,15.2,14.71,True,False,115.6,123.0,NO,-1.0
+2026,3,2,Machampionship Bound,4361432,Romeo Doubs,WR,BE,6.4,9.48,False,True,115.6,123.0,NE,-1.0
+2026,3,2,Machampionship Bound,4362238,Chase Brown,RB,RB,7.9,14.54,True,False,115.6,123.0,CIN,-1.0
+2026,3,2,Machampionship Bound,4426388,Jameson Williams,WR,RB/WR/TE,6.9,9.27,True,False,115.6,123.0,DET,-1.0
+2026,3,2,Machampionship Bound,4570037,Terrance Ferguson,TE,BE,1.4,8.6,False,True,115.6,123.0,LAR,-1.0
+2026,3,2,Machampionship Bound,4575131,Jacory Croskey-Merritt,RB,BE,4.8,8.19,False,True,115.6,123.0,WSH,-1.0
+2026,3,2,Machampionship Bound,4597500,Adonai Mitchell,WR,BE,0.0,0.0,False,True,115.6,123.0,NYJ,-1.0
+2026,3,2,Machampionship Bound,4686658,Mike Washington Jr.,RB,BE,11.4,3.42,False,True,115.6,123.0,LV,-1.0
+2026,3,2,Machampionship Bound,4710714,De'Zhaun Stribling,WR,IR,0.0,0.0,False,False,115.6,123.0,SF,-1.0
+2026,3,2,Machampionship Bound,4832955,Emmett Johnson,RB,BE,1.7,5.38,False,True,115.6,123.0,KC,-1.0
+2026,3,3,Nine tails is hot,-16026,Seahawks D/ST,D/ST,D/ST,2.0,7.76,True,False,79.44,120.03,SEA,-1.0
+2026,3,3,Nine tails is hot,3046439,Hunter Henry,TE,BE,1.0,8.1,False,True,79.44,120.03,NE,-1.0
+2026,3,3,Nine tails is hot,3054850,Alvin Kamara,RB,BE,4.6,8.53,False,True,79.44,120.03,NO,-1.0
+2026,3,3,Nine tails is hot,3139477,Patrick Mahomes,QB,QB,15.94,19.43,True,False,79.44,120.03,KC,-1.0
+2026,3,3,Nine tails is hot,3929630,Saquon Barkley,RB,RB,8.5,16.06,True,False,79.44,120.03,PHI,-1.0
+2026,3,3,Nine tails is hot,4034949,Eddy Pineiro,K,K,3.5,6.35,True,False,79.44,120.03,SF,-1.0
+2026,3,3,Nine tails is hot,4035687,Michael Pittman Jr.,WR,BE,2.6,8.87,False,True,79.44,120.03,PIT,-1.0
+2026,3,3,Nine tails is hot,4241389,CeeDee Lamb,WR,WR,16.7,14.0,True,False,79.44,120.03,DAL,-1.0
+2026,3,3,Nine tails is hot,4371733,Kenny Gainwell,RB,BE,2.0,6.41,False,True,79.44,120.03,TB,-1.0
+2026,3,3,Nine tails is hot,4373626,Tyler Allgeier,RB,BE,2.9,6.69,False,True,79.44,120.03,ARI,-1.0
+2026,3,3,Nine tails is hot,4427366,Breece Hall,RB,RB,7.0,14.52,True,False,79.44,120.03,NYJ,-1.0
+2026,3,3,Nine tails is hot,4430027,Sam LaPorta,TE,TE,5.9,8.97,True,False,79.44,120.03,DET,-1.0
+2026,3,3,Nine tails is hot,4431299,Rome Odunze,WR,RB/WR/TE,5.9,8.37,True,False,79.44,120.03,CHI,-1.0
+2026,3,3,Nine tails is hot,4595348,Malik Nabers,WR,WR,5.1,12.04,True,False,79.44,120.03,NYG,-1.0
+2026,3,3,Nine tails is hot,4683062,Xavier Worthy,WR,BE,3.0,9.69,False,True,79.44,120.03,KC,-1.0
+2026,3,3,Nine tails is hot,4685702,Quinshon Judkins,RB,RB/WR/TE,8.9,12.53,True,False,79.44,120.03,CLE,-1.0
+2026,3,3,Nine tails is hot,4871023,Carnell Tate,WR,BE,8.8,9.56,False,True,79.44,120.03,TEN,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,-16024,Chargers D/ST,D/ST,D/ST,14.0,5.0,True,False,110.28,105.65,LAC,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,2976212,Stefon Diggs,WR,RB/WR/TE,5.3,8.31,True,False,110.28,105.65,WSH,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,3055899,Harrison Butker,K,K,3.5,5.72,True,False,110.28,105.65,KC,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4047365,Josh Jacobs,RB,BE,0.0,0.0,False,True,110.28,105.65,GB,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4262921,Justin Jefferson,WR,WR,4.2,14.76,True,False,110.28,105.65,MIN,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4360248,Kyle Pitts Sr.,TE,BE,1.0,7.83,False,True,110.28,105.65,ATL,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4379399,James Cook III,RB,RB,19.4,15.78,True,False,110.28,105.65,BUF,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4426354,George Pickens,WR,WR,11.7,11.33,True,False,110.28,105.65,DAL,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4431611,Caleb Williams,QB,BE,0.0,0.0,False,True,110.28,105.65,CHI,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4432577,C.J. Stroud,QB,QB,11.68,15.83,True,False,110.28,105.65,HOU,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4432708,Marvin Harrison Jr.,WR,BE,5.5,5.74,False,True,110.28,105.65,ARI,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4432773,Brian Thomas Jr.,WR,BE,1.3,8.92,False,True,110.28,105.65,JAX,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4568490,RJ Harvey,RB,BE,7.7,7.61,False,True,110.28,105.65,DEN,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4696044,Kaelon Black,RB,BE,1.7,7.1,False,True,110.28,105.65,SF,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4723086,Colston Loveland,TE,TE,5.1,7.73,True,False,110.28,105.65,CHI,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4870808,Jeremiyah Love,RB,RB,19.4,11.12,True,False,110.28,105.65,ARI,-1.0
+2026,3,4,Pickenschuuuuuuuuuu,4882093,Bhayshul Tuten,RB,RB/WR/TE,16.0,10.07,True,False,110.28,105.65,JAX,-1.0
+2026,3,5,This isnt my final Eveelotution,-16021,Eagles D/ST,D/ST,D/ST,1.0,8.2,True,False,85.04,115.75,PHI,-1.0
+2026,3,5,This isnt my final Eveelotution,17427,Cairo Santos,K,K,6.5,4.64,True,False,85.04,115.75,CHI,-1.0
+2026,3,5,This isnt my final Eveelotution,3116165,Chris Godwin Jr.,WR,BE,4.0,7.07,False,True,85.04,115.75,TB,-1.0
+2026,3,5,This isnt my final Eveelotution,3121023,Dallas Goedert,TE,BE,0.0,0.0,False,True,85.04,115.75,PHI,-1.0
+2026,3,5,This isnt my final Eveelotution,3916387,Lamar Jackson,QB,QB,20.44,20.79,True,False,85.04,115.75,BAL,-1.0
+2026,3,5,This isnt my final Eveelotution,4032473,Rashid Shaheed,WR,BE,2.4,9.36,False,True,85.04,115.75,SEA,-1.0
+2026,3,5,This isnt my final Eveelotution,4047646,A.J. Brown,WR,IR,0.0,0.0,False,False,85.04,115.75,NE,-1.0
+2026,3,5,This isnt my final Eveelotution,4241416,Chuba Hubbard,RB,RB/WR/TE,13.0,13.09,True,False,85.04,115.75,CAR,-1.0
+2026,3,5,This isnt my final Eveelotution,4242335,Jonathan Taylor,RB,RB,8.2,19.0,True,False,85.04,115.75,IND,-1.0
+2026,3,5,This isnt my final Eveelotution,4361579,Javonte Williams,RB,RB,16.3,13.65,True,False,85.04,115.75,DAL,-1.0
+2026,3,5,This isnt my final Eveelotution,4372016,Jaylen Waddle,WR,WR,5.4,10.54,True,False,85.04,115.75,DEN,-1.0
+2026,3,5,This isnt my final Eveelotution,4428850,Dontayvion Wicks,WR,RB/WR/TE,4.2,8.21,True,False,85.04,115.75,PHI,-1.0
+2026,3,5,This isnt my final Eveelotution,4429023,MarShawn Lloyd,RB,BE,2.8,8.0,False,True,85.04,115.75,GB,-1.0
+2026,3,5,This isnt my final Eveelotution,4429059,Woody Marks,RB,BE,8.6,7.71,False,True,85.04,115.75,HOU,-1.0
+2026,3,5,This isnt my final Eveelotution,4430834,Jalen McMillan,WR,BE,0.0,4.77,False,True,85.04,115.75,TB,-1.0
+2026,3,5,This isnt my final Eveelotution,4569559,Devaughn Vele,WR,WR,5.4,9.38,True,False,85.04,115.75,NO,-1.0
+2026,3,5,This isnt my final Eveelotution,4572680,Tucker Kraft,TE,TE,4.6,8.25,True,False,85.04,115.75,GB,-1.0
+2026,3,5,This isnt my final Eveelotution,4685720,Bryce Young,QB,BE,13.64,16.48,False,True,85.04,115.75,CAR,-1.0
+2026,3,6,GottaCatchaBall,-16012,Chiefs D/ST,D/ST,D/ST,7.0,7.74,True,False,96.86,119.05,KC,-1.0
+2026,3,6,GottaCatchaBall,-16008,Lions D/ST,D/ST,BE,7.0,7.47,False,True,96.86,119.05,DET,-1.0
+2026,3,6,GottaCatchaBall,15818,Keenan Allen,WR,BE,15.3,7.48,False,True,96.86,119.05,IND,-1.0
+2026,3,6,GottaCatchaBall,2473037,Jason Myers,K,K,6.5,5.89,True,False,96.86,119.05,SEA,-1.0
+2026,3,6,GottaCatchaBall,3121422,Terry McLaurin,WR,RB/WR/TE,16.7,9.66,True,False,96.86,119.05,WSH,-1.0
+2026,3,6,GottaCatchaBall,4038815,Rico Dowdle,RB,BE,0.0,0.0,False,True,96.86,119.05,PIT,-1.0
+2026,3,6,GottaCatchaBall,4239993,Tee Higgins,WR,RB/WR/TE,18.0,10.43,True,False,96.86,119.05,CIN,-1.0
+2026,3,6,GottaCatchaBall,4241478,DeVonta Smith,WR,WR,9.5,12.7,True,False,96.86,119.05,PHI,-1.0
+2026,3,6,GottaCatchaBall,4360635,Chig Okonkwo,TE,BE,0.0,0.0,False,True,96.86,119.05,WSH,-1.0
+2026,3,6,GottaCatchaBall,4362249,Jayden Reed,WR,BE,0.0,0.0,False,True,96.86,119.05,GB,-1.0
+2026,3,6,GottaCatchaBall,4374302,Amon-Ra St. Brown,WR,WR,9.9,16.17,True,False,96.86,119.05,DET,-1.0
+2026,3,6,GottaCatchaBall,4385690,Dalton Kincaid,TE,TE,2.8,9.36,True,False,96.86,119.05,BUF,-1.0
+2026,3,6,GottaCatchaBall,4428557,Tyjae Spears,RB,BE,0.5,8.16,False,True,96.86,119.05,TEN,-1.0
+2026,3,6,GottaCatchaBall,4429013,Tank Bigsby,RB,BE,-1.0,3.27,False,True,96.86,119.05,PHI,-1.0
+2026,3,6,GottaCatchaBall,4431452,Drake Maye,QB,QB,2.76,18.29,True,False,96.86,119.05,NE,-1.0
+2026,3,6,GottaCatchaBall,4432710,TreVeyon Henderson,RB,RB,3.4,9.54,True,False,96.86,119.05,NE,-1.0
+2026,3,6,GottaCatchaBall,4567048,Kenneth Walker III,RB,RB,20.3,19.27,True,False,96.86,119.05,KC,-1.0
+2026,3,6,GottaCatchaBall,5081397,Dylan Sampson,RB,IR,0.0,0.0,False,False,96.86,119.05,CLE,-1.0
+2026,3,7,J’Diglett Morgoones,-16009,Packers D/ST,D/ST,D/ST,-1.0,6.15,True,False,157.74,120.22,GB,-1.0
+2026,3,7,J’Diglett Morgoones,2577417,Dak Prescott,QB,QB,18.94,16.88,True,False,157.74,120.22,DAL,-1.0
+2026,3,7,J’Diglett Morgoones,3953687,Brandon Aubrey,K,K,5.5,5.9,True,False,157.74,120.22,DAL,-1.0
+2026,3,7,J’Diglett Morgoones,4248528,Christian Watson,WR,WR,19.1,12.11,True,False,157.74,120.22,GB,-1.0
+2026,3,7,J’Diglett Morgoones,4258173,Nico Collins,WR,BE,0.0,0.0,False,True,157.74,120.22,HOU,-1.0
+2026,3,7,J’Diglett Morgoones,4259545,D'Andre Swift,RB,RB,9.8,11.63,True,False,157.74,120.22,CHI,-1.0
+2026,3,7,J’Diglett Morgoones,4360761,Michael Wilson,WR,RB/WR/TE,20.4,8.95,True,False,157.74,120.22,ARI,-1.0
+2026,3,7,J’Diglett Morgoones,4362478,Emari Demercado,RB,BE,0.0,0.0,False,True,157.74,120.22,DAL,-1.0
+2026,3,7,J’Diglett Morgoones,4426348,Jayden Daniels,QB,IR,0.0,0.0,False,False,157.74,120.22,WSH,-1.0
+2026,3,7,J’Diglett Morgoones,4429096,Blake Corum,RB,BE,2.5,8.56,False,True,157.74,120.22,LAR,-1.0
+2026,3,7,J’Diglett Morgoones,4429795,Jahmyr Gibbs,RB,RB,37.9,23.3,True,False,157.74,120.22,DET,-1.0
+2026,3,7,J’Diglett Morgoones,4432665,Brock Bowers,TE,TE,22.6,11.14,True,False,157.74,120.22,LV,-1.0
+2026,3,7,J’Diglett Morgoones,4569618,Garrett Wilson,WR,WR,21.7,13.07,True,False,157.74,120.22,NYJ,-1.0
+2026,3,7,J’Diglett Morgoones,4685278,Luther Burden III,WR,BE,16.3,8.86,False,True,157.74,120.22,CHI,-1.0
+2026,3,7,J’Diglett Morgoones,4695883,Jalen Coker,WR,RB/WR/TE,2.8,11.09,True,False,157.74,120.22,CAR,-1.0
+2026,3,7,J’Diglett Morgoones,4697815,Rachaad White,RB,BE,10.6,7.73,False,True,157.74,120.22,WSH,-1.0
+2026,3,7,J’Diglett Morgoones,4869961,Chris Bell,WR,BE,8.7,5.97,False,True,157.74,120.22,MIA,-1.0
+2026,3,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,1.9,9.15,False,True,157.74,120.22,CLE,-1.0
+2026,3,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,157.74,120.22,NO,-1.0
+2026,3,8,Team Rocket,-16004,Bengals D/ST,D/ST,D/ST,3.0,6.68,True,False,102.9,113.51,CIN,-1.0
+2026,3,8,Team Rocket,12483,Matthew Stafford,QB,QB,20.9,15.49,True,False,102.9,113.51,LAR,-1.0
+2026,3,8,Team Rocket,15847,Travis Kelce,TE,TE,12.9,10.2,True,False,102.9,113.51,KC,-1.0
+2026,3,8,Team Rocket,3128429,Courtland Sutton,WR,BE,6.1,8.99,False,True,102.9,113.51,DEN,-1.0
+2026,3,8,Team Rocket,3915416,DJ Moore,WR,WR,9.7,10.45,True,False,102.9,113.51,BUF,-1.0
+2026,3,8,Team Rocket,3917315,Kyler Murray,QB,BE,10.42,17.08,False,True,102.9,113.51,MIN,-1.0
+2026,3,8,Team Rocket,4035538,David Montgomery,RB,RB/WR/TE,5.8,11.12,True,False,102.9,113.51,HOU,-1.0
+2026,3,8,Team Rocket,4241985,J.K. Dobbins,RB,BE,4.8,10.25,False,True,102.9,113.51,DEN,-1.0
+2026,3,8,Team Rocket,4360234,Evan McPherson,K,K,7.0,4.77,True,False,102.9,113.51,CIN,-1.0
+2026,3,8,Team Rocket,4426515,Puka Nacua,WR,IR,0.0,0.0,False,False,102.9,113.51,LAR,-1.0
+2026,3,8,Team Rocket,4428331,Rashee Rice,WR,WR,12.3,10.46,True,False,102.9,113.51,KC,-1.0
+2026,3,8,Team Rocket,4428718,Tre Tucker,WR,BE,6.3,8.04,False,True,102.9,113.51,LV,-1.0
+2026,3,8,Team Rocket,4429160,De'Von Achane,RB,RB,1.7,17.2,True,False,102.9,113.51,MIA,-1.0
+2026,3,8,Team Rocket,4429205,Jordan Addison,WR,BE,17.5,8.62,False,True,102.9,113.51,MIN,-1.0
+2026,3,8,Team Rocket,4569987,Jaylen Warren,RB,RB/WR/TE,19.1,14.09,True,False,102.9,113.51,PIT,-1.0
+2026,3,8,Team Rocket,4685247,Braelon Allen,RB,BE,3.2,5.98,False,True,102.9,113.51,NYJ,-1.0
+2026,3,8,Team Rocket,4696981,Cam Skattebo,RB,RB,10.5,13.05,True,False,102.9,113.51,NYG,-1.0
+2026,3,8,Team Rocket,4870795,Makai Lemon,WR,BE,4.4,6.3,False,True,102.9,113.51,PHI,-1.0
+2026,3,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,4.0,7.39,True,False,134.38,115.8,PIT,-1.0
+2026,3,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,21.4,16.9,True,False,134.38,115.8,BAL,-1.0
+2026,3,9,SlowKing Henry and Company,4038941,Justin Herbert,QB,BE,12.74,17.01,False,True,134.38,115.8,LAC,-1.0
+2026,3,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,RB,8.0,10.72,True,False,134.38,115.8,NO,-1.0
+2026,3,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,QB,19.78,17.22,True,False,134.38,115.8,JAX,-1.0
+2026,3,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,134.38,115.8,MIN,-1.0
+2026,3,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,BE,2.3,9.9,False,True,134.38,115.8,NYG,-1.0
+2026,3,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,20.3,15.24,True,False,134.38,115.8,CIN,-1.0
+2026,3,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,23.9,12.48,True,False,134.38,115.8,ATL,-1.0
+2026,3,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,TE,10.2,9.95,True,False,134.38,115.8,IND,-1.0
+2026,3,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,BE,5.3,10.57,False,True,134.38,115.8,NE,-1.0
+2026,3,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,BE,3.1,7.64,False,True,134.38,115.8,CHI,-1.0
+2026,3,9,SlowKing Henry and Company,4612826,Ladd McConkey,WR,RB/WR/TE,8.6,10.99,True,False,134.38,115.8,LAC,-1.0
+2026,3,9,SlowKing Henry and Company,4682648,Malachi Fields,WR,BE,2.9,6.82,False,True,134.38,115.8,NYG,-1.0
+2026,3,9,SlowKing Henry and Company,4688813,Josh Downs,WR,RB/WR/TE,10.2,9.48,True,False,134.38,115.8,IND,-1.0
+2026,3,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,8.0,5.43,True,False,134.38,115.8,BAL,-1.0
+2026,3,9,SlowKing Henry and Company,4819231,Kaleb Johnson,RB,BE,2.1,7.49,False,True,134.38,115.8,GB,-1.0
+2026,3,9,SlowKing Henry and Company,4887558,Emanuel Wilson,RB,BE,1.4,8.4,False,True,134.38,115.8,SEA,-1.0
+2026,3,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,17.0,7.51,True,False,139.08,123.01,MIN,-1.0
+2026,3,10,Brock,16737,Mike Evans,WR,RB/WR/TE,10.9,10.57,True,False,139.08,123.01,SF,-1.0
+2026,3,10,Brock,3040151,George Kittle,TE,TE,23.2,10.51,True,False,139.08,123.01,SF,-1.0
+2026,3,10,Brock,3046779,Jared Goff,QB,BE,19.36,16.39,False,True,139.08,123.01,DET,-1.0
+2026,3,10,Brock,3116164,Mike Gesicki,TE,BE,11.2,5.19,False,True,139.08,123.01,CIN,-1.0
+2026,3,10,Brock,3915511,Joe Burrow,QB,BE,22.58,16.22,False,True,139.08,123.01,CIN,-1.0
+2026,3,10,Brock,3916148,Tony Pollard,RB,BE,11.6,9.58,False,True,139.08,123.01,TEN,-1.0
+2026,3,10,Brock,3916433,Jakobi Meyers,WR,BE,15.9,7.53,False,True,139.08,123.01,JAX,-1.0
+2026,3,10,Brock,4047650,DK Metcalf,WR,BE,10.6,9.5,False,True,139.08,123.01,PIT,-1.0
+2026,3,10,Brock,4361741,Brock Purdy,QB,QB,31.28,20.58,True,False,139.08,123.01,SF,-1.0
+2026,3,10,Brock,4373678,Khalil Shakir,WR,WR,1.1,8.35,True,False,139.08,123.01,BUF,-1.0
+2026,3,10,Brock,4426385,Zach Charbonnet,RB,IR,0.0,0.0,False,False,139.08,123.01,SEA,-1.0
+2026,3,10,Brock,4429615,Zay Flowers,WR,BE,12.9,11.49,False,True,139.08,123.01,BAL,-1.0
+2026,3,10,Brock,4430807,Bijan Robinson,RB,RB,34.3,17.22,True,False,139.08,123.01,ATL,-1.0
+2026,3,10,Brock,4596448,Bucky Irving,RB,RB/WR/TE,6.8,14.13,True,False,139.08,123.01,TB,-1.0
+2026,3,10,Brock,4685472,Tetairoa McMillan,WR,WR,2.7,11.88,True,False,139.08,123.01,CAR,-1.0
+2026,3,10,Brock,4869461,Trey Smack,K,K,1.0,5.8,True,False,139.08,123.01,GB,-1.0
+2026,3,10,Brock,4890973,Ashton Jeanty,RB,RB,10.8,16.46,True,False,139.08,123.01,LV,-1.0
