@@ -99,7 +99,7 @@ ff_app/
     ├── 3_Scoring.py
     ├── 4_Lineup_Efficiency.py
     ├── 5_Playoffs.py           # bracket + projections, one page
-    ├── 6_Champmissioner.py     # the Romarkable Vlog's record; /Champmissioner
+    ├── 6_Champmissioner.py     # the Romarkable Vlog's record; /Champmissioner; first in the nav
     ├── 7_Draft_Waivers_Trades.py   # draft tabs + waiver and trade trackers; still /Draft_Review
     ├── 8_Data_Validation.py    # hidden from the nav; /Data_Validation still works
     └── 9_All_Time.py

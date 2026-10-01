@@ -46,6 +46,10 @@ require_password()
 # st.Page would name each route after its file and turn /Dashboard into
 # /1_Dashboard. The default page is served at / and takes no url_path.
 PAGES = [
+    # First in the sidebar, but Dashboard is still what / opens on: the order
+    # here is the nav order, and default=True alone picks the landing page.
+    st.Page("views/6_Champmissioner.py", title="Champmissioner's Dashboard",
+            icon="🎙️", url_path="Champmissioner"),
     st.Page("views/1_Dashboard.py", title="Dashboard", icon="🏈", default=True),
     st.Page("views/2_Standings.py", title="Standings", icon="📊",
             url_path="Standings"),
@@ -55,8 +59,6 @@ PAGES = [
             url_path="Lineup_Efficiency"),
     st.Page("views/5_Playoffs.py", title="Playoffs", icon="🏆",
             url_path="Playoffs"),
-    st.Page("views/6_Champmissioner.py", title="Champmissioner's Dashboard",
-            icon="🎙️", url_path="Champmissioner"),
     # Was Draft Review. The path stays so links to it keep working.
     st.Page("views/7_Draft_Waivers_Trades.py", title="Draft, Waivers & Trades",
             icon="📋", url_path="Draft_Review"),
