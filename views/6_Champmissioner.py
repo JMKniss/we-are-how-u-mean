@@ -201,6 +201,40 @@ def show(df: pd.DataFrame):
     st.dataframe(df, hide_index=True, width="content")
 
 
+# A table well narrower than its title is stretched to the title's width:
+# a narrow table under a long title looked unfinished. The browser sizes the
+# box to the title, so a renamed title still lines up, and a stretched table
+# spreads its columns to fill it. A table near or past its title's width
+# keeps its own. Only that choice is estimated, from the text, and with room
+# to spare, since Streamlit has no "at least this wide" for a table: one
+# widened by CSS alone grows an empty column instead of wider ones.
+st.html("""<style>
+[class*="st-key-titled-"] { width: fit-content !important; max-width: 100%; }
+</style>""")
+TITLE_PX_PER_CHAR = 12.5    # a subheader, measured on this page
+CELL_PX_PER_CHAR = 6.8      # a table cell
+CELL_PAD_PX = 16
+_titled_n = 0
+
+
+def _table_px(df: pd.DataFrame) -> float:
+    return sum(max([len(str(c))] + [len(str(v)) for v in df[c]]) * CELL_PX_PER_CHAR
+               + CELL_PAD_PX for c in df.columns)
+
+
+def titled(title: str, df: pd.DataFrame):
+    """A subheader and its table, the table at least as wide as the title."""
+    global _titled_n
+    if _table_px(df) >= len(title) * TITLE_PX_PER_CHAR * 0.85:
+        st.subheader(title)
+        show(df)
+        return
+    _titled_n += 1
+    with st.container(key=f"titled-{_titled_n}"):
+        st.subheader(title)
+        st.dataframe(df, hide_index=True, width="stretch")
+
+
 def fmt_off(x) -> str:
     return "–" if x is None else f"{x:.1f}"
 
@@ -300,29 +334,29 @@ with tab_week:
         mgr = get_manager_map(latest)
         st.caption(f"{latest} week {int(up['week'].iloc[0])}.")
 
-        st.subheader("Romarkable Matchup Predictions")
         rows = []
         for r in up[up["kind"] == "matchup"].itertuples(index=False):
             other = r.opp_id if r.pick_id == r.team_id else r.team_id
             rows.append({"Prediction": f"{mgr.get(int(r.pick_id), '?')} over "
                                        f"{mgr.get(int(other), '?')}"})
         if rows:
-            show(pd.DataFrame(rows))
+            titled("Romarkable Matchup Predictions", pd.DataFrame(rows))
         else:
+            st.subheader("Romarkable Matchup Predictions")
             st.info("No matchup picks this week.")
 
-        st.subheader("Romarkable Player Predictions")
         order = {p: i for i, p in enumerate(av.POSITIONS)}
         pl = (up[up["kind"] == "player"]
               .sort_values("position", key=lambda c: c.map(order)))
         if len(pl):
-            show(pd.DataFrame({
+            titled("Romarkable Player Predictions", pd.DataFrame({
                 "Position": pl["position"],
                 "Player": pl["player_name"],
                 "ESPN Projection": ["–" if pd.isna(x) else f"{x:.2f}"
                                     for x in pl["projected"]],
             }))
         else:
+            st.subheader("Romarkable Player Predictions")
             st.info("No player picks this week.")
 
 # ── Season ────────────────────────────────────────────────────────────────────
@@ -342,21 +376,18 @@ with tab_season:
     c4.metric("Player Hit %", fmt_pct(rh, rm))
     st.caption("A player pick hits when he beats his ESPN projection.")
 
-    st.subheader("Romarkable Player hit rate by position")
     if len(sr):
-        show(position_table(sr))
+        titled("Romarkable Player hit rate by position", position_table(sr))
     else:
+        st.subheader("Romarkable Player hit rate by position")
         st.info("No player picks graded yet this season.")
 
     left, right = st.columns(2)
     with left:
-        st.subheader(top_count_title(title))
-        show(count_table(sa, "top"))
+        titled(top_count_title(title), count_table(sa, "top"))
     with right:
-        st.subheader("Fascist Count")
-        show(count_table(sa, "bottom"))
+        titled("Fascist Count", count_table(sa, "bottom"))
 
-    st.subheader("Weekly Benchmarks")
     top = sa[sa["award"] == "top"]
     bot = sa[sa["award"] == "bottom"]
     rows = []
@@ -370,12 +401,12 @@ with tab_season:
             "Fascist pts": f"{b['score'].iloc[0]:.2f}" if len(b) else "",
         })
     if rows:
-        show(pd.DataFrame(rows))
+        titled("Weekly Benchmarks", pd.DataFrame(rows))
     else:
+        st.subheader("Weekly Benchmarks")
         st.info("No regular-season weeks played yet.")
 
-    st.subheader("Times Picked to Win")
-    show(picked_to_win([season]))
+    titled("Times Picked to Win", picked_to_win([season]))
 
 # ── Power Rankings ────────────────────────────────────────────────────────────
 with tab_ranks:
@@ -397,8 +428,7 @@ with tab_all:
                  "Matchup %": fmt_pct(mw, ml),
                  "Player Picks": fmt_record(rh, rm), "Hit %": fmt_pct(rh, rm)})
 
-    st.subheader("Romarkable Predictions Record")
-    show(pd.DataFrame(rows))
+    titled("Romarkable Predictions Record", pd.DataFrame(rows))
 
     st.subheader("Power rankings vs results")
     st.caption("Average places off between his ranking and where each manager "
@@ -429,19 +459,13 @@ with tab_all:
     else:
         st.info("No completed regular season with power rankings yet.")
 
-    st.subheader("Romarkable Player hit rate by position")
-    show(position_table(roms))
+    titled("Romarkable Player hit rate by position", position_table(roms))
 
     left, right = st.columns(2)
     with left:
-        st.subheader(f"{av.TOP_GENERIC} Count")
-        show(count_table(awards, "top"))
+        titled(f"{av.TOP_GENERIC} Count", count_table(awards, "top"))
     with right:
-        st.subheader("Fascist Count")
-        show(count_table(awards, "bottom"))
+        titled("Fascist Count", count_table(awards, "bottom"))
 
-    st.subheader("Times Picked to Win")
-    show(picked_to_win(VLOG_SEASONS, rate=True))
-
-    st.subheader("Under-Dawgs")
-    show(under_dawgs(VLOG_SEASONS))
+    titled("Times Picked to Win", picked_to_win(VLOG_SEASONS, rate=True))
+    titled("Under-Dawgs", under_dawgs(VLOG_SEASONS))
