@@ -65,7 +65,8 @@ def trade_sides(tx: pd.DataFrame) -> pd.DataFrame:
     rosters rather than recorded by ESPN, and notes carries the reasons.
     """
     cols = ["transaction_id", "season", "week", "executed_at", "team_id",
-            "receives", "sends", "dropped", "partners", "inferred", "notes"]
+            "receives", "sends", "dropped", "partners", "inferred", "notes",
+            "receives_ids", "sends_ids", "dropped_ids"]
     if tx is None or tx.empty:
         return pd.DataFrame(columns=cols)
     trades = tx[tx["kind"] == "trade"]
@@ -93,6 +94,12 @@ def trade_sides(tx: pd.DataFrame) -> pd.DataFrame:
                 "inferred": bool((g.get("source", pd.Series(dtype=str)) == "inferred").any()),
                 "notes": sorted({n for n in g.get("note", pd.Series(dtype=str)).dropna()
                                  if str(n).strip()}),
+                # The same three lists by ESPN player id, for anything that
+                # has to find these players in the box scores.
+                "receives_ids": moved.loc[moved["to_team_id"] == team, "player_id"].astype(int).tolist(),
+                "sends_ids": moved.loc[moved["from_team_id"] == team, "player_id"].astype(int).tolist(),
+                "dropped_ids": g.loc[(g["action"] == "drop") & (g["from_team_id"] == team),
+                                     "player_id"].astype(int).tolist(),
             })
     return (pd.DataFrame(rows, columns=cols)
             .sort_values(["week", "executed_at", "transaction_id", "team_id"],

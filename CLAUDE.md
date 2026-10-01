@@ -92,7 +92,8 @@ ff_app/
 │   ├── projections.py      # playoff odds (team and player models), magic numbers
 │   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
 │   ├── vlog.py             # grades the Champmissioner's picks; weekly top/bottom scorer
-│   └── transactions.py     # Waiver moves and trade sides from the transactions log
+│   ├── transactions.py     # Waiver moves and trade sides from the transactions log
+│   └── trades.py           # Trade grades: two lineup counterfactuals per side, wins flipped
 └── views/
     ├── 1_Dashboard.py
     ├── 2_Standings.py
@@ -121,6 +122,7 @@ the file is opened rather than loaded into every session:
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
+| Trade grades: both counterfactuals, injury neutral, the window, what was rejected | `analysis/trades.py` |
 | Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | The vlog's notes: format, which week, recap vs preview | `data/vlog_notes.py` |
@@ -576,6 +578,20 @@ pick off air after recording, so the recap a week later, not the preview, is
 the pick of record - silently, by the league's choice. His own hit/miss
 verdict stands where he gave one. Checked against the season records he
 states on camera (2023 through week 10: 42-8 and 29-28), the archive agrees.
+
+**Trades are graded on the weeks held, by counterfactual, never by projection.**
+Each side of a trade is scored alone: the manager's best possible lineup, and
+the lineup he actually started, against the same roster with the trade undone,
+week by week while he holds a player he received. Both numbers are given with
+and without the injuries that came after the trade. Rejected on the way: total
+points of the players (blind to 2-for-1s, positions and need), value over a
+league-wide replacement (assumes the tenth TE was available to him), any
+rest-of-season or asset view that keeps crediting a trade after the player was
+moved again (the trade's worth to him is the weeks he had the player, and a
+one-week sample is shown as one week rather than smoothed), and any grade of
+the decision from projections on the day. A trade is also never graded by what
+it did for the other side; lopsidedness is a later question, deliberately
+left out. The full reasoning is the docstring of `analysis/trades.py`.
 
 **3-week vs 4-week playoff format detection:** `len(pw) == 3` identifies the 2022 format.
 All playoff display logic (page 6) and validation (espn_client.py) branch on this.

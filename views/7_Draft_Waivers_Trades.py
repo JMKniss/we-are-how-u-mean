@@ -17,6 +17,15 @@ what that slot normally returns; the method, and why each part of it is the
 way it is, is in analysis/draft_value.py. It is empty for 2016-2017, which
 kept too little to measure a replacement level.
 
+Trades also grades every side of every trade, on the weeks that manager held
+what he received: the best lineup his roster could have started against the
+best it could have started with the trade undone, the same on the lineup he
+actually started, each with and without the injuries that came after the
+trade, and the regular-season games the trade turned. The method and the
+decisions behind it are in analysis/trades.py. The grades follow the same
+manager filter as the trade list, and a season's per-manager totals sit
+beneath them.
+
 Both transaction tabs end with the same per-manager count of waiver adds and trades for
 the season (analysis.transactions.move_counts), so either tab answers "who is
 most active" without switching.
@@ -35,6 +44,7 @@ from data.espn_client import (get_draft_df, get_boxscores_df, get_manager_map,
 from analysis.draft import apply_recorded_order
 from analysis import draft_value
 from analysis.transactions import waiver_moves, trade_sides, move_counts
+from analysis.trades import trade_grades, manager_summary
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 from branding import page_icon
@@ -66,6 +76,10 @@ def load(season):
 @st.cache_data(ttl=3600)
 def load_value(season):
     return draft_value.draft_value(season)
+
+@st.cache_data(ttl=3600)
+def load_grades(season):
+    return trade_grades(season)
 
 with st.spinner("Loading draft data..."):
     draft_df, box_df, manager_map, order_note, tx_df = load(season)
@@ -349,6 +363,73 @@ with tab4:
         st.table(table.set_index("Week"))
     counts_table()
 
+GRADE_COLS = {"best": "Best Lineup", "best_healthy": "Best Lineup, Healthy",
+              "started": "As Started", "started_healthy": "As Started, Healthy",
+              "wins_flipped": "Wins Flipped"}
+GRADE_FORMAT = {**{v: st.column_config.NumberColumn(v, format="%+.1f")
+                   for k, v in GRADE_COLS.items() if k != "wins_flipped"},
+                "Wins Flipped": st.column_config.NumberColumn("Wins Flipped", format="%+d")}
+GRADE_NOTE = (
+    "Each side is graded alone, on the weeks that manager held a player from "
+    "the trade. Best Lineup is the best lineup his roster could have started, "
+    "minus the best it could have started with the trade undone and the players "
+    "he sent back in its place. As Started is the same subtraction on the lineup "
+    "he actually started, each received starter replaced by the sent player who "
+    "fit the slot, or else his best bench option by average to date. Healthy "
+    "undoes injuries that came after the trade at the player's healthy pace, "
+    "injuries he already had stay. Wins Flipped counts regular-season games As "
+    "Started turned, won where the lineup without the trade would have lost, or "
+    "the reverse. A player traded away again is graded on the weeks he was held, "
+    "however few.")
+
+
+def names_df(frame: pd.DataFrame) -> pd.DataFrame:
+    """who() for a dataframe, where an escaped team name would show its backslashes."""
+    out = who(frame)
+    if "Team" in out:
+        out["Team"] = frame["team_id"].map(team_names).fillna("?")
+    return out
+
+
+def grades_section(team: int | None):
+    """Every side of every trade this season, graded, then the season's totals."""
+    grades = load_grades(season)
+    if grades.empty:
+        return
+    st.divider()
+    st.subheader(f"{season} Trade Grades")
+    shown = grades if team is None else grades[grades["team_id"] == team]
+    shown = shown.sort_values(["week", "executed_at", "transaction_id", "team_id"],
+                              ascending=[False, False, False, True])
+    table = pd.concat([
+        pd.DataFrame({"Week": shown["week"]}, index=shown.index),
+        names_df(shown),
+        pd.DataFrame({
+            "Receives": [", ".join(r) for r in shown["receives"]],
+            "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
+                      for s, dr in zip(shown["sends"], shown["dropped"])],
+            "Weeks Held": shown["weeks"],
+            **{v: shown[k] for k, v in GRADE_COLS.items()},
+        }, index=shown.index),
+    ], axis=1)
+    st.dataframe(table, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
+    st.caption(GRADE_NOTE)
+
+    summary = manager_summary(grades, manager_map)
+    st.subheader(f"{season} Trade Grades by Manager")
+    table = pd.concat([names_df(summary), pd.DataFrame({
+        "Trades": summary["trades"],
+        "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
+                         zip(summary["up"], summary["even"], summary["down"])],
+        "Weeks Held": summary["weeks"],
+        **{v: summary[k] for k, v in GRADE_COLS.items()},
+    }, index=summary.index)], axis=1)
+    st.dataframe(table, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
+    st.caption("Up is a trade that added to the best lineup over the weeks held, "
+               "down one that cost it, whatever the size. Points are summed over "
+               "the manager's trades.")
+
+
 with tab5:
     sides = trade_sides(tx_df)
     if sides.empty:
@@ -391,4 +472,5 @@ with tab5:
                 teams = " & ".join(manager_map.get(x, "?")
                                    for x in sorted([t["team_id"], *t["partners"]]))
                 st.caption(f"Week {t['week']}, {teams}: {'; '.join(t['notes'])}.")
+        grades_section(team)
     counts_table()
