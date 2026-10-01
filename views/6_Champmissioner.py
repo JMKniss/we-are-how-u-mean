@@ -19,7 +19,8 @@ rankings are set against the playoff seeds, and once the playoffs are over,
 against the final standings.
 
 All-Time adds the seasons together, under the generic award names, since the
-top award is renamed every year.
+top award is renamed every year, and ends with Times Picked to Win across
+every season, added up by manager.
 
 Records only, by design: the league wanted his accuracy, not a week-by-week
 replay of his picks. Weeks he made no picks for simply do not count, and a
@@ -135,19 +136,27 @@ def count_table(a: pd.DataFrame, award: str) -> pd.DataFrame:
     return pd.DataFrame({"Manager": c["manager"], "Count": c[award].astype(int)})
 
 
-def picked_to_win(season: int) -> pd.DataFrame:
+def picked_to_win(seasons: list[int]) -> pd.DataFrame:
     """
-    How many times he took each manager to win, most first, and how many of
-    those the manager won. A contest still running counts as a pick, not yet
-    as a win.
+    How many times he took each manager to win over these seasons, most
+    first, and how many of those the manager won. Added up by manager, since
+    a team_id can change hands. A contest still running counts as a pick, not
+    yet as a win.
     """
-    mgr = rankings[season]["managers"]
-    n = archive.get("vlog_matchups", season)["pick_id"].value_counts()
-    sp = picks[picks["season"] == season]
-    won = sp.loc[sp["correct"].astype(bool), "pick_id"].value_counts() if len(sp) else {}
-    t = pd.DataFrame({"Manager": [mgr[t] for t in mgr],
-                      "Picked to Win": [int(n.get(t, 0)) for t in mgr],
-                      "Correctly Picked to Win": [int(won.get(t, 0)) for t in mgr]})
+    taken, won = {}, {}
+    for yr in seasons:
+        mgr = rankings[yr]["managers"]
+        for m in mgr.values():
+            taken.setdefault(m, 0)
+            won.setdefault(m, 0)
+        for t in archive.get("vlog_matchups", yr)["pick_id"]:
+            taken[mgr[t]] = taken.get(mgr[t], 0) + 1
+        sp = picks[picks["season"] == yr]
+        for t in (sp.loc[sp["correct"].astype(bool), "pick_id"] if len(sp) else []):
+            won[mgr[t]] = won.get(mgr[t], 0) + 1
+    t = pd.DataFrame({"Manager": list(taken),
+                      "Picked to Win": list(taken.values()),
+                      "Correctly Picked to Win": [won.get(m, 0) for m in taken]})
     return t.sort_values(["Picked to Win", "Manager"], ascending=[False, True])
 
 
@@ -334,7 +343,7 @@ with tab_season:
         st.info("No regular-season weeks played yet.")
 
     st.subheader("Times Picked to Win")
-    show(picked_to_win(season))
+    show(picked_to_win([season]))
 
 # ── Power Rankings ────────────────────────────────────────────────────────────
 with tab_ranks:
@@ -398,3 +407,6 @@ with tab_all:
     with right:
         st.subheader("Fascist Count")
         show(count_table(awards, "bottom"))
+
+    st.subheader("Times Picked to Win")
+    show(picked_to_win(VLOG_SEASONS))
