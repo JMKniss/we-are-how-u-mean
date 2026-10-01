@@ -20,7 +20,8 @@ against the final standings.
 
 All-Time adds the seasons together, under the generic award names, since the
 top award is renamed every year, and ends with Times Picked to Win across
-every season, added up by manager.
+every season, added up by manager, and Under-Dawgs: how often each manager
+won when he picked them to lose.
 
 Records only, by design: the league wanted his accuracy, not a week-by-week
 replay of his picks. Weeks he made no picks for simply do not count, and a
@@ -161,6 +162,27 @@ def picked_to_win(seasons: list[int], rate: bool = False) -> pd.DataFrame:
         t["Rate"] = [fmt_pct(w, n - w) for w, n in
                      zip(t["Correctly Picked to Win"], t["Picked to Win"])]
     return t.sort_values(["Picked to Win", "Manager"], ascending=[False, True])
+
+
+def under_dawgs(seasons: list[int]) -> pd.DataFrame:
+    """
+    How many times each manager won a contest he picked them to lose, most
+    first. Finished contests only, added up by manager.
+    """
+    upsets = {}
+    for yr in seasons:
+        mgr = rankings[yr]["managers"]
+        for m in mgr.values():
+            upsets.setdefault(m, 0)
+        sp = picks[picks["season"] == yr]
+        for r in (sp[~sp["correct"].astype(bool)].itertuples(index=False)
+                  if len(sp) else []):
+            other = r.opp_id if r.pick_id == r.team_id else r.team_id
+            upsets[mgr[other]] = upsets.get(mgr[other], 0) + 1
+    t = pd.DataFrame({"Manager": list(upsets),
+                      "Won When Picked to Lose": list(upsets.values())})
+    return t.sort_values(["Won When Picked to Lose", "Manager"],
+                         ascending=[False, True])
 
 
 def top_count_title(season_title: str) -> str:
@@ -413,3 +435,6 @@ with tab_all:
 
     st.subheader("Times Picked to Win")
     show(picked_to_win(VLOG_SEASONS, rate=True))
+
+    st.subheader("Under-Dawgs")
+    show(under_dawgs(VLOG_SEASONS))
