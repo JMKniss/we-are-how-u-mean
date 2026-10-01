@@ -1282,15 +1282,14 @@ with tab_moves:
         st.subheader("Who Trades with Who")
         pairs = load_trade_pairs()
         if active_only:
-            # An active manager keeps every trade, partners who have left included.
+            # Both sides, unlike the trade counts above: a pair is about two
+            # managers, and a partner who has left is not an active pairing.
             pairs = pairs[pairs["manager_a"].isin(ACTIVE_MANAGERS)
-                          | pairs["manager_b"].isin(ACTIVE_MANAGERS)]
+                          & pairs["manager_b"].isin(ACTIVE_MANAGERS)]
         if pairs.empty:
             st.info("No trades are archived yet.")
         else:
             traders = sorted(set(pairs["manager_a"]) | set(pairs["manager_b"]))
-            if active_only:
-                traders = [m for m in traders if m in ACTIVE_MANAGERS]
             who = st.selectbox("Manager", [ALL] + traders, key="trade_pairs_mgr")
             # Each pair is stored once, name order fixed, so the full table has
             # no mirror rows. Picking a manager finds the pair from either side
