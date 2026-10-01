@@ -571,7 +571,11 @@ episode a week out.
 **Playoff seeds and final finishes live in `analysis/standings.py`**
 (`playoff_seeds`, `compute_season_finish_map`), shared by All-Time and the
 Champmissioner's power-ranking comparison. The finish logic is the one checked
-95/95 against the league's own records; do not fork it.
+95/95 against the league's own records; do not fork it. The bracket itself is
+`_bracket()` there, and `playoff_games()` hands its games, with the weeks each
+was scored over, to anything that needs the league's real playoff pairings -
+the trade grades count a flipped playoff round from it. Add a new consumer
+there rather than reading ESPN's playoff opponents.
 
 **The vlog's picks: his recap outranks his notes.** He sometimes changed a
 pick off air after recording, so the recap a week later, not the preview, is

@@ -1377,7 +1377,8 @@ with tab_moves:
                 "received starter replaced by the sent player who fit the slot, or "
                 "else his best bench option by average to date. Healthy undoes "
                 "injuries that came after the trade at the player's healthy pace. "
-                "Wins Flipped counts regular-season games As Started turned. Up is a "
+                "Wins Flipped counts games As Started turned, playoff rounds on the "
+                "league's own bracket included. Up is a "
                 "trade that added to the best lineup at all, down one that cost it. "
                 f"Trades from {int(grades['season'].min())}, the season in progress "
                 "included, graded to the last week archived.")

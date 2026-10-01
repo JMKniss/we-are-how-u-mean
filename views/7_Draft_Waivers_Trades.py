@@ -377,10 +377,10 @@ GRADE_NOTE = (
     "he actually started, each received starter replaced by the sent player who "
     "fit the slot, or else his best bench option by average to date. Healthy "
     "undoes injuries that came after the trade at the player's healthy pace, "
-    "injuries he already had stay. Wins Flipped counts regular-season games As "
-    "Started turned, won where the lineup without the trade would have lost, or "
-    "the reverse. A player traded away again is graded on the weeks he was held, "
-    "however few.")
+    "injuries he already had stay. Wins Flipped counts games As Started turned, "
+    "won where the lineup without the trade would have lost, or the reverse, a "
+    "playoff round scored over its weeks on the league's own bracket. A player "
+    "traded away again is graded on the weeks he was held, however few.")
 
 
 def names_df(frame: pd.DataFrame) -> pd.DataFrame:

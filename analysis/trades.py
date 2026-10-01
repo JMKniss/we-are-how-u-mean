@@ -30,10 +30,15 @@ Two counterfactuals, read side by side, plus one derived from the second:
                 nothing that week and counts nothing. This is the trade's
                 actual impact, lineup decisions included.
 
-  Wins flipped  From Started: a week the manager won where the refilled
-                lineup would have lost counts +1, and the reverse -1. Regular
-                season only, because ESPN's playoff pairings are not the
-                league's and its rounds are cumulative.
+  Wins flipped  From Started: a game the manager won where the refilled
+                lineup would have lost counts +1, and the reverse -1. A
+                regular-season week is a game. A playoff round is a game,
+                scored over its weeks on the league's own bracket from
+                analysis/standings.py, never ESPN's: the two-week rounds
+                summed, 2022's hand-run bracket and three-week Sacko Bowl,
+                2016's ladder where the bottom two met once. A round the
+                trade was held for only part of still counts, on the delta
+                from the weeks held.
 
 Each of the two point columns is given twice, injury inclusive and injury
 neutral. Injury neutral replaces a traded player's weeks missed hurt after the
@@ -61,12 +66,16 @@ received player cut before his first game was never held, and a trade whose
 received players were all cut before a game has no weeks and no grade.
 
 The undone roster is kept legal. Putting two sent players back for one
-received leaves it one over the season's roster limit, so the player with the
-lowest average to date who was not part of the trade is cut, which is almost
-always the waiver pickup that filled the freed spot. Average to date is a
-player's points per game played so far this season; before week 1 it is
-ESPN's projection for the week, the only forward-looking number anywhere in
-here, and the only one available.
+received leaves it one over the season's roster limit. The freed spot went to
+whoever was added after the trade, so the cut is the player not in the trade
+whose current stint on the roster began latest, and only among players who
+arrived the same week does the lower average to date go first. It was the
+lowest average to date outright at first, and that cut an injured early
+pick stashed on the bench, whose average was low from the injury and not
+his worth, while the waiver pickup that had actually taken the spot stayed.
+Average to date is a player's points per game played so far this season;
+before week 1 it is ESPN's projection for the week, the only forward-looking
+number anywhere in here, and the only one available.
 
 Every week the team played counts, playoffs and consolation included, through
 whatever the archive holds, so the season in progress grades up to the last
@@ -82,6 +91,7 @@ import numpy as np
 import pandas as pd
 
 from analysis.efficiency import SLOT_ELIGIBILITY, optimal_lineup_points, season_slot_requirements
+from analysis.standings import playoff_games
 from analysis.transactions import trade_sides
 from config import season_config
 from data import archive
@@ -113,7 +123,22 @@ class _Season:
         self.slots = season_slot_requirements(self.box)
         self.roster_limit = int(self.box[self.box["slot"] != "IR"]
                                 .groupby(["week", "team_id"]).size().max())
-        self.matchups = archive.get("matchups", season).set_index(["week", "team_id"])
+        matchups = archive.get("matchups", season)
+        self.matchups = matchups.set_index(["week", "team_id"])
+        self.playoff_games = {}
+        for g in playoff_games(season, matchups):
+            self.playoff_games.setdefault(g["team_id"], []).append(g)
+
+        # When each player's current stint on each team began, for the
+        # roster-limit cut: the latest arrival is the one who would not be there.
+        self.stint_start = {}
+        for (team, pid), g in self.box.groupby(["team_id", "player_id"]):
+            start = None
+            prev = None
+            for w in sorted(g["week"]):
+                start = w if prev != w - 1 else start
+                self.stint_start[(team, pid, w)] = start
+                prev = w
 
         # One points table for the season: the box score where a player was
         # rostered, the player card where he was not. A week with no row is a
@@ -250,8 +275,10 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
             over = len(cf) - s.roster_limit
             if over > 0:
                 cuttable = cf[~cf["player_id"].isin(traded)].copy()
+                cuttable["arrived"] = [s.stint_start.get((team, p, week), 0) for p in cuttable["player_id"]]
                 cuttable["avg"] = [s.avg_to_date(p, week) for p in cuttable["player_id"]]
-                cut = cuttable.nsmallest(over, "avg")["player_id"]
+                cut = (cuttable.sort_values(["arrived", "avg"], ascending=[False, True])
+                       .head(over)["player_id"])
                 cf = cf[~cf["player_id"].isin(cut)]
             row[key] = round(_optimal(active, s.slots, col) - _optimal(cf, s.slots, col), 2)
 
@@ -267,7 +294,8 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
             refill = _refill(vacated, candidates, s, week, col)
             row[key] = round(float(started_received[col].sum()) - refill, 2)
 
-        # Wins flipped, from the lineup as started, regular season only.
+        # Wins flipped, from the lineup as started: regular season weeks here,
+        # playoff rounds below once every held week is graded.
         row["score"] = score
         row["cf_score"] = round(score - row["started"], 2)
         row["opp_score"] = np.nan
@@ -283,6 +311,24 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
             elif official < opp and cf_score > opp:
                 row["flip"] = -1
         rows.append(row)
+
+    # Playoff games are rounds, scored over their weeks on the league's own
+    # bracket. The trade's effect on the round is its started delta over the
+    # weeks it was held, and the flip lands on the last of those weeks.
+    by_week = {r["week"]: r for r in rows}
+    for g in s.playoff_games.get(team, []):
+        held = [by_week[w] for w in g["weeks"] if w in by_week]
+        if not held:
+            continue
+        own = sum(float(s.matchups.loc[(w, team), "score"]) for w in g["weeks"]
+                  if (w, team) in s.matchups.index)
+        opp = sum(float(s.matchups.loc[(w, g["opp_id"]), "score"]) for w in g["weeks"]
+                  if (w, g["opp_id"]) in s.matchups.index)
+        cf = own - sum(r["started"] for r in held)
+        if own > opp and cf < opp:
+            held[-1]["flip"] += 1
+        elif own < opp and cf > opp:
+            held[-1]["flip"] -= 1
     return rows
 
 
