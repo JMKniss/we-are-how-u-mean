@@ -183,22 +183,23 @@ def render_rankings(info: dict):
         ys = [grid.at[tid, w] if w in grid.columns else None for w in weeks]
         name = mgr.get(tid, "?")
         # The name at the first and last point he ranked them, in place of a
-        # legend. The last also carries the places moved since his previous
-        # ranking, up being plus.
+        # legend. The last also carries the places moved since his first
+        # ranking, the preseason one, up being plus. The names take the
+        # site's text colour, so they read in dark mode too.
         have = [j for j, y in enumerate(ys) if y is not None and not pd.isna(y)]
         text = [""] * len(ys)
         where = ["middle right"] * len(ys)
         if have:
             end = name
             if len(have) > 1:
-                end = f"{name} {int(ys[have[-2]] - ys[have[-1]]):+d}"
+                end = f"{name} {int(ys[have[0]] - ys[have[-1]]):+d}"
             text[have[0]], where[have[0]] = name, "middle left"
             text[have[-1]], where[have[-1]] = end, "middle right"
         colour = colours[i % len(colours)]
         fig.add_trace(go.Scatter(
             x=[label(w) for w in weeks], y=ys, mode="lines+markers+text",
             name=name, connectgaps=False, text=text, textposition=where,
-            textfont=dict(color="black"), line=dict(color=colour),
+            line=dict(color=colour),
             marker=dict(color=colour), cliponaxis=False,
             hovertemplate="%{fullData.name}: %{y}<extra>%{x}</extra>"))
     fig.update_yaxes(autorange="reversed", dtick=1, title="Rank")
