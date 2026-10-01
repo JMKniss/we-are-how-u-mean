@@ -190,8 +190,9 @@ def top_count_title(season_title: str) -> str:
     return f"Top {season_title.removesuffix(' of the Week')} Count"
 
 
-def show(df: pd.DataFrame):
-    st.dataframe(df, hide_index=True, width="stretch")
+def show(df: pd.DataFrame, fit: bool = False):
+    """A table, full width, or sized to its columns when fit is set."""
+    st.dataframe(df, hide_index=True, width="content" if fit else "stretch")
 
 
 def fmt_off(x) -> str:
@@ -368,7 +369,7 @@ with tab_season:
         st.info("No regular-season weeks played yet.")
 
     st.subheader("Times Picked to Win")
-    show(picked_to_win([season]))
+    show(picked_to_win([season]), fit=True)
 
 # ── Power Rankings ────────────────────────────────────────────────────────────
 with tab_ranks:
@@ -434,7 +435,7 @@ with tab_all:
         show(count_table(awards, "bottom"))
 
     st.subheader("Times Picked to Win")
-    show(picked_to_win(VLOG_SEASONS, rate=True))
+    show(picked_to_win(VLOG_SEASONS, rate=True), fit=True)
 
     st.subheader("Under-Dawgs")
-    show(under_dawgs(VLOG_SEASONS))
+    show(under_dawgs(VLOG_SEASONS), fit=True)
