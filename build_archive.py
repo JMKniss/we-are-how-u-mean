@@ -60,6 +60,7 @@ KEYS = {
     "vlog_matchups": ["season", "week", "team_id", "opp_id"],
     "vlog_romarkables": ["season", "week", "position"],
     "vlog_power_rankings": ["season", "week", "team_id"],
+    "vlog_upcoming": ["season", "week", "kind", "position", "team_id"],
 }
 
 BUILDERS = {
@@ -79,6 +80,7 @@ BUILDERS = {
     "vlog_matchups": "vlog",
     "vlog_romarkables": "vlog",
     "vlog_power_rankings": "vlog",
+    "vlog_upcoming": "vlog",
 }
 
 # Datasets built from other archived data plus nflverse, never from ESPN.
@@ -88,7 +90,7 @@ BUILDERS = {
 # season. It also classifies the free-agent weeks of everyone in
 # player_weeks, so it must come after both in BUILDERS.
 DERIVED = {"game_status", "vlog_matchups", "vlog_romarkables",
-           "vlog_power_rankings"}
+           "vlog_power_rankings", "vlog_upcoming"}
 
 # His picks, which a later episode can legitimately rewrite. A week's preview
 # is archived the Tuesday after the games, and the next episode's recap - the
@@ -98,6 +100,12 @@ DERIVED = {"game_status", "vlog_matchups", "vlog_romarkables",
 # pick he struck as N/A) is dropped. A recap row is a record like any other:
 # a change to one is a conflict.
 VLOG = {"vlog_matchups", "vlog_romarkables", "vlog_power_rankings"}
+
+# His preview of the week still to come. A season's rows are replaced outright
+# on every update, emptied when the notes have no preview, so last week's
+# preview cannot outlive the week. SNAPSHOT_DATASETS would not do it: they
+# replace rows by key and leave a row the new pull no longer has.
+REPLACE_EACH_RUN = {"vlog_upcoming"}
 
 # Pulled from ESPN, but for the players in the season's boxscores, so like
 # game_status it is handed the boxscores this run has planned - a player first
@@ -224,7 +232,7 @@ def fetch_fresh(name, season, planned=None) -> pd.DataFrame:
 
 def derive(name, season, planned) -> pd.DataFrame:
     """Build a DERIVED dataset from this run's planned boxscores, else the archive's."""
-    if name in VLOG:
+    if BUILDERS[name] == "vlog":
         return derive_vlog(name, season, planned)
     from data.game_status import get_game_status_df, players_to_classify
     box = planned.get("boxscores")
@@ -241,7 +249,7 @@ _vlog_built: dict = {}
 
 
 def derive_vlog(name, season, planned) -> pd.DataFrame:
-    """One of the two vlog datasets; both are built together and the report printed once."""
+    """One of the vlog datasets; all are built together and the report printed once."""
     from data import vlog, vlog_notes, archive
     notes = vlog_notes.notes_dir()
     if notes is None or not notes.is_dir():
@@ -256,8 +264,9 @@ def derive_vlog(name, season, planned) -> pd.DataFrame:
         report = vlog.Report()
         archive.clear()
         schedule = planned.get("schedule", load_archive("schedule"))
+        rosters = planned.get("rosters", load_archive("rosters"))
         built = vlog.build(season, matchups, box, archive.manager_map(season),
-                           report=report, schedule=schedule)
+                           report=report, schedule=schedule, rosters=rosters)
         report.print("vlog")
         _vlog_built[season] = built
     return _vlog_built[season][name]
@@ -586,6 +595,20 @@ def main():
                 print(f"  {name:11} {season}  FETCH FAILED {type(e).__name__}: {e}")
                 blocked = True
                 continue
+            # No columns at all is "not built" (VLOG_DIR missing), not "no preview".
+            if mode == "update" and name in REPLACE_EACH_RUN and len(fresh.columns):
+                had = existing[existing["season"] == season] if len(existing) else existing
+                same = (len(had) == len(fresh) and (fresh.empty or canonical(
+                    normalise(had[fresh.columns], name)).equals(
+                    canonical(normalise(fresh, name)))))
+                print(f"  {name:11} {season}  {'unchanged' if same else f'{len(had)} row(s) replaced by {len(fresh)}'}")
+                if same:
+                    continue
+                keep = existing[existing["season"] != season] if len(existing) else existing
+                planned[name] = sort_frame(pd.concat([keep, fresh], ignore_index=True), name)
+                existing = planned[name]
+                continue
+
             if fresh.empty:
                 print(f"  {name:11} {season}  no data returned - skipped")
                 continue

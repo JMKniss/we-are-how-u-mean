@@ -1,0 +1,11 @@
+season,week,kind,position,team_id,opp_id,pick_id,player_id,player_name,projected
+2026,4,player,FLEX,1,,,4701936,Matthew Golden,10.56
+2026,4,matchup,,1,8,1,,,
+2026,4,player,QB,2,,,4360689,Tyler Shough,18.64
+2026,4,player,TE,3,,,4430027,Sam LaPorta,8.97
+2026,4,player,RB,4,,,4870808,Jeremiyah Love,14.05
+2026,4,player,WR,5,,,4372016,Jaylen Waddle,9.47
+2026,4,matchup,,5,6,5,,,
+2026,4,matchup,,7,4,7,,,
+2026,4,matchup,,9,2,9,,,
+2026,4,matchup,,10,3,10,,,

@@ -16,7 +16,7 @@ ARCHIVE_DIR = Path(__file__).parent / "archive"
 DATASETS = ("matchups", "boxscores", "draft", "standings", "validation",
             "draft_order", "upcoming", "transactions", "game_status",
             "player_weeks", "schedule", "rosters", "vlog_matchups",
-            "vlog_romarkables", "vlog_power_rankings")
+            "vlog_romarkables", "vlog_power_rankings", "vlog_upcoming")
 
 _cache: dict[str, pd.DataFrame] = {}
 _meta: dict | None = None

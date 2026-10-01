@@ -267,6 +267,18 @@ replaced by his recap, which is the pick he stood by. Lines it reports under
 `vlog` are worth a glance - a name it could not place, or a pick that names
 two players who did not play each other.
 
+His preview of the week still to come goes in `vlog_upcoming.csv`, which
+the dashboard's This Week tab reads. The picks files hold only weeks already
+played, so grading never has to ask whether a week has happened. The preview
+is a snapshot: each update replaces that season's rows. Because the notes
+usually arrive after Tuesday, the scheduled run often has no preview yet.
+Once the notes are in, this picks the preview up on its own, with no ESPN
+cookies needed:
+
+```
+python build_archive.py --season 2026 --dataset vlog_upcoming --update
+```
+
 ### Scheduling it for Tuesday noon
 
 Task Scheduler, run as your own user, "Run only when user is logged on" (the
@@ -315,7 +327,7 @@ Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
 `transactions.csv`, `game_status.csv` (from nflverse, not ESPN), `player_weeks.csv`,
 `schedule.csv`, `rosters.csv`, `upcoming.csv`, `vlog_matchups.csv`,
-`vlog_romarkables.csv`, `vlog_power_rankings.csv` (the Champmissioner's picks
+`vlog_romarkables.csv`, `vlog_power_rankings.csv`, `vlog_upcoming.csv` (the Champmissioner's picks
 and rankings, from his notes, not ESPN),
 plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
 

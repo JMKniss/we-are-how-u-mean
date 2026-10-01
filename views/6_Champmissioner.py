@@ -1,13 +1,24 @@
 """
 Champmissioner's Dashboard: Mikey's calls on the Romarkable Vlog, graded.
 
-Two tabs. The season tab shows his matchup-pick record, his Romarkable record
-by position, his power rankings week by week, and who won the weekly awards -
-the top scorer under that season's title and the Fascist of the Week - with a
-count of each per manager. Once the regular season is over, his preseason and
-final rankings are set against the playoff seeds, and once the playoffs are
-over, against the final standings. All-Time adds the seasons together, under
-the generic award names, since the top award is renamed every year.
+Four tabs. This Week shows his preview of the next week to be played, his
+matchup picks and his Romarkable players with ESPN's projection, from
+vlog_upcoming.csv. It always shows the latest season, whatever the selector
+says, and says so when his notes for the week are not in yet.
+
+The season tab shows his matchup-pick and Romarkable records, his Romarkable
+hit rate by position, a count of each weekly award per manager - the top
+scorer under that season's title and the Fascist of the Week - the weekly
+benchmarks behind them, and how often he took each manager to win.
+
+All-Time adds the seasons together, under the generic award names, since the
+top award is renamed every year.
+
+Power Rankings shows his rankings week by week for the selected season, each
+line labelled at both ends rather than in a legend, which ten colours made
+hard to follow. Once the regular season is over, his preseason and final
+rankings are set against the playoff seeds, and once the playoffs are over,
+against the final standings.
 
 Records only, by design: the league wanted his accuracy, not a week-by-week
 replay of his picks. Weeks he made no picks for simply do not count, and a
@@ -23,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
 import plotly.graph_objects as go
+from plotly.colors import qualitative
 import streamlit as st
 
 from analysis import vlog as av
@@ -36,8 +48,7 @@ from display_utils import season_selector, sidebar_display_prefs
 st.set_page_config(page_title="Champmissioner's Dashboard",
                    page_icon=page_icon(), layout="wide")
 st.title("🎙️ Champmissioner's Dashboard")
-st.caption("Mikey's calls on the Romarkable Vlog, graded. A Romarkable pick "
-           "hits when the player beats his ESPN projection.")
+st.caption("Champmissioner Romar's predictions, as seen on the Vlog!")
 
 VLOG_SEASONS = archive.seasons_with_data("vlog_matchups")
 if not VLOG_SEASONS:
@@ -116,10 +127,25 @@ def position_table(graded: pd.DataFrame) -> pd.DataFrame:
     })
 
 
-def counts_table(a: pd.DataFrame, top: str, bottom: str) -> pd.DataFrame:
+def count_table(a: pd.DataFrame, award: str) -> pd.DataFrame:
+    """Manager and how many times he won one award, most first."""
     c = av.award_counts(a)
-    return pd.DataFrame({"Manager": c["manager"], top: c["top"].astype(int),
-                         bottom: c["bottom"].astype(int)})
+    c = c[c[award] > 0].sort_values(award, ascending=False, kind="stable")
+    return pd.DataFrame({"Manager": c["manager"], "Count": c[award].astype(int)})
+
+
+def picked_to_win(season: int) -> pd.DataFrame:
+    """How many times he took each manager to win, most first."""
+    mgr = rankings[season]["managers"]
+    n = archive.get("vlog_matchups", season)["pick_id"].value_counts()
+    t = pd.DataFrame({"Manager": [mgr[t] for t in mgr],
+                      "Picked to Win": [int(n.get(t, 0)) for t in mgr]})
+    return t.sort_values(["Picked to Win", "Manager"], ascending=[False, True])
+
+
+def top_count_title(season_title: str) -> str:
+    """'Trainer of the Week' -> 'Top Trainer Count'."""
+    return f"Top {season_title.removesuffix(' of the Week')} Count"
 
 
 def show(df: pd.DataFrame):
@@ -133,7 +159,7 @@ def fmt_off(x) -> str:
 def render_rankings(info: dict):
     """Week-by-week power rankings, then how they held up once that is known."""
     ranks, mgr = info["ranks"], info["managers"]
-    st.subheader("Power rankings")
+    st.subheader("Champmissioner's Power Rankings")
     if ranks is None or ranks.empty:
         st.info("No power rankings this season yet.")
         return
@@ -144,15 +170,28 @@ def render_rankings(info: dict):
     last = grid[max(grid.columns)].sort_values()
 
     fig = go.Figure()
-    for tid in last.index:
+    colours = qualitative.Plotly
+    for i, tid in enumerate(last.index):
         ys = [grid.at[tid, w] if w in grid.columns else None for w in weeks]
+        name = mgr.get(tid, "?")
+        # The name at the first and last point he ranked them, in place of a legend.
+        have = [j for j, y in enumerate(ys) if y is not None and not pd.isna(y)]
+        text = [""] * len(ys)
+        where = ["middle right"] * len(ys)
+        if have:
+            text[have[0]], where[have[0]] = name, "middle left"
+            text[have[-1]], where[have[-1]] = name, "middle right"
+        colour = colours[i % len(colours)]
         fig.add_trace(go.Scatter(
-            x=[label(w) for w in weeks], y=ys, mode="lines+markers",
-            name=mgr.get(tid, "?"), connectgaps=False,
+            x=[label(w) for w in weeks], y=ys, mode="lines+markers+text",
+            name=name, connectgaps=False, text=text, textposition=where,
+            textfont=dict(color=colour), line=dict(color=colour),
+            marker=dict(color=colour), cliponaxis=False,
             hovertemplate="%{fullData.name}: %{y}<extra>%{x}</extra>"))
     fig.update_yaxes(autorange="reversed", dtick=1, title="Rank")
     fig.update_xaxes(type="category", title=None)
-    fig.update_layout(height=420, margin=dict(l=10, r=10, t=10, b=10))
+    fig.update_layout(height=440, showlegend=False,
+                      margin=dict(l=90, r=90, t=10, b=10))
     st.plotly_chart(fig, width="stretch")
 
     # One row per manager in the latest order; a week he skipped says so.
@@ -189,7 +228,47 @@ def render_rankings(info: dict):
         st.caption("Final standings are added when the playoffs finish.")
 
 
-tab_season, tab_all = st.tabs([str(season), "All-Time"])
+tab_week, tab_season, tab_all, tab_ranks = st.tabs(
+    ["This Week", str(season), "All-Time", "Power Rankings"])
+
+# ── This Week ─────────────────────────────────────────────────────────────────
+with tab_week:
+    up = (archive.get("vlog_upcoming") if archive.has("vlog_upcoming")
+          else pd.DataFrame())
+    latest = max(VLOG_SEASONS)
+    played = archive.current_week(latest) or 0
+    if len(up):
+        up = up[(up["season"] == latest) & (up["week"] > played)]
+    if up.empty:
+        st.info(f"No predictions for week {played + 1} yet.")
+    else:
+        mgr = get_manager_map(latest)
+        st.caption(f"{latest} week {int(up['week'].iloc[0])}.")
+
+        st.subheader("Romarkable Matchup Predictions")
+        rows = []
+        for r in up[up["kind"] == "matchup"].itertuples(index=False):
+            other = r.opp_id if r.pick_id == r.team_id else r.team_id
+            rows.append({"Prediction": f"{mgr.get(int(r.pick_id), '?')} over "
+                                       f"{mgr.get(int(other), '?')}"})
+        if rows:
+            show(pd.DataFrame(rows))
+        else:
+            st.info("No matchup picks this week.")
+
+        st.subheader("Romarkable Player Predictions")
+        order = {p: i for i, p in enumerate(av.POSITIONS)}
+        pl = (up[up["kind"] == "player"]
+              .sort_values("position", key=lambda c: c.map(order)))
+        if len(pl):
+            show(pd.DataFrame({
+                "Position": pl["position"],
+                "Player": pl["player_name"],
+                "ESPN Projection": ["–" if pd.isna(x) else f"{x:.2f}"
+                                    for x in pl["projected"]],
+            }))
+        else:
+            st.info("No player picks this week.")
 
 # ── Season ────────────────────────────────────────────────────────────────────
 with tab_season:
@@ -198,28 +277,31 @@ with tab_season:
     sa = awards[awards["season"] == season]
     title = av.top_title(season)
 
+    st.subheader("Romarkable Predictions Record")
     mw, ml = av.record(sp["correct"]) if len(sp) else (0, 0)
     rh, rm = av.record(sr["hit"]) if len(sr) else (0, 0)
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Matchup picks", fmt_record(mw, ml))
-    c2.metric("Matchup pick %", fmt_pct(mw, ml))
-    c3.metric("Romarkable picks", fmt_record(rh, rm))
-    c4.metric("Romarkable hit %", fmt_pct(rh, rm))
+    c1.metric("Matchup Picks", fmt_record(mw, ml))
+    c2.metric("Matchup Pick %", fmt_pct(mw, ml))
+    c3.metric("Player Picks", fmt_record(rh, rm))
+    c4.metric("Player Hit %", fmt_pct(rh, rm))
+    st.caption("A player pick hits when he beats his ESPN projection.")
+
+    st.subheader("Romarkable Player hit rate by position")
+    if len(sr):
+        show(position_table(sr))
+    else:
+        st.info("No player picks graded yet this season.")
 
     left, right = st.columns(2)
     with left:
-        st.subheader("Romarkables by position")
-        if len(sr):
-            show(position_table(sr))
-        else:
-            st.info("No Romarkable picks graded yet this season.")
+        st.subheader(top_count_title(title))
+        show(count_table(sa, "top"))
     with right:
-        st.subheader("Award count")
-        show(counts_table(sa, title, av.BOTTOM_TITLE))
+        st.subheader("Fascist Count")
+        show(count_table(sa, "bottom"))
 
-    render_rankings(rankings[season])
-
-    st.subheader("Weekly awards")
+    st.subheader("Weekly Benchmarks")
     top = sa[sa["award"] == "top"]
     bot = sa[sa["award"] == "bottom"]
     rows = []
@@ -237,6 +319,9 @@ with tab_season:
     else:
         st.info("No regular-season weeks played yet.")
 
+    st.subheader("Times Picked to Win")
+    show(picked_to_win(season))
+
 # ── All-Time ──────────────────────────────────────────────────────────────────
 with tab_all:
     rows = []
@@ -244,16 +329,16 @@ with tab_all:
         p, r = picks[picks["season"] == yr], roms[roms["season"] == yr]
         mw, ml = av.record(p["correct"]) if len(p) else (0, 0)
         rh, rm = av.record(r["hit"]) if len(r) else (0, 0)
-        rows.append({"Season": str(yr), "Matchup picks": fmt_record(mw, ml),
+        rows.append({"Season": str(yr), "Matchup Picks": fmt_record(mw, ml),
                      "Matchup %": fmt_pct(mw, ml),
-                     "Romarkables": fmt_record(rh, rm), "Hit %": fmt_pct(rh, rm)})
+                     "Player Picks": fmt_record(rh, rm), "Hit %": fmt_pct(rh, rm)})
     mw, ml = av.record(picks["correct"])
     rh, rm = av.record(roms["hit"])
-    rows.append({"Season": "All-Time", "Matchup picks": fmt_record(mw, ml),
+    rows.append({"Season": "All-Time", "Matchup Picks": fmt_record(mw, ml),
                  "Matchup %": fmt_pct(mw, ml),
-                 "Romarkables": fmt_record(rh, rm), "Hit %": fmt_pct(rh, rm)})
+                 "Player Picks": fmt_record(rh, rm), "Hit %": fmt_pct(rh, rm)})
 
-    st.subheader("Record by season")
+    st.subheader("Romarkable Predictions Record")
     show(pd.DataFrame(rows))
 
     st.subheader("Power rankings vs results")
@@ -285,10 +370,17 @@ with tab_all:
     else:
         st.info("No completed regular season with power rankings yet.")
 
+    st.subheader("Romarkable Player hit rate by position")
+    show(position_table(roms))
+
     left, right = st.columns(2)
     with left:
-        st.subheader("Romarkables by position")
-        show(position_table(roms))
+        st.subheader(f"{av.TOP_GENERIC} Count")
+        show(count_table(awards, "top"))
     with right:
-        st.subheader("Award count")
-        show(counts_table(awards, av.TOP_GENERIC, av.BOTTOM_GENERIC))
+        st.subheader("Fascist Count")
+        show(count_table(awards, "bottom"))
+
+# ── Power Rankings ────────────────────────────────────────────────────────────
+with tab_ranks:
+    render_rankings(rankings[season])

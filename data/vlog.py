@@ -11,6 +11,18 @@ builds the three archive datasets the Champmissioner's Dashboard reads:
     vlog_power_rankings.csv  one row per team per ranking. week is the week
                              the ranking looks ahead to, so week 1 is the
                              preseason ranking.
+    vlog_upcoming.csv        his preview of the next week to be played: kind
+                             "matchup" (team_id over opp_id) or "player" (a
+                             Romarkable, with ESPN's projection for it). A
+                             snapshot, replaced each run.
+
+The first three hold weeks already played, and nothing else, so a pick is
+graded the moment it is archived. The week still to come lives apart in
+vlog_upcoming, the way schedule.csv keeps fixtures out of matchups.csv. Its
+players are matched against rosters.csv rather than boxscores, since the
+week has no box score yet, and the projection is the one rosters.csv holds
+for that week. Regular season only: rosters.csv is not written once the
+playoffs start.
 
 Which week
 ----------
@@ -95,6 +107,8 @@ MATCHUP_COLS = ["season", "week", "end_week", "team_id", "opp_id", "pick_id",
 RANKING_COLS = ["season", "week", "rank", "team_id", "source"]
 ROMARKABLE_COLS = ["season", "week", "position", "player_id", "player_name",
                    "team_id", "graded", "source"]
+UPCOMING_COLS = ["season", "week", "kind", "position", "team_id", "opp_id",
+                 "pick_id", "player_id", "player_name", "projected"]
 
 
 def norm(text: str) -> str:
@@ -272,7 +286,8 @@ def _ranking_week(ep: Episode) -> int:
 def build(season: int, matchups: pd.DataFrame, boxscores: pd.DataFrame,
           managers: dict[int, str], eps: list[Episode] | None = None,
           report: Report | None = None,
-          schedule: pd.DataFrame | None = None) -> dict[str, pd.DataFrame]:
+          schedule: pd.DataFrame | None = None,
+          rosters: pd.DataFrame | None = None) -> dict[str, pd.DataFrame]:
     """{dataset name: rows} for one season, from its notes."""
     report = report if report is not None else Report()
     eps = vlog_notes.episodes(season) if eps is None else eps
@@ -366,7 +381,75 @@ def build(season: int, matchups: pd.DataFrame, boxscores: pd.DataFrame,
         "vlog_matchups": pd.DataFrame(list(picks.values()), columns=MATCHUP_COLS),
         "vlog_romarkables": pd.DataFrame(list(players.values()), columns=ROMARKABLE_COLS),
         "vlog_power_rankings": pd.DataFrame(ranks, columns=RANKING_COLS),
+        "vlog_upcoming": _upcoming(season, eps, played, by_week, team_of,
+                                   rosters, report),
     }
+
+
+def _roster_pool(season: int, week: int, rosters: pd.DataFrame | None) -> pd.DataFrame:
+    """rosters.csv shaped like boxscores for _resolve: who is on each team now."""
+    if rosters is None or rosters.empty:
+        return pd.DataFrame(columns=["week", "position", "team_id", "player_id",
+                                     "player_name", "points", "projected",
+                                     "is_active_slot"])
+    r = rosters[(rosters["season"] == season) & (rosters["position"] != "D/ST")]
+    # proj_next is ESPN's projection for proj_week; a stale snapshot has none
+    # for this week.
+    proj = r["proj_next"].where(r["proj_week"] == week)
+    return pd.DataFrame({
+        "week": week, "position": r["position"], "team_id": r["team_id"],
+        "player_id": r["player_id"], "player_name": r["player_name"],
+        "points": float("nan"), "projected": proj,
+        "is_active_slot": ~r["slot"].isin(["BE", "IR"]),
+    })
+
+
+def _upcoming(season: int, eps: list[Episode], played: set, by_week: dict,
+              team_of: dict[str, int], rosters: pd.DataFrame | None,
+              report: Report) -> pd.DataFrame:
+    """His preview of the first week not yet played. The latest episode wins."""
+    week = max(played, default=0) + 1
+    if week > season_config(season)["reg_season_end"]:
+        return pd.DataFrame(columns=UPCOMING_COLS)
+    games = by_week.get(week, set())
+    pool = _roster_pool(season, week, rosters)
+    matchups: dict[frozenset, dict] = {}
+    players: dict[str, dict] = {}
+    for ep in eps:
+        for mu in ep.matchups:
+            if mu.section != "preview" or mu.week != week:
+                continue
+            t1, t2 = team_of.get(mu.first), team_of.get(mu.second)
+            if t1 is None or t2 is None:
+                report.add(f"wk {week}: no team for {mu.first} or {mu.second}: {mu.line}")
+                continue
+            if games and frozenset((t1, t2)) not in games:
+                report.add(f"wk {week}: {mu.first} and {mu.second} do not play: {mu.line}")
+                continue
+            matchups[frozenset((t1, t2))] = {
+                "season": season, "week": week, "kind": "matchup",
+                "team_id": t1, "opp_id": t2, "pick_id": t1}
+        for pl in ep.players:
+            if pl.section != "preview" or pl.week != week:
+                continue
+            teams = None
+            if pl.matchup is not None:
+                teams = {team_of.get(pl.matchup.first), team_of.get(pl.matchup.second)}
+            found = _resolve(pool, week, pl.position, pl.name, teams, None, report)
+            if isinstance(found, str):
+                report.add(f"wk {week} {pl.position} '{pl.name}': {found}  [{ep.path.name}]")
+                continue
+            players[pl.position] = {
+                "season": season, "week": week, "kind": "player",
+                "position": pl.position, "team_id": int(found["team_id"]),
+                "player_id": int(found["player_id"]),
+                "player_name": found["player_name"],
+                "projected": found["projected"]}
+    out = pd.DataFrame(list(matchups.values()) + list(players.values()),
+                       columns=UPCOMING_COLS)
+    for c in ("opp_id", "pick_id", "player_id"):
+        out[c] = out[c].astype("Int64")
+    return out
 
 
 def _source(ep: Episode, section: str) -> str:
