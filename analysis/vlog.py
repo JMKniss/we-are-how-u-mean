@@ -18,8 +18,9 @@ handing them out when the playoffs start ("done with captains of the week",
 "NO CLIMBER OF THE WEEK"), so playoff weeks have none. The bottom award is the
 Fascist of the Week every year; the top one is renamed each season with the
 theme, and TOP_TITLES holds those names. Checked against the 104 awards his
-notes name, the scores agree with all but one, and that one was a pre-recording
-guess ("Tim?").
+notes name, the scores agree with 102. One was a guess in a pre-recording
+template ("Tim?"); the other is 2025's last episode naming the sacko loser
+the Fascist of the final week, a season verdict rather than the low score.
 """
 from __future__ import annotations
 
