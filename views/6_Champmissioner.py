@@ -167,20 +167,26 @@ def picked_to_win(seasons: list[int], rate: bool = False) -> pd.DataFrame:
 def under_dawgs(seasons: list[int]) -> pd.DataFrame:
     """
     How many times each manager won a contest he picked them to lose, most
-    first. Finished contests only, added up by manager.
+    first, and the rate: those wins over every finished contest he picked
+    them to lose. Not their record, only their record against his picks.
+    Finished contests only, added up by manager.
     """
-    upsets = {}
+    upsets, against = {}, {}
     for yr in seasons:
         mgr = rankings[yr]["managers"]
         for m in mgr.values():
             upsets.setdefault(m, 0)
+            against.setdefault(m, 0)
         sp = picks[picks["season"] == yr]
-        for r in (sp[~sp["correct"].astype(bool)].itertuples(index=False)
-                  if len(sp) else []):
-            other = r.opp_id if r.pick_id == r.team_id else r.team_id
-            upsets[mgr[other]] = upsets.get(mgr[other], 0) + 1
+        for r in (sp.itertuples(index=False) if len(sp) else []):
+            loser = mgr[r.opp_id if r.pick_id == r.team_id else r.team_id]
+            against[loser] = against.get(loser, 0) + 1
+            if not r.correct:
+                upsets[loser] = upsets.get(loser, 0) + 1
     t = pd.DataFrame({"Manager": list(upsets),
-                      "Won When Picked to Lose": list(upsets.values())})
+                      "Won When Picked to Lose": list(upsets.values()),
+                      "Rate": [fmt_pct(upsets[m], against[m] - upsets[m])
+                               for m in upsets]})
     return t.sort_values(["Won When Picked to Lose", "Manager"],
                          ascending=[False, True])
 
