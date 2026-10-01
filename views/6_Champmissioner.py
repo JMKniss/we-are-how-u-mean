@@ -136,7 +136,7 @@ def count_table(a: pd.DataFrame, award: str) -> pd.DataFrame:
     return pd.DataFrame({"Manager": c["manager"], "Count": c[award].astype(int)})
 
 
-def picked_to_win(seasons: list[int]) -> pd.DataFrame:
+def picked_to_win(seasons: list[int], rate: bool = False) -> pd.DataFrame:
     """
     How many times he took each manager to win over these seasons, most
     first, and how many of those the manager won. Added up by manager, since
@@ -157,6 +157,9 @@ def picked_to_win(seasons: list[int]) -> pd.DataFrame:
     t = pd.DataFrame({"Manager": list(taken),
                       "Picked to Win": list(taken.values()),
                       "Correctly Picked to Win": [won.get(m, 0) for m in taken]})
+    if rate:
+        t["Rate"] = [fmt_pct(w, n - w) for w, n in
+                     zip(t["Correctly Picked to Win"], t["Picked to Win"])]
     return t.sort_values(["Picked to Win", "Manager"], ascending=[False, True])
 
 
@@ -409,4 +412,4 @@ with tab_all:
         show(count_table(awards, "bottom"))
 
     st.subheader("Times Picked to Win")
-    show(picked_to_win(VLOG_SEASONS))
+    show(picked_to_win(VLOG_SEASONS, rate=True))
