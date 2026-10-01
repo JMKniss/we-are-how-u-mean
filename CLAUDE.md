@@ -82,12 +82,16 @@ ff_app/
 │   ├── legacy_stats.py     # nfl-data-py stats for 2016-2017 seasons
 │   ├── trade_inference.py  # rebuilds a finished season's trades from weekly rosters
 │   ├── game_status.py      # did each player play, at game time (nflverse; build-time only)
+│   ├── vlog_notes.py       # reads the Romarkable Vlog's notes (build-time only)
+│   ├── vlog.py             # resolves his picks against the archive (build-time only)
+│   ├── vlog_transcribed/   # picks taken from the episodes where his notes leave them out
 │   └── cache/<year>/       # Cached .pkl files — gitignored, auto-created
 ├── analysis/
 │   ├── standings.py        # H2H, median, combined, SOS, luck index, alternate schedule
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
 │   ├── projections.py      # playoff odds (team and player models), magic numbers
 │   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
+│   ├── vlog.py             # grades the Champmissioner's picks; weekly top/bottom scorer
 │   └── transactions.py     # Waiver moves and trade sides from the transactions log
 └── views/
     ├── 1_Dashboard.py
@@ -95,6 +99,7 @@ ff_app/
     ├── 3_Scoring.py
     ├── 4_Lineup_Efficiency.py
     ├── 5_Playoffs.py           # bracket + projections, one page
+    ├── 6_Champmissioner.py     # the Romarkable Vlog's record; /Champmissioner
     ├── 7_Draft_Waivers_Trades.py   # draft tabs + waiver and trade trackers; still /Draft_Review
     ├── 8_Data_Validation.py    # hidden from the nav; /Data_Validation still works
     └── 9_All_Time.py
@@ -118,6 +123,9 @@ the file is opened rather than loaded into every session:
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
 | Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
+| The vlog's notes: format, which week, recap vs preview | `data/vlog_notes.py` |
+| The vlog's picks: contests, names, the merge rule | `data/vlog.py`, `VLOG` in `build_archive.py` |
+| Grading his picks; the weekly awards and their titles | `analysis/vlog.py` |
 | Browser icon and title | `branding.py`, `assets/README.md` |
 | Shared page helpers | `display_utils.py` |
 | A page's own behaviour | that page's docstring in `views/` |
@@ -248,6 +256,17 @@ so an update could add a week of data while the app went on showing the old one.
 `current_week` there means the last week the archive holds - not ESPN's open
 scoring period, which from Tuesday morning already names a week nobody played.
 
+**It picks up the Champmissioner's vlog notes.** Mikey drops a .txt per
+episode into a shared Google Drive folder, synced to this machine; `VLOG_DIR`
+in `.env` points at it. The update reads the current season's folder and
+archives his picks for weeks already played (`vlog_matchups.csv`,
+`vlog_romarkables.csv`). Without the folder it says so and skips, and the rest
+of the update is unaffected. Notes arrive after Tuesday more often than not,
+so a week's picks usually land a week late, and an archived preview is then
+replaced by his recap, which is the pick he stood by. Lines it reports under
+`vlog` are worth a glance - a name it could not place, or a pick that names
+two players who did not play each other.
+
 ### Scheduling it for Tuesday noon
 
 Task Scheduler, run as your own user, "Run only when user is logged on" (the
@@ -275,7 +294,10 @@ git add data/archive && git commit -m "Archive 2026 through week N"
    returns periods 1-13 single-week then 14=[14,15], 15=[16,17], which is the
    2021+ shape already handled.
 4. Add the year to `data/archive/draft_order.csv` once the draft happens.
-5. If the scoring settings changed, check `reception_points()` in `config.py`.
+5. Add the season's name for the vlog's top-scorer award to `TOP_TITLES` in
+   `analysis/vlog.py`. It changes every year with the theme; the bottom one
+   is always the Fascist of the Week.
+6. If the scoring settings changed, check `reception_points()` in `config.py`.
    Draft value rescores earlier seasons into the new scoring through it, and
    receptions are the only offensive setting it can rescore.
 
@@ -292,7 +314,8 @@ Two distinct layers. Do not conflate them.
 Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
 `transactions.csv`, `game_status.csv` (from nflverse, not ESPN), `player_weeks.csv`,
-`schedule.csv`, `rosters.csv`, `upcoming.csv`,
+`schedule.csv`, `rosters.csv`, `upcoming.csv`, `vlog_matchups.csv`,
+`vlog_romarkables.csv` (the Champmissioner's picks, from his notes, not ESPN),
 plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
 
 `matchups.csv` holds only weeks already played, so the weeks still to come live
@@ -517,6 +540,18 @@ the backtest are in `analysis/projections.py`.
 **Magic numbers are arithmetic, not simulation.** A spot is clinched only when fewer
 than N other teams can still reach your win total if they win out; counting teams
 ahead of fifth place's *current* wins declared 3-0 teams clinched in week 3.
+
+**ESPN's consolation games are not the league's.** In 2021-2023 ESPN paired
+the 5-8 seeds differently from the bracket the league played (2021: ESPN had
+5v6, the league 5v8), so anything judging a consolation game by ESPN's
+opponent judges the wrong game. The vlog's picks take the pairing from his
+notes and score it as the two teams' totals over the round.
+
+**The vlog's picks: his recap outranks his notes.** He sometimes changed a
+pick off air after recording, so the recap a week later, not the preview, is
+the pick of record - silently, by the league's choice. His own hit/miss
+verdict stands where he gave one. Checked against the season records he
+states on camera (2023 through week 10: 42-8 and 29-28), the archive agrees.
 
 **3-week vs 4-week playoff format detection:** `len(pw) == 3` identifies the 2022 format.
 All playoff display logic (page 6) and validation (espn_client.py) branch on this.

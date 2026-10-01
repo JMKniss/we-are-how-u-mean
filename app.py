@@ -55,6 +55,8 @@ PAGES = [
             url_path="Lineup_Efficiency"),
     st.Page("views/5_Playoffs.py", title="Playoffs", icon="🏆",
             url_path="Playoffs"),
+    st.Page("views/6_Champmissioner.py", title="Champmissioner's Dashboard",
+            icon="🎙️", url_path="Champmissioner"),
     # Was Draft Review. The path stays so links to it keep working.
     st.Page("views/7_Draft_Waivers_Trades.py", title="Draft, Waivers & Trades",
             icon="📋", url_path="Draft_Review"),

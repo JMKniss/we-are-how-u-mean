@@ -57,6 +57,8 @@ KEYS = {
     "transactions": ["season", "transaction_id", "player_id"],
     "game_status": ["season", "week", "player_id"],
     "player_weeks": ["season", "week", "player_id"],
+    "vlog_matchups": ["season", "week", "team_id", "opp_id"],
+    "vlog_romarkables": ["season", "week", "position"],
 }
 
 BUILDERS = {
@@ -71,6 +73,10 @@ BUILDERS = {
     "transactions": "get_transactions_df",
     "player_weeks": "get_player_weeks_df",
     "game_status": "get_game_status_df",
+    # From the Champmissioner's notes (VLOG_DIR), resolved against this run's
+    # matchups and boxscores, so they come after both. See data/vlog.py.
+    "vlog_matchups": "vlog",
+    "vlog_romarkables": "vlog",
 }
 
 # Datasets built from other archived data plus nflverse, never from ESPN.
@@ -79,7 +85,16 @@ BUILDERS = {
 # pulled - and needs neither cookies nor an ESPN pull to backfill a past
 # season. It also classifies the free-agent weeks of everyone in
 # player_weeks, so it must come after both in BUILDERS.
-DERIVED = {"game_status"}
+DERIVED = {"game_status", "vlog_matchups", "vlog_romarkables"}
+
+# His picks, which a later episode can legitimately rewrite. A week's preview
+# is archived the Tuesday after the games, and the next episode's recap - the
+# pick he actually stood by, sometimes changed off air - arrives after that,
+# often once the season is already complete. So an archived preview row gives
+# way to whatever the notes now say, and one the notes no longer produce (a
+# pick he struck as N/A) is dropped. A recap row is a record like any other:
+# a change to one is a conflict.
+VLOG = {"vlog_matchups", "vlog_romarkables"}
 
 # Pulled from ESPN, but for the players in the season's boxscores, so like
 # game_status it is handed the boxscores this run has planned - a player first
@@ -206,6 +221,8 @@ def fetch_fresh(name, season, planned=None) -> pd.DataFrame:
 
 def derive(name, season, planned) -> pd.DataFrame:
     """Build a DERIVED dataset from this run's planned boxscores, else the archive's."""
+    if name in VLOG:
+        return derive_vlog(name, season, planned)
     from data.game_status import get_game_status_df, players_to_classify
     box = planned.get("boxscores")
     if box is None:
@@ -215,6 +232,64 @@ def derive(name, season, planned) -> pd.DataFrame:
         pw = load_archive("player_weeks")
     df = get_game_status_df(season, players_to_classify(season, box, pw))
     return df if df is not None else pd.DataFrame()
+
+
+_vlog_built: dict = {}
+
+
+def derive_vlog(name, season, planned) -> pd.DataFrame:
+    """One of the two vlog datasets; both are built together and the report printed once."""
+    from data import vlog, vlog_notes, archive
+    notes = vlog_notes.notes_dir()
+    if notes is None or not notes.is_dir():
+        # Not this machine's job, or Drive is not running. Building from the
+        # transcribed files alone would read as his notes having vanished, and
+        # strike every preview they no longer produce.
+        print(f"  {name:11} {season}  VLOG_DIR not set or not found - skipped")
+        return pd.DataFrame()
+    if season not in _vlog_built:
+        matchups = planned.get("matchups", load_archive("matchups"))
+        box = planned.get("boxscores", load_archive("boxscores"))
+        report = vlog.Report()
+        archive.clear()
+        built = vlog.build(season, matchups, box, archive.manager_map(season),
+                           report=report)
+        report.print("vlog")
+        _vlog_built[season] = dict(zip(sorted(VLOG), built))
+    return _vlog_built[season][name]
+
+
+def merge_vlog(name, existing, fresh, season, force):
+    """(merged, summary) under the VLOG rule above."""
+    new, changed, identical_n, keys = compare(name, existing, fresh, season)
+    if existing.empty:
+        return pd.concat([fresh], ignore_index=True), f"+{len(new)} new"
+    cur = existing[existing["season"] == season]
+    def key(df):
+        if df.empty:
+            return pd.Series([], dtype=object, index=df.index)
+        return df[keys].apply(tuple, axis=1)
+
+    preview = set(key(cur[cur["source"] == "preview"]))
+    fresh_keys = set(key(fresh))
+
+    upgrades = changed[key(changed).isin(preview)]
+    conflicts = changed[~key(changed).isin(preview)]
+    dropped = preview - fresh_keys
+    replace = set(key(upgrades)) | dropped
+    if force:
+        replace |= set(key(conflicts))
+    keep = existing[~(key(existing).isin(replace) & (existing["season"] == season))]
+    add = [new, upgrades] + ([conflicts] if force else [])
+    merged = pd.concat([keep] + [a for a in add if len(a)], ignore_index=True)
+
+    summary = (f"+{len(new)} new, {len(upgrades)} preview(s) replaced by the recap, "
+               f"{len(dropped)} struck, {identical_n} unchanged")
+    if len(conflicts):
+        verdict = "changed (--force: applying)" if force else "CONFLICT - skipped"
+        summary += (f", {len(conflicts)} {verdict}\n"
+                    f"              first: {conflicts.iloc[0][keys].to_dict()}")
+    return merged, summary
 
 
 def report_player_weeks(pw, box, season):
@@ -518,7 +593,15 @@ def main():
             new, changed, identical_n, keys = compare(name, existing, fresh, season)
             n_new, n_chg = len(new), len(changed)
 
-            if mode == "update":
+            if mode == "update" and name in VLOG:
+                merged, summary = merge_vlog(name, existing, fresh, season, args.force)
+                print(f"  {name:11} {season}  {summary}")
+                unchanged = (len(merged) == len(existing) and not existing.empty
+                             and canonical(normalise(merged[existing.columns], name))
+                             .equals(canonical(normalise(existing, name))))
+                if unchanged or merged.empty:
+                    continue
+            elif mode == "update":
                 live_snapshot = (name in SNAPSHOT_DATASETS
                                  and not season_complete(season))
 
