@@ -1,7 +1,7 @@
 """
 Reads the Romarkable Vlog's show notes: the Champmissioner's picks, as he wrote them.
 
-Mikey records a vlog most weeks and keeps a .txt of notes for each episode.
+The Champmissioner records a vlog most weeks and keeps a .txt of notes for each episode.
 They arrive in a shared Google Drive folder synced to this machine, at
 VLOG_DIR in .env - one folder per season, one file per episode. Nothing here
 runs on the server; data/vlog.py turns what this reads into

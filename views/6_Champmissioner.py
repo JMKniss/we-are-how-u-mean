@@ -1,24 +1,25 @@
 """
-Champmissioner's Dashboard: Mikey's calls on the Romarkable Vlog, graded.
+Champmissioner's Dashboard: The Champmissioner's calls on the Romarkable Vlog, graded.
 
 Four tabs. This Week shows his preview of the next week to be played, his
 matchup picks and his Romarkable players with ESPN's projection, from
 vlog_upcoming.csv. It always shows the latest season, whatever the selector
 says, and says so when his notes for the week are not in yet.
 
-The season tab shows his matchup-pick and Romarkable records, his Romarkable
-hit rate by position, a count of each weekly award per manager - the top
-scorer under that season's title and the Fascist of the Week - the weekly
-benchmarks behind them, and how often he took each manager to win.
-
-All-Time adds the seasons together, under the generic award names, since the
-top award is renamed every year.
+Season Records, for the selected season, shows his matchup-pick and
+Romarkable records, his Romarkable hit rate by position, a count of each
+weekly award per manager - the top scorer under that season's title and the
+Fascist of the Week - the weekly benchmarks behind them, and how often he
+took each manager to win, and how often that manager then won.
 
 Power Rankings shows his rankings week by week for the selected season, each
 line labelled at both ends rather than in a legend, which ten colours made
 hard to follow. Once the regular season is over, his preseason and final
 rankings are set against the playoff seeds, and once the playoffs are over,
 against the final standings.
+
+All-Time adds the seasons together, under the generic award names, since the
+top award is renamed every year.
 
 Records only, by design: the league wanted his accuracy, not a week-by-week
 replay of his picks. Weeks he made no picks for simply do not count, and a
@@ -135,11 +136,18 @@ def count_table(a: pd.DataFrame, award: str) -> pd.DataFrame:
 
 
 def picked_to_win(season: int) -> pd.DataFrame:
-    """How many times he took each manager to win, most first."""
+    """
+    How many times he took each manager to win, most first, and how many of
+    those the manager won. A contest still running counts as a pick, not yet
+    as a win.
+    """
     mgr = rankings[season]["managers"]
     n = archive.get("vlog_matchups", season)["pick_id"].value_counts()
+    sp = picks[picks["season"] == season]
+    won = sp.loc[sp["correct"].astype(bool), "pick_id"].value_counts() if len(sp) else {}
     t = pd.DataFrame({"Manager": [mgr[t] for t in mgr],
-                      "Picked to Win": [int(n.get(t, 0)) for t in mgr]})
+                      "Picked to Win": [int(n.get(t, 0)) for t in mgr],
+                      "Correctly Picked to Win": [int(won.get(t, 0)) for t in mgr]})
     return t.sort_values(["Picked to Win", "Manager"], ascending=[False, True])
 
 
@@ -228,8 +236,8 @@ def render_rankings(info: dict):
         st.caption("Final standings are added when the playoffs finish.")
 
 
-tab_week, tab_season, tab_all, tab_ranks = st.tabs(
-    ["This Week", str(season), "All-Time", "Power Rankings"])
+tab_week, tab_season, tab_ranks, tab_all = st.tabs(
+    ["This Week", "Season Records", "Power Rankings", "All-Time"])
 
 # ── This Week ─────────────────────────────────────────────────────────────────
 with tab_week:
@@ -322,6 +330,10 @@ with tab_season:
     st.subheader("Times Picked to Win")
     show(picked_to_win(season))
 
+# ── Power Rankings ────────────────────────────────────────────────────────────
+with tab_ranks:
+    render_rankings(rankings[season])
+
 # ── All-Time ──────────────────────────────────────────────────────────────────
 with tab_all:
     rows = []
@@ -380,7 +392,3 @@ with tab_all:
     with right:
         st.subheader("Fascist Count")
         show(count_table(awards, "bottom"))
-
-# ── Power Rankings ────────────────────────────────────────────────────────────
-with tab_ranks:
-    render_rankings(rankings[season])

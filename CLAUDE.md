@@ -256,7 +256,7 @@ so an update could add a week of data while the app went on showing the old one.
 `current_week` there means the last week the archive holds - not ESPN's open
 scoring period, which from Tuesday morning already names a week nobody played.
 
-**It picks up the Champmissioner's vlog notes.** Mikey drops a .txt per
+**It picks up the Champmissioner's vlog notes.** The Champmissioner drops a .txt per
 episode into a shared Google Drive folder, synced to this machine; `VLOG_DIR`
 in `.env` points at it. The update reads the current season's folder and
 archives his picks for weeks already played and his power rankings
