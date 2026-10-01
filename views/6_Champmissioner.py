@@ -2,10 +2,12 @@
 Champmissioner's Dashboard: Mikey's calls on the Romarkable Vlog, graded.
 
 Two tabs. The season tab shows his matchup-pick record, his Romarkable record
-by position, and who won the weekly awards - the top scorer under that
-season's title and the Fascist of the Week - with a count of each per manager.
-All-Time adds the seasons together, under the generic names, since the top
-award is renamed every year.
+by position, his power rankings week by week, and who won the weekly awards -
+the top scorer under that season's title and the Fascist of the Week - with a
+count of each per manager. Once the regular season is over, his preseason and
+final rankings are set against the playoff seeds, and once the playoffs are
+over, against the final standings. All-Time adds the seasons together, under
+the generic award names, since the top award is renamed every year.
 
 Records only, by design: the league wanted his accuracy, not a week-by-week
 replay of his picks. Weeks he made no picks for simply do not count, and a
@@ -20,11 +22,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
+import plotly.graph_objects as go
 import streamlit as st
 
 from analysis import vlog as av
+from analysis.standings import compute_season_finish_map, playoff_seeds
 from branding import page_icon
-from config import DEFAULT_SEASON
+from config import DEFAULT_SEASON, season_config
 from data import archive
 from data.espn_client import get_boxscores_df, get_manager_map, get_matchups_df
 from display_utils import season_selector, sidebar_display_prefs
@@ -47,8 +51,10 @@ show_mgr, show_team = sidebar_display_prefs()
 @st.cache_data(ttl=300)
 def load():
     """Every vlog season, graded, with the weekly awards."""
-    matchups, picks, roms, awards = [], [], [], []
+    picks, roms, awards, rankings = [], [], [], {}
     vm, vr = archive.get("vlog_matchups"), archive.get("vlog_romarkables")
+    vp = (archive.get("vlog_power_rankings")
+          if archive.has("vlog_power_rankings") else pd.DataFrame())
     for yr in VLOG_SEASONS:
         m = get_matchups_df(yr)
         if "season" not in m.columns:
@@ -67,11 +73,22 @@ def load():
         a["manager"] = a["team_id"].map(mgr).fillna("?")
         a["team_name"] = a["team_id"].map(names).fillna("")
         awards.append(a)
+
+        # Seeds once the regular season is over; finishes once the playoffs
+        # are ({} until then).
+        reg_done = len(m) and m["week"].max() >= season_config(yr)["reg_season_end"]
+        seeds = ({t: i + 1 for i, t in enumerate(playoff_seeds(yr, m))}
+                 if reg_done else {})
+        r = vp[vp["season"] == yr] if len(vp) else vp
+        if len(r):
+            r = r.assign(manager=r["team_id"].map(mgr))
+        rankings[yr] = {"ranks": r, "seeds": seeds,
+                        "finish": compute_season_finish_map(yr, m), "managers": mgr}
     return (pd.concat(picks, ignore_index=True), pd.concat(roms, ignore_index=True),
-            pd.concat(awards, ignore_index=True))
+            pd.concat(awards, ignore_index=True), rankings)
 
 
-picks, roms, awards = load()
+picks, roms, awards, rankings = load()
 
 
 def fmt_record(right: int, wrong: int) -> str:
@@ -109,6 +126,69 @@ def show(df: pd.DataFrame):
     st.dataframe(df, hide_index=True, width="stretch")
 
 
+def fmt_off(x) -> str:
+    return "–" if x is None else f"{x:.1f}"
+
+
+def render_rankings(info: dict):
+    """Week-by-week power rankings, then how they held up once that is known."""
+    ranks, mgr = info["ranks"], info["managers"]
+    st.subheader("Power rankings")
+    if ranks is None or ranks.empty:
+        st.info("No power rankings this season yet.")
+        return
+
+    grid = av.ranking_grid(ranks)
+    weeks = list(range(int(min(grid.columns)), int(max(grid.columns)) + 1))
+    label = lambda w: "Pre" if w == 1 else f"Wk {w}"
+    last = grid[max(grid.columns)].sort_values()
+
+    fig = go.Figure()
+    for tid in last.index:
+        ys = [grid.at[tid, w] if w in grid.columns else None for w in weeks]
+        fig.add_trace(go.Scatter(
+            x=[label(w) for w in weeks], y=ys, mode="lines+markers",
+            name=mgr.get(tid, "?"), connectgaps=False,
+            hovertemplate="%{fullData.name}: %{y}<extra>%{x}</extra>"))
+    fig.update_yaxes(autorange="reversed", dtick=1, title="Rank")
+    fig.update_xaxes(type="category", title=None)
+    fig.update_layout(height=420, margin=dict(l=10, r=10, t=10, b=10))
+    st.plotly_chart(fig, width="stretch")
+
+    # One row per manager in the latest order; a week he skipped says so.
+    table = pd.DataFrame({"Manager": [mgr.get(t, "?") for t in last.index]})
+    for w in weeks:
+        table[label(w)] = (["skip"] * len(last) if w not in grid.columns else
+                           [str(int(grid.at[t, w])) for t in last.index])
+    show(table)
+
+    seeds, finish = info["seeds"], info["finish"]
+    if not seeds:
+        st.caption("His preseason and final rankings are set against the playoff "
+                   "seeds when the regular season ends, and the final standings "
+                   "when the playoffs do.")
+        return
+    pre, fin = av.first_and_last(ranks)
+    st.subheader("How the rankings held up")
+    cols = st.columns(4)
+    cols[0].metric("Preseason vs seeds", fmt_off(av.places_off(pre, seeds)),
+                   help="Average places off: 0 is perfect, a random order averages 3.3.")
+    cols[1].metric("Final vs seeds", fmt_off(av.places_off(fin, seeds)))
+    cols[2].metric("Preseason vs finish",
+                   fmt_off(av.places_off(pre, finish) if finish else None))
+    cols[3].metric("Final vs finish",
+                   fmt_off(av.places_off(fin, finish) if finish else None))
+    order = sorted(seeds, key=lambda t: finish.get(t, seeds[t]))
+    rows = [{"Manager": mgr.get(t, "?"),
+             "Preseason": str(pre.get(t, "–")),
+             "Final ranking": str(fin.get(t, "–")),
+             "Seed": str(seeds[t]),
+             "Finish": str(finish[t]) if finish else "–"} for t in order]
+    show(pd.DataFrame(rows))
+    if not finish:
+        st.caption("Final standings are added when the playoffs finish.")
+
+
 tab_season, tab_all = st.tabs([str(season), "All-Time"])
 
 # ── Season ────────────────────────────────────────────────────────────────────
@@ -136,6 +216,8 @@ with tab_season:
     with right:
         st.subheader("Award count")
         show(counts_table(sa, title, av.BOTTOM_TITLE))
+
+    render_rankings(rankings[season])
 
     st.subheader("Weekly awards")
     top = sa[sa["award"] == "top"]
@@ -173,6 +255,35 @@ with tab_all:
 
     st.subheader("Record by season")
     show(pd.DataFrame(rows))
+
+    st.subheader("Power rankings vs results")
+    st.caption("Average places off between his ranking and where each manager "
+               "ended up: 0 is perfect, a random order averages 3.3. A season "
+               "appears once its regular season is over.")
+    acc = []
+    for yr in VLOG_SEASONS:
+        info = rankings[yr]
+        if info["ranks"] is None or info["ranks"].empty or not info["seeds"]:
+            continue
+        pre, fin = av.first_and_last(info["ranks"])
+        seeds, finish = info["seeds"], info["finish"]
+        acc.append({"Season": str(yr),
+                    "Preseason vs seeds": av.places_off(pre, seeds),
+                    "Final vs seeds": av.places_off(fin, seeds),
+                    "Preseason vs finish": av.places_off(pre, finish) if finish else None,
+                    "Final vs finish": av.places_off(fin, finish) if finish else None})
+    if acc:
+        a = pd.DataFrame(acc)
+        avg = {"Season": "Average"}
+        for c in a.columns[1:]:
+            vals = a[c].dropna()
+            avg[c] = vals.mean() if len(vals) else None
+        a = pd.concat([a, pd.DataFrame([avg])], ignore_index=True)
+        for c in a.columns[1:]:
+            a[c] = [fmt_off(None if pd.isna(v) else v) for v in a[c]]
+        show(a)
+    else:
+        st.info("No completed regular season with power rankings yet.")
 
     left, right = st.columns(2)
     with left:

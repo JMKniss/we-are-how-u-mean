@@ -2,12 +2,23 @@
 The Champmissioner's picks, resolved against the archive.
 
 data/vlog_notes.py reads what he wrote; this decides what it refers to and
-builds the two archive datasets the Champmissioner's Dashboard reads:
+builds the three archive datasets the Champmissioner's Dashboard reads:
 
-    vlog_matchups.csv     one row per contest he picked: the two teams, the
-                          weeks it ran, and the team he took.
-    vlog_romarkables.csv  one row per Romarkable pick: week, position, the
-                          player and the fantasy team he was on.
+    vlog_matchups.csv        one row per contest he picked: the two teams, the
+                             weeks it ran, and the team he took.
+    vlog_romarkables.csv     one row per Romarkable pick: week, position, the
+                             player and the fantasy team he was on.
+    vlog_power_rankings.csv  one row per team per ranking. week is the week
+                             the ranking looks ahead to, so week 1 is the
+                             preseason ranking.
+
+Which week
+----------
+Every section is placed by the games it names, not only by the episode's
+title: the five pairings in a regular-season recap or preview match one week
+of the schedule. That has agreed with the titles for every episode so far, and
+it is there for the one that is copied forward and not renamed. A ranking
+belongs to the week its episode previews.
 
 graded holds his own verdict where his recap gave one, and is blank where it
 did not. analysis/vlog.py uses it when present and works the result out from
@@ -81,6 +92,7 @@ FLEX = {"RB", "WR", "TE"}
 
 MATCHUP_COLS = ["season", "week", "end_week", "team_id", "opp_id", "pick_id",
                 "graded", "source"]
+RANKING_COLS = ["season", "week", "rank", "team_id", "source"]
 ROMARKABLE_COLS = ["season", "week", "position", "player_id", "player_name",
                    "team_id", "graded", "source"]
 
@@ -194,14 +206,81 @@ class Report:
             print(f"  {label:11} {line}")
 
 
+def _pairs_by_week(matchups: pd.DataFrame, schedule: pd.DataFrame | None,
+                   season: int) -> dict[int, set[frozenset]]:
+    """Every week's games as unordered team pairs: played, then still to come."""
+    frames = [matchups[matchups["season"] == season]]
+    if schedule is not None and not schedule.empty:
+        frames.append(schedule[schedule["season"] == season])
+    out: dict[int, set[frozenset]] = {}
+    for f in frames:
+        for w, a, b in f[["week", "team_id", "opp_id"]].itertuples(index=False):
+            out.setdefault(int(w), set()).add(frozenset((int(a), int(b))))
+    return out
+
+
+def place(ep: Episode, by_week: dict[int, set[frozenset]],
+          team_of: dict[str, int], report: Report):
+    """
+    Set each section's week from the games it talks about.
+
+    The title says which week an episode recaps and previews, and it is
+    nearly always right, but notes are copied forward and edited in a hurry.
+    The games settle it: the five pairings he lists match exactly one week of
+    the schedule, or a few weeks when pairs repeat, in which case the one
+    nearest the title wins. Only the regular season is placed this way:
+    ESPN's playoff pairings are not the league's (2022's week-16 schedule
+    matches none of the real final), so playoff sections keep the title's week.
+    """
+    reg_end = season_config(ep.season)["reg_season_end"]
+    by_week = {w: ps for w, ps in by_week.items() if w <= reg_end}
+    for section in ("recap", "preview"):
+        mus = [m for m in ep.matchups if m.section == section]
+        pairs = {frozenset((team_of.get(m.first), team_of.get(m.second)))
+                 for m in mus}
+        pairs = {p for p in pairs if None not in p}
+        if len(pairs) < 3 or mus[0].week > reg_end:
+            continue
+        expected = mus[0].week
+        overlap = {w: len(pairs & ps) for w, ps in by_week.items()}
+        best = max(overlap.values(), default=0)
+        if best < len(pairs) - 1:
+            continue
+        week = min((w for w, n in overlap.items() if n == best),
+                   key=lambda w: (abs(w - expected), w))
+        shift = week - expected
+        if not shift:
+            continue
+        report.add(f"{ep.path.name}: its {section} is week {week} by the games "
+                   f"listed, not week {expected} by its title - using {week}")
+        for m in mus:
+            m.week += shift
+        for p in ep.players:
+            if p.section == section:
+                p.week += shift
+
+
+def _ranking_week(ep: Episode) -> int:
+    """The week a ranking looks ahead to: the episode's preview week."""
+    pre = [m.week for m in ep.matchups if m.section == "preview"]
+    if pre:
+        return pre[0]
+    rec = [m.week for m in ep.matchups if m.section == "recap"]
+    return rec[0] + 1 if rec else ep.week
+
+
 def build(season: int, matchups: pd.DataFrame, boxscores: pd.DataFrame,
           managers: dict[int, str], eps: list[Episode] | None = None,
-          report: Report | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """(vlog_matchups, vlog_romarkables) for one season, from its notes."""
+          report: Report | None = None,
+          schedule: pd.DataFrame | None = None) -> dict[str, pd.DataFrame]:
+    """{dataset name: rows} for one season, from its notes."""
     report = report if report is not None else Report()
     eps = vlog_notes.episodes(season) if eps is None else eps
     team_of = {v: k for k, v in managers.items()}
     played = set(matchups.loc[matchups["season"] == season, "week"])
+    by_week = _pairs_by_week(matchups, schedule, season)
+    for ep in eps:
+        place(ep, by_week, team_of, report)
     box = boxscores[(boxscores["season"] == season)
                     & (boxscores["position"] != "D/ST")]
 
@@ -215,6 +294,11 @@ def build(season: int, matchups: pd.DataFrame, boxscores: pd.DataFrame,
 
     picks: dict[tuple, dict] = {}       # (first week, team_id, opp_id) -> row
     players: dict[tuple, dict] = {}     # (week, position) -> row
+    rankings: dict[int, list[str]] = {} # week it looks ahead to -> managers
+
+    for ep in eps:
+        if ep.rankings:
+            rankings[_ranking_week(ep)] = ep.rankings
 
     for ep in eps:
         for mu in ep.matchups:
@@ -274,8 +358,15 @@ def build(season: int, matchups: pd.DataFrame, boxscores: pd.DataFrame,
                             "graded": grade,
                             "source": _source(ep, pl.section)}
 
-    return (pd.DataFrame(list(picks.values()), columns=MATCHUP_COLS),
-            pd.DataFrame(list(players.values()), columns=ROMARKABLE_COLS))
+    ranks = [{"season": season, "week": w, "rank": i + 1,
+              "team_id": team_of[m], "source": "notes"}
+             for w, order in sorted(rankings.items())
+             for i, m in enumerate(order) if m in team_of]
+    return {
+        "vlog_matchups": pd.DataFrame(list(picks.values()), columns=MATCHUP_COLS),
+        "vlog_romarkables": pd.DataFrame(list(players.values()), columns=ROMARKABLE_COLS),
+        "vlog_power_rankings": pd.DataFrame(ranks, columns=RANKING_COLS),
+    }
 
 
 def _source(ep: Episode, section: str) -> str:

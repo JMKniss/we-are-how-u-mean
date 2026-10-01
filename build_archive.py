@@ -59,6 +59,7 @@ KEYS = {
     "player_weeks": ["season", "week", "player_id"],
     "vlog_matchups": ["season", "week", "team_id", "opp_id"],
     "vlog_romarkables": ["season", "week", "position"],
+    "vlog_power_rankings": ["season", "week", "team_id"],
 }
 
 BUILDERS = {
@@ -77,6 +78,7 @@ BUILDERS = {
     # matchups and boxscores, so they come after both. See data/vlog.py.
     "vlog_matchups": "vlog",
     "vlog_romarkables": "vlog",
+    "vlog_power_rankings": "vlog",
 }
 
 # Datasets built from other archived data plus nflverse, never from ESPN.
@@ -85,7 +87,8 @@ BUILDERS = {
 # pulled - and needs neither cookies nor an ESPN pull to backfill a past
 # season. It also classifies the free-agent weeks of everyone in
 # player_weeks, so it must come after both in BUILDERS.
-DERIVED = {"game_status", "vlog_matchups", "vlog_romarkables"}
+DERIVED = {"game_status", "vlog_matchups", "vlog_romarkables",
+           "vlog_power_rankings"}
 
 # His picks, which a later episode can legitimately rewrite. A week's preview
 # is archived the Tuesday after the games, and the next episode's recap - the
@@ -94,7 +97,7 @@ DERIVED = {"game_status", "vlog_matchups", "vlog_romarkables"}
 # way to whatever the notes now say, and one the notes no longer produce (a
 # pick he struck as N/A) is dropped. A recap row is a record like any other:
 # a change to one is a conflict.
-VLOG = {"vlog_matchups", "vlog_romarkables"}
+VLOG = {"vlog_matchups", "vlog_romarkables", "vlog_power_rankings"}
 
 # Pulled from ESPN, but for the players in the season's boxscores, so like
 # game_status it is handed the boxscores this run has planned - a player first
@@ -252,10 +255,11 @@ def derive_vlog(name, season, planned) -> pd.DataFrame:
         box = planned.get("boxscores", load_archive("boxscores"))
         report = vlog.Report()
         archive.clear()
+        schedule = planned.get("schedule", load_archive("schedule"))
         built = vlog.build(season, matchups, box, archive.manager_map(season),
-                           report=report)
+                           report=report, schedule=schedule)
         report.print("vlog")
-        _vlog_built[season] = dict(zip(sorted(VLOG), built))
+        _vlog_built[season] = built
     return _vlog_built[season][name]
 
 

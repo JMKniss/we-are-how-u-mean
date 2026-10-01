@@ -137,3 +137,38 @@ def award_counts(awards: pd.DataFrame) -> pd.DataFrame:
     c = c[(c["top"] > 0) | (c["bottom"] > 0)]
     return (c.sort_values(["top", "bottom"], ascending=[False, True])
              .reset_index())
+
+
+# ── Power rankings ───────────────────────────────────────────────────────────
+#
+# Each episode's ranking looks ahead to the week it previews, so week 1 is the
+# preseason ranking and the last one - he stops when the playoffs start - is
+# his final word on the regular season. Two things to hold them against: the
+# playoff seeds, known once the regular season ends, and the final standings,
+# known once the playoffs do. Accuracy is "places off": how far, on average,
+# a manager finished from where he ranked them. 0 is perfect; ranking ten
+# teams at random averages 3.3.
+
+def ranking_grid(ranks: pd.DataFrame) -> pd.DataFrame:
+    """team_id x week, holding each week's rank. A week with no ranking is absent."""
+    if ranks.empty:
+        return pd.DataFrame()
+    return ranks.pivot_table(index="team_id", columns="week", values="rank")
+
+
+def first_and_last(ranks: pd.DataFrame) -> tuple[dict, dict]:
+    """({team_id: preseason rank}, {team_id: final rank})."""
+    if ranks.empty:
+        return {}, {}
+    first, last = ranks["week"].min(), ranks["week"].max()
+    pick = lambda w: dict(zip(ranks.loc[ranks["week"] == w, "team_id"],
+                              ranks.loc[ranks["week"] == w, "rank"]))
+    return pick(first), pick(last)
+
+
+def places_off(ranked: dict, actual: dict) -> float | None:
+    """Mean |ranked - actual| over the teams in both, or None."""
+    both = [t for t in ranked if t in actual]
+    if not both:
+        return None
+    return sum(abs(ranked[t] - actual[t]) for t in both) / len(both)

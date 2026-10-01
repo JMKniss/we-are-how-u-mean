@@ -312,3 +312,117 @@ def luck_total(breakdown: pd.DataFrame, include_median: bool) -> pd.DataFrame:
 
     out["luck_label"] = out["luck_sigma"].map(label)
     return out
+
+
+def playoff_seeds(season: int, season_df: pd.DataFrame) -> list[int]:
+    """
+    team_ids in seed order, from the regular season's results. 2025 onward
+    seeds on combined (H2H + median) standings, earlier seasons on H2H.
+    """
+    from config import season_config
+    reg_df = season_df[season_df["week"] <= season_config(season)["reg_season_end"]]
+    standings = combined_standings(reg_df) if season >= 2025 else h2h_standings(reg_df)
+    return list(standings.reset_index(drop=True)["team_id"])
+
+
+def compute_season_finish_map(season: int, season_df: pd.DataFrame) -> dict:
+    """
+    Reconstruct final standings (1–10) from matchup data using pure seed-based
+    bracket logic. Returns {team_id: finish_int}, or {} if playoffs are incomplete.
+
+    Bracket structure (all seasons except 2022):
+      Seeds 1–4  → Championship. R1: 1v4, 2v3. R2: winners vs winners, losers vs losers.
+      Seeds 5–8  → Consolation.  R1: 5v8, 6v7. R2: same.
+      Seeds 9–10 → Sacko. Compared over the weeks they actually played each
+                    other. Lower total finishes last.
+
+    2022 (3-week format): R1 = pw[0] only. Finals = pw[1]+pw[2].
+    2016: playoffs ran weeks 14–17 after a 13-week regular season, and the
+    bottom two met in Round 1 only, under a consolation ladder.
+
+    Played-week detection: checks which playoff weeks have actual data rather
+    than trusting total_weeks from config — guards against seasons where the
+    final NFL week wasn't played.
+    """
+    from config import season_config
+    cfg = season_config(season)
+    pw = cfg["playoff_weeks"]
+    reg_end = cfg["reg_season_end"]
+    three_week = len(pw) == 3
+
+    all_ids = playoff_seeds(season, season_df)
+
+    if len(all_ids) < 10:
+        return {}
+
+    playoff_df = season_df[season_df["is_playoff"]]
+    played_pw = set(playoff_df["week"].unique())
+
+    # Seed groups (index 0 = seed 1, etc.)
+    champ_ids = all_ids[:4]
+    consol_ids = all_ids[4:8]
+    sacko_ids = all_ids[8:10]
+
+    # R1 pairs — always seed-based: highest vs lowest in each group
+    champ_r1_pairs = [(champ_ids[0], champ_ids[3]), (champ_ids[1], champ_ids[2])]
+    consol_r1_pairs = [(consol_ids[0], consol_ids[3]), (consol_ids[1], consol_ids[2])]
+
+    r1_weeks = [pw[0]] if three_week else [pw[0], pw[1]]
+    r2_weeks = [pw[1], pw[2]] if three_week else [pw[2], pw[3]]
+
+    # R1 is complete when its last week has data; same for R2
+    if r1_weeks[-1] not in played_pw:
+        return {}
+    if r2_weeks[-1] not in played_pw:
+        return {}
+
+    def team_cum(tid, weeks):
+        total = 0.0
+        for w in weeks:
+            r = playoff_df[(playoff_df["team_id"] == tid) & (playoff_df["week"] == w)]
+            if not r.empty:
+                total += float(r["score"].values[0])
+        return total
+
+    def play_round(t1, t2, weeks):
+        s1, s2 = team_cum(t1, weeks), team_cum(t2, weeks)
+        return (t1, t2) if s1 >= s2 else (t2, t1)  # (winner, loser)
+
+    # R1 results
+    champ_r1 = [play_round(t1, t2, r1_weeks) for t1, t2 in champ_r1_pairs]
+    consol_r1 = [play_round(t1, t2, r1_weeks) for t1, t2 in consol_r1_pairs]
+
+    champ_w = [w for w, l in champ_r1]
+    champ_l = [l for w, l in champ_r1]
+    consol_w = [w for w, l in consol_r1]
+    consol_l = [l for w, l in consol_r1]
+
+    # R2 results
+    first,  second  = play_round(champ_w[0],  champ_w[1],  r2_weeks)
+    third,  fourth  = play_round(champ_l[0],  champ_l[1],  r2_weeks)
+    fifth,  sixth   = play_round(consol_w[0], consol_w[1], r2_weeks)
+    seventh, eighth = play_round(consol_l[0], consol_l[1], r2_weeks)
+
+    # Sacko: compare only over the weeks the bottom two actually faced each
+    # other. That is every playoff week in most seasons, but 2016 ran a
+    # consolation ladder where they met in Round 1 only and then played
+    # different opponents, so summing all four weeks compared scores from
+    # games against other teams.
+    sacko_weeks = [
+        w for w in pw
+        if not playoff_df[(playoff_df["team_id"] == sacko_ids[0])
+                          & (playoff_df["week"] == w)
+                          & (playoff_df["opp_id"] == sacko_ids[1])].empty
+    ]
+    if not sacko_weeks:
+        sacko_weeks = pw
+    s0 = team_cum(sacko_ids[0], sacko_weeks)
+    s1 = team_cum(sacko_ids[1], sacko_weeks)
+    ninth  = sacko_ids[0] if s0 > s1 else sacko_ids[1]
+    tenth  = sacko_ids[1] if ninth == sacko_ids[0] else sacko_ids[0]
+
+    return {
+        first: 1, second: 2, third: 3, fourth: 4,
+        fifth: 5, sixth: 6, seventh: 7, eighth: 8,
+        ninth: 9, tenth: 10,
+    }

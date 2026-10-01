@@ -7,15 +7,18 @@ VLOG_DIR in .env - one folder per season, one file per episode. Nothing here
 runs on the server; data/vlog.py turns what this reads into
 data/archive/vlog_picks.csv, which is what the app reads.
 
-Only his picks are read: who wins each matchup, and his Romarkable players
-(one per position each week, a hit when the player beats ESPN's projection).
-The rest of the show - power rankings, awards, his special player, matchup of
-the week - is content, not record. Top and bottom scorer come from the scores.
+Three things are read: who he picks to win each matchup, his Romarkable
+players (one per position each week, a hit when the player beats ESPN's
+projection), and his power rankings. The rest of the show - awards, his
+special player, matchup of the week - is content, not record. Top and bottom
+scorer come from the scores.
 
 Which week a section means
 --------------------------
-Episode N recaps week N-1 and previews week N. That rule is taken from the
-episode's own title rather than the section headers, because the headers are
+Episode N recaps week N-1 and previews week N. That is the first reading, and
+data/vlog.py then checks it against the games each section lists (place()).
+The first reading is taken from the episode's own title rather than the
+section headers, because the headers are
 copied forward and not always updated: 2023's Week 15 and 16 episodes both
 recap under a "Week 13 Matchup Results" header. The title is trusted over the
 file name, too - 2025's "Week 15.txt" is an early draft of Week 16 and its
@@ -63,6 +66,7 @@ _SECTION = re.compile(
 _SECTION_END = re.compile(
     r"^(power rankings|standings|final standings|conclusion|trade|waiver|"
     r"intro|media day|play round|season highlights|survey)", re.I)
+_RANKINGS = re.compile(r"^(?:preseason\s+|final\s+)?power rankings\b", re.I)
 _ROMARKABLE = re.compile(
     r"romarkab?k?le\s+(QB|RB|WR|TE|FLEX|K)\b(?:\s+of\s+the\s+week)?\s*[:=]\s*(.+)$",
     re.I)
@@ -120,6 +124,7 @@ class Episode:
     weeks: list[int]         # the episode's own number(s), from its title
     matchups: list[Matchup]
     players: list[Player]
+    rankings: list[str] = field(default_factory=list)   # managers, 1st first
     transcribed: bool = False
 
     @property
@@ -154,9 +159,11 @@ def parse(path: Path, season: int) -> Episode:
     weeks = _numbers(title.group(1)) if title else []
     weeks = weeks or _numbers(path.stem)[:1] or [0]
 
-    matchups, players = [], []
+    matchups, players, rankings = [], [], []
     section, sec_weeks, current = None, [], None
     seen_title = False
+    ranking = None              # the list being read, while inside one
+    ranking_ended = False
     for raw in lines:
         line = raw.strip()
         if not line:
@@ -166,6 +173,35 @@ def parse(path: Path, season: int) -> Episode:
                 break
             seen_title = True
             continue
+
+        # Power rankings: one manager per line, best first, in whatever
+        # dress the season wore - "1) Jason", "Jason*", "1) Tim (CLINCHED)".
+        # 2025 writes last week's order and this week's side by side,
+        # "1) David —> David", and the new one is on the right. A list
+        # followed by "^UPDATE" is a template copied from last week and
+        # redone on camera, so it is not his ranking for the week.
+        if ranking_ended:
+            ranking_ended = False
+            if line.startswith("^") and "update" in line.lower():
+                rankings = []
+                continue
+        if _RANKINGS.match(line):
+            ranking, rankings = [], []
+            section, current = None, None
+            continue
+        if ranking is not None:
+            if line.startswith(("-", "—", "^")):
+                continue
+            text = re.split(r"—>|->|→", line)[-1]
+            m = re.match(r"[\s\d().*]*([A-Za-z/]+)", text)
+            who = manager(m.group(1)) if m else None
+            if who:
+                if who not in ranking:
+                    ranking.append(who)
+                if len(ranking) == len(set(MANAGER_ALIASES.values())):
+                    rankings, ranking, ranking_ended = ranking, None, True
+                continue
+            ranking = None
         s = _SECTION.match(line)
         if s and " over " not in line.lower():
             kind = s.group(1).lower()
@@ -215,7 +251,7 @@ def parse(path: Path, season: int) -> Episode:
             if not (section == "preview" and undecided):
                 matchups.append(current)
 
-    return Episode(season, path, weeks, matchups, players)
+    return Episode(season, path, weeks, matchups, players, rankings)
 
 
 # Picks taken from the episodes themselves, in his format, for the few weeks

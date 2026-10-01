@@ -259,8 +259,8 @@ scoring period, which from Tuesday morning already names a week nobody played.
 **It picks up the Champmissioner's vlog notes.** Mikey drops a .txt per
 episode into a shared Google Drive folder, synced to this machine; `VLOG_DIR`
 in `.env` points at it. The update reads the current season's folder and
-archives his picks for weeks already played (`vlog_matchups.csv`,
-`vlog_romarkables.csv`). Without the folder it says so and skips, and the rest
+archives his picks for weeks already played and his power rankings
+(`vlog_matchups.csv`, `vlog_romarkables.csv`, `vlog_power_rankings.csv`). Without the folder it says so and skips, and the rest
 of the update is unaffected. Notes arrive after Tuesday more often than not,
 so a week's picks usually land a week late, and an archived preview is then
 replaced by his recap, which is the pick he stood by. Lines it reports under
@@ -315,7 +315,8 @@ Plain CSV, one file per dataset with every season stacked (`season` column):
 `matchups.csv`, `boxscores.csv`, `draft.csv`, `standings.csv`, `validation.csv`,
 `transactions.csv`, `game_status.csv` (from nflverse, not ESPN), `player_weeks.csv`,
 `schedule.csv`, `rosters.csv`, `upcoming.csv`, `vlog_matchups.csv`,
-`vlog_romarkables.csv` (the Champmissioner's picks, from his notes, not ESPN),
+`vlog_romarkables.csv`, `vlog_power_rankings.csv` (the Champmissioner's picks
+and rankings, from his notes, not ESPN),
 plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
 
 `matchups.csv` holds only weeks already played, so the weeks still to come live
@@ -546,6 +547,17 @@ the 5-8 seeds differently from the bracket the league played (2021: ESPN had
 5v6, the league 5v8), so anything judging a consolation game by ESPN's
 opponent judges the wrong game. The vlog's picks take the pairing from his
 notes and score it as the two teams' totals over the round.
+
+**The vlog's weeks come from the games, not the file names.** Each section of
+his notes is placed by matching the pairings it lists to the schedule, with
+the episode title only breaking ties. Regular season only: ESPN's playoff
+pairings are not the league's, and in 2022 matching on them moved a whole
+episode a week out.
+
+**Playoff seeds and final finishes live in `analysis/standings.py`**
+(`playoff_seeds`, `compute_season_finish_map`), shared by All-Time and the
+Champmissioner's power-ranking comparison. The finish logic is the one checked
+95/95 against the league's own records; do not fork it.
 
 **The vlog's picks: his recap outranks his notes.** He sometimes changed a
 pick off air after recording, so the recap a week later, not the preview, is
