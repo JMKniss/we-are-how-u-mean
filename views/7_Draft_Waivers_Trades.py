@@ -365,10 +365,9 @@ with tab4:
 
 GRADE_COLS = {"best": "Best Lineup", "best_healthy": "Best Lineup, Healthy",
               "started": "As Started", "started_healthy": "As Started, Healthy",
-              "wins_flipped": "Wins Flipped"}
-GRADE_FORMAT = {**{v: st.column_config.NumberColumn(v, format="%+.1f")
-                   for k, v in GRADE_COLS.items() if k != "wins_flipped"},
-                "Wins Flipped": st.column_config.NumberColumn("Wins Flipped", format="%+d")}
+              "wins_created": "Wins Created", "losses_caused": "Losses Caused"}
+GRADE_FORMAT = {v: st.column_config.NumberColumn(v, format="%+.1f")
+                for k, v in GRADE_COLS.items() if not k.endswith("d")}
 GRADE_NOTE = (
     "Each side is graded alone, on the weeks that manager held a player from "
     "the trade. Best Lineup is the best lineup his roster could have started, "
@@ -379,8 +378,10 @@ GRADE_NOTE = (
     "undoes injuries that came after the trade at the player's healthy pace, "
     "injuries he already had stay. Wins Flipped counts games As Started turned, "
     "won where the lineup without the trade would have lost, or the reverse, a "
-    "playoff round scored over its weeks on the league's own bracket. A player "
-    "traded away again is graded on the weeks he was held, however few.")
+    "playoff round scored over its weeks on the league's own bracket. Wins "
+    "Created is games won that the lineup without the trade would have lost, "
+    "Losses Caused games lost that it would have won. A player traded away "
+    "again is graded on the weeks he was held, however few.")
 
 
 def names_df(frame: pd.DataFrame) -> pd.DataFrame:

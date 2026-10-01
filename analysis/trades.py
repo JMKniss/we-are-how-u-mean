@@ -30,8 +30,11 @@ Two counterfactuals, read side by side, plus one derived from the second:
                 nothing that week and counts nothing. This is the trade's
                 actual impact, lineup decisions included.
 
-  Wins flipped  From Started: a game the manager won where the refilled
-                lineup would have lost counts +1, and the reverse -1. A
+  Wins created  From Started: a game the manager won where the refilled
+  Losses caused lineup would have lost is a win created; a game he lost
+                where it would have won is a loss caused. Both are counted,
+                never netted, because a trade that won two games and lost
+                two is not the same as one that touched none. A
                 regular-season week is a game. A playoff round is a game,
                 scored over its weeks on the league's own bracket from
                 analysis/standings.py, never ESPN's: the two-week rounds
@@ -383,12 +386,13 @@ def trade_grades(season: int) -> pd.DataFrame:
 def manager_summary(grades: pd.DataFrame, manager_map: dict[int, str]) -> pd.DataFrame:
     """
     One row per manager with at least one trade: trades, weeks, the four
-    sums and wins flipped, and an up-even-down record on the best-lineup
-    delta. Good is a trade that added to the best lineup over the weeks held,
+    sums, wins created and losses caused (and their net, wins_flipped), and
+    an up-even-down record on the best-lineup delta. Good is a trade that added to the best lineup over the weeks held,
     at all; the size is in the points.
     """
     cols = ["team_id", "manager", "trades", "weeks", "up", "even", "down",
-            "best", "best_healthy", "started", "started_healthy", "wins_flipped"]
+            "best", "best_healthy", "started", "started_healthy",
+            "wins_created", "losses_caused", "wins_flipped"]
     if grades.empty:
         return pd.DataFrame(columns=cols)
     g = grades.copy()
@@ -400,6 +404,7 @@ def manager_summary(grades: pd.DataFrame, manager_map: dict[int, str]) -> pd.Dat
                 up=("up", "sum"), even=("even", "sum"), down=("down", "sum"),
                 best=("best", "sum"), best_healthy=("best_healthy", "sum"),
                 started=("started", "sum"), started_healthy=("started_healthy", "sum"),
+                wins_created=("wins_created", "sum"), losses_caused=("losses_caused", "sum"),
                 wins_flipped=("wins_flipped", "sum"))
            .reset_index())
     out["manager"] = out["team_id"].map(manager_map)

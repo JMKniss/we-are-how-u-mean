@@ -1349,10 +1349,10 @@ with tab_moves:
         else:
             GRADE_COLS = {"best": "Best Lineup", "best_healthy": "Best Lineup, Healthy",
                           "started": "As Started", "started_healthy": "As Started, Healthy",
-                          "wins_flipped": "Wins Flipped"}
-            GRADE_FORMAT = {**{v: st.column_config.NumberColumn(v, format="%+.1f")
-                               for k, v in GRADE_COLS.items() if k != "wins_flipped"},
-                            "Wins Flipped": st.column_config.NumberColumn("Wins Flipped", format="%+d")}
+                          "wins_created": "Wins Created", "losses_caused": "Losses Caused"}
+            GRADE_FORMAT = {v: st.column_config.NumberColumn(v, format="%+.1f")
+                            for k, v in GRADE_COLS.items() if not k.endswith("d")}
+            COUNTS = ("Wins Created", "Losses Caused")
 
             def record(g: pd.DataFrame) -> pd.Series:
                 return pd.Series({
@@ -1367,7 +1367,7 @@ with tab_moves:
             career = (grades.groupby("manager").apply(record, include_groups=False)
                       .reset_index().rename(columns={"manager": "Manager"})
                       .sort_values("Best Lineup", ascending=False))
-            career["Wins Flipped"] = career["Wins Flipped"].astype(int)
+            career[list(COUNTS)] = career[list(COUNTS)].astype(int)
             st.dataframe(career, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
             st.caption(
                 "Each side of a trade is graded alone, on the weeks that manager held "
@@ -1377,8 +1377,9 @@ with tab_moves:
                 "received starter replaced by the sent player who fit the slot, or "
                 "else his best bench option by average to date. Healthy undoes "
                 "injuries that came after the trade at the player's healthy pace. "
-                "Wins Flipped counts games As Started turned, playoff rounds on the "
-                "league's own bracket included. Up is a "
+                "Wins Created is games won that the lineup without the trade would "
+                "have lost, Losses Caused games lost that it would have won, playoff "
+                "rounds on the league's own bracket included. Up is a "
                 "trade that added to the best lineup at all, down one that cost it. "
                 f"Trades from {int(grades['season'].min())}, the season in progress "
                 "included, graded to the last week archived.")
@@ -1389,7 +1390,7 @@ with tab_moves:
                            .apply(record, include_groups=False).reset_index()
                            .rename(columns={"season": "Season"}).sort_values("Season"))
             seasons_tbl["Season"] = seasons_tbl["Season"].astype(str)
-            seasons_tbl["Wins Flipped"] = seasons_tbl["Wins Flipped"].astype(int)
+            seasons_tbl[list(COUNTS)] = seasons_tbl[list(COUNTS)].astype(int)
             st.dataframe(seasons_tbl, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
 
             def trade_table(frame: pd.DataFrame) -> pd.DataFrame:
