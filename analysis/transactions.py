@@ -123,3 +123,25 @@ def move_counts(tx: pd.DataFrame, manager_map: dict[int, str]) -> pd.DataFrame:
     counts["trades"] = counts["team_id"].map(
         in_trade.groupby("team_id")["tid"].nunique()).fillna(0).astype(int)
     return counts
+
+
+def trade_pairs(tx: pd.DataFrame, manager_map: dict[int, str]) -> pd.DataFrame:
+    """
+    One row per trade per pair of managers in it, for one season.
+
+    The pair is unordered: manager_a is whichever name sorts first, so a trade
+    between Johnny and Tyler is always Johnny-Tyler and never also
+    Tyler-Johnny, and counting rows per pair counts trades. A three-team trade
+    gives three pairs, one for each two managers who dealt in it.
+    """
+    cols = ["season", "transaction_id", "manager_a", "manager_b"]
+    sides = trade_sides(tx)
+    if sides.empty:
+        return pd.DataFrame(columns=cols)
+    rows = []
+    for tid, g in sides.groupby("transaction_id", sort=False):
+        names = sorted({manager_map.get(t, f"Team {t}") for t in g["team_id"]})
+        season = int(g["season"].iloc[0])
+        rows += [{"season": season, "transaction_id": tid, "manager_a": a, "manager_b": b}
+                 for i, a in enumerate(names) for b in names[i + 1:]]
+    return pd.DataFrame(rows, columns=cols)

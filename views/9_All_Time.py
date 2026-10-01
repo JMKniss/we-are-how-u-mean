@@ -13,7 +13,9 @@ for fewest wins.
 Trades & Waiver Data averages each manager's waiver adds and trades over
 completed seasons only - a season in progress is a running tally and would
 drag every average down - and lists the per-season counts, including the
-current season, for one manager or the whole league.
+current season, for one manager or the whole league. Who Trades with Who
+counts trades per pair of managers, each pair stored once in name order;
+picking a manager finds the pair from either side and puts that manager first.
 """
 import sys
 from pathlib import Path
@@ -24,7 +26,7 @@ import pandas as pd
 import numpy as np
 from data import archive
 from data.espn_client import get_matchups_df, get_manager_map, get_transactions_df
-from analysis.transactions import move_counts
+from analysis.transactions import move_counts, trade_pairs
 from analysis.standings import h2h_standings, combined_standings, compute_season_finish_map
 from config import SEASONS, season_config
 from display_utils import sidebar_display_prefs
@@ -161,6 +163,20 @@ def load_move_counts():
                               if not tx.empty else 0)
         rows.append(c)
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+@st.cache_data(ttl=300)
+def load_trade_pairs():
+    """
+    One row per trade per pair of managers in it, every season with
+    transactions, the season in progress included. Names are mapped season
+    by season, so a pair follows the managers rather than the team ids.
+    """
+    pairs = [trade_pairs(get_transactions_df(s), get_manager_map(s))
+             for s in archive.seasons_with_data("transactions")]
+    pairs = [p for p in pairs if not p.empty]
+    return pd.concat(pairs, ignore_index=True) if pairs else pd.DataFrame(
+        columns=["season", "transaction_id", "manager_a", "manager_b"])
 
 
 @st.cache_data(ttl=300)
@@ -1261,3 +1277,44 @@ with tab_moves:
                    "trades are counted once each, not once per side."
                    if pick == ALL else
                    f"Seasons {pick} managed from {first} on.")
+
+        st.divider()
+        st.subheader("Who Trades with Who")
+        pairs = load_trade_pairs()
+        if active_only:
+            # An active manager keeps every trade, partners who have left included.
+            pairs = pairs[pairs["manager_a"].isin(ACTIVE_MANAGERS)
+                          | pairs["manager_b"].isin(ACTIVE_MANAGERS)]
+        if pairs.empty:
+            st.info("No trades are archived yet.")
+        else:
+            traders = sorted(set(pairs["manager_a"]) | set(pairs["manager_b"]))
+            if active_only:
+                traders = [m for m in traders if m in ACTIVE_MANAGERS]
+            who = st.selectbox("Manager", [ALL] + traders, key="trade_pairs_mgr")
+            # Each pair is stored once, name order fixed, so the full table has
+            # no mirror rows. Picking a manager finds the pair from either side
+            # and turns it round so that manager reads first.
+            if who != ALL:
+                pairs = pairs[(pairs["manager_a"] == who) | (pairs["manager_b"] == who)].copy()
+                flip = pairs["manager_b"] == who
+                pairs.loc[flip, ["manager_a", "manager_b"]] = (
+                    pairs.loc[flip, ["manager_b", "manager_a"]].to_numpy())
+            table = (pairs.groupby(["manager_a", "manager_b"])
+                     .agg(Trades=("transaction_id", "nunique"),
+                          First=("season", "min"), Last=("season", "max"))
+                     .reset_index()
+                     .sort_values(["Trades", "Last", "manager_a", "manager_b"],
+                                  ascending=[False, False, True, True])
+                     .rename(columns={"manager_a": "Manager" if who != ALL else "Manager A",
+                                      "manager_b": "Partner" if who != ALL else "Manager B"}))
+            table[["First", "Last"]] = table[["First", "Last"]].astype(str)
+            st.dataframe(table, hide_index=True, width="stretch")
+            note = (f"Trades from {first}, the season in progress included. "
+                    "A three-team trade counts once for each pair in it.")
+            if who != ALL:
+                others = sorted((ACTIVE_MANAGERS if active_only else set(traders))
+                                - set(table["Partner"]) - {who})
+                if others:
+                    note += f" No trades with {', '.join(others)}."
+            st.caption(note)
