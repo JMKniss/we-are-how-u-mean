@@ -40,6 +40,28 @@ Two counterfactuals, read side by side, plus one derived from the second:
                 round the trade was held for only part of still counts, on
                 the delta from the weeks held.
 
+  Expected wins From ASL as well, and without the all-or-nothing of a flip.
+  added         Each week, the chance his actual score beats a typical other
+                team that week, minus the same chance for the score without
+                the trade. The chance is a normal curve centred on the other
+                teams' average that week, with the season's usual spread of a
+                score around its week's average. A trade that added 30 points
+                in a week he won by 40 flips nothing, and this still credits
+                it; points that lift a score near the league's middle count
+                for more than points on a score far above or below it. Every
+                week held counts this way, playoffs included, against that
+                week's other scores rather than the playoff opponent, so it
+                is the steadier companion to the flips, not a copy of them.
+                The all-play share (how many of the other nine teams the score
+                beat, as the luck index in analysis/standings.py counts
+                expected wins) was tried first and rejected for this: it moves
+                in steps of a ninth, so five points could cost a third of a
+                win in a week where three teams sat close together and ten
+                points earn nothing in a week where none did. Most trades move
+                a score by a few points a week, and on those the steps were
+                noise: Tim's 2025 Jones and Jacobs trade, +35 points over 14
+                weeks, came out at -0.89 wins.
+
 Each delta is given three ways. The total is the points the trade added or
 cost over the weeks held. Per week divides by the weeks held, so a trade made
 in week 11 can stand next to one made in week 3. Per game played averages the
@@ -123,6 +145,7 @@ no column compares the two; lopsidedness is a later question.
 """
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 from analysis.efficiency import SLOT_ELIGIBILITY, optimal_lineup_points, season_slot_requirements
 from analysis.standings import playoff_games
@@ -137,9 +160,9 @@ SIDE_COLS = ["transaction_id", "season", "week", "executed_at", "team_id",
              "receives", "sends", "dropped", "partners", "inferred", "notes",
              "weeks", "games", "first_week", "last_week",
              "best", "best_pw", "best_pgp", "started", "started_pw", "started_pgp",
-             "wins_flipped", "wins_created", "losses_caused"]
+             "xwins", "wins_flipped", "wins_created", "losses_caused"]
 WEEK_COLS = ["transaction_id", "season", "team_id", "week", "played",
-             "best", "started", "flip", "score", "cf_score", "opp_score"]
+             "best", "started", "xwins", "flip", "score", "cf_score", "opp_score"]
 
 
 def supported(season: int) -> bool:
@@ -158,6 +181,11 @@ class _Season:
                                 .groupby(["week", "team_id"]).size().max())
         matchups = archive.get("matchups", season)
         self.matchups = matchups.set_index(["week", "team_id"])
+        self.week_scores = {w: g.set_index("team_id")["score"].astype(float)
+                            for w, g in matchups.groupby("week")}
+        # The season's usual spread of a score around its week's average.
+        dev = matchups["score"] - matchups.groupby("week")["score"].transform("mean")
+        self.score_sd = float(dev.std()) if len(dev) > 1 else np.nan
         self.playoff_games = {}
         for g in playoff_games(season, matchups):
             self.playoff_games.setdefault(g["team_id"], []).append(g)
@@ -214,6 +242,19 @@ class _Season:
         if status is not None:
             return status in PLAYED
         return (pid, week) in self.points and not self.on_bye(pid, week)
+
+    def win_chance(self, score: float, week: int, team: int) -> float:
+        """
+        Chance this score beats a typical other team that week: the other
+        teams' average that week, the season's usual spread around it.
+        """
+        others = self.week_scores.get(week)
+        if others is None or not self.score_sd > 0:
+            return np.nan
+        others = others.drop(team, errors="ignore")
+        if others.empty:
+            return np.nan
+        return float(norm.cdf((score - others.mean()) / self.score_sd))
 
     def replacement(self, slot: str, week: int) -> float:
         """
@@ -339,6 +380,10 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
         row["cf_score"] = round(score - row["started"], 2)
         row["opp_score"] = np.nan
         row["flip"] = 0
+        official = (float(s.matchups.loc[(week, team), "score"])
+                    if (week, team) in s.matchups.index else score)
+        row["xwins"] = round(s.win_chance(official, week, team)
+                             - s.win_chance(official - row["started"], week, team), 4)
         if week <= s.cfg["reg_season_end"] and (week, team) in s.matchups.index:
             m = s.matchups.loc[(week, team)]
             opp = float(m["opp_score"])
@@ -422,14 +467,14 @@ def trade_grades(season: int) -> pd.DataFrame:
                     first_week=("week", "min"), last_week=("week", "max"),
                     best=("best", "sum"), best_played=("best_played", "sum"),
                     started=("started", "sum"), started_played=("started_played", "sum"),
-                    wins_flipped=("flip", "sum"),
+                    xwins=("xwins", "sum"), wins_flipped=("flip", "sum"),
                     wins_created=("flip", lambda f: int((f > 0).sum())),
                     losses_caused=("flip", lambda f: int((f < 0).sum())))
                .reset_index())
     out = sides.merge(agg, on=["transaction_id", "team_id"], how="left")
     for c in ("weeks", "games", "wins_flipped", "wins_created", "losses_caused"):
         out[c] = out[c].fillna(0).astype(int)
-    for c in ("best", "best_played", "started", "started_played"):
+    for c in ("best", "best_played", "started", "started_played", "xwins"):
         out[c] = out[c].fillna(0.0).round(2)
     out["first_week"] = out["first_week"].astype("Int64")
     out["last_week"] = out["last_week"].astype("Int64")
@@ -445,7 +490,7 @@ def summarise(grades: pd.DataFrame) -> pd.Series:
     the points.
     """
     t = grades[["weeks", "games", "best", "best_played", "started", "started_played",
-                "wins_created", "losses_caused", "wins_flipped"]].sum()
+                "xwins", "wins_created", "losses_caused", "wins_flipped"]].sum()
     out = pd.Series({
         "trades": grades["transaction_id"].nunique(),
         "up": int((grades["best"] > 0).sum()),
@@ -463,7 +508,7 @@ def manager_summary(grades: pd.DataFrame, manager_map: dict[int, str]) -> pd.Dat
     """One row per manager with at least one trade, from summarise()."""
     cols = ["team_id", "manager", "trades", "up", "even", "down",
             "best", "best_pw", "best_pgp", "started", "started_pw", "started_pgp",
-            "wins_created", "losses_caused", "wins_flipped"]
+            "xwins", "wins_created", "losses_caused", "wins_flipped"]
     if grades.empty:
         return pd.DataFrame(columns=cols)
     out = grades.groupby("team_id").apply(summarise, include_groups=False).reset_index()

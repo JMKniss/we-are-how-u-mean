@@ -168,34 +168,44 @@ def require_data(df, season, what="data"):
 TRADE_GRADE_COLS = {
     "best": "OLΔ", "best_pw": "OLΔ PW", "best_pgp": "OLΔ PGP",
     "started": "ASLΔ", "started_pw": "ASLΔ PW", "started_pgp": "ASLΔ PGP",
-    "wins_created": "Wins Created", "losses_caused": "Losses Caused",
+    "xwins": "EWA", "wins_created": "Wins Created", "losses_caused": "Losses Caused",
 }
 TRADE_GRADE_FORMAT = {v: st.column_config.NumberColumn(v, format="%+.1f")
                       for k, v in TRADE_GRADE_COLS.items()
-                      if k not in ("wins_created", "losses_caused")}
-TRADE_GRADE_NOTE = (
-    "Each row is one manager's side of a trade, graded on the weeks the manager "
-    "held at least one player received in it. A trade shows up once for each "
-    "manager in it. "
-    "OLΔ is Optimal Lineup Delta. The best lineup the roster could have started "
-    "with the trade, minus the best lineup it could have started without it. "
-    "It measures what the trade did for the roster, whether or not the right "
-    "players were started. "
-    "ASLΔ is Actual Started Lineup Delta. What the received players scored in "
-    "the lineup the manager actually started, minus what would have been in "
-    "those slots without the trade. Each of those slots goes to the player with "
-    "the best average to date among the bench, the players sent away, and "
-    "anyone dropped to make the trade, leaving out anyone who did not play that "
-    "week. A received player left on the bench adds "
-    "nothing. A slot nobody on the roster could fill gets the average of each "
-    "team's lowest scoring player at that position that week. "
-    "The plain number is the total points added or lost over the weeks held. "
-    "PW is per week, the total divided by the weeks held, so an early trade and "
-    "a late trade can be compared. PGP is per game played. A week counts as a "
-    "game when every received player played, or when at least one of them was "
-    "started. A week where one missed, on bye, out, on IR, inactive or "
-    "suspended, and none of the others started, is left out. "
-    "Wins Created is games won that would have been lost without the trade. "
-    "Losses Caused is games lost that would have been won. Both come from ASLΔ "
-    "against the opponent's actual score, and a playoff round counts as one game. "
-    "Up-Even-Down counts trades where OLΔ was above zero, zero, or below zero.")
+                      if k not in ("xwins", "wins_created", "losses_caused")}
+TRADE_GRADE_FORMAT["EWA"] = st.column_config.NumberColumn("EWA", format="%+.2f")
+TRADE_GRADE_NOTE = """
+**Reading the table.** Each row is one manager's side of a trade, graded on the
+weeks that manager held at least one player received in it. A trade shows up
+once for each manager in it.
+
+**Columns**
+
+- **OLΔ**, Optimal Lineup Delta. The best lineup the roster could have started
+  with the trade, minus the best lineup it could have started without it. What
+  the trade did for the roster, whether or not the right players were started.
+- **ASLΔ**, Actual Started Lineup Delta. What the received players scored in the
+  lineup the manager actually started, minus what would have been in those
+  slots without the trade.
+- **PW**, per week. The total divided by the weeks held, so an early trade and a
+  late trade can be compared. A plain OLΔ or ASLΔ is the total over the weeks held.
+- **PGP**, per game played. Only weeks where every received player played, or at
+  least one of them was started. A week where one missed, on bye, out, on IR,
+  inactive or suspended, and none of the others started, is left out.
+- **EWA**, Expected Wins Added. Each week, the chance the manager's score beats a
+  typical team that week, minus the same chance for the score without the
+  trade, added up over the weeks held. Points count for more on a score near
+  the league average that week than on one far above or below it. A trade can
+  add expected wins without flipping a result.
+- **Wins Created** and **Losses Caused**. Games won that would have been lost
+  without the trade, and games lost that would have been won, from ASLΔ against
+  the opponent's actual score. A playoff round counts as one game.
+- **Up-Even-Down**. Trades where OLΔ was above zero, zero, or below zero.
+
+**The lineup without the trade.** Each slot a received player started in goes
+to the player with the best average to date among the bench, the players sent
+away, and anyone dropped to make the trade. A player who did not play that week
+is never picked. A received player left on the bench adds nothing. A slot
+nobody on the roster could fill gets the average of each team's lowest scoring
+player at that position that week.
+"""

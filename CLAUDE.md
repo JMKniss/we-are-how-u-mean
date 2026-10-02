@@ -593,6 +593,9 @@ slot is refilled from one pool of bench, sent and dropped players by average
 to date, a player who did not play never among them - sent players first
 assumed every one of them would have started, and an injured one was picked
 and scored as a zero in the lineup.
+Expected wins added sits beside the flipped games: each week's change in
+the chance of beating a typical team, from a normal curve, not the all-play
+share, whose steps of a ninth turned small weekly deltas into noise.
 Rejected on the way: an injury-neutral version that scored hurt weeks at the
 player's healthy pace (the grade is what the trade did, and the injury is
 part of that; per game played answers the same question without inventing

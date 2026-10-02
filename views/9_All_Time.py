@@ -1362,7 +1362,7 @@ with tab_moves:
                       .sort_values("OLΔ", ascending=False))
             career[COUNTS] = career[COUNTS].astype(int)
             st.dataframe(career, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
-            st.caption(TRADE_GRADE_NOTE + f" Trades from {int(grades['season'].min())}, the "
+            st.caption(TRADE_GRADE_NOTE + f"\nTrades from {int(grades['season'].min())}, the "
                        "season in progress included, graded to the last week archived.")
 
             st.markdown("**Season by Season**")
