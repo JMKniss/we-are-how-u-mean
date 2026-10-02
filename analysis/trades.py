@@ -514,7 +514,12 @@ def trade_grades(season: int) -> pd.DataFrame:
         return pd.DataFrame(columns=SIDE_COLS)
     weekly = weekly_grades(season)
     if weekly.empty:
-        agg = pd.DataFrame(columns=["transaction_id", "team_id"])
+        # No week held yet: a trade made in the week not yet archived. It
+        # still needs every column, at zero, or the page has nothing to show.
+        agg = pd.DataFrame(columns=["transaction_id", "team_id", "weeks", "games",
+                                    "first_week", "last_week", "best", "best_played",
+                                    "started", "started_played", "xwins", "wins_flipped",
+                                    "wins_created", "losses_caused"])
     else:
         weekly = weekly.assign(best_played=weekly["best"].where(weekly["played"], 0.0),
                                started_played=weekly["started"].where(weekly["played"], 0.0))
@@ -549,9 +554,10 @@ def summarise(grades: pd.DataFrame) -> pd.Series:
                 "xwins", "wins_created", "losses_caused", "wins_flipped"]].sum()
     out = pd.Series({
         "trades": grades["transaction_id"].nunique(),
-        "up": int((grades["best"] > 0).sum()),
-        "even": int((grades["best"] == 0).sum()),
-        "down": int((grades["best"] < 0).sum()),
+        # A trade with no week held yet has no grade, not an even one.
+        "up": int(((grades["best"] > 0) & (grades["weeks"] > 0)).sum()),
+        "even": int(((grades["best"] == 0) & (grades["weeks"] > 0)).sum()),
+        "down": int(((grades["best"] < 0) & (grades["weeks"] > 0)).sum()),
         **t.to_dict(),
     })
     for k in ("best", "started"):
