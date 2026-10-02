@@ -1373,6 +1373,16 @@ with tab_moves:
                          height=trade_grade_height(len(table)))
 
             held = grades[grades["weeks"] > 0].sort_values("started", ascending=False)
+            st.markdown("**Every Trade**")
+            c1, c2 = st.columns(2)
+            pick_mgr = c1.multiselect("Manager", sorted(held["manager"].unique()),
+                                      placeholder="All managers", key="every_trade_mgr")
+            pick_season = c2.multiselect("Season", sorted(held["season"].unique(), reverse=True),
+                                         placeholder="All seasons", key="every_trade_season")
+            if pick_mgr:
+                held = held[held["manager"].isin(pick_mgr)]
+            if pick_season:
+                held = held[held["season"].isin(pick_season)]
             every, fmt = trade_grade_table(pd.DataFrame({
                 "Season": held["season"].astype(str),
                 "Week": held["week"],
@@ -1381,7 +1391,6 @@ with tab_moves:
                 "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
                           for s, dr in zip(held["sends"], held["dropped"])],
             }, index=held.index), held)
-            st.markdown("**Every Trade**")
             st.dataframe(every, hide_index=True, width="stretch", height=560, column_config=fmt)
             st.caption("Click a column to sort it, again to reverse. A trade held "
                        "one week can sort to the top of Per Week or Per Game Played "

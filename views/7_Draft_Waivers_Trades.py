@@ -373,11 +373,24 @@ def names_df(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def grades_section(team: int | None):
-    """Every side of every trade this season, graded, then the season's totals."""
+    """The season's totals per manager, then every side of every trade, graded."""
     grades = load_grades(season)
     if grades.empty:
         return
     st.divider()
+    summary = manager_summary(grades, manager_map)
+    st.subheader(f"{season} Trade Grades by Manager")
+    table, fmt = trade_grade_table(pd.concat([names_df(summary), pd.DataFrame({
+        "Trades": summary["trades"],
+        "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
+                         zip(summary["up"], summary["even"], summary["down"])],
+    }, index=summary.index)], axis=1), summary)
+    st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
+                 height=trade_grade_height(len(table)))
+    st.caption("Totals are summed over the manager's trades. Per Week and Per "
+               "Game Played are taken over all the weeks and games in them.\n"
+               + TRADE_GRADE_NOTE)
+
     st.subheader(f"{season} Trade Grades")
     shown = grades if team is None else grades[grades["team_id"] == team]
     shown = shown.sort_values(["week", "executed_at", "transaction_id", "team_id"],
@@ -392,20 +405,6 @@ def grades_section(team: int | None):
         }, index=shown.index),
     ], axis=1), shown)
     st.dataframe(table, hide_index=True, width="stretch", column_config=fmt)
-    st.caption(TRADE_GRADE_NOTE)
-
-    summary = manager_summary(grades, manager_map)
-    st.subheader(f"{season} Trade Grades by Manager")
-    table, fmt = trade_grade_table(pd.concat([names_df(summary), pd.DataFrame({
-        "Trades": summary["trades"],
-        "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
-                         zip(summary["up"], summary["even"], summary["down"])],
-    }, index=summary.index)], axis=1), summary)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
-                 height=trade_grade_height(len(table)))
-    st.caption("Totals are summed over the manager's trades. Per Week and Per "
-               "Game Played are "
-               "taken over all the weeks and games in them.")
 
 
 with tab5:
