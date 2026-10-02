@@ -47,7 +47,7 @@ from analysis.transactions import waiver_moves, trade_sides, move_counts
 from analysis.trades import trade_grades, manager_summary
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
-from display_utils import TRADE_GRADE_COLS, TRADE_GRADE_FORMAT, TRADE_GRADE_NOTE
+from display_utils import trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
 from branding import page_icon
 
 st.set_page_config(page_title="Draft, Waivers & Trades", page_icon=page_icon(), layout="wide")
@@ -382,29 +382,29 @@ def grades_section(team: int | None):
     shown = grades if team is None else grades[grades["team_id"] == team]
     shown = shown.sort_values(["week", "executed_at", "transaction_id", "team_id"],
                               ascending=[False, False, False, True])
-    table = pd.concat([
+    table, fmt = trade_grade_table(pd.concat([
         pd.DataFrame({"Week": shown["week"]}, index=shown.index),
         names_df(shown),
         pd.DataFrame({
             "Receives": [", ".join(r) for r in shown["receives"]],
             "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
                       for s, dr in zip(shown["sends"], shown["dropped"])],
-            **{v: shown[k] for k, v in TRADE_GRADE_COLS.items()},
         }, index=shown.index),
-    ], axis=1)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
+    ], axis=1), shown)
+    st.dataframe(table, hide_index=True, width="stretch", column_config=fmt)
     st.caption(TRADE_GRADE_NOTE)
 
     summary = manager_summary(grades, manager_map)
     st.subheader(f"{season} Trade Grades by Manager")
-    table = pd.concat([names_df(summary), pd.DataFrame({
+    table, fmt = trade_grade_table(pd.concat([names_df(summary), pd.DataFrame({
         "Trades": summary["trades"],
         "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
                          zip(summary["up"], summary["even"], summary["down"])],
-        **{v: summary[k] for k, v in TRADE_GRADE_COLS.items()},
-    }, index=summary.index)], axis=1)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
-    st.caption("Totals are summed over the manager's trades. PW and PGP are "
+    }, index=summary.index)], axis=1), summary)
+    st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
+                 height=trade_grade_height(len(table)))
+    st.caption("Totals are summed over the manager's trades. Per Week and Per "
+               "Game Played are "
                "taken over all the weeks and games in them.")
 
 

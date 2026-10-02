@@ -34,7 +34,7 @@ from analysis.transactions import move_counts, trade_pairs
 from analysis.trades import trade_grades, summarise
 from analysis.standings import h2h_standings, combined_standings, compute_season_finish_map
 from config import SEASONS, season_config
-from display_utils import sidebar_display_prefs, TRADE_GRADE_COLS, TRADE_GRADE_FORMAT, TRADE_GRADE_NOTE
+from display_utils import sidebar_display_prefs, trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
 from branding import page_icon
 
 st.set_page_config(page_title="All-Time Records", page_icon=page_icon(), layout="wide")
@@ -1347,45 +1347,43 @@ with tab_moves:
         if grades.empty:
             st.info("No trades are archived yet.")
         else:
-            def record(g: pd.DataFrame) -> pd.Series:
-                r = summarise(g)
-                return pd.Series({
-                    "Trades": int(r["trades"]),
-                    "Up-Even-Down": f"{int(r['up'])}-{int(r['even'])}-{int(r['down'])}",
-                    **{v: r[k] for k, v in TRADE_GRADE_COLS.items()},
+            def records(frame: pd.DataFrame, by: str, label: str) -> tuple[pd.DataFrame, dict]:
+                """One row per group of sides, with the trade grade columns."""
+                r = frame.groupby(by).apply(summarise, include_groups=False).reset_index()
+                front = pd.DataFrame({
+                    label: r[by].astype(str),
+                    "Trades": r["trades"].astype(int),
+                    "Up-Even-Down": [f"{int(u)}-{int(e)}-{int(d)}"
+                                     for u, e, d in zip(r["up"], r["even"], r["down"])],
                 })
+                r[["wins_created", "losses_caused"]] = r[["wins_created", "losses_caused"]].astype(int)
+                return trade_grade_table(front, r)
 
-            COUNTS = ["Wins Created", "Losses Caused"]
             st.markdown("**Career**")
-            career = (grades.groupby("manager").apply(record, include_groups=False)
-                      .reset_index().rename(columns={"manager": "Manager"})
-                      .sort_values("OLΔ", ascending=False))
-            career[COUNTS] = career[COUNTS].astype(int)
-            st.dataframe(career, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
+            table, fmt = records(grades, "manager", "Manager")
+            table = table.sort_values(("Optimal Lineup Change", "Total"), ascending=False)
+            st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
+                         height=trade_grade_height(len(table)))
             st.caption(TRADE_GRADE_NOTE + f"\nTrades from {int(grades['season'].min())}, the "
                        "season in progress included, graded to the last week archived.")
 
             st.markdown("**Season by Season**")
             mgr = st.selectbox("Manager", sorted(grades["manager"].unique()), key="grades_mgr")
-            seasons_tbl = (grades[grades["manager"] == mgr].groupby("season")
-                           .apply(record, include_groups=False).reset_index()
-                           .rename(columns={"season": "Season"}).sort_values("Season"))
-            seasons_tbl["Season"] = seasons_tbl["Season"].astype(str)
-            seasons_tbl[COUNTS] = seasons_tbl[COUNTS].astype(int)
-            st.dataframe(seasons_tbl, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
+            table, fmt = records(grades[grades["manager"] == mgr], "season", "Season")
+            st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
+                         height=trade_grade_height(len(table)))
 
             held = grades[grades["weeks"] > 0].sort_values("started", ascending=False)
-            every = pd.DataFrame({
+            every, fmt = trade_grade_table(pd.DataFrame({
                 "Season": held["season"].astype(str),
                 "Week": held["week"],
                 "Manager": held["manager"],
                 "Receives": [", ".join(r) for r in held["receives"]],
                 "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
                           for s, dr in zip(held["sends"], held["dropped"])],
-                **{v: held[k] for k, v in TRADE_GRADE_COLS.items()},
-            })
+            }, index=held.index), held)
             st.markdown("**Every Trade**")
-            st.dataframe(every, hide_index=True, width="stretch", height=560,
-                         column_config=TRADE_GRADE_FORMAT)
+            st.dataframe(every, hide_index=True, width="stretch", height=560, column_config=fmt)
             st.caption("Click a column to sort it, again to reverse. A trade held "
-                       "one week can sort to the top of PW or PGP on one game.")
+                       "one week can sort to the top of Per Week or Per Game Played "
+                       "on one game.")

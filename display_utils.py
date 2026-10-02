@@ -163,49 +163,73 @@ def require_data(df, season, what="data"):
 
 
 # ── trade grades ─────────────────────────────────────────────────────────
-# Both trade pages show the same columns under the same names, and the same
+# Both trade pages show the same columns under the same headers, and the same
 # note explaining them, so they are defined once here.
-TRADE_GRADE_COLS = {
-    "best": "OLΔ", "best_pw": "OLΔ PW", "best_pgp": "OLΔ PGP",
-    "started": "ASLΔ", "started_pw": "ASLΔ PW", "started_pgp": "ASLΔ PGP",
-    "xwins": "EWA", "wins_created": "Wins Created", "losses_caused": "Losses Caused",
-}
-TRADE_GRADE_FORMAT = {v: st.column_config.NumberColumn(v, format="%+.1f")
-                      for k, v in TRADE_GRADE_COLS.items()
-                      if k not in ("xwins", "wins_created", "losses_caused")}
-TRADE_GRADE_FORMAT["EWA"] = st.column_config.NumberColumn("EWA", format="%+.2f")
+TRADE_GRADE_GROUPS = [
+    ("Optimal Lineup Change", [("best", "Total", "%+.1f"), ("best_pw", "Per Week", "%+.1f"),
+                               ("best_pgp", "Per Game Played", "%+.1f")]),
+    ("Actual Starting Lineup Change", [("started", "Total", "%+.1f"), ("started_pw", "Per Week", "%+.1f"),
+                                       ("started_pgp", "Per Game Played", "%+.1f")]),
+    ("Wins and Losses", [("xwins", "Expected Wins Added", "%+.2f"),
+                         ("wins_created", "Wins Created", None),
+                         ("losses_caused", "Losses Caused", None)]),
+]
+
+
+def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+    """
+    A trade grade table with grouped headers: front's columns (already named
+    for display) under a blank parent, then each group's columns from grades,
+    which shares front's index. Returns the table and its column_config.
+
+    Streamlit takes no column_config by name for grouped columns, so the
+    formats are keyed by position, and position 0 is the index even when it
+    is hidden.
+    """
+    parts, header, formats = [front], [("", c) for c in front.columns], {}
+    for group, cols in TRADE_GRADE_GROUPS:
+        for key, label, fmt in cols:
+            if fmt:
+                formats[len(header) + 1] = st.column_config.NumberColumn(format=fmt)
+            parts.append(grades[key].rename(label))
+            header.append((group, label))
+    table = pd.concat(parts, axis=1)
+    table.columns = pd.MultiIndex.from_tuples(header)
+    return table, formats
+
+
+def trade_grade_height(rows: int) -> int:
+    """Height that shows every row under the two header rows, no inner scroll."""
+    return (rows + 2) * 35 + 3
+
+
 TRADE_GRADE_NOTE = """
 **Reading the table.** Each row is one manager's side of a trade, graded on the
 weeks that manager held at least one player received in it. A trade shows up
 once for each manager in it.
 
-**Columns**
-
-- **OLΔ**, Optimal Lineup Delta. The best lineup the roster could have started
-  with the trade, minus the best lineup it could have started without it. What
-  the trade did for the roster, whether or not the right players were started.
-- **ASLΔ**, Actual Started Lineup Delta. What the received players scored in the
-  lineup the manager actually started, minus what would have been in those
-  slots without the trade.
-- **PW**, per week. The total divided by the weeks held, so an early trade and a
-  late trade can be compared. A plain OLΔ or ASLΔ is the total over the weeks held.
-- **PGP**, per game played. Only weeks where every received player played, or at
-  least one of them was started. A week where one missed, on bye, out, on IR,
-  inactive or suspended, and none of the others started, is left out.
-- **EWA**, Expected Wins Added. Each week, the chance the manager's score beats a
-  typical team that week, minus the same chance for the score without the
-  trade, added up over the weeks held. Points count for more on a score near
-  the league average that week than on one far above or below it. A trade can
-  add expected wins without flipping a result.
+- **Optimal Lineup Change**. The best lineup the roster could have started with
+  the trade, minus the best it could have started without it. What the trade did
+  for the roster, whether or not the right players were started.
+- **Actual Starting Lineup Change**. What the received players scored in the
+  lineup actually started, minus what would have been in those slots without
+  the trade.
+- **Total** is over the weeks held. **Per Week** divides by the weeks held, so an
+  early trade and a late trade can be compared. **Per Game Played** counts only
+  weeks where every received player played, or at least one of them was started.
+- **Expected Wins Added**. Each week, the chance the score beats a typical team
+  that week, minus the same chance without the trade. Points count for more on
+  a score near the league average that week, and a trade can add expected wins
+  without flipping a result.
 - **Wins Created** and **Losses Caused**. Games won that would have been lost
-  without the trade, and games lost that would have been won, from ASLΔ against
-  the opponent's actual score. A playoff round counts as one game.
-- **Up-Even-Down**. Trades where OLΔ was above zero, zero, or below zero.
+  without the trade, and the reverse, against the opponent's actual score. A
+  playoff round counts as one game.
+- **Up-Even-Down**. Trades where the optimal lineup change was above zero, zero,
+  or below zero.
 
-**The lineup without the trade.** Each slot a received player started in goes
-to the player with the best average to date among the bench, the players sent
-away, and anyone dropped to make the trade. A player who did not play that week
-is never picked. A received player left on the bench adds nothing. A slot
+**The lineup without the trade.** Each slot a received player started in goes to
+the best average to date among the bench, the players sent away, and anyone
+dropped to make the trade, counting only players who played that week. A slot
 nobody on the roster could fill gets the average of each team's lowest scoring
 player at that position that week.
 """
