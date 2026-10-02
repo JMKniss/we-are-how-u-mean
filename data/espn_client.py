@@ -179,6 +179,18 @@ def _box_scores_all_weeks(league, cfg: dict) -> dict:
         except Exception as e:
             boxes_by_week[week] = []
             errors[week] = f"{type(e).__name__}: {e}"
+    # A week with results is not necessarily over. Run on a Thursday night and
+    # the open week holds one NFL game's points, enough to pass the results
+    # test below, and archived it would be frozen at Thursday's score - the
+    # next update would see the real scores as a conflict. ESPN marks a
+    # matchup UNDECIDED until it is final, so the open week is kept only once
+    # none of its matchups are. Only the open week is asked: the first week
+    # of a two-week playoff round is undecided until the round ends, but by
+    # then it is no longer the open week.
+    open_week = league.current_week
+    if boxes_by_week.get(open_week) and not _week_decided(league, open_week):
+        boxes_by_week.pop(open_week)
+        errors.pop(open_week, None)
     result = _drop_unplayed_weeks(boxes_by_week, errors, league.year)
     _BOX_MEMO[memo_key] = result
     return result
@@ -200,6 +212,13 @@ def _fetch_week_raw(league, week: int) -> list:
     headers = {"x-fantasy-filter": json.dumps(filters)}
     data = league.espn_request.league_get(params=params, headers=headers)
     return data.get("schedule", [])
+
+
+def _week_decided(league, week: int) -> bool:
+    """True once ESPN has a winner for every matchup in this week's period."""
+    schedule = _fetch_week_raw(league, week)
+    return bool(schedule) and all(m.get("winner", "UNDECIDED") != "UNDECIDED"
+                                  for m in schedule)
 
 
 def _parse_roster_legacy(entries: list, starters_only: bool = False) -> list:
