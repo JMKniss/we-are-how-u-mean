@@ -122,7 +122,7 @@ the file is opened rather than loaded into every session:
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
-| Trade grades: both counterfactuals, the refill, the rates, the window, what was rejected | `analysis/trades.py` |
+| Trade grades: both counterfactuals, the refill, the rates, the window, storage, what was rejected | `analysis/trades.py` |
 | Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | The vlog's notes: format, which week, recap vs preview | `data/vlog_notes.py` |
@@ -330,7 +330,7 @@ Plain CSV, one file per dataset with every season stacked (`season` column):
 `transactions.csv`, `game_status.csv` (from nflverse, not ESPN), `player_weeks.csv`,
 `schedule.csv`, `rosters.csv`, `upcoming.csv`, `vlog_matchups.csv`,
 `vlog_romarkables.csv`, `vlog_power_rankings.csv`, `vlog_upcoming.csv` (the Champmissioner's picks
-and rankings, from his notes, not ESPN),
+and rankings, from his notes, not ESPN), `trade_grades.csv` (worked out, not pulled),
 plus `seasons.json` (current_week, manager_map, team_names, schedule shape per season).
 
 `matchups.csv` holds only weeks already played, so the weeks still to come live
@@ -353,6 +353,25 @@ only - ESPN has no weekly player stats before that.
 written once by `build_archive.py` the first time a run finds the season
 complete, and never rewritten, so a later season cannot re-score an earlier
 one. Delete a row only to deliberately refit that season.
+
+`trade_grades.csv` holds every trade side's grade, week by week, so the pages
+read grades instead of working them out - about 23 seconds a load before,
+under 2 after. It is the one archive file that is not a record: every row is
+a function of the other files and of `analysis/trades.py`, nothing in it is
+hand-checked, so it is replaced rather than merged, and it is the only thing
+allowed a regrade of every season at once. `build_archive.py` regrades the
+seasons it named at the end of every run that writes the archive, so the
+weekly update and a game_status rebuild keep it current on their own. Each row
+carries the `GRADES_VERSION` it was graded under. **Change how trades are
+graded, bump the version and regrade:**
+
+```
+python build_archive.py --grades
+```
+
+Until then the pages fall back to grading live - right, but slow - and
+`check.py` names the stale seasons. A hand correction to boxscores or
+transactions also needs a regrade of that season (`--grades --season N`).
 
 This is the source of truth for completed seasons. It is read *before* the pickle
 cache and *before* ESPN, so day-to-day use needs no cookies and no network.

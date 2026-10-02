@@ -142,6 +142,18 @@ from weekly rosters) grades like any other; the page marks it.
 
 Each manager is graded alone. A grade says nothing about the other side, and
 no column compares the two; lopsidedness is a later question.
+
+Stored, not worked out on the page. Grading every trade of every season took
+about 23 seconds, on every page load the cache had let go of. The weekly rows
+are written to data/archive/trade_grades.csv by build_archive.py at the end
+of every run that writes the archive, for the seasons it named, and the pages
+read them. Unlike the rest of the archive they are not a record: nothing in
+them was checked by hand, and every row is a function of the other files and
+of this module. So a season's rows are replaced outright whenever it is
+regraded, and regrading every season at once is allowed (--grades with no
+--season). Each row carries the GRADES_VERSION it was graded under; bump it
+with any change here that alters a grade, and until the seasons are regraded
+the pages work the grades out live rather than show stale ones.
 """
 import numpy as np
 import pandas as pd
@@ -156,6 +168,12 @@ from data import archive
 FIRST_SEASON = 2018
 PLAYED = {"Healthy", "Mid-Game Injury"}
 
+# Bump on any change that alters a grade. trade_grades.csv rows carry the
+# version they were graded under, and a mismatch is worked out live instead,
+# so a page never shows a grade the current rules would not give.
+GRADES_VERSION = 1
+STORED = "trade_grades"
+
 SIDE_COLS = ["transaction_id", "season", "week", "executed_at", "team_id",
              "receives", "sends", "dropped", "partners", "inferred", "notes",
              "weeks", "games", "first_week", "last_week",
@@ -163,6 +181,11 @@ SIDE_COLS = ["transaction_id", "season", "week", "executed_at", "team_id",
              "xwins", "wins_flipped", "wins_created", "losses_caused"]
 WEEK_COLS = ["transaction_id", "season", "team_id", "week", "played",
              "best", "started", "xwins", "flip", "score", "cf_score", "opp_score"]
+# The archive keeps two decimals, which would round a week's change in win
+# chance to the hundredth of a win, so it is stored in percentage points.
+STORED_COLS = ["season", "transaction_id", "team_id", "week", "played",
+               "best", "started", "win_pct", "flip", "score", "cf_score", "opp_score",
+               "version"]
 
 
 def supported(season: int) -> bool:
@@ -416,8 +439,8 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
     return rows
 
 
-def weekly_grades(season: int) -> pd.DataFrame:
-    """One row per trade, manager and week held: the two deltas and the flip."""
+def compute_weekly_grades(season: int) -> pd.DataFrame:
+    """weekly_grades worked out from the archive, ignoring trade_grades.csv."""
     if not supported(season) or not archive.has("transactions", season) \
             or not archive.has("boxscores", season):
         return pd.DataFrame(columns=WEEK_COLS)
@@ -429,6 +452,39 @@ def weekly_grades(season: int) -> pd.DataFrame:
     for _, side in sides.iterrows():
         rows.extend(_grade_side(side, s))
     return pd.DataFrame(rows, columns=WEEK_COLS)
+
+
+def stored_grades(season: int) -> pd.DataFrame | None:
+    """
+    This season's weekly grades from trade_grades.csv, or None when the file
+    has no rows for it or any row was graded by an older GRADES_VERSION.
+    """
+    if not archive.has(STORED, season):
+        return None
+    df = archive.get(STORED, season)
+    if df.empty or not (df["version"] == GRADES_VERSION).all():
+        return None
+    df["xwins"] = df["win_pct"] / 100
+    df["played"] = df["played"].astype(bool)
+    return df[WEEK_COLS]
+
+
+def to_store(weekly: pd.DataFrame) -> pd.DataFrame:
+    """weekly_grades rows as trade_grades.csv holds them."""
+    out = weekly.copy()
+    out["win_pct"] = (out["xwins"] * 100).round(2)
+    out["version"] = GRADES_VERSION
+    return out[STORED_COLS]
+
+
+def weekly_grades(season: int) -> pd.DataFrame:
+    """
+    One row per trade, manager and week held: the two deltas, the change in
+    win chance, and the flip. Read from trade_grades.csv when it holds this
+    season at the current GRADES_VERSION, otherwise worked out here.
+    """
+    stored = stored_grades(season)
+    return stored if stored is not None else compute_weekly_grades(season)
 
 
 def add_rates(frame: pd.DataFrame) -> pd.DataFrame:

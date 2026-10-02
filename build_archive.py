@@ -25,6 +25,7 @@ Usage
   python build_archive.py --season 2026 --dataset matchups --update
   python build_archive.py --season 2026 --update --dry-run
   python build_archive.py --season 2019 --rebuild --force
+  python build_archive.py --grades              # regrade every season's trades
 """
 import argparse
 import hashlib
@@ -499,9 +500,60 @@ def freeze_draft_value(seasons):
             print(f"  draft value curve for {season} not frozen: {type(e).__name__}: {e}")
 
 
+def grade_trades(seasons, dry_run=False) -> int:
+    """
+    Regrade the named seasons' trades into trade_grades.csv.
+
+    Runs after everything else a run writes, because a grade reads all of it:
+    transactions, boxscores, player_weeks, game_status, matchups. It reads them
+    from disk, so it has to come after the write, not from this run's plan.
+    The rows are derived, never curated, so a season's rows are replaced
+    outright rather than merged; see analysis/trades.py. 2026's in-progress
+    grades also change legitimately as a two-week playoff round completes.
+    """
+    from data import archive
+    from analysis import trades
+    archive.clear()
+    p = csv_path(trades.STORED)
+    existing = load_archive(trades.STORED)
+    frames, redone = [], []
+    for season in seasons:
+        if not trades.supported(season):
+            continue
+        fresh = trades.to_store(trades.compute_weekly_grades(season))
+        had = (existing[existing["season"] == season] if not existing.empty
+               else pd.DataFrame(columns=fresh.columns))
+        same = len(had) == len(fresh) and (fresh.empty or canonical(
+            had[fresh.columns].sort_values(["transaction_id", "team_id", "week"])
+            .reset_index(drop=True)).equals(canonical(round_numbers(
+                fresh.sort_values(["transaction_id", "team_id", "week"]).reset_index(drop=True)))))
+        print(f"  {trades.STORED:11} {season}  "
+              f"{'unchanged' if same else f'{len(had)} row(s) replaced by {len(fresh)}'}")
+        if not same:
+            redone.append(season)
+            frames.append(fresh)
+    if not redone:
+        return 0
+    if dry_run:
+        print("  (dry run - trade_grades.csv not written)")
+        return 0
+    keep = existing[~existing["season"].isin(redone)] if not existing.empty else existing
+    out = pd.concat([keep] + frames, ignore_index=True)
+    out = out.sort_values(["season", "transaction_id", "team_id", "week"]).reset_index(drop=True)
+    if p.exists():
+        BACKUPS.mkdir(parents=True, exist_ok=True)
+        b = BACKUPS / f"{trades.STORED}.{datetime.now():%Y%m%d-%H%M%S}.csv"
+        shutil.copy2(p, b)
+        print(f"  backup  _backups/{b.name}")
+    round_numbers(out).to_csv(p, index=False)
+    print(f"  wrote   {p.name}  {len(out):,} rows")
+    archive.clear()
+    return 0
+
+
 def do_list():
     print(f"archive: {ARCHIVE}")
-    for name in BUILDERS:
+    for name in list(BUILDERS) + ["trade_grades"]:
         df = load_archive(name)
         if df.empty:
             print(f"  {name:11} (absent)")
@@ -531,12 +583,29 @@ def main():
                     help="permit modifying or replacing rows that already exist")
     ap.add_argument("--dry-run", action="store_true", help="show the plan, write nothing")
     ap.add_argument("--list", action="store_true", help="show what the archive holds")
+    ap.add_argument("--grades", action="store_true",
+                    help="regrade trades into trade_grades.csv and exit; every "
+                         "season with trades unless --season is given")
     ap.add_argument("--meta", action="store_true",
                     help="refresh seasons.json for the named seasons and exit")
     args = ap.parse_args()
 
     if args.list:
         return do_list()
+
+    if args.grades and not (args.update or args.rebuild):
+        # The one action allowed on every season at once: trade grades are
+        # worked out from the rest of the archive, never curated, so there is
+        # nothing in them a wholesale regrade could lose. See analysis/trades.py.
+        tx = load_archive("transactions")
+        seasons = sorted(set(args.season) if args.season
+                         else set(tx["season"].unique()) if not tx.empty else set())
+        unknown = [x for x in seasons if x not in SEASONS]
+        if unknown:
+            print(f"error: {unknown} not in config.SEASONS {SEASONS}")
+            return 2
+        print(f"regrading trades  seasons={seasons}{'  DRY RUN' if args.dry_run else ''}\n")
+        return grade_trades(seasons, args.dry_run)
 
     if args.meta and not (args.update or args.rebuild):
         if not args.season:
@@ -684,6 +753,9 @@ def main():
             print("\nrefreshing seasons.json:")
             refresh_meta(targets)
             freeze_draft_value(targets)
+        if not args.dry_run and not blocked:
+            print("\ntrade grades:")
+            grade_trades(targets)
         return 1 if blocked else 0
 
     if args.dry_run:
@@ -740,6 +812,9 @@ def main():
         print("\nrefreshing seasons.json:")
         refresh_meta(targets)
         freeze_draft_value(targets)
+
+    print("\ntrade grades:")
+    grade_trades(targets)
 
     print("\nDone.")
     return 0

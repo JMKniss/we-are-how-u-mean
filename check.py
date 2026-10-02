@@ -59,6 +59,24 @@ QUICK = [SEASONS[0], SEASONS[-2], SEASONS[-1]]
 REPAIR = "Serialization of dataframe to Arrow table was unsuccessful"
 
 
+def stale_trade_grades() -> list:
+    """
+    Seasons whose stored trade grades were graded under an older version.
+    The pages still show the right grades - they work them out live - but at
+    the old 20-odd seconds a load, so this is the reminder to regrade.
+    """
+    from analysis import trades
+    from data import archive
+    if not archive.has(trades.STORED):
+        return [("trade_grades.csv", "-", "missing: python build_archive.py --grades")]
+    g = archive.get(trades.STORED)
+    old = sorted(int(s) for s in g.loc[g["version"] != trades.GRADES_VERSION, "season"].unique())
+    if not old:
+        return []
+    return [("trade_grades.csv", ",".join(map(str, old)),
+             "graded under an older version: python build_archive.py --grades")]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("page", nargs="?", help="substring of a page name")
@@ -113,6 +131,8 @@ def main():
             if page.name.startswith("9_"):
                 break
         print(f"{page.name:26} " + " ".join(cells), flush=True)
+
+    problems += stale_trade_grades()
 
     print()
     if not problems:
