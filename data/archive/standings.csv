@@ -99,13 +99,13 @@ season,team_id,team_name,wins,losses,ties,points_for,points_against,final_standi
 2025,8,"I Don't Care, I Cast Fireball",4,22,0,1090.42,1408.68,10,0.0,59,58,5,9
 2025,9,Paladins of the Pancreas,17,9,0,1367.04,1267.02,2,0.0,28,26,2,5
 2025,10,We Are Rolling High,13,13,0,1313.42,1321.5,5,0.0,22,22,2,3
-2026,1,Rapidash to the Endzone,4,2,0,414.9,349.86,0,55.42,6,5,0,2
-2026,2,Machampionship Bound,5,1,0,373.08,341.3,0,63.8,10,9,0,1
-2026,3,Nine tails is hot,2,4,0,303.08,371.24,0,22.98,0,0,0,0
-2026,4,Pickenschuuuuuuuuuu,1,5,0,312.36,364.72,0,14.7,1,1,0,0
-2026,5,This isnt my final Eveelotution,2,4,0,312.8,402.86,0,18.82,4,5,0,2
-2026,6,GottaCatchaBall,2,4,0,343.3,389.38,0,23.65,1,0,0,4
-2026,7,J’Diglett Morgoones,5,1,0,409.48,309.96,0,69.1,7,7,0,3
-2026,8,Team Rocket,0,6,0,269.7,356.16,0,4.45,8,10,0,3
-2026,9,SlowKing Henry and Company,4,2,0,358.72,332.4,0,58.5,5,5,0,2
-2026,10,Brock,5,1,0,388.22,267.76,0,68.58,2,1,0,1
+2026,1,Rapidash to the Endzone,4,2,0,414.9,349.86,0,52.68,9,7,1,2
+2026,2,Machampionship Bound,5,1,0,373.08,341.3,0,66.92,14,13,0,1
+2026,3,Nine tails is hot,2,4,0,303.08,371.24,0,24.68,0,0,0,0
+2026,4,Pickenschuuuuuuuuuu,1,5,0,312.36,364.72,0,13.8,1,1,0,0
+2026,5,This isnt my final Eveelotution,2,4,0,312.8,402.86,0,16.7,7,6,0,2
+2026,6,GottaCatchaBall,2,4,0,343.3,389.38,0,23.15,3,1,0,4
+2026,7,J’Diglett Morgoones,5,1,0,409.48,309.96,0,71.15,8,8,0,3
+2026,8,Team Rocket,0,6,0,269.7,356.16,0,8.45,10,12,0,3
+2026,9,SlowKing Henry and Company,4,2,0,358.72,332.4,0,53.0,8,7,1,2
+2026,10,Brock,5,1,0,388.22,267.76,0,69.47,2,1,0,1
