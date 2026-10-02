@@ -170,9 +170,9 @@ TRADE_GRADE_GROUPS = [
                                ("best_pgp", "Per Game Played", "%+.1f")]),
     ("Actual Starting Lineup Change", [("started", "Total", "%+.1f"), ("started_pw", "Per Week", "%+.1f"),
                                        ("started_pgp", "Per Game Played", "%+.1f")]),
-    ("Wins and Losses", [("xwins", "Expected Wins Added", "%+.2f"),
-                         ("wins_created", "Wins Created", None),
-                         ("losses_caused", "Losses Caused", None)]),
+    ("Wins and Losses", [("wins_created", "Wins Created", None),
+                         ("losses_caused", "Losses Caused", None),
+                         ("xwins", "Expected Wins Added", "%+.2f")]),
 ]
 
 
@@ -217,13 +217,14 @@ once for each manager in it.
 - **Total** is over the weeks held. **Per Week** divides by the weeks held, so an
   early trade and a late trade can be compared. **Per Game Played** counts only
   weeks where every received player played, or at least one of them was started.
-- **Expected Wins Added**. Each week, the chance the score beats a typical team
-  that week, minus the same chance without the trade. Points count for more on
-  a score near the league average that week, and a trade can add expected wins
-  without flipping a result.
 - **Wins Created** and **Losses Caused**. Games won that would have been lost
   without the trade, and the reverse, against the opponent's actual score. A
   playoff round counts as one game.
+- **Expected Wins Added**. Each week, the chance the score beats a typical team
+  that week, minus the same chance without the trade. Weeks the trade hurt
+  count against it, so it is net, closer to wins created minus losses caused.
+  Points count for more on a score near the league average that week, and a
+  trade can add expected wins without flipping a result.
 - **Up-Even-Down**. Trades where the optimal lineup change was above zero, zero,
   or below zero.
 
