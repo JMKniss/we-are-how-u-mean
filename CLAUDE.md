@@ -122,7 +122,7 @@ the file is opened rather than loaded into every session:
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
-| Trade grades: both counterfactuals, injury neutral, the window, what was rejected | `analysis/trades.py` |
+| Trade grades: both counterfactuals, the refill, the rates, the window, what was rejected | `analysis/trades.py` |
 | Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
 | The vlog's notes: format, which week, recap vs preview | `data/vlog_notes.py` |
@@ -586,8 +586,15 @@ states on camera (2023 through week 10: 42-8 and 29-28), the archive agrees.
 **Trades are graded on the weeks held, by counterfactual, never by projection.**
 Each side of a trade is scored alone: the manager's best possible lineup, and
 the lineup he actually started, against the same roster with the trade undone,
-week by week while he holds a player he received. Both numbers are given with
-and without the injuries that came after the trade. Rejected on the way: total
+week by week while he holds a player he received. Each is shown as a total,
+per week held and per game played: per week so a late trade can stand beside
+an early one, per game played to see past weeks a player missed. An emptied
+slot is refilled from one pool of bench, sent and dropped players by average
+to date - sent players first assumed every one of them would have started.
+Rejected on the way: an injury-neutral version that scored hurt weeks at the
+player's healthy pace (the grade is what the trade did, and the injury is
+part of that; per game played answers the same question without inventing
+points), total
 points of the players (blind to 2-for-1s, positions and need), value over a
 league-wide replacement (assumes the tenth TE was available to him), any
 rest-of-season or asset view that keeps crediting a trade after the player was

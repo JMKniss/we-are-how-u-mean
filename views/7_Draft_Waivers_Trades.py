@@ -20,8 +20,8 @@ kept too little to measure a replacement level.
 Trades also grades every side of every trade, on the weeks that manager held
 what he received: the best lineup his roster could have started against the
 best it could have started with the trade undone, the same on the lineup he
-actually started, each with and without the injuries that came after the
-trade, and the regular-season games the trade turned. The method and the
+actually started, each as a total, per week held and per game played, and
+the games the trade turned. The method and the
 decisions behind it are in analysis/trades.py. The grades follow the same
 manager filter as the trade list, and a season's per-manager totals sit
 beneath them.
@@ -47,6 +47,7 @@ from analysis.transactions import waiver_moves, trade_sides, move_counts
 from analysis.trades import trade_grades, manager_summary
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from display_utils import TRADE_GRADE_COLS, TRADE_GRADE_FORMAT, TRADE_GRADE_NOTE
 from branding import page_icon
 
 st.set_page_config(page_title="Draft, Waivers & Trades", page_icon=page_icon(), layout="wide")
@@ -363,27 +364,6 @@ with tab4:
         st.table(table.set_index("Week"))
     counts_table()
 
-GRADE_COLS = {"best": "Best Lineup", "best_healthy": "Best Lineup, Healthy",
-              "started": "As Started", "started_healthy": "As Started, Healthy",
-              "wins_created": "Wins Created", "losses_caused": "Losses Caused"}
-GRADE_FORMAT = {v: st.column_config.NumberColumn(v, format="%+.1f")
-                for k, v in GRADE_COLS.items() if not k.endswith("d")}
-GRADE_NOTE = (
-    "Each side is graded alone, on the weeks that manager held a player from "
-    "the trade. Best Lineup is the best lineup his roster could have started, "
-    "minus the best it could have started with the trade undone and the players "
-    "he sent back in its place. As Started is the same subtraction on the lineup "
-    "he actually started, each received starter replaced by the sent player who "
-    "fit the slot, or else his best bench option by average to date. Healthy "
-    "undoes injuries that came after the trade at the player's healthy pace, "
-    "injuries he already had stay. Wins Flipped counts games As Started turned, "
-    "won where the lineup without the trade would have lost, or the reverse, a "
-    "playoff round scored over its weeks on the league's own bracket. Wins "
-    "Created is games won that the lineup without the trade would have lost, "
-    "Losses Caused games lost that it would have won. A player traded away "
-    "again is graded on the weeks he was held, however few.")
-
-
 def names_df(frame: pd.DataFrame) -> pd.DataFrame:
     """who() for a dataframe, where an escaped team name would show its backslashes."""
     out = who(frame)
@@ -409,12 +389,11 @@ def grades_section(team: int | None):
             "Receives": [", ".join(r) for r in shown["receives"]],
             "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
                       for s, dr in zip(shown["sends"], shown["dropped"])],
-            "Weeks Held": shown["weeks"],
-            **{v: shown[k] for k, v in GRADE_COLS.items()},
+            **{v: shown[k] for k, v in TRADE_GRADE_COLS.items()},
         }, index=shown.index),
     ], axis=1)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
-    st.caption(GRADE_NOTE)
+    st.dataframe(table, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
+    st.caption(TRADE_GRADE_NOTE)
 
     summary = manager_summary(grades, manager_map)
     st.subheader(f"{season} Trade Grades by Manager")
@@ -422,13 +401,11 @@ def grades_section(team: int | None):
         "Trades": summary["trades"],
         "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
                          zip(summary["up"], summary["even"], summary["down"])],
-        "Weeks Held": summary["weeks"],
-        **{v: summary[k] for k, v in GRADE_COLS.items()},
+        **{v: summary[k] for k, v in TRADE_GRADE_COLS.items()},
     }, index=summary.index)], axis=1)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
-    st.caption("Up is a trade that added to the best lineup over the weeks held, "
-               "down one that cost it, whatever the size. Points are summed over "
-               "the manager's trades.")
+    st.dataframe(table, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
+    st.caption("Totals are summed over the manager's trades. PW and PGP are "
+               "taken over all the weeks and games in them.")
 
 
 with tab5:

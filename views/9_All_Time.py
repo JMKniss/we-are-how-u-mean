@@ -16,9 +16,9 @@ drag every average down - and lists the per-season counts, including the
 current season, for one manager or the whole league. Who Trades with Who
 counts trades per pair of managers, each pair stored once in name order;
 picking a manager finds the pair from either side and puts that manager first.
-Trade Grades sums every manager's graded trades over his career, lists them
-season by season, and ranks the best and worst single trades the league has
-made; the grading is analysis/trades.py, and the season in progress counts,
+Career Trading Grade sums every manager's graded trades over his career, lists them
+season by season, and lists every single trade in one sortable table, so
+each reader ranks them on the column he cares about; the grading is analysis/trades.py, and the season in progress counts,
 graded up to the last week archived.
 """
 import sys
@@ -31,10 +31,10 @@ import numpy as np
 from data import archive
 from data.espn_client import get_matchups_df, get_manager_map, get_transactions_df
 from analysis.transactions import move_counts, trade_pairs
-from analysis.trades import trade_grades
+from analysis.trades import trade_grades, summarise
 from analysis.standings import h2h_standings, combined_standings, compute_season_finish_map
 from config import SEASONS, season_config
-from display_utils import sidebar_display_prefs
+from display_utils import sidebar_display_prefs, TRADE_GRADE_COLS, TRADE_GRADE_FORMAT, TRADE_GRADE_NOTE
 from branding import page_icon
 
 st.set_page_config(page_title="All-Time Records", page_icon=page_icon(), layout="wide")
@@ -1340,49 +1340,30 @@ with tab_moves:
             st.caption(note)
 
         st.divider()
-        st.subheader("Trade Grades")
+        st.subheader("Career Trading Grade")
         grades = load_trade_grades()
         if active_only and not grades.empty:
             grades = grades[grades["manager"].isin(ACTIVE_MANAGERS)]
         if grades.empty:
             st.info("No trades are archived yet.")
         else:
-            GRADE_COLS = {"best": "Best Lineup", "best_healthy": "Best Lineup, Healthy",
-                          "started": "As Started", "started_healthy": "As Started, Healthy",
-                          "wins_created": "Wins Created", "losses_caused": "Losses Caused"}
-            GRADE_FORMAT = {v: st.column_config.NumberColumn(v, format="%+.1f")
-                            for k, v in GRADE_COLS.items() if not k.endswith("d")}
-            COUNTS = ("Wins Created", "Losses Caused")
-
             def record(g: pd.DataFrame) -> pd.Series:
+                r = summarise(g)
                 return pd.Series({
-                    "Trades": g["transaction_id"].nunique(),
-                    "Up-Even-Down": f"{int((g['best'] > 0).sum())}-{int((g['best'] == 0).sum())}"
-                                    f"-{int((g['best'] < 0).sum())}",
-                    "Weeks Held": int(g["weeks"].sum()),
-                    **{v: round(float(g[k].sum()), 2) for k, v in GRADE_COLS.items()},
+                    "Trades": int(r["trades"]),
+                    "Up-Even-Down": f"{int(r['up'])}-{int(r['even'])}-{int(r['down'])}",
+                    **{v: r[k] for k, v in TRADE_GRADE_COLS.items()},
                 })
 
+            COUNTS = ["Wins Created", "Losses Caused"]
             st.markdown("**Career**")
             career = (grades.groupby("manager").apply(record, include_groups=False)
                       .reset_index().rename(columns={"manager": "Manager"})
-                      .sort_values("Best Lineup", ascending=False))
-            career[list(COUNTS)] = career[list(COUNTS)].astype(int)
-            st.dataframe(career, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
-            st.caption(
-                "Each side of a trade is graded alone, on the weeks that manager held "
-                "a player from it. Best Lineup is the best lineup his roster could have "
-                "started minus the best it could have started with the trade undone. "
-                "As Started is the same on the lineup he actually started, each "
-                "received starter replaced by the sent player who fit the slot, or "
-                "else his best bench option by average to date. Healthy undoes "
-                "injuries that came after the trade at the player's healthy pace. "
-                "Wins Created is games won that the lineup without the trade would "
-                "have lost, Losses Caused games lost that it would have won, playoff "
-                "rounds on the league's own bracket included. Up is a "
-                "trade that added to the best lineup at all, down one that cost it. "
-                f"Trades from {int(grades['season'].min())}, the season in progress "
-                "included, graded to the last week archived.")
+                      .sort_values("OLΔ", ascending=False))
+            career[COUNTS] = career[COUNTS].astype(int)
+            st.dataframe(career, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
+            st.caption(TRADE_GRADE_NOTE + f" Trades from {int(grades['season'].min())}, the "
+                       "season in progress included, graded to the last week archived.")
 
             st.markdown("**Season by Season**")
             mgr = st.selectbox("Manager", sorted(grades["manager"].unique()), key="grades_mgr")
@@ -1390,27 +1371,21 @@ with tab_moves:
                            .apply(record, include_groups=False).reset_index()
                            .rename(columns={"season": "Season"}).sort_values("Season"))
             seasons_tbl["Season"] = seasons_tbl["Season"].astype(str)
-            seasons_tbl[list(COUNTS)] = seasons_tbl[list(COUNTS)].astype(int)
-            st.dataframe(seasons_tbl, hide_index=True, width="stretch", column_config=GRADE_FORMAT)
+            seasons_tbl[COUNTS] = seasons_tbl[COUNTS].astype(int)
+            st.dataframe(seasons_tbl, hide_index=True, width="stretch", column_config=TRADE_GRADE_FORMAT)
 
-            def trade_table(frame: pd.DataFrame) -> pd.DataFrame:
-                return pd.DataFrame({
-                    "Season": frame["season"].astype(str),
-                    "Week": frame["week"],
-                    "Manager": frame["manager"],
-                    "Receives": [", ".join(r) for r in frame["receives"]],
-                    "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
-                              for s, dr in zip(frame["sends"], frame["dropped"])],
-                    "Weeks Held": frame["weeks"],
-                    **{v: frame[k] for k, v in GRADE_COLS.items()},
-                })
-
-            held = grades[grades["weeks"] > 0]
-            st.markdown("**Best Trades**")
-            st.dataframe(trade_table(held.nlargest(10, "best")), hide_index=True,
-                         width="stretch", column_config=GRADE_FORMAT)
-            st.markdown("**Worst Trades**")
-            st.dataframe(trade_table(held.nsmallest(10, "best")), hide_index=True,
-                         width="stretch", column_config=GRADE_FORMAT)
-            st.caption("Ranked on Best Lineup. A side is one manager's half of a "
-                       "trade, so a lopsided deal can appear in both lists.")
+            held = grades[grades["weeks"] > 0].sort_values("started", ascending=False)
+            every = pd.DataFrame({
+                "Season": held["season"].astype(str),
+                "Week": held["week"],
+                "Manager": held["manager"],
+                "Receives": [", ".join(r) for r in held["receives"]],
+                "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
+                          for s, dr in zip(held["sends"], held["dropped"])],
+                **{v: held[k] for k, v in TRADE_GRADE_COLS.items()},
+            })
+            st.markdown("**Every Trade**")
+            st.dataframe(every, hide_index=True, width="stretch", height=560,
+                         column_config=TRADE_GRADE_FORMAT)
+            st.caption("Click a column to sort it, again to reverse. A trade held "
+                       "one week can sort to the top of PW or PGP on one game.")
