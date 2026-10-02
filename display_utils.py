@@ -204,33 +204,36 @@ def trade_grade_height(rows: int) -> int:
 
 
 TRADE_GRADE_NOTE = """
-**Reading the table.** Each row is one manager's side of a trade, graded on the
-weeks that manager held at least one player received in it. A trade shows up
-once for each manager in it.
+Reading the table: Trade analysis based on change to the named manager's
+performance, and does not consider how it worked out for the manager on the
+other side of trades. Weeks that manager held at least one player received in
+it are counted.
 
-- **Optimal Lineup Change**. The best lineup the roster could have started with
+- **Up-Even-Down**. Trades that increased, didn't change, or decreased the
+  optimal lineup score.
+- **Optimal Lineup Change** The best lineup the roster could have started with
   the trade, minus the best it could have started without it. What the trade did
-  for the roster, whether or not the right players were started.
-- **Actual Starting Lineup Change**. What the received players scored in the
-  lineup actually started, minus what would have been in those slots without
-  the trade.
-- **Total** is over the weeks held. **Per Week** divides by the weeks held, so an
-  early trade and a late trade can be compared. **Per Game Played** counts only
-  weeks where every received player played, or at least one of them was started.
-- **Wins Created** and **Losses Caused**. Games won that would have been lost
-  without the trade, and the reverse, against the opponent's actual score. A
-  playoff round counts as one game.
-- **Expected Wins Added**. Each week, the chance the score beats a typical team
-  that week, minus the same chance without the trade. Weeks the trade hurt
-  count against it, so it is net, closer to wins created minus losses caused.
-  Points count for more on a score near the league average that week, and a
-  trade can add expected wins without flipping a result.
-- **Up-Even-Down**. Trades where the optimal lineup change was above zero, zero,
-  or below zero.
+  for the roster, not affected by start/sit decisions. **These columns represent
+  trade value.**
+- **Actual Starting Lineup Change:** Points actually scored minus the expected
+  score without the trade. Unlike Optimal Lineup, this does account for
+  Start/Sit decisions. **These columns represent real impact.**
+- **Total** is over all weeks traded for players were held. **Per Week** divides
+  by the weeks held, so an early trade and a late trade can be compared. **Per
+  Game Played** counts only weeks where traded for players were healthy and not
+  on bye, so missed games don't look like a bad trade decision.
+- **Wins Created and Losses Caused:** Games won that would have been lost
+  without the trade, and vice versa, against the opponent's actual score.
+  Includes playoffs.
+- **Expected Wins Added:** cumulative increase or decrease in your odds of
+  winning as a result of trades. Basically ignores your actual matchup, looks at
+  what you scored, what you would have scored w/o the trade, everyone else's
+  score across the league, and how your scores compare.
 
-**The lineup without the trade.** Each slot a received player started in goes to
-the best average to date among the bench, the players sent away, and anyone
-dropped to make the trade, counting only players who played that week. A slot
-nobody on the roster could fill gets the average of each team's lowest scoring
-player at that position that week.
+Hypothetical lineups if the trade had not been made are based on the assumption
+the manager would have started the player on the bench (or given away in the
+trade) with the highest ppg up to that point in place of the traded for
+player(s).
+
+Trade data goes back to 2018 and is updated each week.
 """

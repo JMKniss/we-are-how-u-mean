@@ -1364,8 +1364,7 @@ with tab_moves:
             table = table.sort_values(("Optimal Lineup Change", "Total"), ascending=False)
             st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
                          height=trade_grade_height(len(table)))
-            st.caption(TRADE_GRADE_NOTE + f"\nTrades from {int(grades['season'].min())}, the "
-                       "season in progress included, graded to the last week archived.")
+            st.caption(TRADE_GRADE_NOTE)
 
             st.markdown("**Season by Season**")
             mgr = st.selectbox("Manager", sorted(grades["manager"].unique()), key="grades_mgr")
