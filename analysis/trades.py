@@ -42,10 +42,15 @@ Two counterfactuals, read side by side, plus one derived from the second:
 
 Each delta is given three ways. The total is the points the trade added or
 cost over the weeks held. Per week divides by the weeks held, so a trade made
-in week 11 can stand next to one made in week 3. Per game played averages only
-the weeks a received player played - not on bye, not out, not on IR, not
-inactive or suspended; a mid-game injury counts as played - so it says what
-the trade added when the players in it were on the field.
+in week 11 can stand next to one made in week 3. Per game played averages the
+weeks that count as a game for the trade: every received player still held
+played, or at least one of them started. A week a received player missed -
+bye, out, IR, inactive, suspended; a mid-game injury counts as played - with
+none of the others in the lineup is left out, so it says what the trade added
+when it was on the field. "Any received player played" was the rule at first,
+and it counted a week the stud was hurt because the throw-in sent to make
+room was healthy on the bench. A throw-in who actually started that week did
+contribute, so that week still counts.
 
 The refill. The slot goes to whoever had the highest average to date among
 the players he sent, the players he dropped to make the trade, and his bench,
@@ -55,7 +60,10 @@ for one starter was charged as if both bench pieces would have played. Pooled,
 a sent player starts only if he was the best option there was, and a player
 cut to make room starts almost never, which is right. "Average to date" is
 never that week's score, so a bench player nobody would have started cannot
-swing a week with one big game. Fixed slots are refilled before the flex, so
+swing a week with one big game. A player who did not play is never the
+refill: an injured or inactive player is a zero on the bench, not in the
+lineup. A mid-game injury did play, so he can be the refill and scores what
+he scored. Fixed slots are refilled before the flex, so
 a sent RB takes the RB slot and leaves the flex to a sent WR. With the pooled
 candidates that order gave the same result as the best possible assignment
 (the most summed average to date) on every trade in the archive through 2025,
@@ -250,7 +258,8 @@ def _refill(vacated: list, candidates: list, s: _Season, week: int) -> float:
     highest-average eligible candidate not already used, fixed slots first so
     a sent RB takes the RB slot and leaves the flex to a sent WR. candidates
     is one pool of (player_id, points): sent, trade-dropped and bench players
-    alike. A slot nobody can fill is worth the replacement level.
+    alike. A player who did not play is not a candidate; a mid-game injury
+    played. A slot nobody can fill is worth the replacement level.
     """
     order = sorted(vacated, key=lambda slot: len(SLOT_ELIGIBILITY.get(slot, set())) or 99)
     used = set()
@@ -258,7 +267,7 @@ def _refill(vacated: list, candidates: list, s: _Season, week: int) -> float:
     for slot in order:
         eligible = SLOT_ELIGIBILITY.get(slot)
         pool = [(pid, p) for pid, p in candidates
-                if pid not in used and not s.on_bye(pid, week)
+                if pid not in used and s.played(pid, week)
                 and (eligible is None or s.position.get(pid) in eligible)]
         if pool:
             best = max(pool, key=lambda c: s.avg_to_date(c[0], week))
@@ -292,8 +301,7 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
         })
 
         row = {"transaction_id": side["transaction_id"], "season": s.season,
-               "team_id": team, "week": week,
-               "played": any(s.played(p, week) for p in roster["player_id"] if p in received)}
+               "team_id": team, "week": week}
 
         # Optimal lineup: the whole roster, with and without the trade. An IR
         # slot does not score.
@@ -318,6 +326,12 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
                       + list(zip(bench["player_id"], bench["points"])))
         refill = _refill(started_received["slot"].tolist(), candidates, s, week)
         row["started"] = round(float(started_received["points"].sum()) - refill, 2)
+
+        # A game played, for per game played: every received player he still
+        # holds played, or one of them was in his starting lineup.
+        held = [p for p in roster["player_id"] if p in received]
+        row["played"] = (all(s.played(p, week) for p in held)
+                         or not started_received.empty)
 
         # Wins flipped, from the lineup as started: regular season weeks here,
         # playoff rounds below once every held week is graded.

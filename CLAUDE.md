@@ -590,7 +590,9 @@ week by week while he holds a player he received. Each is shown as a total,
 per week held and per game played: per week so a late trade can stand beside
 an early one, per game played to see past weeks a player missed. An emptied
 slot is refilled from one pool of bench, sent and dropped players by average
-to date - sent players first assumed every one of them would have started.
+to date, a player who did not play never among them - sent players first
+assumed every one of them would have started, and an injured one was picked
+and scored as a zero in the lineup.
 Rejected on the way: an injury-neutral version that scored hurt weeks at the
 player's healthy pace (the grade is what the trade did, and the injury is
 part of that; per game played answers the same question without inventing
