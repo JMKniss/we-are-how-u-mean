@@ -21,6 +21,7 @@ season by season, and lists every single trade in one sortable table, so
 each reader ranks them on the column he cares about; the grading is analysis/trades.py, and the season in progress counts,
 graded up to the last week archived.
 """
+import re
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -36,12 +37,63 @@ from analysis.standings import h2h_standings, combined_standings, compute_season
 from config import SEASONS, season_config
 from display_utils import sidebar_display_prefs, trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
 from branding import page_icon
-from style import page_header
+import style
+from style import helmet_url, page_header
 
 st.set_page_config(page_title="All-Time Records", page_icon=page_icon(), layout="wide")
 page_header("All-Time Records")
 
 show_mgr, show_team = sidebar_display_prefs()
+
+
+def _float_fmt(values) -> str:
+    """As many decimals as the column needs, up to two, the same down the column."""
+    vals = [float(v) for v in values if isinstance(v, (int, float, np.number)) and not pd.isna(v)]
+    if all(round(v) == v for v in vals):
+        return "{:,.0f}"
+    if all(round(v, 1) == v for v in vals):
+        return "{:,.1f}"
+    return "{:,.2f}"
+
+
+def records_table(df: pd.DataFrame, index: bool = False, bold_last: bool = False, tint_records: bool = False,
+          **kw) -> None:
+    """
+    An All-Time table in the Broadcast style. All-Time spans seasons, so a
+    manager is always shown with his helmet, beside whichever column holds
+    the managers ("Manager", else the first). Numbers are right-aligned with
+    as many decimals as the column needs. index=True keeps the frame's index
+    as the first column; bold_last marks a summary row; tint_records colours
+    "W-L" cells green or red by who leads.
+    """
+    if index:
+        df = df.reset_index().rename(columns={"index": df.index.name or ""})
+    else:
+        df = df.reset_index(drop=True)
+    df = df.astype(object).where(df.notna(), "—")
+    managers = set(season_stats_df_all["manager"])
+    col = "Manager" if "Manager" in df.columns else df.columns[0]
+    pics = [helmet_url(m) if m in managers else "" for m in df[col]]
+    nums = [c for c in df.columns if df[c].map(
+        lambda v: isinstance(v, (int, float, np.number)) and not isinstance(v, bool) or v == "—").all()
+        and df[c].map(lambda v: v != "—").any()]
+    fmt = {c: _float_fmt(df[c]) for c in nums}
+    fmt.update(kw.pop("fmt", {}))
+    classes = None
+    if bold_last or tint_records:
+        classes = pd.DataFrame("", index=df.index, columns=df.columns)
+        if tint_records:
+            for c in df.columns[1:]:
+                for i, v in enumerate(df[c]):
+                    m = re.fullmatch(r"(\d+)-(\d+)(?:-\d+)?", str(v))
+                    if m:
+                        w, l = int(m.group(1)), int(m.group(2))
+                        classes.iloc[i, df.columns.get_loc(c)] = (
+                            "wa-w" if w > l else "wa-l" if l > w else "wa-t")
+        if bold_last:
+            classes.iloc[-1] = "wa-strong"
+    style.frame(df, pics=pics, pic_col=col, num=nums, fmt=fmt, classes=classes,
+          compact=kw.pop("compact", True), **kw)
 
 # ── 2015 hardcoded ────────────────────────────────────────────────────────────
 LEGACY_2015 = {"champion": "Mikey", "sacko": "Tyler"}
@@ -364,6 +416,7 @@ IN_PROGRESS_TXT = ", ".join(map(str, IN_PROGRESS))
 # who have since left. Whole seasons are never dropped; a record simply passes
 # to the next holder if the top one is no longer active.
 LATEST_SEASON = int(season_stats_df["season"].max())
+season_stats_df_all = season_stats_df
 ACTIVE_MANAGERS = set(
     season_stats_df.loc[season_stats_df["season"] == LATEST_SEASON, "manager"]
 )
@@ -520,8 +573,7 @@ with tab_trophy:
               .sort_values("_wins", ascending=False)
               .drop(columns="_wins")
               .reset_index(drop=True))
-    career.index = range(1, len(career) + 1)
-    st.dataframe(career, width="stretch")
+    records_table(career, rank=True)
 
     # 2015 has no game data, so its champion and sacko show up in Finishes only.
     # Name only the ones actually on screen, since Active view may hide them.
@@ -601,7 +653,7 @@ with tab_records:
         weekly_records.append({"Record": low_lbl, "Manager": r["manager"],
                                 "Season": str(int(r["season"])), "Week": str(int(r["week"])),
                                 "Score": f"{r['score']:.2f}"})
-    st.dataframe(pd.DataFrame(weekly_records), hide_index=True, width="stretch")
+    records_table(pd.DataFrame(weekly_records))
 
     # Season-long records need the season to be over. Mid-season, "fewest
     # wins" is every manager still on zero and "lowest total PF" is whoever
@@ -626,7 +678,7 @@ with tab_records:
     all_scoring_rows = []
     for label, col, largest in scoring_record_specs:
         all_scoring_rows += season_record_rows(label, done_stats, col, largest)
-    st.dataframe(pd.DataFrame(all_scoring_rows), hide_index=True, width="stretch")
+    records_table(pd.DataFrame(all_scoring_rows))
     if in_progress_note:
         st.caption(in_progress_note)
 
@@ -646,7 +698,7 @@ with tab_records:
         wins_record_rows("Most Reg Season Wins",   done_stats, "reg_wins", largest=True) +
         wins_record_rows("Fewest Reg Season Wins", done_stats, "reg_wins", largest=False)
     )
-    st.dataframe(win_records, hide_index=True, width="stretch")
+    records_table(win_records)
 
     # A perfect season is winning out and then taking the title; a perfect
     # disaster is losing out and then finishing last. Both are computed rather
@@ -698,7 +750,7 @@ with tab_records:
         diff_rows("Biggest Win Margin", reg_matchups_win_side, largest=True) +
         diff_rows("Closest Game", reg_matchups_win_side, largest=False)
     )
-    st.dataframe(diff_records, hide_index=True, width="stretch")
+    records_table(diff_records)
 
     # ── Win records ────────────────────────────────────────────────────────
 
@@ -735,8 +787,7 @@ with tab_records:
             })
 
     if bench_rows:
-        st.dataframe(pd.DataFrame(bench_rows), hide_index=True,
-                     width="stretch")
+        records_table(pd.DataFrame(bench_rows))
         st.caption(
             "Points Left on Bench is the gap to the best lineup that could "
             "legally have been fielded, respecting position eligibility. "
@@ -794,8 +845,7 @@ with tab_records:
                 "Manager": ", ".join(who),
                 "Weeks to Achieve": str(weeks),
             })
-    st.dataframe(pd.DataFrame(milestone_rows), hide_index=True,
-                 width="stretch")
+    records_table(pd.DataFrame(milestone_rows))
     st.caption(
         "Weeks counts regular season games played, ties included. Playoff "
         f"appearances are seasons seeded in the top {PLAYOFF_SPOTS}, counted at "
@@ -900,10 +950,7 @@ with tab_mgr_records:
         out["Worst Finish"] = r["Worst Finish"]
         display_rows.append(out)
 
-    col_config = {disp: st.column_config.TextColumn(disp, width=150)
-                  for disp, key, src, largest in col_specs}
-    st.dataframe(pd.DataFrame(display_rows), hide_index=True,
-                 width="stretch", column_config=col_config)
+    records_table(pd.DataFrame(display_rows))
 
     st.divider()
 
@@ -957,16 +1004,7 @@ with tab_mgr_records:
         # Average sits last, and is bolded so it reads as a summary rather than
         # another season. Needs jinja2 >= 3.1.5 for the pandas Styler.
         season_table = pd.DataFrame(table_rows)
-        avg_idx = len(season_table) - 1 if n else -1
-        styled = season_table.style.apply(
-            lambda row: ["font-weight: bold"] * len(row)
-            if row.name == avg_idx else [""] * len(row),
-            axis=1,
-        # A Styler bypasses Streamlit's default number rendering, so the
-        # numeric columns must be formatted explicitly or they print as
-        # 30.800000 instead of 30.8.
-        ).format({"Win%": "{:.1f}", "Avg Diff": "{:.2f}"})
-        st.dataframe(styled, hide_index=True, width="stretch")
+        records_table(season_table, bold_last=bool(n), fmt={"Win%": "{:.1f}", "Avg Diff": "{:+.2f}"})
         live = len(m_df) - n
         st.caption(
             f"{pick}, {n} completed season{'s' if n != 1 else ''}"
@@ -1021,7 +1059,7 @@ with tab_h2h:
                             values="record")
               .fillna("—"))
     matrix.index.name = "vs →"
-    st.dataframe(matrix, width="stretch")
+    records_table(matrix, index=True, tint_records=True, mid=list(matrix.columns))
 
     st.divider()
     st.subheader("Head-to-Head Records")
@@ -1050,7 +1088,7 @@ with tab_h2h:
         "avg_diff": "Avg Diff",      # signed: who is ahead, and by how much
         "absmar": "Avg Margin",      # unsigned: how close the games actually are
     })
-    st.dataframe(disp, hide_index=True, width="stretch")
+    records_table(disp)
 
     MIN_MEETINGS = 8   # ~5 seasons of history; below this the picks are noise
 
@@ -1088,8 +1126,7 @@ with tab_h2h:
                 row[c] = "—"
         profile_rows.append(row)
 
-    st.dataframe(pd.DataFrame(profile_rows), hide_index=True,
-                 width="stretch")
+    records_table(pd.DataFrame(profile_rows))
 
     st.divider()
     st.divider()
@@ -1132,8 +1169,7 @@ with tab_h2h:
                     mgr_b: f"{r.opp_score:.2f}",
                     "Winner": winner,
                 })
-            st.dataframe(pd.DataFrame(games), hide_index=True,
-                         width="stretch")
+            records_table(pd.DataFrame(games), scroll=len(games) > 14)
             summary = f"{mgr_a} leads {a_w}-{b_w}" if a_w > b_w else (
                 f"{mgr_b} leads {b_w}-{a_w}" if b_w > a_w else
                 f"All square at {a_w}-{b_w}")
@@ -1164,7 +1200,7 @@ with tab_h2h:
         rr.index = [f"Rank {i}" for i in rr.index]
         rr.columns = [f"{i}" for i in rr.columns]
         rr.index.name = "vs →"
-        st.dataframe(rr, width="stretch")
+        records_table(rr.astype(object).where(rr.notna(), ""), index=True, mid=list(rr.columns))
         total = int(all_meetings.values[upper].sum())
         # Seasons that hold games, not seasons listed in config: SEASONS now
         # includes a season that has not started.
@@ -1224,14 +1260,14 @@ with tab_milestones:
     st.markdown("#### Wins")
     if win_milestones:
         win_table = milestone_table("cum_wins", win_milestones, "W")
-        st.dataframe(win_table, hide_index=True, width="stretch")
+        records_table(win_table)
     else:
         st.info("Not enough wins recorded yet.")
 
     st.markdown("#### Losses")
     if loss_milestones:
         loss_table = milestone_table("cum_losses", loss_milestones, "L")
-        st.dataframe(loss_table, hide_index=True, width="stretch")
+        records_table(loss_table)
     else:
         st.info("Not enough losses recorded yet.")
 
@@ -1266,9 +1302,7 @@ with tab_moves:
                [["Manager", "Seasons", "Avg Waiver Adds", "Avg Trades",
                  "Total Waiver Adds", "Total Trades"]]
                .sort_values("Avg Waiver Adds", ascending=False))
-        st.dataframe(avg, hide_index=True, width="stretch",
-                     column_config={c: st.column_config.NumberColumn(c, format="%.1f")
-                                    for c in ("Avg Waiver Adds", "Avg Trades")})
+        records_table(avg, fmt={"Avg Waiver Adds": "{:.1f}", "Avg Trades": "{:.1f}"})
         note = (f"Completed seasons from {first}; ESPN kept no transactions before it. "
                 "A waiver add is any player added, by claim or free-agent pickup; "
                 "drops are not counted. A trade counts once for each manager in it, "
@@ -1294,7 +1328,7 @@ with tab_moves:
             "season": "Season", "waiver_adds": "Waiver Adds", "trades": "Trades"})
         by_season["Season"] = by_season["Season"].map(
             lambda y: f"{y} (in progress)" if y in in_progress else str(y))
-        st.dataframe(by_season, hide_index=True, width="stretch")
+        records_table(by_season)
         st.caption("All managers is the whole league, whichever view is chosen: "
                    "trades are counted once each, not once per side."
                    if pick == ALL else
@@ -1330,7 +1364,7 @@ with tab_moves:
                      .rename(columns={"manager_a": "Manager" if who != ALL else "Manager A",
                                       "manager_b": "Partner" if who != ALL else "Manager B"}))
             table[["First", "Last"]] = table[["First", "Last"]].astype(str)
-            st.dataframe(table, hide_index=True, width="stretch")
+            records_table(table)
             note = (f"Trades from {first}, the season in progress included. "
                     "A three-team trade counts once for each pair in it.")
             if who != ALL:

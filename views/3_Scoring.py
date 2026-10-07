@@ -22,9 +22,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 from data.espn_client import get_matchups_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON
-from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from display_utils import season_selector, require_data, sidebar_display_prefs, chart_label, name_lines
 from branding import page_icon
-from style import page_header, series_colours
+from style import RED, esc, frame, html_table, page_header, rank_cell, series_colours, team_image, who_cell
 
 st.set_page_config(page_title="Scoring", page_icon=page_icon(), layout="wide")
 page_header("Scoring")
@@ -51,6 +51,16 @@ def label_for(tname: str) -> str:
     return mgr if show_mgr else tname
 
 teams = sorted(df["team_name"].unique())
+
+
+def who_html(tid, tname):
+    """A team's picture with its name lines, for a hand-built row."""
+    mgr = manager_map.get(tid, "?")
+    return who_cell(team_image(season, tid, mgr), *name_lines(mgr, tname, show_mgr, show_team))
+
+
+def result_badge(outcome):
+    return f'<span class="wa-dot {outcome}">{outcome}</span>' if outcome in ("W", "L", "T") else ""
 
 tab1, tab2, tab3, tab4 = st.tabs(["Weekly Trends", "Score Distributions", "Best & Worst", "Head-to-Head Scores"])
 
@@ -114,7 +124,7 @@ with tab1:
         m_l5, b_l5 = np.polyfit(last5_weeks, last5_scores, 1)
         fig3.add_trace(go.Scatter(
             x=last5_weeks, y=m_l5 * last5_weeks + b_l5, mode="lines",
-            name="Last 5 trend", line=dict(color="#e67e22", dash="dash", width=2),
+            name="Last 5 trend", line=dict(color=series_colours()[1], dash="dash", width=2),
         ))
 
     fig3.update_layout(
@@ -168,7 +178,7 @@ with tab1:
                    line=dict(color="rgba(150,0,0,0.3)"), name="Low",
                    fill="tonexty", fillcolor="rgba(200,200,200,0.2)"),
         go.Scatter(x=weekly_stats["week"], y=weekly_stats["mean"], mode="lines",
-                   line=dict(color="blue", width=2), name="Avg"),
+                   line=dict(color=series_colours()[0], width=2), name="Avg"),
     ])
     fig2.update_layout(title="Weekly Score Range (band = low to high)", height=300,
                        xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
@@ -195,10 +205,10 @@ with tab2:
         from scipy.stats import norm
         y_norm = norm.pdf(x_range, mu, sigma) * len(df) * (df["score"].max() - df["score"].min()) / 30
         fig.add_trace(go.Scatter(x=x_range, y=y_norm, mode="lines", name="Normal fit",
-                                 line=dict(color="red", width=2)))
+                                 line=dict(color=RED, width=2)))
         st.plotly_chart(fig, width="stretch")
 
-    # Per-team stats table — group by team_id too so prep_display works
+    # Per-team stats table, grouped by team_id too for the pictures
     team_stats = df.groupby(["team_id", "team_name"])["score"].agg(
         Mean="mean", Median="median", Std="std", Min="min", Max="max"
     ).round(2).reset_index()
@@ -206,12 +216,14 @@ with tab2:
     # spread. It says nothing about scoring well, only about scoring alike.
     # One game has no spread, so Std is NaN until week 2; Int64 leaves it blank.
     team_stats["Consistency"] = team_stats["Std"].rank(method="min").astype("Int64")
-    display = prep_display(team_stats, manager_map, show_mgr, show_team,
-                           cols=["team_name", "Mean", "Median", "Min", "Max",
-                                 "Std", "Consistency"],
-                           headers=["Team", "Mean", "Median", "Min", "Max",
-                                    "Std Dev", "Consistency"])
-    st.dataframe(display, width="stretch", hide_index=True)
+    team_stats = team_stats.sort_values("Mean", ascending=False)
+    rows = [[who_html(r.team_id, r.team_name)]
+            + [f"{getattr(r, c):.2f}" if pd.notna(getattr(r, c)) else "—"
+               for c in ("Mean", "Median", "Min", "Max", "Std")]
+            + [str(r.Consistency) if pd.notna(r.Consistency) else "—"]
+            for r in team_stats.itertuples()]
+    html_table([("Manager" if show_mgr else "Team", ""), ("Mean", "num"), ("Median", "num"),
+                ("Min", "num"), ("Max", "num"), ("Std Dev", "num"), ("Consistency", "mid")], rows)
     st.caption("Consistency ranks by standard deviation: 1 is the most "
                "predictable week to week, not the highest scoring.")
 
@@ -232,25 +244,26 @@ with tab3:
 
     col1, col2 = st.columns(2)
 
+    def score_table(scores):
+        """Single scores: who, the week, the score, the opponent and the result."""
+        rows = []
+        for r in scores.itertuples():
+            opp = manager_map.get(r.opp_id, r.opp_name) if show_mgr else r.opp_name
+            rows.append([who_html(r.team_id, r.team_name), esc(r.week_label),
+                         f"<b>{r.score:.2f}</b>", esc(opp), f"{r.opp_score:.2f}",
+                         result_badge(r.outcome)])
+        html_table([("Manager" if show_mgr else "Team", ""), ("Week", ""), ("Score", "num"),
+                    ("Opponent", ""), ("Opp", "num"), ("", "mid")], rows, compact=True)
+
     with col1:
-        st.markdown("**Top 5 Individual Scores**")
-        top_scores = df_tagged.nlargest(5, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
-        top_scores[["score", "opp_score"]] = top_scores[["score", "opp_score"]].round(2)
-        disp = prep_display(top_scores, manager_map, show_mgr, show_team,
-                            cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
-                            headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
-        st.dataframe(disp, width="stretch", hide_index=True)
+        st.markdown("#### Top 5 individual scores")
+        score_table(df_tagged.nlargest(5, "score"))
 
     with col2:
-        st.markdown("**5 Lowest Individual Scores**")
-        low_scores = df_tagged.nsmallest(5, "score")[["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "outcome"]].copy()
-        low_scores[["score", "opp_score"]] = low_scores[["score", "opp_score"]].round(2)
-        disp = prep_display(low_scores, manager_map, show_mgr, show_team,
-                            cols=["team_name", "week_label", "score", "opp_name", "opp_score", "outcome"],
-                            headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Result"])
-        st.dataframe(disp, width="stretch", hide_index=True)
+        st.markdown("#### 5 lowest individual scores")
+        score_table(df_tagged.nsmallest(5, "score"))
 
-    st.markdown("**Top 5 Highest-Scoring Matchups**")
+    st.markdown("#### Top 5 highest-scoring matchups")
     # Build a canonical pair key (lower team_id first) so each matchup only appears once
     df_tagged["pair_key"] = df_tagged.apply(
         lambda r: (min(r["team_id"], r["opp_id"]), max(r["team_id"], r["opp_id"])), axis=1
@@ -260,14 +273,14 @@ with tab3:
         df_tagged.sort_values("matchup_total", ascending=False)
         .drop_duplicates(subset=["week", "pair_key"])
         .head(5)
-        [["team_id", "week_label", "team_name", "score", "opp_name", "opp_score", "matchup_total"]]
         .copy()
     )
-    top_matchups[["score", "opp_score", "matchup_total"]] = top_matchups[["score", "opp_score", "matchup_total"]].round(2)
-    disp = prep_display(top_matchups, manager_map, show_mgr, show_team,
-                        cols=["team_name", "week_label", "score", "opp_name", "opp_score", "matchup_total"],
-                        headers=["Team", "Week", "Score", "Opponent", "Opp Score", "Total"])
-    st.dataframe(disp, width="stretch", hide_index=True)
+    rows = [[rank_cell(i + 1), who_html(r.team_id, r.team_name), f"{r.score:.2f}",
+             f"{r.opp_score:.2f}", who_html(r.opp_id, r.opp_name), esc(r.week_label),
+             f"<b>{r.matchup_total:.2f}</b>"]
+            for i, r in enumerate(top_matchups.itertuples())]
+    html_table([("#", ""), ("Team", ""), ("Score", "num"), ("Opp", "num"), ("Opponent", ""),
+                ("Week", ""), ("Total", "num")], rows)
 
 with tab4:
     st.subheader("Season H2H Record Matrix")
@@ -284,4 +297,21 @@ with tab4:
                 w = (rows["outcome"] == "W").sum()
                 l = (rows["outcome"] == "L").sum()
                 matrix.loc[lbl, opp_lbl] = f"{w}-{l}"
-    st.dataframe(matrix, width="stretch")
+    # Tinted by who leads the series: green for the row manager, red against.
+    grid = pd.DataFrame({"Manager": list(matrix.index)})
+    classes = pd.DataFrame({"Manager": [""] * len(matrix)})
+    for c in matrix.columns:
+        grid[c] = list(matrix[c])
+        tints = []
+        for row_lbl, v in zip(matrix.index, matrix[c]):
+            if row_lbl == c:
+                tints.append("wa-self")
+            elif isinstance(v, str) and "-" in v and v != "-":
+                w, l = (int(x) for x in v.split("-"))
+                tints.append("wa-w" if w > l else ("wa-l" if l > w else "wa-t"))
+            else:
+                tints.append("")
+        classes[c] = tints
+    grid_pics = [team_image(season, tid_by_name.get(t), manager_map.get(tid_by_name.get(t), "?"))
+                 for t in teams]
+    frame(grid, pics=grid_pics, mid=list(matrix.columns), classes=classes, compact=True)

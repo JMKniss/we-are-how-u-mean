@@ -36,6 +36,7 @@ Both are files under static/, written by data/team_images.py at build time.
 from __future__ import annotations
 
 import html
+import numbers
 from functools import lru_cache
 from pathlib import Path
 
@@ -70,6 +71,11 @@ CSS = f"""
 [data-testid="stMetricValue"] {{ font-family: '{HEAD}', sans-serif; }}
 [data-testid="stTab"] p {{ font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }}
 [data-testid="stSidebarNav"] a span {{ font-weight: 600; }}
+/* Anton is tight in mixed case: at chart-title sizes "Score Distribution by
+   Team" ran together. Capitals with a little spacing, a size up, as the bar
+   chart's own titles are set. */
+[data-testid="stMain"] h4 {{ text-transform: uppercase; letter-spacing: .04em; }}
+.stPlotlyChart .gtitle {{ text-transform: uppercase; letter-spacing: .05em; font-size: 18px !important; }}
 
 /* ---- the banner at the top of every page ---- */
 .wa-banner {{
@@ -124,6 +130,9 @@ CSS = f"""
 .wa-who {{ display: flex; align-items: center; gap: 10px; min-width: 0; }}
 .wa-who .wa-pic {{ width: 42px; height: 36px; }}
 .wa-name {{ font-weight: 700; }}
+.wa-head {{ width: 44px; height: 32px; object-fit: cover; object-position: top; flex: none;
+  background: color-mix(in srgb, currentColor 8%, transparent); }}
+.wa-nfl {{ width: 30px; height: 30px; object-fit: contain; flex: none; margin: 0 7px; }}
 .wa-team {{ display: block; font-size: .8rem; opacity: .65; }}
 .wa-form {{ white-space: nowrap; }}
 .wa-dot {{ display: inline-block; width: 17px; height: 17px; line-height: 17px; font-size: .64rem; text-align: center;
@@ -131,6 +140,19 @@ CSS = f"""
 .wa-dot.W {{ background: {GREEN}; }} .wa-dot.L {{ background: {RED}; }} .wa-dot.T {{ background: #777; }}
 .wa-cutlabel {{ font-size: .74rem; color: {RED}; letter-spacing: .06em; margin: 2px 0 6px; }}
 .wa-pos {{ color: {GREEN}; }} .wa-neg {{ color: {RED}; }}
+.wa-table.compact td {{ padding: 4px 7px; font-size: .9rem; }}
+.wa-table.compact th {{ padding: 6px 7px; }}
+.wa-table td.wa-mid, .wa-table th.wa-mid {{ text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }}
+/* Result tints: translucent, so they sit on either theme's background. */
+.wa-table td.wa-w {{ background: rgba(26, 143, 75, .20); }}
+.wa-table td.wa-l {{ background: rgba(213, 10, 10, .15); }}
+.wa-table td.wa-t {{ background: rgba(255, 204, 0, .22); }}
+.wa-table td.wa-self {{ background: color-mix(in srgb, currentColor 9%, transparent); }}
+.wa-table td.wa-gold {{ background: rgba(255, 204, 0, .28); font-weight: 700; }}
+.wa-table td.wa-strong {{ font-weight: 700; }}
+.wa-table td.wa-muted {{ opacity: .55; }}
+.wa-scroll {{ max-height: 560px; overflow-y: auto; }}
+.wa-scroll .wa-table th {{ position: sticky; top: 0; z-index: 1; }}
 
 /* ---- matchups ---- */
 .wa-matchups {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 8px; margin: 4px 0 8px; }}
@@ -187,6 +209,30 @@ def team_image(season: int | None, team_id: int | None, manager: str) -> str:
     if season == CURRENT_SEASON and team_id is not None and _logo_exists(season, int(team_id)):
         return f"app/static/teams/{season}/{int(team_id)}.png"
     return helmet_url(manager)
+
+
+# Player headshots and NFL logos come from ESPN's public image CDN, through its
+# resizer, so a headshot is about 7KB rather than the 40KB full image. They
+# are the one picture not stored here - there are thousands - and one that
+# fails to load hides itself rather than showing a broken icon.
+HEADSHOT = "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/{}.png&w=96&h=70&cb=1"
+NFL_LOGO = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/{}.png&w=64&h=64"
+
+
+def player_pic(player_id, pro_team=None) -> str:
+    """A player's headshot; a team defence (negative id) gets its NFL logo."""
+    try:
+        pid = int(player_id)
+    except (TypeError, ValueError):
+        return ""
+    if pid > 0:
+        src, cls = HEADSHOT.format(pid), "wa-head"
+    elif isinstance(pro_team, str) and pro_team.strip() and pro_team.lower() != "nan":
+        src, cls = NFL_LOGO.format(esc(pro_team.strip().lower())), "wa-nfl"
+    else:
+        return ""
+    return (f'<img class="{cls}" src="{src}" alt="" loading="lazy" '
+            "onerror=\"this.style.visibility='hidden'\">")
 
 
 def pic(src: str, cls: str = "wa-pic") -> str:
@@ -261,7 +307,8 @@ def cards(items: list[dict]) -> None:
 def who_cell(img: str, name: str, team: str = "") -> str:
     """A team picture with the manager's name over the team's."""
     team_html = f'<span class="wa-team">{esc(team)}</span>' if team else ""
-    return f'<div class="wa-who">{pic(img)}<div><span class="wa-name">{esc(name)}</span>{team_html}</div></div>'
+    img_html = pic(img) if img else ""
+    return f'<div class="wa-who">{img_html}<div><span class="wa-name">{esc(name)}</span>{team_html}</div></div>'
 
 
 def form_cell(outcomes: list[str]) -> str:
@@ -273,24 +320,78 @@ def rank_cell(n: int) -> str:
     return f'<span class="wa-rank">{n}</span>'
 
 
-def html_table(columns: list[tuple[str, str]], rows: list[list[str]], cut_after: int | None = None,
-               cut_label: str = "playoff line") -> None:
+def html_table(columns: list[tuple[str, str]], rows: list[list], cut_after: int | None = None,
+               cut_label: str = "playoff line", compact: bool = False, scroll: bool = False) -> None:
     """
-    A Broadcast table. columns are (header, kind) with kind "" or "num"; rows
-    hold cell HTML, already escaped by the caller. cut_after draws the red
-    dashed playoff line under that many rows.
+    A Broadcast table. columns are (header, kind) with kind "" (left), "num"
+    (right) or "mid" (centred). Each cell is HTML already escaped by the
+    caller, or (html, extra_class) to tint it. cut_after draws the red dashed
+    playoff line under that many rows. scroll caps a long table's height with
+    the header pinned.
     """
     head = "".join(f'<th class="wa-{k}">{esc(h)}</th>' if k else f"<th>{esc(h)}</th>" for h, k in columns)
     body = []
     for i, r in enumerate(rows):
         cls = ' class="wa-cut"' if cut_after and i == cut_after - 1 and len(rows) > cut_after else ""
-        cells = "".join(f'<td class="wa-{k}">{v}</td>' if k else f"<td>{v}</td>"
-                        for v, (_, k) in zip(r, columns))
-        body.append(f"<tr{cls}>{cells}</tr>")
+        cells = []
+        for v, (_, k) in zip(r, columns):
+            v, extra = v if isinstance(v, tuple) else (v, "")
+            names = " ".join(n for n in (f"wa-{k}" if k else "", extra) if n)
+            cells.append(f'<td class="{names}">{v}</td>' if names else f"<td>{v}</td>")
+        body.append(f"<tr{cls}>{''.join(cells)}</tr>")
     note = (f'<div class="wa-cutlabel">- - - {esc(cut_label)}</div>'
             if cut_after and len(rows) > cut_after else "")
-    st.html(f'<div class="wa-tablewrap"><table class="wa-table"><thead><tr>{head}</tr></thead>'
+    wrap = "wa-tablewrap wa-scroll" if scroll else "wa-tablewrap"
+    st.html(f'<div class="{wrap}"><table class="wa-table{" compact" if compact else ""}"><thead><tr>{head}</tr></thead>'
             f'<tbody>{"".join(body)}</tbody></table></div>{note}')
+
+
+def _fmt(v, f: str | None) -> str:
+    if v is None or v is pd.NA or (isinstance(v, numbers.Real) and pd.isna(v)):
+        return "—"
+    if isinstance(v, numbers.Real) and not isinstance(v, bool):
+        if f:
+            return f.format(v)
+        return f"{v:,}" if isinstance(v, numbers.Integral) else f"{v:,.1f}"
+    return esc(str(v))
+
+
+def frame(df: pd.DataFrame, *, num=(), signed=(), mid=(), fmt: dict | None = None,
+          pics: list[str] | None = None, subs: list[str] | None = None, rank: bool = False,
+          classes: pd.DataFrame | None = None, cut_after: int | None = None,
+          compact: bool = False, scroll: bool = False, pic_col: str | None = None) -> None:
+    """
+    A DataFrame as a Broadcast table, in the order given.
+
+    num / mid: columns right-aligned / centred. signed: numbers shown with
+    their sign, green above zero and red below (also right-aligned). fmt: a
+    format string per column ("{:.2f}"); other floats get one decimal.
+    pics: a picture per row for the first column (or pic_col), drawn as a
+    team picture with subs as the small line under the name; "" for none. rank: a black rank box
+    before everything. classes: same shape as df, an extra cell class each
+    ("wa-w", "wa-l", "wa-self", "wa-gold"...), or "" for none.
+    """
+    fmt = fmt or {}
+    cols = list(df.columns)
+    kinds = [("num" if c in num or c in signed else "mid" if c in mid else "") for c in cols]
+    columns = ([("#", "")] if rank else []) + [(str(c), k) for c, k in zip(cols, kinds)]
+    rows = []
+    for i, (_, r) in enumerate(df.iterrows()):
+        cells = [rank_cell(i + 1)] if rank else []
+        for j, c in enumerate(cols):
+            v = r[c]
+            if c in signed and isinstance(v, numbers.Real) and not pd.isna(v):
+                text = (fmt.get(c) or "{:+.1f}").format(v)
+                tone = "wa-pos" if v > 0 else ("wa-neg" if v < 0 else "")
+                html_ = f'<span class="{tone}">{text}</span>' if tone else text
+            elif pics is not None and c == (pic_col or cols[0]):
+                html_ = who_cell(pics[i], str(v), subs[i] if subs else "")
+            else:
+                html_ = _fmt(v, fmt.get(c))
+            extra = classes.iloc[i][c] if classes is not None and c in classes.columns else ""
+            cells.append((html_, extra) if extra else html_)
+        rows.append(cells)
+    html_table(columns, rows, cut_after=cut_after, compact=compact, scroll=scroll)
 
 
 # ---------------------------------------------------------------- charts

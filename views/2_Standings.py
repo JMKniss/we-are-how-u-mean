@@ -14,9 +14,9 @@ from analysis.standings import (
     swapped_schedule_matrix
 )
 from config import SEASONS, DEFAULT_SEASON, season_config
-from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
+from display_utils import season_selector, require_data, sidebar_display_prefs, who_columns
 from branding import page_icon
-from style import page_header
+from style import frame, page_header, team_image
 
 st.set_page_config(page_title="Standings", page_icon=page_icon(), layout="wide")
 page_header("Standings")
@@ -40,29 +40,39 @@ matchups_df = matchups_df[matchups_df["week"] <= cfg["reg_season_end"]].copy()
 official_combined = season >= 2025
 
 
-def _current_standings_display(df):
-    """
-    Build the Current Standings table with Manager and Team as separate columns.
+NAME_HEAD = "Manager" if show_mgr else "Team"
 
-    Each win/loss pair is shown as one record. The frame is already sorted by
-    total wins, and the rows keep that order, so folding W and L together
-    costs nothing.
+
+def pic(team_id):
+    """One team's picture: this season's logo, or the manager's helmet."""
+    return team_image(season, team_id, manager_map.get(team_id, "?"))
+
+
+def team_table(df, columns, **kw):
+    """A table led by each team's picture and name, in df's order."""
+    names, subs, pics = who_columns(df, manager_map, season, show_mgr, show_team)
+    out = pd.DataFrame({NAME_HEAD: names})
+    for head, values in columns.items():
+        out[head] = list(values)
+    frame(out, pics=pics, subs=subs, **kw)
+
+
+def _current_standings(df):
+    """
+    The standings, each win/loss pair as one record. The frame is already
+    sorted, and the rows keep that order, so folding W and L together costs
+    nothing.
     """
     def record(w, l):
         return w.astype(int).astype(str) + "-" + l.astype(int).astype(str)
 
-    out = pd.DataFrame({
-        "Manager": df["team_id"].map(manager_map).fillna("?"),
-        "Team": df["team_name"],
+    team_table(df, {
         "Total": record(df["total_wins"], df["total_losses"]),
         "H2H": record(df["wins"], df["losses"]),
         "Median": record(df["median_wins"], df["median_losses"]),
         "Vs All": df["_vs_all"],
-        "PF": df["points_for"].round(1),
-        "PA": df["points_against"].round(1),
-        "Avg": df["avg_score"].round(1),
-    })
-    return out
+        "PF": df["points_for"], "PA": df["points_against"], "Avg": df["avg_score"],
+    }, rank=True, cut_after=4, mid=("Total", "H2H", "Median", "Vs All"), num=("PF", "PA", "Avg"))
 
 
 tab1, tab4, tab5 = st.tabs(
@@ -93,8 +103,7 @@ with tab1:
                    "follows H2H. Median and Vs All are shown for reference "
                    "only; Vs All is the record if you had played every other "
                    "team every week.")
-    st.dataframe(_current_standings_display(df), width="stretch",
-                 hide_index=True)
+    _current_standings(df)
 
     st.divider()
     st.subheader("Weekly Scoring Rank")
@@ -124,28 +133,23 @@ with tab1:
     outcome_tbl.columns = [f"Wk {int(w)}" for w in outcome_tbl.columns]
     outcome_tbl["Avg"] = None
 
-    WIN_L, LOSS_L, TIE_L = "#ddf0dc", "#fadddd", "#fcf5dc"
-
-    def shade(frame, win, loss, tie):
-        """Background colour per cell, driven by that week's result."""
-        def _style(_):
-            out = pd.DataFrame("", index=frame.index, columns=frame.columns)
-            for c in frame.columns:
-                if c == "Avg":
-                    continue
-                out[c] = outcome_tbl[c].map(
-                    {"W": f"background-color: {win}",
-                     "L": f"background-color: {loss}",
-                     "T": f"background-color: {tie}"}).fillna("")
-            return out
-        return _style
-
     week_cols = [c for c in rank_tbl.columns if c != "Avg"]
-    st.dataframe(
-        rank_tbl.style
-        .apply(shade(rank_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
-        .format({**{c: "{:.0f}" for c in week_cols}, "Avg": "{:.1f}"}),
-        width="stretch")
+    # The weekly grids follow the standings' rows, so their pictures do too.
+    tid_by_mgr = {manager_map.get(t, "?"): t for t in df["team_id"]}
+    grid_pics = [pic(tid_by_mgr.get(m)) for m in rank_tbl.index]
+    # A translucent tint per week from its result, which reads on either
+    # theme where the old pastel fills only worked on white.
+    tint = {"W": "wa-w", "L": "wa-l", "T": "wa-t"}
+    grid_classes = pd.DataFrame({c: [tint.get(o, "") for o in outcome_tbl[c]] for c in week_cols})
+
+    def week_grid(tbl, cell_fmt, avg_fmt):
+        g = pd.DataFrame({"Manager": list(tbl.index)})
+        for c in tbl.columns:
+            g[c] = list(tbl[c])
+        frame(g, pics=grid_pics, mid=week_cols, num=("Avg",), classes=grid_classes, compact=True,
+              fmt={**{c: cell_fmt for c in week_cols}, "Avg": avg_fmt})
+
+    week_grid(rank_tbl, "{:.0f}", "{:.1f}")
 
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
@@ -165,16 +169,14 @@ with tab4:
     ).reset_index()
     df = df.merge(own[["team_id", "avg_score", "total_score"]], on="team_id", how="left")
     df["opp_vs_own"] = df["team_id"].map(opponent_vs_own_average(matchups_df))
-    display = prep_display(df, manager_map, show_mgr, show_team,
-                           cols=["team_name", "avg_opp_score", "avg_score",
-                                 "opp_vs_own", "total_opp_score", "total_score"],
-                           headers=["Team", "Avg Opp Score", "Avg Score",
-                                    "Opp vs Own Avg", "Total Opp Score", "Total Score"])
-    for col in ["Avg Opp Score", "Avg Score", "Opp vs Own Avg"]:
-        display[col] = display[col].round(2)
-    for col in ["Total Opp Score", "Total Score"]:
-        display[col] = display[col].round(1)
-    st.dataframe(display, width="stretch", hide_index=True)
+    team_table(df, {
+        "Avg Opp Score": df["avg_opp_score"], "Avg Score": df["avg_score"],
+        "Opp vs Own Avg": df["opp_vs_own"],
+        "Total Opp Score": df["total_opp_score"], "Total Score": df["total_score"],
+    }, num=("Avg Opp Score", "Avg Score", "Total Opp Score", "Total Score"),
+        signed=("Opp vs Own Avg",),
+        fmt={"Avg Opp Score": "{:.2f}", "Avg Score": "{:.2f}", "Opp vs Own Avg": "{:+.2f}",
+             "Total Opp Score": "{:,.1f}", "Total Score": "{:,.1f}"})
 
     st.divider()
     weeks_played = matchups_df["week"].nunique()
@@ -212,7 +214,14 @@ with tab4:
     ss_row["TS"] = ""
     rows.append(ss_row)
 
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    swap = pd.DataFrame(rows)
+    # Their own schedule on the diagonal, and the SS row set apart.
+    classes = pd.DataFrame("", index=swap.index, columns=swap.columns)
+    for i, r in enumerate(order):
+        classes.loc[i, names[r]] = "wa-self wa-strong"
+    classes.iloc[-1] = "wa-gold"
+    frame(swap, mid=[c for c in swap.columns if c != "Manager"], classes=classes, compact=True,
+          pics=[pic(t) for t in order] + [""])
     st.caption(
         "**TS** (Team Strength) = that team's average wins across all 10 schedules. "
         "**SS** (Schedule Strength) = average wins any team would get playing that "
@@ -230,11 +239,13 @@ with tab5:
     lb.insert(0, "Manager", lb["team_id"].map(manager_map).fillna("?"))
 
     def small(cols, headers, sort_col):
-        t = lb.sort_values(sort_col, ascending=False)[["Manager"] + cols].copy()
-        t.columns = ["Manager"] + headers
-        for c in headers:
-            t[c] = t[c].round(2)
-        return t
+        t = lb.sort_values(sort_col, ascending=False)
+        out = t[["Manager"] + cols].copy()
+        out.columns = ["Manager"] + headers
+        lucky = [h for h in headers if h in ("Luck", "Points")]
+        frame(out, pics=[pic(x) for x in t["team_id"]], compact=True,
+              num=[h for h in headers if h not in lucky], signed=lucky,
+              fmt={h: ("{:+.2f}" if h in lucky else "{:.2f}") for h in headers})
 
     c1, c2 = st.columns(2)
     with c1:
@@ -245,35 +256,31 @@ with tab5:
                    "what the same scores were worth against the whole league. "
                    "Both are fractions of a win, because outscoring six of nine "
                    "teams is not a whole number of anything.")
-        st.dataframe(small(["w_form", "w_field", "schedule_luck"],
-                           ["Schedule Wins", "Expected Wins", "Luck"],
-                           "schedule_luck"),
-                     width="stretch", hide_index=True)
+        small(["w_form", "w_field", "schedule_luck"],
+              ["Schedule Wins", "Expected Wins", "Luck"],
+              "schedule_luck")
     with c2:
         st.markdown("**Field luck**")
         st.caption("Did your good scores land on low-scoring weeks? Lucky if "
                    "you scored well when the rest of the league did not.")
-        st.dataframe(small(["w_field", "w_season", "field_luck"],
-                           ["Expected Wins", "vs Whole Season", "Luck"],
-                           "field_luck"),
-                     width="stretch", hide_index=True)
+        small(["w_field", "w_season", "field_luck"],
+              ["Expected Wins", "vs Whole Season", "Luck"],
+              "field_luck")
 
     c3, c4 = st.columns(2)
     with c3:
         st.markdown("**Median luck**")
         st.caption("Median wins you got compared with what your scores usually "
                    "get. Lucky if you beat the median in weak weeks.")
-        st.dataframe(small(["median_wins", "xmedian", "median_luck"],
-                           ["Median Wins", "Expected Wins", "Luck"],
-                           "median_luck"),
-                     width="stretch", hide_index=True)
+        small(["median_wins", "xmedian", "median_luck"],
+              ["Median Wins", "Expected Wins", "Luck"],
+              "median_luck")
     with c4:
         st.markdown("**Opponent form**")
         st.caption("Did opponents play above or below their usual level "
                    "against you? Shown in games, with the points behind it.")
-        st.dataframe(small(["opp_luck", "opp_form_pts"], ["Luck", "Points"],
-                           "opp_luck"),
-                     width="stretch", hide_index=True)
+        small(["opp_luck", "opp_form_pts"], ["Luck", "Points"],
+              "opp_luck")
 
     st.divider()
     st.markdown("**Cumulative luck**")
@@ -285,14 +292,13 @@ with tab5:
         heads.append("Median")
     cols += ["total_luck", "luck_sigma", "luck_label"]
     heads += ["Total", "Rating", ""]
-    td = tot.sort_values("total_luck", ascending=False)[cols].copy()
+    tot = tot.sort_values("total_luck", ascending=False)
+    td = tot[cols].copy()
     td.columns = heads
-    for c in heads:
-        if c in ("Manager", ""):
-            continue
-        td[c] = td[c].round(2)
     td["Rating"] = td["Rating"].map(lambda z: f"{z:+.1f}σ")
-    st.dataframe(td, width="stretch", hide_index=True)
+    games = [h for h in heads if h not in ("Manager", "Rating", "")]
+    frame(td, pics=[pic(x) for x in tot["team_id"]], signed=games, num=("Rating",),
+          fmt={h: "{:+.2f}" for h in games})
     st.caption(
         ("Opponent + Schedule + Field + Median, in games. "
          if official_combined else
@@ -347,11 +353,7 @@ with tab5:
                   .reindex(rank_tbl.index))
     chance_tbl.columns = [f"Wk {int(w)}" for w in chance_tbl.columns]
     chance_tbl["Avg"] = chance_tbl.mean(axis=1).round(1)
-    st.dataframe(
-        chance_tbl.style
-        .apply(shade(chance_tbl, WIN_L, LOSS_L, TIE_L), axis=None)
-        .format({**{c: "{:.0f}%" for c in week_cols}, "Avg": "{:.1f}%"}),
-        width="stretch")
+    week_grid(chance_tbl, "{:.0f}%", "{:.1f}%")
 
 
     # ── How often each rank met each rank, this season ─────────────────────
@@ -378,7 +380,7 @@ with tab5:
     # Arrow serialises it instead of Streamlit having to repair it.
     mm_tbl = meetings.astype("Int64").where(
         np.triu(np.ones(meetings.shape, dtype=bool)), pd.NA)
-    mm_tbl.index = [f"Rank {i}" for i in mm_tbl.index]
-    mm_tbl.columns = [f"{i}" for i in mm_tbl.columns]
-    mm_tbl.index.name = "vs →"
-    st.dataframe(mm_tbl, width="stretch")
+    mm = pd.DataFrame({"vs →": [f"Rank {i}" for i in mm_tbl.index]})
+    for c in mm_tbl.columns:
+        mm[str(c)] = [("" if pd.isna(v) else int(v)) for v in mm_tbl[c]]
+    frame(mm, mid=[str(c) for c in mm_tbl.columns], compact=True)

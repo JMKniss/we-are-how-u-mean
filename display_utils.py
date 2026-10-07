@@ -104,6 +104,35 @@ def chart_label(
         return team
 
 
+def name_lines(mgr: str, team: str, show_manager: bool, show_team: bool) -> tuple[str, str]:
+    """
+    The bold line and the small line under it, for a team picture: manager
+    over team with both toggles on, otherwise whichever is shown.
+    """
+    if show_manager and show_team:
+        return mgr, team
+    return (mgr, "") if show_manager else (team, "")
+
+
+def who_columns(df: pd.DataFrame, manager_map: dict[int, str], season: int | None,
+                show_manager: bool, show_team: bool) -> tuple[list, list, list]:
+    """
+    (names, subs, pics) for each row of a frame with team_id and team_name,
+    ready for style.frame(pics=..., subs=...). season=None means a view
+    across seasons, which always shows the helmet.
+    """
+    from style import team_image
+
+    names, subs, pics = [], [], []
+    for tid, team in zip(df["team_id"], df["team_name"]):
+        mgr = manager_map.get(tid, "?")
+        main, sub = name_lines(mgr, team, show_manager, show_team)
+        names.append(main)
+        subs.append(sub)
+        pics.append(team_image(season, tid, mgr))
+    return names, subs, pics
+
+
 def season_selector(seasons, default_season):
     """
     The sidebar season picker, identical on every page.

@@ -10,6 +10,7 @@ from analysis.standings import h2h_standings, combined_standings, luck_index
 from analysis.matchup_notes import pair_history, notes_for_matchups
 from config import SEASONS, DEFAULT_SEASON, season_config, week_label
 from display_utils import season_selector, require_data, sidebar_display_prefs
+import display_utils as du
 from branding import page_icon
 import style
 from style import esc
@@ -70,10 +71,7 @@ def name(mgr, team):
 
 
 def name_lines(mgr, team):
-    """The bold line and the small line under it, following the sidebar toggles."""
-    if show_mgr and show_team:
-        return mgr, team
-    return (mgr, "") if show_mgr else (team, "")
+    return du.name_lines(mgr, team, show_mgr, show_team)
 
 
 def team_pic(team_id):

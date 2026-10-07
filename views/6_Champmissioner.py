@@ -43,7 +43,7 @@ from analysis import vlog as av
 from analysis.standings import compute_season_finish_map, playoff_seeds
 from branding import page_icon
 import style
-from style import page_header
+from style import frame, page_header
 from config import DEFAULT_SEASON, season_config
 from data import archive
 from data.espn_client import get_boxscores_df, get_manager_map, get_matchups_df
@@ -97,7 +97,7 @@ def load():
         r = vp[vp["season"] == yr] if len(vp) else vp
         if len(r):
             r = r.assign(manager=r["team_id"].map(mgr))
-        rankings[yr] = {"ranks": r, "seeds": seeds,
+        rankings[yr] = {"ranks": r, "seeds": seeds, "season": yr,
                         "finish": compute_season_finish_map(yr, m), "managers": mgr}
     return (pd.concat(picks, ignore_index=True), pd.concat(roms, ignore_index=True),
             pd.concat(awards, ignore_index=True), rankings)
@@ -197,48 +197,25 @@ def top_count_title(season_title: str) -> str:
     return f"Top {season_title.removesuffix(' of the Week')} Count"
 
 
-def show(df: pd.DataFrame):
-    """A table sized to its columns."""
-    st.dataframe(df, hide_index=True, width="content")
-
-
-# A table well narrower than its title is stretched to the title's width:
-# a narrow table under a long title looked unfinished. The browser sizes the
-# box to the title, so a renamed title still lines up, and a stretched table
-# spreads its columns to fill it. A table near or past its title's width
-# keeps its own. Only that choice is estimated, from the text, and with room
-# to spare, since Streamlit has no "at least this wide" for a table: one
-# widened by CSS alone grows an empty column instead of wider ones.
-st.html("""<style>
-[class*="st-key-titled-"] { width: fit-content !important; max-width: 100%; }
-</style>""")
-TITLE_PX_PER_CHAR = 12.5    # a subheader, measured on this page
-CELL_PX_PER_CHAR = 6.8      # a table cell
-CELL_PAD_PX = 16
-_titled_n = 0
-
-
-def _table_px(df: pd.DataFrame) -> float:
-    return sum(max([len(str(c))] + [len(str(v)) for v in df[c]]) * CELL_PX_PER_CHAR
-               + CELL_PAD_PX for c in df.columns)
-
-
-def titled(title: str, df: pd.DataFrame, icon: str | None = None):
+def show(df: pd.DataFrame, yr: int | None = None):
     """
-    A subheader and its table, the table at least as wide as the title. icon
-    names a badge in style.BADGES, drawn in the tag before the title.
+    A Broadcast table. A Manager column leads with his picture: that season's
+    logo or helmet when yr is given, the helmet across seasons.
     """
-    global _titled_n
-    heading = (lambda: style.tag(title, icon)) if icon else (lambda: st.subheader(title))
-    width = len(title) * TITLE_PX_PER_CHAR + (30 if icon else 0)
-    if _table_px(df) >= width * 0.85:
-        heading()
-        show(df)
-        return
-    _titled_n += 1
-    with st.container(key=f"titled-{_titled_n}"):
-        heading()
-        st.dataframe(df, hide_index=True, width="stretch")
+    pics = None
+    if len(df.columns) and df.columns[0] == "Manager":
+        tid = {m: t for t, m in rankings[yr]["managers"].items()} if yr in rankings else {}
+        pics = [style.team_image(yr, tid.get(m), m) for m in df["Manager"]]
+    frame(df.reset_index(drop=True), pics=pics, mid=list(df.columns[1:]), compact=True)
+
+
+def titled(title: str, df: pd.DataFrame, icon: str | None = None, yr: int | None = None):
+    """A section tag and its table. icon names a badge in style.BADGES."""
+    if icon:
+        style.tag(title, icon)
+    else:
+        st.subheader(title)
+    show(df, yr)
 
 
 def fmt_off(x) -> str:
@@ -294,7 +271,7 @@ def render_rankings(info: dict):
     for w in weeks:
         table[label(w)] = (["skip"] * len(last) if w not in grid.columns else
                            [str(int(grid.at[t, w])) for t in last.index])
-    show(table)
+    show(table, info.get("season"))
 
     seeds, finish = info["seeds"], info["finish"]
     if not seeds:
@@ -318,7 +295,7 @@ def render_rankings(info: dict):
              "Final ranking": str(fin.get(t, "–")),
              "Seed": str(seeds[t]),
              "Finish": str(finish[t]) if finish else "–"} for t in order]
-    show(pd.DataFrame(rows))
+    show(pd.DataFrame(rows), info.get("season"))
     if not finish:
         st.caption("Final standings are added when the playoffs finish.")
 
@@ -383,16 +360,16 @@ with tab_season:
     st.caption("A player pick hits when he beats his ESPN projection.")
 
     if len(sr):
-        titled("Romarkable Player hit rate by position", position_table(sr))
+        titled("Romarkable Player hit rate by position", position_table(sr), yr=season)
     else:
         st.subheader("Romarkable Player hit rate by position")
         st.info("No player picks graded yet this season.")
 
     left, right = st.columns(2)
     with left:
-        titled(top_count_title(title), count_table(sa, "top"), style.top_badge(season))
+        titled(top_count_title(title), count_table(sa, "top"), style.top_badge(season), yr=season)
     with right:
-        titled("Fascist Count", count_table(sa, "bottom"), "fascist")
+        titled("Fascist Count", count_table(sa, "bottom"), "fascist", yr=season)
 
     top = sa[sa["award"] == "top"]
     bot = sa[sa["award"] == "bottom"]
@@ -412,7 +389,7 @@ with tab_season:
         st.subheader("Weekly Benchmarks")
         st.info("No regular-season weeks played yet.")
 
-    titled("Times Picked to Win", picked_to_win([season]))
+    titled("Times Picked to Win", picked_to_win([season]), yr=season)
 
 # ── Power Rankings ────────────────────────────────────────────────────────────
 with tab_ranks:

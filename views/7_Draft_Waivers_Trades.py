@@ -6,11 +6,10 @@ Trades read data/archive/transactions.csv, which the weekly update fills in;
 see get_transactions_df for how it is recorded and why it only exists from the
 2026 season on.
 
-Both transaction tabs are tables rather than dataframes because each move is
-shown in one cell with a green + beside what came in and a red - beside what
-went out, and st.table renders Markdown colour where st.dataframe shows the
-raw text. The sort is chosen with a control instead of a column header for the
-same reason.
+Both transaction tabs are hand-built tables rather than dataframes because
+each move is shown in one cell with a green + beside what came in and a red -
+beside what went out, which a dataframe cannot colour. The sort is chosen with
+a control instead of a column header for the same reason.
 
 Draft Value plots each pick's points above replacement against the curve of
 what that slot normally returns; the method, and why each part of it is the
@@ -46,10 +45,11 @@ from analysis import draft_value
 from analysis.transactions import waiver_moves, trade_sides, move_counts
 from analysis.trades import trade_grades, manager_summary
 from config import SEASONS, DEFAULT_SEASON
-from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from display_utils import (season_selector, require_data, sidebar_display_prefs, chart_label,
+                           name_lines)
 from display_utils import trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
 from branding import page_icon
-from style import page_header
+from style import esc, frame, html_table, page_header, player_pic, team_image, who_cell
 
 st.set_page_config(page_title="Draft, Waivers & Trades", page_icon=page_icon(), layout="wide")
 page_header("Draft, Waivers & Trades")
@@ -104,6 +104,17 @@ def label_for(tname: str) -> str:
     return mgr if show_mgr else tname
 
 teams = sorted(draft_df["team_name"].unique())
+NAME_HEAD = "Manager" if show_mgr else "Team"
+team_names = archive.team_names(season) or (
+    draft_df[["team_id", "team_name"]].drop_duplicates()
+    .set_index("team_id")["team_name"].to_dict())
+
+
+def who_html(tid) -> str:
+    """A team's picture with its name lines, for a hand-built row."""
+    mgr = manager_map.get(tid, "?")
+    return who_cell(team_image(season, tid, mgr),
+                    *name_lines(mgr, team_names.get(tid, ""), show_mgr, show_team))
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(
     ["Draft Board", "Team Draft Summary", "Draft Value", "Waivers", "Trades"])
@@ -138,18 +149,17 @@ with tab1:
     board, kept = board[cols], kept.reindex(columns=cols)
     board.index.name = "Round"
 
-    if kept.fillna(False).to_numpy().any():
-        # Keepers are shown by colour alone - no column, no marker, nothing to
-        # read. Text colour is set alongside the fill so the cell stays legible
-        # in dark mode, where the grid would otherwise put light text on it.
-        blue = "background-color: #cfe8f7; color: #0b3954"
-        styled = board.style.apply(
-            lambda _: np.where(kept.reindex_like(board).fillna(False), blue, ""),
-            axis=None)
-        st.dataframe(styled, width="stretch")
-        st.caption("Blue cells were kept, not drafted.")
-    else:
-        st.dataframe(board, width="stretch")
+    # Keepers are shown by colour alone - no column, no marker, nothing to
+    # read: a translucent gold, which reads on either theme.
+    grid = pd.DataFrame({"Round": list(board.index)})
+    classes = pd.DataFrame({"Round": [""] * len(board)})
+    k = kept.reindex_like(board).fillna(False)
+    for c in cols:
+        grid[c] = [("" if pd.isna(v) else v) for v in board[c]]
+        classes[c] = ["wa-gold" if x else "" for x in k[c]]
+    frame(grid, mid=("Round",), classes=classes, compact=True)
+    if k.to_numpy().any():
+        st.caption("Gold cells were kept, not drafted.")
 
 with tab2:
     # The old summary above this broke each team's picks into total, keepers
@@ -166,7 +176,8 @@ with tab2:
         player_pts.columns = ["Player", "Season Points"]
         team_picks = team_picks.merge(player_pts, on="Player", how="left")
 
-    st.dataframe(team_picks, width="stretch", hide_index=True)
+    frame(team_picks, mid=("Round", "Overall"), num=("Season Points",), compact=True,
+          fmt={"Season Points": "{:,.1f}"})
 
 with tab3:
     st.subheader("Draft Value")
@@ -217,49 +228,47 @@ with tab3:
                         line=dict(dash="dash", color="gray"))
         st.plotly_chart(fig, width="stretch")
 
-        cols = ["overall_pick", "round", "player_name", "position", "team_name",
-                "games", "ppg", "vor", "expected", "value"]
-        headers = ["Pick", "Round", "Player", "Pos", "Team",
-                   "Games", "Pts/G", "Over Repl.", "Expected", "Value"]
+        def value_table(rows_df, missed=False):
+            """Each pick with the player's headshot and the drafter's picture."""
+            rows = []
+            for r in rows_df.itertuples():
+                player = (f'<div class="wa-who">{player_pic(r.player_id)}'
+                          f'<span class="wa-name">{esc(r.player_name)}</span></div>')
+                tone = "wa-pos" if r.value > 0 else "wa-neg"
+                row = [f'<span class="wa-rank">{int(r.overall_pick)}</span>', str(int(r.round)),
+                       player, esc(str(r.position)), who_html(r.team_id), str(int(r.games)),
+                       f"{r.ppg:.2f}", f"{r.vor:+.2f}", f"{r.expected:+.2f}",
+                       f'<b class="{tone}">{r.value:+.2f}</b>']
+                if missed:
+                    row.append("—" if pd.isna(r.injury_games) else f"{r.injury_games:g}")
+                rows.append(row)
+            heads = [("Pick", ""), ("Rd", "mid"), ("Player", ""), ("Pos", ""), (NAME_HEAD, ""),
+                     ("Games", "mid"), ("Pts/G", "num"), ("Over Repl.", "num"),
+                     ("Expected", "num"), ("Value", "num")]
+            html_table(heads + ([("Games Missed", "mid")] if missed else []), rows, compact=True)
 
         st.subheader("Best Value Picks")
-        st.dataframe(prep_display(picks.nlargest(15, "value"), manager_map, show_mgr,
-                                  show_team, cols, headers).round(2),
-                     width="stretch", hide_index=True)
+        value_table(picks.nlargest(15, "value"))
 
         # A count rather than a Y/N: an N read as "not injured" for a player
         # who missed two games. See analysis/draft_value.py.
         st.subheader("Biggest Busts")
-        st.dataframe(prep_display(picks.nsmallest(10, "value"), manager_map, show_mgr,
-                                  show_team, cols + ["injury_games"],
-                                  headers + ["Games Missed"]).round(2),
-                     width="stretch", hide_index=True)
+        value_table(picks.nsmallest(10, "value"), missed=True)
         st.caption("Partial games missed indicates player was hurt mid-game")
 
 
 # ── Waivers and Trades ───────────────────────────────────────────────────────
 
 LEAGUE = "Whole league"
-team_names = archive.team_names(season) or (
-    draft_df[["team_id", "team_name"]].drop_duplicates()
-    .set_index("team_id")["team_name"].to_dict())
 team_by_manager = {m: tid for tid, m in manager_map.items()}
 
 
-def md_escape(text: str) -> str:
-    # $ matters most: two in one cell and Streamlit reads the span between
-    # them as LaTeX.
-    for ch in "\\`*_[]$~:<>#|":
-        text = text.replace(ch, "\\" + ch)
-    return text
-
-
 def plus(names):
-    return [f":green[**+**] {md_escape(n)}" for n in names]
+    return [f'<span class="wa-pos"><b>+</b></span> {esc(n)}' for n in names]
 
 
 def minus(names, suffix=""):
-    return [f":red[**−**] {md_escape(n)}{suffix}" for n in names]
+    return [f'<span class="wa-neg"><b>−</b></span> {esc(n)}{esc(suffix)}' for n in names]
 
 
 def when(executed_at: str) -> str:
@@ -276,7 +285,7 @@ def who(frame: pd.DataFrame) -> pd.DataFrame:
     if show_mgr:
         out["Manager"] = frame["team_id"].map(manager_map).fillna("?")
     if show_team:
-        out["Team"] = frame["team_id"].map(team_names).fillna("?").map(md_escape)
+        out["Team"] = frame["team_id"].map(team_names).fillna("?")
     return out
 
 
@@ -306,14 +315,11 @@ def counts_table():
     counts = move_counts(tx_df, manager_map)
     st.divider()
     st.subheader(f"{season} Moves by Manager")
-    table = pd.concat([who(counts), pd.DataFrame({
-        "Waiver Adds": counts["waiver_adds"], "Trades": counts["trades"]})], axis=1)
-    # who() escapes team names for the Markdown tables above; a dataframe
-    # shows the backslashes, so undo that here.
-    if "Team" in table:
-        table["Team"] = counts["team_id"].map(team_names).fillna("?")
-    st.dataframe(table.sort_values("Waiver Adds", ascending=False),
-                 hide_index=True, width="stretch")
+    counts = counts.sort_values("waiver_adds", ascending=False)
+    html_table([(NAME_HEAD, ""), ("Waiver Adds", "mid"), ("Trades", "mid")],
+               [[who_html(t), str(int(w)), str(int(n))]
+                for t, w, n in zip(counts["team_id"], counts["waiver_adds"], counts["trades"])],
+               compact=True)
     n_trades = tx_df.loc[tx_df["kind"] == "trade", "transaction_id"].nunique()
     st.caption(
         f"{int(counts['waiver_adds'].sum())} waiver adds and {n_trades} "
@@ -350,19 +356,15 @@ with tab4:
             shown = shown.sort_values(["week", "executed_at"],
                                       ascending=order == "Oldest first")
 
-        table = pd.concat([
-            pd.DataFrame({"Week": shown["week"], "Date": shown["executed_at"].map(when)}),
-            who(shown),
-            pd.DataFrame({
-                "Waiver Move": [" &nbsp; ".join(plus(a) + minus(d))
-                                for a, d in zip(shown["adds"], shown["drops"])],
-                # FA is a pickup after waivers cleared; $0 is a claim that won
-                # with no money on it. A bare drop has no bid either way.
-                "Bid": ["" if not a else "FA" if k != "waiver" else f"\\${int(b)}"
-                        for a, k, b in zip(shown["adds"], shown["kind"], shown["bid"])],
-            }, index=shown.index),
-        ], axis=1)
-        st.table(table.set_index("Week"))
+        # FA is a pickup after waivers cleared; $0 is a claim that won with no
+        # money on it. A bare drop has no bid either way.
+        rows = [[str(w), esc(when(d)), who_html(t), " &nbsp; ".join(plus(a) + minus(dr)),
+                 "" if not a else "FA" if k != "waiver" else f"${int(b)}"]
+                for w, d, t, a, dr, k, b in zip(shown["week"], shown["executed_at"], shown["team_id"],
+                                                shown["adds"], shown["drops"], shown["kind"],
+                                                shown["bid"])]
+        html_table([("Week", "mid"), ("Date", ""), (NAME_HEAD, ""), ("Waiver Move", ""),
+                    ("Bid", "num")], rows, compact=True, scroll=len(rows) > 14)
     counts_table()
 
 def names_df(frame: pd.DataFrame) -> pd.DataFrame:
@@ -423,20 +425,14 @@ with tab5:
         # Newest trade first, each trade's sides kept together.
         sides = sides.sort_values(["week", "executed_at", "transaction_id", "team_id"],
                                   ascending=[False, False, False, True])
-        table = pd.concat([
-            pd.DataFrame({"Week": sides["week"],
-                          "Date": [when(d) + (" ≈" if inf else "")
-                                   for d, inf in zip(sides["executed_at"], sides["inferred"])]}),
-            who(sides),
-            pd.DataFrame({
-                "Receives": [", ".join(plus(r)) for r in sides["receives"]],
-                "Sends": [", ".join(minus(s) + minus(d, " (dropped)"))
-                          for s, d in zip(sides["sends"], sides["dropped"])],
-                "With": [", ".join(manager_map.get(p, "?") for p in ps)
-                         for ps in sides["partners"]],
-            }, index=sides.index),
-        ], axis=1)
-        st.table(table.set_index("Week"))
+        rows = [[str(w), esc(when(d) + (" ≈" if inf else "")), who_html(t),
+                 ", ".join(plus(r)), ", ".join(minus(s_) + minus(dr, " (dropped)")),
+                 esc(", ".join(manager_map.get(p_, "?") for p_ in ps))]
+                for w, d, inf, t, r, s_, dr, ps in zip(
+                    sides["week"], sides["executed_at"], sides["inferred"], sides["team_id"],
+                    sides["receives"], sides["sends"], sides["dropped"], sides["partners"])]
+        html_table([("Week", "mid"), ("Date", ""), (NAME_HEAD, ""), ("Receives", ""),
+                    ("Sends", ""), ("With", "")], rows, compact=True, scroll=len(rows) > 14)
 
         if sides["inferred"].any():
             st.caption(

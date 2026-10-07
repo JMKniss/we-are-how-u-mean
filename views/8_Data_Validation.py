@@ -123,7 +123,7 @@ with tab2:
 
         st.dataframe(
             display.style.apply(
-                lambda row: ["background-color: #fff3cd" if row["Status"] == "⚠️ MISMATCH" else "" for _ in row],
+                lambda row: ["background-color: rgba(255, 204, 0, .25)" if row["Status"] == "⚠️ MISMATCH" else "" for _ in row],
                 axis=1,
             ),
             width="stretch",
@@ -169,7 +169,7 @@ with tab3:
                                headers=["Team", "Season", "Round", "Our Total", "ESPN Total", "Diff", "Status"])
         st.dataframe(
             display.style.apply(
-                lambda row: ["background-color: #fff3cd" if row["Status"] == "⚠️ MISMATCH" else "" for _ in row],
+                lambda row: ["background-color: rgba(255, 204, 0, .25)" if row["Status"] == "⚠️ MISMATCH" else "" for _ in row],
                 axis=1,
             ),
             width="stretch",

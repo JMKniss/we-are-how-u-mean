@@ -26,9 +26,10 @@ from analysis.projections import (fixtures, simulate_team_model, simulate_player
                                   team_efficiency, magic_numbers, PRIOR_GAMES)
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import (season_selector, require_data, sidebar_display_prefs,
-                           prep_display, chart_label)
+                           chart_label, name_lines, who_columns)
 from branding import page_icon
-from style import page_header, series_colours
+from style import (RED, badge, esc, frame, html_table, page_header, series_colours, team_image,
+                   who_cell)
 
 # The player model is ~20x the work of the team model per simulation; past
 # 5,000 its odds move by tenths of a percent and the page waits seconds.
@@ -60,6 +61,16 @@ current_week = min(current_week, cfg["total_weeks"])
 
 # team_name → team_id lookup for tables without team_id
 tid_by_name = matchups_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
+NAME_HEAD = "Manager" if show_mgr else "Team"
+
+
+def team_frame(df, columns, **kw):
+    """A table led by each team's picture and name, in df's order."""
+    names, subs, pics = who_columns(df, manager_map, season, show_mgr, show_team)
+    out = pd.DataFrame({NAME_HEAD: names})
+    for head, values in columns.items():
+        out[head] = list(values)
+    frame(out, pics=pics, subs=subs, **kw)
 
 
 def render_bracket():
@@ -81,14 +92,6 @@ def render_bracket():
     standings.insert(0, "seed", range(1, len(standings) + 1))
     seed_map = dict(zip(standings["team_id"], standings["seed"]))
     name_map = dict(zip(standings["team_id"], standings["team_name"]))
-
-
-    def mgr_label(tid):
-        mgr = manager_map.get(tid, "?")
-        tname = name_map.get(tid, str(tid))
-        if show_mgr and show_team:
-            return f"{mgr} — {tname}"
-        return mgr if show_mgr else tname
 
 
     # Bottom 2 seeds = sacko bowl; top 8 = championship/consolation bracket
@@ -223,28 +226,27 @@ def render_bracket():
             (t1, scores_t1, total_t1, t1_wins),
             (t2, scores_t2, total_t2, (not t1_wins) if t1_wins is not None else None),
         ]:
-            row = {"Team": f"#{seed_map.get(tid, '?')}  {mgr_label(tid)}"}
-            for i, w in enumerate(weeks):
-                row[f"Wk {w}"] = f"{scrs[i]:.2f}" if scrs[i] is not None else "—"
-            row["Total"] = f"{total:.2f}"
-            row[" "] = "✅ W" if won else ("❌ L" if all_done else "")
-            rows.append(row)
-
-        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+            mgr = manager_map.get(tid, "?")
+            result = ("W" if won else "L") if all_done else ""
+            # The winner's row in bold, the result as a W/L box.
+            strong = "wa-strong" if won else ""
+            rows.append(
+                [f'<span class="wa-rank">{seed_map.get(tid, "?")}</span>',
+                 (who_cell(team_image(season, tid, mgr),
+                           *name_lines(mgr, name_map.get(tid, str(tid)), show_mgr, show_team)), strong)]
+                + [f"{x:.2f}" if x is not None else "—" for x in scrs]
+                + [(f"{total:.2f}", strong),
+                   f'<span class="wa-dot {result}">{result}</span>' if result else ""])
+        html_table([("Seed", ""), (NAME_HEAD, "")] + [(f"Wk {w}", "num") for w in weeks]
+                   + [("Total", "num"), ("", "mid")], rows, compact=True)
 
 
     # ── Regular season seedings table ─────────────────────────────────────────────
     st.subheader(f"{season} Regular Season Final Standings")
-    if season >= 2025:
-        seed_disp = prep_display(standings, manager_map, show_mgr, show_team,
-                                 cols=["team_name", "seed", "total_wins", "total_losses", "points_for"],
-                                 headers=["Team", "Seed", "W", "L", "PF"])
-    else:
-        seed_disp = prep_display(standings, manager_map, show_mgr, show_team,
-                                 cols=["team_name", "seed", "wins", "losses", "points_for"],
-                                 headers=["Team", "Seed", "W", "L", "PF"])
-    seed_disp["PF"] = seed_disp["PF"].round(1)
-    st.dataframe(seed_disp, hide_index=True, width="stretch")
+    w_col, l_col = ("total_wins", "total_losses") if season >= 2025 else ("wins", "losses")
+    team_frame(standings, {"W": standings[w_col].astype(int), "L": standings[l_col].astype(int),
+                           "PF": standings["points_for"]},
+               rank=True, cut_after=4, mid=("W", "L"), num=("PF",))
 
     st.divider()
 
@@ -426,8 +428,13 @@ def render_projections():
             if weeks_remaining:
                 st.caption("The player model needs this season's roster snapshot, "
                            "which the weekly update captures.")
-        display = prep_display(odds, manager_map, show_mgr, show_team, cols=cols, headers=headers)
-        st.dataframe(display, width="stretch", hide_index=True)
+        pct = {"team_pct", "player_pct", "blend_pct", "player_first", "team_first"}
+        team_frame(odds, {h: odds[c] for c, h in zip(cols[1:], headers[1:])}, rank=True,
+                   cut_after=playoff_spots,
+                   mid=("W", "L"), num=[h for c, h in zip(cols[1:], headers[1:]) if c not in
+                                         ("current_wins", "current_losses")],
+                   fmt={h: ("{:.1f}%" if c in pct else "{:.1f}") for c, h in zip(cols[1:], headers[1:])
+                        if c not in ("current_wins", "current_losses")})
         if player_df is not None:
             st.caption("Proj. Wins and #1 Seed % are from the player model"
                        + (" and count median wins." if median_game else "."))
@@ -454,7 +461,9 @@ def render_projections():
         fig = go.Figure(go.Heatmap(
             z=seed_mat, x=list(range(1, seed_mat.shape[1] + 1)),
             y=chart_label(seed_src, manager_map, show_mgr, show_team),
-            colorscale="Blues", zmin=0, zmax=100, showscale=False,
+            # Transparent to red, so an unlikely seed is the page itself in
+            # either theme rather than a white tile on the dark one.
+            colorscale=[[0, "rgba(213,10,10,0)"], [1, RED]], zmin=0, zmax=100, showscale=False,
             text=[[f"{v:.0f}" if v >= 0.5 else "" for v in row] for row in seed_mat],
             texttemplate="%{text}",
             hovertemplate="%{y}<br>Seed %{x}: %{z:.1f}%<extra></extra>",
@@ -499,9 +508,9 @@ def render_projections():
             cols.append("player_mean")
             headers.append("Player Model Avg")
         stats = stats.sort_values("mean", ascending=False).round(2)
-        params_df = prep_display(stats, manager_map, show_mgr, show_team,
-                                 cols=cols, headers=headers)
-        st.dataframe(params_df, width="stretch", hide_index=True)
+        team_frame(stats, {h: stats[c] for c, h in zip(cols[1:], headers[1:])},
+                   num=[h for h in headers[1:] if h != "Games"], mid=("Games",),
+                   fmt={h: "{:.2f}" for h in headers[1:] if h != "Games"})
 
         stats["label"] = chart_label(stats, manager_map, show_mgr, show_team)
         fig = px.scatter(stats, x="mean", y="std", text="label", size="count",
@@ -535,11 +544,15 @@ def render_projections():
             f"that rivals still have to play each other, so a team can be safe "
             f"a week before its number reaches zero. The simulation accounts for that."
         )
-        magic_disp = prep_display(
-            magic, manager_map, show_mgr, show_team,
-            cols=["team_name", wins_col, losses_col, "magic_number", "elim_number", "status"],
-            headers=["Team", "W", "L", "Magic #", "Elimination #", "Status"])
-        st.dataframe(magic_disp, width="stretch", hide_index=True)
+        status_html = {"Clinched": badge("clinched", "Clinched"),
+                       "Eliminated": badge("eliminated", "Eliminated")}
+        names, subs, pics = who_columns(magic, manager_map, season, show_mgr, show_team)
+        rows = [[who_cell(p_, n_, s_), str(int(r[wins_col])), str(int(r[losses_col])),
+                 f"<b>{r['magic_number']}</b>", str(r["elim_number"]),
+                 status_html.get(r["status"], esc(r["status"]))]
+                for (_, r), n_, s_, p_ in zip(magic.iterrows(), names, subs, pics)]
+        html_table([(NAME_HEAD, ""), ("W", "mid"), ("L", "mid"), ("Magic #", "mid"),
+                    ("Elimination #", "mid"), ("Status", "")], rows)
 
         clinched = magic[magic["status"] == "Clinched"]["team_name"].tolist()
         elim = magic[magic["status"] == "Eliminated"]["team_name"].tolist()

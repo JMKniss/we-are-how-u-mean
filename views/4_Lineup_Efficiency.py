@@ -10,9 +10,10 @@ from data.espn_client import get_boxscores_df, get_manager_map
 from analysis.efficiency import (lineup_efficiency, top_players, projected_vs_actual,
                                  player_manager_sequence)
 from config import SEASONS, DEFAULT_SEASON
-from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
+from display_utils import season_selector, require_data, sidebar_display_prefs, chart_label, who_columns
 from branding import page_icon
-from style import DIVERGING, bar_chart, page_header, series_colours, show_chart
+from style import (DIVERGING, bar_chart, esc, frame, html_table, page_header, player_pic,
+                   rank_cell, series_colours, show_chart)
 
 st.set_page_config(page_title="Lineup Efficiency", page_icon=page_icon(), layout="wide")
 page_header("Lineup Efficiency",
@@ -44,6 +45,15 @@ def label_for(tname: str) -> str:
 
 summary, weekly = lineup_efficiency(box_df)
 
+
+def team_frame(df, columns, **kw):
+    """A table led by each team's picture and name, in df's order."""
+    names, subs, pics = who_columns(df, manager_map, season, show_mgr, show_team)
+    out = pd.DataFrame({"Manager" if show_mgr else "Team": names})
+    for head, values in columns.items():
+        out[head] = list(values)
+    frame(out, pics=pics, subs=subs, **kw)
+
 # 2016-2017 come from nfl-data-py: starters only, no bench, no real slot names.
 # With no bench there is no alternative lineup, so efficiency is not computable
 # rather than a meaningless 100%.
@@ -64,12 +74,15 @@ with tab1:
         st.caption("Not available for this season - see the note above.")
     else:
         st.subheader("Season Efficiency Summary")
-        display = prep_display(summary, manager_map, show_mgr, show_team,
-                               cols=["team_name", "avg_actual", "avg_optimal", "avg_efficiency",
-                                     "avg_left_on_bench", "total_left_on_bench"],
-                               headers=["Team", "Avg Actual", "Avg Optimal", "Efficiency %",
-                                        "Avg Left on Bench", "Total Left on Bench"])
-        st.dataframe(display, width="stretch")
+        ranked = summary.sort_values("avg_efficiency", ascending=False)
+        team_frame(ranked, {
+            "Avg Actual": ranked["avg_actual"], "Avg Optimal": ranked["avg_optimal"],
+            "Efficiency": ranked["avg_efficiency"], "Avg Left on Bench": ranked["avg_left_on_bench"],
+            "Total Left on Bench": ranked["total_left_on_bench"],
+        }, rank=True, num=("Avg Actual", "Avg Optimal", "Efficiency", "Avg Left on Bench",
+                           "Total Left on Bench"),
+            fmt={"Avg Actual": "{:.2f}", "Avg Optimal": "{:.2f}", "Efficiency": "{:.1f}%",
+                 "Avg Left on Bench": "{:.2f}", "Total Left on Bench": "{:,.1f}"})
 
         summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
         avg = summary["avg_efficiency"].mean()
@@ -121,7 +134,9 @@ with tab2:
                 ["week", "actual_score", "optimal_score", "points_left_on_bench", "efficiency_pct"]
             ].round(2)
             tdf.columns = ["Week", "Actual", "Optimal", "Left on Bench", "Eff%"]
-            st.dataframe(tdf, width="stretch", hide_index=True)
+            frame(tdf, mid=("Week",), num=("Actual", "Optimal", "Left on Bench", "Eff%"), compact=True,
+                  fmt={"Actual": "{:.2f}", "Optimal": "{:.2f}", "Left on Bench": "{:.2f}",
+                       "Eff%": "{:.1f}%"})
 
 with tab3:
     st.subheader("Top Scoring Players")
@@ -154,17 +169,15 @@ with tab3:
             chain = [n for i, n in enumerate(names) if i == 0 or n != names[i - 1]]
             return " → ".join(chain)
 
-        disp = pd.DataFrame({
-            "Pos": top["position"],
-            "Player": top.apply(player_label, axis=1),
-            "Manager": top["player_id"].map(manager_chain),
-            "Total": top["total_points"].round(1),
-            "Avg": top["avg_points"].round(1),
-            "Weeks": top["weeks_played"],
-        })
-        disp.index = range(1, len(disp) + 1)
-        st.dataframe(disp, width="stretch",
-                     column_config={"Pos": st.column_config.TextColumn("Pos", width="small")})
+        rows = []
+        for i, r in enumerate(top.itertuples()):
+            player = (f'<div class="wa-who">{player_pic(r.player_id, r.pro_team)}'
+                      f'<span class="wa-name">{esc(player_label(r._asdict()))}</span></div>')
+            rows.append([rank_cell(i + 1), esc(str(r.position)), player,
+                         esc(manager_chain(r.player_id)), f"<b>{r.total_points:,.1f}</b>",
+                         f"{r.avg_points:.1f}", str(r.weeks_played)])
+        html_table([("#", ""), ("Pos", ""), ("Player", ""), ("Manager", ""), ("Total", "num"),
+                    ("Avg", "num"), ("Weeks", "mid")], rows, compact=True, scroll=len(rows) > 15)
 
 with tab4:
     st.subheader("Projected vs Actual Scoring")
@@ -179,11 +192,11 @@ with tab4:
         )
     else:
         proj_df = projected_vs_actual(box_df)
-        display = prep_display(proj_df, manager_map, show_mgr, show_team,
-                               cols=["team_name", "avg_projected", "times_beat_proj", "beat_proj_pct"],
-                               headers=["Team", "Avg Proj", "Times Beat Proj", "Beat Proj %"])
-        display["Avg Proj"] = display["Avg Proj"].round(1)
-        st.dataframe(display, width="stretch", hide_index=True)
+        team_frame(proj_df, {
+            "Avg Proj": proj_df["avg_projected"], "Times Beat Proj": proj_df["times_beat_proj"],
+            "Beat Proj %": proj_df["beat_proj_pct"],
+        }, num=("Avg Proj", "Times Beat Proj", "Beat Proj %"),
+            fmt={"Avg Proj": "{:.1f}", "Beat Proj %": "{:.1f}%"})
 
         proj_df["label"] = chart_label(proj_df, manager_map, show_mgr, show_team)
         fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
