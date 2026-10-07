@@ -379,3 +379,8 @@ season,week,end_week,team_id,opp_id,pick_id,graded,source
 2026,3,3,4,8,4,miss,recap
 2026,3,3,5,10,10,hit,recap
 2026,3,3,6,9,9,hit,recap
+2026,4,4,1,8,1,hit,recap
+2026,4,4,2,9,9,hit,recap
+2026,4,4,3,10,10,hit,recap
+2026,4,4,4,7,7,hit,recap
+2026,4,4,5,6,5,hit,recap

@@ -480,3 +480,9 @@ season,week,position,player_id,player_name,team_id,graded,source
 2026,3,TE,4572680,Tucker Kraft,5,miss,recap
 2026,3,QB,2577417,Dak Prescott,7,hit,recap
 2026,3,RB,3043078,Derrick Henry,9,hit,recap
+2026,4,FLEX,4701936,Matthew Golden,1,miss,recap
+2026,4,QB,4360689,Tyler Shough,2,miss,recap
+2026,4,TE,4430027,Sam LaPorta,3,hit,recap
+2026,4,RB,4870808,Jeremiyah Love,4,miss,recap
+2026,4,WR,4372016,Jaylen Waddle,5,hit,recap
+2026,4,K,4360234,Evan McPherson,8,miss,recap

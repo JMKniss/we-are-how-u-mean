@@ -35308,6 +35308,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2025,17,5083754,Ryan Flournoy,WR,DAL,0.0,0.0
 2025,17,5123663,Isaac TeSlaa,WR,DET,10.9,3.0
 2026,1,-16034,Texans D/ST,D/ST,HOU,0.0,0.0
+2026,1,-16033,Ravens D/ST,D/ST,BAL,6.0,0.0
 2026,1,-16030,Jaguars D/ST,D/ST,JAX,13.0,0.0
 2026,1,-16029,Panthers D/ST,D/ST,CAR,-1.0,0.0
 2026,1,-16027,Buccaneers D/ST,D/ST,TB,9.0,0.0
@@ -35318,12 +35319,15 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,-16021,Eagles D/ST,D/ST,PHI,4.0,0.0
 2026,1,-16016,Vikings D/ST,D/ST,MIN,9.0,0.0
 2026,1,-16014,Rams D/ST,D/ST,LAR,2.0,0.0
+2026,1,-16013,Raiders D/ST,D/ST,LV,13.0,0.0
 2026,1,-16012,Chiefs D/ST,D/ST,KC,11.0,0.0
 2026,1,-16010,Titans D/ST,D/ST,TEN,0.0,0.0
 2026,1,-16009,Packers D/ST,D/ST,GB,2.0,0.0
 2026,1,-16008,Lions D/ST,D/ST,DET,10.0,0.0
 2026,1,-16007,Broncos D/ST,D/ST,DEN,3.0,0.0
 2026,1,-16004,Bengals D/ST,D/ST,CIN,18.0,0.0
+2026,1,-16003,Bears D/ST,D/ST,CHI,6.0,0.0
+2026,1,-16002,Bills D/ST,D/ST,BUF,6.0,0.0
 2026,1,12483,Matthew Stafford,QB,LAR,4.1,0.0
 2026,1,15818,Keenan Allen,WR,IND,6.2,6.0
 2026,1,15847,Travis Kelce,TE,KC,8.6,3.0
@@ -35335,6 +35339,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,2971573,Ka'imi Fairbairn,K,HOU,6.5,0.0
 2026,1,2973405,Kalif Raymond,WR,CHI,12.4,8.0
 2026,1,2976212,Stefon Diggs,WR,WSH,13.5,4.0
+2026,1,2991662,Mack Hollins,WR,NE,7.1,4.0
 2026,1,3040151,George Kittle,TE,SF,2.2,2.0
 2026,1,3042519,Aaron Jones Sr.,RB,MIN,10.0,0.0
 2026,1,3043078,Derrick Henry,RB,BAL,34.8,1.0
@@ -35353,6 +35358,9 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,3128429,Courtland Sutton,WR,DEN,2.1,2.0
 2026,1,3139477,Patrick Mahomes,QB,KC,21.66,0.0
 2026,1,3149687,Chris Brooks,RB,GB,2.9,0.0
+2026,1,3150744,Chase McLaughlin,K,TB,7.0,0.0
+2026,1,3886598,Jauan Jennings,WR,MIN,0.0,0.0
+2026,1,3912547,Sam Darnold,QB,SEA,0.52,0.0
 2026,1,3915416,DJ Moore,WR,BUF,18.5,5.0
 2026,1,3915511,Joe Burrow,QB,CIN,14.16,0.0
 2026,1,3916148,Tony Pollard,RB,TEN,3.9,1.0
@@ -35368,6 +35376,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,4034949,Eddy Pineiro,K,SF,6.0,0.0
 2026,1,4035538,David Montgomery,RB,HOU,27.4,3.0
 2026,1,4035687,Michael Pittman Jr.,WR,PIT,7.3,3.0
+2026,1,4036378,Jordan Love,QB,GB,18.48,0.0
 2026,1,4038815,Rico Dowdle,RB,PIT,3.1,2.0
 2026,1,4038941,Justin Herbert,QB,LAC,13.26,0.0
 2026,1,4040715,Jalen Hurts,QB,PHI,24.72,0.0
@@ -35378,6 +35387,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,4239996,Travis Etienne Jr.,RB,NO,11.3,7.0
 2026,1,4241389,CeeDee Lamb,WR,DAL,12.9,5.0
 2026,1,4241416,Chuba Hubbard,RB,CAR,22.2,3.0
+2026,1,4241474,Brian Robinson Jr.,RB,ATL,3.1,0.0
 2026,1,4241478,DeVonta Smith,WR,PHI,6.8,3.0
 2026,1,4241985,J.K. Dobbins,RB,DEN,3.6,0.0
 2026,1,4242335,Jonathan Taylor,RB,IND,23.6,3.0
@@ -35435,6 +35445,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,4429205,Jordan Addison,WR,MIN,0.0,0.0
 2026,1,4429615,Zay Flowers,WR,BAL,23.5,5.0
 2026,1,4429795,Jahmyr Gibbs,RB,DET,31.1,5.0
+2026,1,4429835,George Holani,RB,SEA,2.9,0.0
 2026,1,4430027,Sam LaPorta,TE,DET,7.3,5.0
 2026,1,4430737,Kyren Williams,RB,LAR,14.0,3.0
 2026,1,4430807,Bijan Robinson,RB,ATL,25.3,8.0
@@ -35467,10 +35478,12 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,4596334,Keaton Mitchell,RB,LAC,0.9,0.0
 2026,1,4596448,Bucky Irving,RB,TB,16.8,7.0
 2026,1,4597500,Adonai Mitchell,WR,NYJ,7.5,3.0
+2026,1,4599739,Kendre Miller,RB,NO,9.0,0.0
 2026,1,4608686,Kyle Monangai,RB,CHI,19.4,2.0
 2026,1,4612826,Ladd McConkey,WR,LAC,16.7,5.0
 2026,1,4678008,Jonathon Brooks,RB,CAR,6.7,1.0
 2026,1,4682648,Malachi Fields,WR,NYG,3.5,2.0
+2026,1,4682745,Jaylen Wright,RB,MIA,-0.1,0.0
 2026,1,4683062,Xavier Worthy,WR,KC,3.3,3.0
 2026,1,4685247,Braelon Allen,RB,NYJ,4.0,0.0
 2026,1,4685278,Luther Burden III,WR,CHI,7.0,5.0
@@ -35483,6 +35496,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,4686658,Mike Washington Jr.,RB,LV,4.1,0.0
 2026,1,4688813,Josh Downs,WR,IND,4.7,2.0
 2026,1,4689114,Jaxson Dart,QB,NYG,25.6,0.0
+2026,1,4695404,Isaiah Davis,RB,NYJ,0.0,0.0
 2026,1,4695883,Jalen Coker,WR,CAR,29.8,8.0
 2026,1,4696044,Kaelon Black,RB,SF,7.5,1.0
 2026,1,4696981,Cam Skattebo,RB,NYG,13.1,0.0
@@ -35492,6 +35506,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,4702555,Jonah Coleman,RB,DEN,0.0,0.0
 2026,1,4710714,De'Zhaun Stribling,WR,SF,0.0,0.0
 2026,1,4710855,Konata Mumpfield,WR,LAR,0.0,0.0
+2026,1,4711533,Ollie Gordon II,RB,MIA,0.0,0.0
 2026,1,4723086,Colston Loveland,TE,CHI,0.0,0.0
 2026,1,4819231,Kaleb Johnson,RB,GB,0.0,0.0
 2026,1,4832800,Denzel Boston,WR,CLE,12.9,2.0
@@ -35512,7 +35527,9 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,1,5081397,Dylan Sampson,RB,CLE,0.0,0.0
 2026,1,5081432,Antonio Williams,WR,WSH,14.4,4.0
 2026,1,5083076,Harold Fannin Jr.,TE,CLE,3.1,2.0
+2026,1,5083315,Kenyon Sadiq,TE,NYJ,9.9,3.0
 2026,2,-16034,Texans D/ST,D/ST,HOU,5.0,0.0
+2026,2,-16033,Ravens D/ST,D/ST,BAL,3.0,0.0
 2026,2,-16030,Jaguars D/ST,D/ST,JAX,2.0,0.0
 2026,2,-16029,Panthers D/ST,D/ST,CAR,21.0,0.0
 2026,2,-16027,Buccaneers D/ST,D/ST,TB,2.0,0.0
@@ -35523,12 +35540,15 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,-16021,Eagles D/ST,D/ST,PHI,3.0,0.0
 2026,2,-16016,Vikings D/ST,D/ST,MIN,14.0,0.0
 2026,2,-16014,Rams D/ST,D/ST,LAR,9.0,0.0
+2026,2,-16013,Raiders D/ST,D/ST,LV,16.0,0.0
 2026,2,-16012,Chiefs D/ST,D/ST,KC,1.0,0.0
 2026,2,-16010,Titans D/ST,D/ST,TEN,7.0,0.0
 2026,2,-16009,Packers D/ST,D/ST,GB,5.0,0.0
 2026,2,-16008,Lions D/ST,D/ST,DET,0.0,0.0
 2026,2,-16007,Broncos D/ST,D/ST,DEN,7.0,0.0
 2026,2,-16004,Bengals D/ST,D/ST,CIN,8.0,0.0
+2026,2,-16003,Bears D/ST,D/ST,CHI,6.0,0.0
+2026,2,-16002,Bills D/ST,D/ST,BUF,4.0,0.0
 2026,2,12483,Matthew Stafford,QB,LAR,26.98,0.0
 2026,2,15818,Keenan Allen,WR,IND,1.0,1.0
 2026,2,15847,Travis Kelce,TE,KC,20.6,9.0
@@ -35540,6 +35560,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,2971573,Ka'imi Fairbairn,K,HOU,2.5,0.0
 2026,2,2973405,Kalif Raymond,WR,CHI,6.5,5.0
 2026,2,2976212,Stefon Diggs,WR,WSH,19.2,5.0
+2026,2,2991662,Mack Hollins,WR,NE,2.8,2.0
 2026,2,3040151,George Kittle,TE,SF,16.0,4.0
 2026,2,3042519,Aaron Jones Sr.,RB,MIN,10.5,0.0
 2026,2,3043078,Derrick Henry,RB,BAL,16.2,3.0
@@ -35558,6 +35579,9 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,3128429,Courtland Sutton,WR,DEN,4.0,3.0
 2026,2,3139477,Patrick Mahomes,QB,KC,28.98,0.0
 2026,2,3149687,Chris Brooks,RB,GB,3.1,1.0
+2026,2,3150744,Chase McLaughlin,K,TB,8.5,0.0
+2026,2,3886598,Jauan Jennings,WR,MIN,0.0,0.0
+2026,2,3912547,Sam Darnold,QB,SEA,0.0,0.0
 2026,2,3915416,DJ Moore,WR,BUF,-0.1,0.0
 2026,2,3915511,Joe Burrow,QB,CIN,16.18,0.0
 2026,2,3916148,Tony Pollard,RB,TEN,7.0,1.0
@@ -35573,6 +35597,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,4034949,Eddy Pineiro,K,SF,5.0,0.0
 2026,2,4035538,David Montgomery,RB,HOU,3.4,2.0
 2026,2,4035687,Michael Pittman Jr.,WR,PIT,0.0,0.0
+2026,2,4036378,Jordan Love,QB,GB,12.8,0.0
 2026,2,4038815,Rico Dowdle,RB,PIT,5.4,2.0
 2026,2,4038941,Justin Herbert,QB,LAC,4.88,0.0
 2026,2,4040715,Jalen Hurts,QB,PHI,16.16,0.0
@@ -35583,6 +35608,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,4239996,Travis Etienne Jr.,RB,NO,6.1,2.0
 2026,2,4241389,CeeDee Lamb,WR,DAL,31.3,8.0
 2026,2,4241416,Chuba Hubbard,RB,CAR,13.4,2.0
+2026,2,4241474,Brian Robinson Jr.,RB,ATL,7.7,2.0
 2026,2,4241478,DeVonta Smith,WR,PHI,22.7,10.0
 2026,2,4241985,J.K. Dobbins,RB,DEN,3.6,0.0
 2026,2,4242335,Jonathan Taylor,RB,IND,27.2,4.0
@@ -35640,6 +35666,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,4429205,Jordan Addison,WR,MIN,3.1,2.0
 2026,2,4429615,Zay Flowers,WR,BAL,0.0,0.0
 2026,2,4429795,Jahmyr Gibbs,RB,DET,20.3,6.0
+2026,2,4429835,George Holani,RB,SEA,2.0,1.0
 2026,2,4430027,Sam LaPorta,TE,DET,14.2,6.0
 2026,2,4430737,Kyren Williams,RB,LAR,14.7,2.0
 2026,2,4430807,Bijan Robinson,RB,ATL,9.6,3.0
@@ -35672,10 +35699,12 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,4596334,Keaton Mitchell,RB,LAC,4.4,1.0
 2026,2,4596448,Bucky Irving,RB,TB,11.0,4.0
 2026,2,4597500,Adonai Mitchell,WR,NYJ,9.3,6.0
+2026,2,4599739,Kendre Miller,RB,NO,0.0,0.0
 2026,2,4608686,Kyle Monangai,RB,CHI,6.8,2.0
 2026,2,4612826,Ladd McConkey,WR,LAC,5.0,3.0
 2026,2,4678008,Jonathon Brooks,RB,CAR,1.6,1.0
 2026,2,4682648,Malachi Fields,WR,NYG,4.0,2.0
+2026,2,4682745,Jaylen Wright,RB,MIA,1.1,0.0
 2026,2,4683062,Xavier Worthy,WR,KC,11.0,5.0
 2026,2,4685247,Braelon Allen,RB,NYJ,8.0,1.0
 2026,2,4685278,Luther Burden III,WR,CHI,4.7,3.0
@@ -35688,6 +35717,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,4686658,Mike Washington Jr.,RB,LV,0.7,0.0
 2026,2,4688813,Josh Downs,WR,IND,10.7,7.0
 2026,2,4689114,Jaxson Dart,QB,NYG,0.8,0.0
+2026,2,4695404,Isaiah Davis,RB,NYJ,0.0,0.0
 2026,2,4695883,Jalen Coker,WR,CAR,10.6,8.0
 2026,2,4696044,Kaelon Black,RB,SF,2.5,0.0
 2026,2,4696981,Cam Skattebo,RB,NYG,6.5,4.0
@@ -35697,6 +35727,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,4702555,Jonah Coleman,RB,DEN,13.3,3.0
 2026,2,4710714,De'Zhaun Stribling,WR,SF,0.0,0.0
 2026,2,4710855,Konata Mumpfield,WR,LAR,1.7,1.0
+2026,2,4711533,Ollie Gordon II,RB,MIA,0.7,0.0
 2026,2,4723086,Colston Loveland,TE,CHI,0.8,1.0
 2026,2,4819231,Kaleb Johnson,RB,GB,2.2,0.0
 2026,2,4832800,Denzel Boston,WR,CLE,18.0,5.0
@@ -35717,7 +35748,9 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,2,5081397,Dylan Sampson,RB,CLE,0.0,0.0
 2026,2,5081432,Antonio Williams,WR,WSH,3.9,3.0
 2026,2,5083076,Harold Fannin Jr.,TE,CLE,7.9,5.0
+2026,2,5083315,Kenyon Sadiq,TE,NYJ,2.7,2.0
 2026,3,-16034,Texans D/ST,D/ST,HOU,10.0,0.0
+2026,3,-16033,Ravens D/ST,D/ST,BAL,5.0,0.0
 2026,3,-16030,Jaguars D/ST,D/ST,JAX,13.0,0.0
 2026,3,-16029,Panthers D/ST,D/ST,CAR,4.0,0.0
 2026,3,-16027,Buccaneers D/ST,D/ST,TB,5.0,0.0
@@ -35728,12 +35761,15 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,-16021,Eagles D/ST,D/ST,PHI,1.0,0.0
 2026,3,-16016,Vikings D/ST,D/ST,MIN,17.0,0.0
 2026,3,-16014,Rams D/ST,D/ST,LAR,4.0,0.0
+2026,3,-16013,Raiders D/ST,D/ST,LV,13.0,0.0
 2026,3,-16012,Chiefs D/ST,D/ST,KC,7.0,0.0
 2026,3,-16010,Titans D/ST,D/ST,TEN,7.0,0.0
 2026,3,-16009,Packers D/ST,D/ST,GB,-1.0,0.0
 2026,3,-16008,Lions D/ST,D/ST,DET,7.0,0.0
 2026,3,-16007,Broncos D/ST,D/ST,DEN,14.0,0.0
 2026,3,-16004,Bengals D/ST,D/ST,CIN,3.0,0.0
+2026,3,-16003,Bears D/ST,D/ST,CHI,11.0,0.0
+2026,3,-16002,Bills D/ST,D/ST,BUF,5.0,0.0
 2026,3,12483,Matthew Stafford,QB,LAR,20.9,0.0
 2026,3,15818,Keenan Allen,WR,IND,15.3,6.0
 2026,3,15847,Travis Kelce,TE,KC,12.9,2.0
@@ -35745,6 +35781,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,2971573,Ka'imi Fairbairn,K,HOU,3.5,0.0
 2026,3,2973405,Kalif Raymond,WR,CHI,18.0,6.0
 2026,3,2976212,Stefon Diggs,WR,WSH,5.3,4.0
+2026,3,2991662,Mack Hollins,WR,NE,11.7,6.0
 2026,3,3040151,George Kittle,TE,SF,23.2,6.0
 2026,3,3042519,Aaron Jones Sr.,RB,MIN,11.7,5.0
 2026,3,3043078,Derrick Henry,RB,BAL,21.4,1.0
@@ -35763,6 +35800,9 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,3128429,Courtland Sutton,WR,DEN,6.1,3.0
 2026,3,3139477,Patrick Mahomes,QB,KC,15.94,0.0
 2026,3,3149687,Chris Brooks,RB,GB,0.9,1.0
+2026,3,3150744,Chase McLaughlin,K,TB,6.5,0.0
+2026,3,3886598,Jauan Jennings,WR,MIN,0.6,1.0
+2026,3,3912547,Sam Darnold,QB,SEA,27.66,0.0
 2026,3,3915416,DJ Moore,WR,BUF,9.7,6.0
 2026,3,3915511,Joe Burrow,QB,CIN,22.58,0.0
 2026,3,3916148,Tony Pollard,RB,TEN,11.6,4.0
@@ -35778,6 +35818,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,4034949,Eddy Pineiro,K,SF,3.5,0.0
 2026,3,4035538,David Montgomery,RB,HOU,5.8,2.0
 2026,3,4035687,Michael Pittman Jr.,WR,PIT,2.6,2.0
+2026,3,4036378,Jordan Love,QB,GB,17.48,0.0
 2026,3,4038815,Rico Dowdle,RB,PIT,0.0,0.0
 2026,3,4038941,Justin Herbert,QB,LAC,12.74,0.0
 2026,3,4040715,Jalen Hurts,QB,PHI,12.62,0.0
@@ -35788,6 +35829,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,4239996,Travis Etienne Jr.,RB,NO,8.0,2.0
 2026,3,4241389,CeeDee Lamb,WR,DAL,16.7,7.0
 2026,3,4241416,Chuba Hubbard,RB,CAR,13.0,4.0
+2026,3,4241474,Brian Robinson Jr.,RB,ATL,11.0,0.0
 2026,3,4241478,DeVonta Smith,WR,PHI,9.5,6.0
 2026,3,4241985,J.K. Dobbins,RB,DEN,4.8,1.0
 2026,3,4242335,Jonathan Taylor,RB,IND,8.2,2.0
@@ -35845,6 +35887,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,4429205,Jordan Addison,WR,MIN,17.5,5.0
 2026,3,4429615,Zay Flowers,WR,BAL,12.9,5.0
 2026,3,4429795,Jahmyr Gibbs,RB,DET,37.9,7.0
+2026,3,4429835,George Holani,RB,SEA,8.3,5.0
 2026,3,4430027,Sam LaPorta,TE,DET,5.9,3.0
 2026,3,4430737,Kyren Williams,RB,LAR,18.8,6.0
 2026,3,4430807,Bijan Robinson,RB,ATL,34.3,2.0
@@ -35877,10 +35920,12 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,4596334,Keaton Mitchell,RB,LAC,12.2,3.0
 2026,3,4596448,Bucky Irving,RB,TB,6.8,2.0
 2026,3,4597500,Adonai Mitchell,WR,NYJ,0.0,0.0
+2026,3,4599739,Kendre Miller,RB,NO,1.9,2.0
 2026,3,4608686,Kyle Monangai,RB,CHI,3.1,0.0
 2026,3,4612826,Ladd McConkey,WR,LAC,8.6,4.0
 2026,3,4678008,Jonathon Brooks,RB,CAR,0.0,0.0
 2026,3,4682648,Malachi Fields,WR,NYG,2.9,2.0
+2026,3,4682745,Jaylen Wright,RB,MIA,0.0,0.0
 2026,3,4683062,Xavier Worthy,WR,KC,3.0,2.0
 2026,3,4685247,Braelon Allen,RB,NYJ,3.2,3.0
 2026,3,4685278,Luther Burden III,WR,CHI,16.3,7.0
@@ -35893,6 +35938,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,4686658,Mike Washington Jr.,RB,LV,11.4,0.0
 2026,3,4688813,Josh Downs,WR,IND,10.2,5.0
 2026,3,4689114,Jaxson Dart,QB,NYG,0.0,0.0
+2026,3,4695404,Isaiah Davis,RB,NYJ,0.0,0.0
 2026,3,4695883,Jalen Coker,WR,CAR,2.8,2.0
 2026,3,4696044,Kaelon Black,RB,SF,1.7,0.0
 2026,3,4696981,Cam Skattebo,RB,NYG,10.5,3.0
@@ -35902,6 +35948,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,4702555,Jonah Coleman,RB,DEN,0.0,0.0
 2026,3,4710714,De'Zhaun Stribling,WR,SF,0.0,0.0
 2026,3,4710855,Konata Mumpfield,WR,LAR,17.3,4.0
+2026,3,4711533,Ollie Gordon II,RB,MIA,13.0,3.0
 2026,3,4723086,Colston Loveland,TE,CHI,5.1,4.0
 2026,3,4819231,Kaleb Johnson,RB,GB,2.1,1.0
 2026,3,4832800,Denzel Boston,WR,CLE,7.1,2.0
@@ -35922,3 +35969,225 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,3,5081397,Dylan Sampson,RB,CLE,0.0,0.0
 2026,3,5081432,Antonio Williams,WR,WSH,2.5,2.0
 2026,3,5083076,Harold Fannin Jr.,TE,CLE,20.6,7.0
+2026,3,5083315,Kenyon Sadiq,TE,NYJ,20.0,7.0
+2026,4,-16034,Texans D/ST,D/ST,HOU,4.0,0.0
+2026,4,-16033,Ravens D/ST,D/ST,BAL,5.0,0.0
+2026,4,-16030,Jaguars D/ST,D/ST,JAX,8.0,0.0
+2026,4,-16029,Panthers D/ST,D/ST,CAR,1.0,0.0
+2026,4,-16027,Buccaneers D/ST,D/ST,TB,6.0,0.0
+2026,4,-16026,Seahawks D/ST,D/ST,SEA,11.0,0.0
+2026,4,-16025,49ers D/ST,D/ST,SF,5.0,0.0
+2026,4,-16024,Chargers D/ST,D/ST,LAC,6.0,0.0
+2026,4,-16023,Steelers D/ST,D/ST,PIT,7.0,0.0
+2026,4,-16021,Eagles D/ST,D/ST,PHI,5.0,0.0
+2026,4,-16016,Vikings D/ST,D/ST,MIN,7.0,0.0
+2026,4,-16014,Rams D/ST,D/ST,LAR,5.0,0.0
+2026,4,-16013,Raiders D/ST,D/ST,LV,1.0,0.0
+2026,4,-16012,Chiefs D/ST,D/ST,KC,4.0,0.0
+2026,4,-16010,Titans D/ST,D/ST,TEN,2.0,0.0
+2026,4,-16009,Packers D/ST,D/ST,GB,8.0,0.0
+2026,4,-16008,Lions D/ST,D/ST,DET,3.0,0.0
+2026,4,-16007,Broncos D/ST,D/ST,DEN,3.0,0.0
+2026,4,-16004,Bengals D/ST,D/ST,CIN,5.0,0.0
+2026,4,-16003,Bears D/ST,D/ST,CHI,6.0,0.0
+2026,4,-16002,Bills D/ST,D/ST,BUF,4.0,0.0
+2026,4,12483,Matthew Stafford,QB,LAR,9.68,0.0
+2026,4,15818,Keenan Allen,WR,IND,0.0,0.0
+2026,4,15847,Travis Kelce,TE,KC,2.5,2.0
+2026,4,16737,Mike Evans,WR,SF,10.1,5.0
+2026,4,16800,Davante Adams,WR,LAR,5.2,4.0
+2026,4,17427,Cairo Santos,K,CHI,6.5,0.0
+2026,4,2473037,Jason Myers,K,SEA,3.5,0.0
+2026,4,2577417,Dak Prescott,QB,DAL,18.1,0.0
+2026,4,2971573,Ka'imi Fairbairn,K,HOU,9.5,0.0
+2026,4,2973405,Kalif Raymond,WR,CHI,1.6,2.0
+2026,4,2976212,Stefon Diggs,WR,WSH,6.0,5.0
+2026,4,2991662,Mack Hollins,WR,NE,6.8,3.0
+2026,4,3040151,George Kittle,TE,SF,15.0,4.0
+2026,4,3042519,Aaron Jones Sr.,RB,MIN,13.8,4.0
+2026,4,3043078,Derrick Henry,RB,BAL,14.9,2.0
+2026,4,3046439,Hunter Henry,TE,NE,8.7,5.0
+2026,4,3046779,Jared Goff,QB,DET,20.48,0.0
+2026,4,3054850,Alvin Kamara,RB,NO,20.3,5.0
+2026,4,3055899,Harrison Butker,K,KC,4.5,0.0
+2026,4,3116164,Mike Gesicki,TE,CIN,11.5,3.0
+2026,4,3116165,Chris Godwin Jr.,WR,TB,6.1,6.0
+2026,4,3116365,Mark Andrews,TE,BAL,11.2,5.0
+2026,4,3117251,Christian McCaffrey,RB,SF,14.5,3.0
+2026,4,3117256,Dalton Schultz,TE,HOU,1.9,2.0
+2026,4,3121023,Dallas Goedert,TE,PHI,0.0,0.0
+2026,4,3121422,Terry McLaurin,WR,WSH,0.0,0.0
+2026,4,3126486,Deebo Samuel Sr.,WR,SF,14.5,5.0
+2026,4,3128429,Courtland Sutton,WR,DEN,0.9,1.0
+2026,4,3139477,Patrick Mahomes,QB,KC,17.0,0.0
+2026,4,3149687,Chris Brooks,RB,GB,4.0,1.0
+2026,4,3150744,Chase McLaughlin,K,TB,2.0,0.0
+2026,4,3886598,Jauan Jennings,WR,MIN,1.3,1.0
+2026,4,3912547,Sam Darnold,QB,SEA,13.32,0.0
+2026,4,3915416,DJ Moore,WR,BUF,2.2,1.0
+2026,4,3915511,Joe Burrow,QB,CIN,22.72,0.0
+2026,4,3916148,Tony Pollard,RB,TEN,12.0,2.0
+2026,4,3916387,Lamar Jackson,QB,BAL,18.88,0.0
+2026,4,3916433,Jakobi Meyers,WR,JAX,4.8,3.0
+2026,4,3917232,Tyler Bass,K,BUF,5.0,0.0
+2026,4,3917315,Kyler Murray,QB,MIN,11.48,0.0
+2026,4,3918298,Josh Allen,QB,BUF,17.52,0.0
+2026,4,3929630,Saquon Barkley,RB,PHI,0.5,1.0
+2026,4,3929645,Juwan Johnson,TE,NO,8.9,6.0
+2026,4,3953687,Brandon Aubrey,K,DAL,6.0,0.0
+2026,4,4032473,Rashid Shaheed,WR,SEA,10.8,1.0
+2026,4,4034949,Eddy Pineiro,K,SF,3.5,0.0
+2026,4,4035538,David Montgomery,RB,HOU,4.3,0.0
+2026,4,4035687,Michael Pittman Jr.,WR,PIT,2.5,2.0
+2026,4,4036378,Jordan Love,QB,GB,13.08,0.0
+2026,4,4038815,Rico Dowdle,RB,PIT,0.0,0.0
+2026,4,4038941,Justin Herbert,QB,LAC,9.56,0.0
+2026,4,4040715,Jalen Hurts,QB,PHI,12.52,0.0
+2026,4,4047365,Josh Jacobs,RB,GB,0.0,0.0
+2026,4,4047646,A.J. Brown,WR,NE,0.0,0.0
+2026,4,4047650,DK Metcalf,WR,PIT,14.0,5.0
+2026,4,4239993,Tee Higgins,WR,CIN,21.2,11.0
+2026,4,4239996,Travis Etienne Jr.,RB,NO,0.0,0.0
+2026,4,4241389,CeeDee Lamb,WR,DAL,32.8,17.0
+2026,4,4241416,Chuba Hubbard,RB,CAR,25.4,1.0
+2026,4,4241474,Brian Robinson Jr.,RB,ATL,25.2,1.0
+2026,4,4241478,DeVonta Smith,WR,PHI,0.0,0.0
+2026,4,4241985,J.K. Dobbins,RB,DEN,6.2,2.0
+2026,4,4242335,Jonathan Taylor,RB,IND,22.2,1.0
+2026,4,4242355,Jake Ferguson,TE,DAL,2.6,3.0
+2026,4,4248528,Christian Watson,WR,GB,6.2,3.0
+2026,4,4258173,Nico Collins,WR,HOU,27.3,7.0
+2026,4,4259545,D'Andre Swift,RB,CHI,6.4,2.0
+2026,4,4262921,Justin Jefferson,WR,MIN,0.0,0.0
+2026,4,4360078,Alec Pierce,WR,IND,0.0,0.0
+2026,4,4360234,Evan McPherson,K,CIN,3.5,0.0
+2026,4,4360248,Kyle Pitts Sr.,TE,ATL,6.2,3.0
+2026,4,4360310,Trevor Lawrence,QB,JAX,13.08,0.0
+2026,4,4360569,Jordan Mason,RB,MIN,0.0,0.0
+2026,4,4360635,Chig Okonkwo,TE,WSH,1.5,2.0
+2026,4,4360689,Tyler Shough,QB,NO,15.94,0.0
+2026,4,4360761,Michael Wilson,WR,ARI,13.0,7.0
+2026,4,4360939,Rashod Bateman,WR,BAL,5.6,2.0
+2026,4,4361050,Isaiah Likely,TE,NYG,10.1,7.0
+2026,4,4361307,Trey McBride,TE,ARI,6.6,7.0
+2026,4,4361370,Chris Olave,WR,NO,15.6,8.0
+2026,4,4361432,Romeo Doubs,WR,NE,20.8,6.0
+2026,4,4361579,Javonte Williams,RB,DAL,28.8,5.0
+2026,4,4361741,Brock Purdy,QB,SF,19.62,0.0
+2026,4,4362081,Cameron Dicker,K,LAC,7.0,0.0
+2026,4,4362238,Chase Brown,RB,CIN,13.6,11.0
+2026,4,4362249,Jayden Reed,WR,GB,0.0,0.0
+2026,4,4362478,Emari Demercado,RB,DAL,0.0,0.0
+2026,4,4362619,Chris Rodriguez Jr.,RB,JAX,9.5,0.0
+2026,4,4362628,Ja'Marr Chase,WR,CIN,4.2,3.0
+2026,4,4371733,Kenny Gainwell,RB,TB,9.7,2.0
+2026,4,4372016,Jaylen Waddle,WR,DEN,12.0,5.0
+2026,4,4373626,Tyler Allgeier,RB,ARI,11.9,2.0
+2026,4,4373678,Khalil Shakir,WR,BUF,9.7,7.0
+2026,4,4374302,Amon-Ra St. Brown,WR,DET,11.5,8.0
+2026,4,4379399,James Cook III,RB,BUF,15.3,2.0
+2026,4,4385690,Dalton Kincaid,TE,BUF,1.2,1.0
+2026,4,4426348,Jayden Daniels,QB,WSH,0.0,0.0
+2026,4,4426354,George Pickens,WR,DAL,8.5,2.0
+2026,4,4426385,Zach Charbonnet,RB,SEA,0.0,0.0
+2026,4,4426388,Jameson Williams,WR,DET,13.2,6.0
+2026,4,4426502,Drake London,WR,ATL,12.1,5.0
+2026,4,4426515,Puka Nacua,WR,LAR,23.2,9.0
+2026,4,4427366,Breece Hall,RB,NYJ,0.0,0.0
+2026,4,4428331,Rashee Rice,WR,KC,0.0,0.0
+2026,4,4428557,Tyjae Spears,RB,TEN,1.1,1.0
+2026,4,4428718,Tre Tucker,WR,LV,6.4,4.0
+2026,4,4428850,Dontayvion Wicks,WR,PHI,3.3,3.0
+2026,4,4429013,Tank Bigsby,RB,PHI,5.5,0.0
+2026,4,4429022,Kayshon Boutte,WR,HOU,5.1,3.0
+2026,4,4429023,MarShawn Lloyd,RB,GB,6.4,5.0
+2026,4,4429025,Quentin Johnston,WR,LAC,4.5,1.0
+2026,4,4429059,Woody Marks,RB,HOU,8.2,0.0
+2026,4,4429096,Blake Corum,RB,LAR,2.6,1.0
+2026,4,4429160,De'Von Achane,RB,MIA,0.0,0.0
+2026,4,4429205,Jordan Addison,WR,MIN,7.1,4.0
+2026,4,4429615,Zay Flowers,WR,BAL,21.8,8.0
+2026,4,4429795,Jahmyr Gibbs,RB,DET,15.7,4.0
+2026,4,4429835,George Holani,RB,SEA,2.5,1.0
+2026,4,4430027,Sam LaPorta,TE,DET,18.4,8.0
+2026,4,4430737,Kyren Williams,RB,LAR,31.7,10.0
+2026,4,4430807,Bijan Robinson,RB,ATL,27.2,1.0
+2026,4,4430834,Jalen McMillan,WR,TB,0.0,0.0
+2026,4,4430878,Jaxon Smith-Njigba,WR,SEA,10.1,5.0
+2026,4,4431299,Rome Odunze,WR,CHI,12.4,6.0
+2026,4,4431452,Drake Maye,QB,NE,24.16,0.0
+2026,4,4431459,Tyler Warren,TE,IND,6.6,5.0
+2026,4,4431611,Caleb Williams,QB,CHI,0.0,0.0
+2026,4,4432577,C.J. Stroud,QB,HOU,23.08,0.0
+2026,4,4432620,Parker Washington,WR,JAX,1.5,1.0
+2026,4,4432665,Brock Bowers,TE,LV,17.6,6.0
+2026,4,4432708,Marvin Harrison Jr.,WR,ARI,7.7,1.0
+2026,4,4432710,TreVeyon Henderson,RB,NE,4.2,0.0
+2026,4,4432773,Brian Thomas Jr.,WR,JAX,8.7,2.0
+2026,4,4567048,Kenneth Walker III,RB,KC,30.4,1.0
+2026,4,4567750,Emeka Egbuka,WR,TB,2.3,2.0
+2026,4,4568490,RJ Harvey,RB,DEN,13.3,10.0
+2026,4,4569173,Rhamondre Stevenson,RB,NE,16.9,3.0
+2026,4,4569559,Devaughn Vele,WR,NO,14.4,6.0
+2026,4,4569587,Wan'Dale Robinson,WR,TEN,9.5,3.0
+2026,4,4569603,Malik Washington,WR,MIA,9.5,5.0
+2026,4,4569618,Garrett Wilson,WR,NYJ,4.2,3.0
+2026,4,4569987,Jaylen Warren,RB,PIT,14.1,3.0
+2026,4,4570037,Terrance Ferguson,TE,LAR,0.0,0.0
+2026,4,4572680,Tucker Kraft,TE,GB,13.5,6.0
+2026,4,4574716,Harrison Mevis,K,LAR,4.0,0.0
+2026,4,4575131,Jacory Croskey-Merritt,RB,WSH,6.0,2.0
+2026,4,4595348,Malik Nabers,WR,NYG,20.2,6.0
+2026,4,4596334,Keaton Mitchell,RB,LAC,8.8,5.0
+2026,4,4596448,Bucky Irving,RB,TB,6.1,0.0
+2026,4,4597500,Adonai Mitchell,WR,NYJ,0.0,0.0
+2026,4,4599739,Kendre Miller,RB,NO,0.9,2.0
+2026,4,4608686,Kyle Monangai,RB,CHI,27.5,1.0
+2026,4,4612826,Ladd McConkey,WR,LAC,0.0,0.0
+2026,4,4678008,Jonathon Brooks,RB,CAR,0.0,0.0
+2026,4,4682648,Malachi Fields,WR,NYG,12.2,2.0
+2026,4,4682745,Jaylen Wright,RB,MIA,0.7,0.0
+2026,4,4683062,Xavier Worthy,WR,KC,9.0,4.0
+2026,4,4685247,Braelon Allen,RB,NYJ,7.7,2.0
+2026,4,4685278,Luther Burden III,WR,CHI,9.4,4.0
+2026,4,4685382,Omarion Hampton,RB,LAC,12.3,2.0
+2026,4,4685472,Tetairoa McMillan,WR,CAR,37.2,14.0
+2026,4,4685512,Jadarian Price,RB,SEA,0.0,0.0
+2026,4,4685702,Quinshon Judkins,RB,CLE,18.6,6.0
+2026,4,4685720,Bryce Young,QB,CAR,21.46,0.0
+2026,4,4686361,Cam Little,K,JAX,7.5,0.0
+2026,4,4686658,Mike Washington Jr.,RB,LV,2.2,1.0
+2026,4,4688813,Josh Downs,WR,IND,3.1,3.0
+2026,4,4689114,Jaxson Dart,QB,NYG,0.0,0.0
+2026,4,4695404,Isaiah Davis,RB,NYJ,0.0,0.0
+2026,4,4695883,Jalen Coker,WR,CAR,0.0,0.0
+2026,4,4696044,Kaelon Black,RB,SF,1.3,0.0
+2026,4,4696981,Cam Skattebo,RB,NYG,7.1,1.0
+2026,4,4697745,Tyler Loop,K,BAL,5.0,0.0
+2026,4,4697815,Rachaad White,RB,WSH,0.0,0.0
+2026,4,4701936,Matthew Golden,WR,GB,10.2,3.0
+2026,4,4702555,Jonah Coleman,RB,DEN,0.0,0.0
+2026,4,4710714,De'Zhaun Stribling,WR,SF,0.0,0.0
+2026,4,4710855,Konata Mumpfield,WR,LAR,1.2,1.0
+2026,4,4711533,Ollie Gordon II,RB,MIA,17.0,2.0
+2026,4,4723086,Colston Loveland,TE,CHI,8.7,6.0
+2026,4,4819231,Kaleb Johnson,RB,GB,2.2,0.0
+2026,4,4832800,Denzel Boston,WR,CLE,10.9,4.0
+2026,4,4832955,Emmett Johnson,RB,KC,1.5,1.0
+2026,4,4869461,Trey Smack,K,GB,4.5,0.0
+2026,4,4869645,Caleb Douglas,WR,MIA,0.0,0.0
+2026,4,4869961,Chris Bell,WR,MIA,0.0,0.0
+2026,4,4870653,KC Concepcion,WR,CLE,8.9,5.0
+2026,4,4870795,Makai Lemon,WR,PHI,4.2,3.0
+2026,4,4870808,Jeremiyah Love,RB,ARI,6.0,1.0
+2026,4,4870847,Ja'Kobi Lane,WR,BAL,0.0,0.0
+2026,4,4871023,Carnell Tate,WR,TEN,16.0,9.0
+2026,4,4880281,Jordyn Tyson,WR,NO,0.0,0.0
+2026,4,4882093,Bhayshul Tuten,RB,JAX,10.1,2.0
+2026,4,4887558,Emanuel Wilson,RB,SEA,24.5,3.0
+2026,4,4890973,Ashton Jeanty,RB,LV,15.6,6.0
+2026,4,4912218,Cyrus Allen,WR,KC,0.0,0.0
+2026,4,5081397,Dylan Sampson,RB,CLE,0.0,0.0
+2026,4,5081432,Antonio Williams,WR,WSH,3.6,3.0
+2026,4,5083076,Harold Fannin Jr.,TE,CLE,10.2,3.0
+2026,4,5083315,Kenyon Sadiq,TE,NYJ,0.0,0.0
