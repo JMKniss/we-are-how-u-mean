@@ -28,13 +28,14 @@ from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import (season_selector, require_data, sidebar_display_prefs,
                            prep_display, chart_label)
 from branding import page_icon
+from style import page_header, series_colours
 
 # The player model is ~20x the work of the team model per simulation; past
 # 5,000 its odds move by tenths of a percent and the page waits seconds.
 PLAYER_SIMS_CAP = 5000
 
 st.set_page_config(page_title="Playoffs", page_icon=page_icon(), layout="wide")
-st.title("🏆 Playoffs")
+page_header("Playoffs")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
@@ -249,8 +250,8 @@ def render_bracket():
 
     # ── Tabs ──────────────────────────────────────────────────────────────────────
     tab_champ, tab_consol, tab_sacko = st.tabs([
-        "🏆 Championship (Seeds 1–4)",
-        "🥈 Consolation (Seeds 5–8)",
+        ":material/trophy: Championship (Seeds 1–4)",
+        ":material/military_tech: Consolation (Seeds 5–8)",
         "🚽 Sacko Bowl (Seeds 9–10)",
     ])
 
@@ -434,11 +435,11 @@ def render_projections():
         odds["label"] = chart_label(odds, manager_map, show_mgr, show_team)
         fig = go.Figure()
         fig.add_bar(x=odds["label"], y=odds["team_pct"], name="Team model",
-                    marker_color="#3498db", text=[f"{p:.0f}%" for p in odds["team_pct"]],
+                    marker_color=series_colours()[0], text=[f"{p:.0f}%" for p in odds["team_pct"]],
                     textposition="outside")
         if player_df is not None:
             fig.add_bar(x=odds["label"], y=odds["player_pct"], name="Player model",
-                        marker_color="#e67e22", text=[f"{p:.0f}%" for p in odds["player_pct"]],
+                        marker_color=series_colours()[1], text=[f"{p:.0f}%" for p in odds["player_pct"]],
                         textposition="outside")
         fig.update_layout(title="Playoff Probability by Team", barmode="group",
                           xaxis_tickangle=-30, yaxis_title="Playoff Probability %",

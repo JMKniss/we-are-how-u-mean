@@ -9,12 +9,12 @@ from data.espn_client import (get_current_week, get_matchups_df, get_manager_map
 from analysis.standings import h2h_standings, combined_standings, luck_index
 from analysis.matchup_notes import pair_history, notes_for_matchups
 from config import SEASONS, DEFAULT_SEASON, season_config, week_label
-from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
-from branding import page_icon, title_html
+from display_utils import season_selector, require_data, sidebar_display_prefs
+from branding import page_icon
+import style
+from style import esc
 
 st.set_page_config(page_title="Dashboard", page_icon=page_icon(), layout="wide")
-# The league name carries the branding; "Dashboard" is the subtitle under it.
-st.markdown(title_html("Dashboard"), unsafe_allow_html=True)
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
@@ -69,6 +69,17 @@ def name(mgr, team):
     return mgr if show_mgr else team
 
 
+def name_lines(mgr, team):
+    """The bold line and the small line under it, following the sidebar toggles."""
+    if show_mgr and show_team:
+        return mgr, team
+    return (mgr, "") if show_mgr else (team, "")
+
+
+def team_pic(team_id):
+    return style.team_image(season, team_id, manager_map.get(team_id, "?"))
+
+
 # ── Upcoming matchups ─────────────────────────────────────────────────────────
 # Shown only when the archived fixtures are actually ahead of the last played
 # week. upcoming.csv holds one week and is replaced each Tuesday, but once a
@@ -79,22 +90,32 @@ upcoming = upcoming_df
 if not upcoming.empty and int(upcoming["week"].iloc[0]) <= last_played:
     upcoming = pd.DataFrame()
 
+# The league name carries the branding; the season and week are the kicker.
+kicker = f"{season} season"
+if last_played:
+    kicker += f" · through {week_label(season, last_played).lower()}"
+style.page_header("We Are How U Mean", kicker=kicker)
+
 if not upcoming.empty:
     up_week = int(upcoming["week"].iloc[0])
     st.subheader(f"{week_label(season, up_week)} Matchups")
 
-    seen, rows = set(), []
+    seen, games = set(), []
     for r in upcoming.itertuples():
         if r.team_id in seen or r.opp_id in seen:
             continue
         seen.add(r.team_id)
         seen.add(r.opp_id)
-        rows.append({
-            "Home": name(manager_map.get(r.team_id, "?"), r.team_name),
-            "Projection": f"{r.projected:.1f} – {r.opp_projected:.1f}",
-            "Away": name(manager_map.get(r.opp_id, "?"), r.opp_name),
-        })
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+        home = name_lines(manager_map.get(r.team_id, "?"), r.team_name)
+        away = name_lines(manager_map.get(r.opp_id, "?"), r.opp_name)
+        side = lambda tid, lines, cls: (
+            f'<div class="wa-side {cls}">{style.pic(team_pic(tid))}<div style="min-width:0">'
+            f'<span class="wa-name">{esc(lines[0])}</span>'
+            f'<span class="wa-team">{esc(lines[1])}</span></div></div>')
+        games.append(f'<div class="wa-match">{side(r.team_id, home, "home")}'
+                     f'<span class="wa-proj">{r.projected:.1f} – {r.opp_projected:.1f}</span>'
+                     f'{side(r.opp_id, away, "away")}</div>')
+    st.html(f'<div class="wa-matchups">{"".join(games)}</div>')
     st.caption("Projections based on highest projected startable lineup per ESPN projections")
 
     # ── Matchups to watch ────────────────────────────────────────────────────
@@ -120,29 +141,20 @@ if reg_df.empty:
     )
     st.stop()
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Reg Season Avg Score", f"{reg_df['score'].mean():.1f}" if not reg_df.empty else "—")
+def _extreme(largest: bool) -> dict:
+    row = reg_df.loc[reg_df["score"].idxmax() if largest else reg_df["score"].idxmin()]
+    who_ = name(manager_map.get(row["team_id"], "?"), row["team_name"])
+    return {"label": "Reg season high" if largest else "Reg season low",
+            "value": f"{row['score']:.2f}", "sub": f"{who_}, week {int(row['week'])}",
+            "img": team_pic(row["team_id"])}
 
 
-def _extreme(df, largest: bool):
-    if df.empty:
-        return None
-    row = df.loc[df["score"].idxmax() if largest else df["score"].idxmin()]
-    return row, name(manager_map.get(row["team_id"], "?"), row["team_name"])
-
-
-high = _extreme(reg_df, True)
-low = _extreme(reg_df, False)
-if high:
-    col2.metric("Reg Season High", f"{high[0]['score']:.2f}", delta=high[1])
-else:
-    col2.metric("Reg Season High", "—")
-if low:
-    col3.metric("Reg Season Low", f"{low[0]['score']:.2f}", delta=low[1])
-else:
-    col3.metric("Reg Season Low", "—")
-
-st.divider()
+style.cards([
+    {"label": "Reg season average", "value": f"{reg_df['score'].mean():.1f}",
+     "sub": f"{len(reg_df)} scores, {reg_df['week'].nunique()} weeks"},
+    _extreme(True),
+    _extreme(False),
+])
 
 # ── Standings ─────────────────────────────────────────────────────────────────
 st.subheader("Regular Season Standings")
@@ -163,14 +175,26 @@ luck = luck_index(reg_df).set_index("team_id")
 df["wve"] = df["team_id"].map(luck["luck_score"]).round(1)
 df["wve"] = df["wve"].map(lambda v: "—" if pd.isna(v) else f"{v:+.1f}")
 
-display = prep_display(
-    df, manager_map, show_mgr, show_team,
-    cols=["team_name", "record", "points_for", "points_against", "avg_score", "wve"],
-    headers=["Team", "Record", "PF", "PA", "Avg", "Wins vs Expected"],
-)
-for c in ("PF", "PA", "Avg"):
-    display[c] = display[c].round(1)
-st.dataframe(display, width="stretch", hide_index=True)
+# Last four head-to-head results, oldest first.
+form = (reg_df.sort_values("week").groupby("team_id")["outcome"]
+        .apply(lambda x: list(x.tail(4))))
+rows = []
+for i, r in enumerate(df.reset_index(drop=True).itertuples()):
+    mgr = manager_map.get(r.team_id, "?")
+    wve = r.wve
+    tone = "wa-pos" if wve.startswith("+") and wve != "+0.0" else ("wa-neg" if wve.startswith("-") else "")
+    rows.append([
+        style.rank_cell(i + 1),
+        style.who_cell(team_pic(r.team_id), *name_lines(mgr, r.team_name)),
+        f"<b>{r.record}</b>",
+        f"{r.points_for:,.1f}", f"{r.points_against:,.1f}", f"{r.avg_score:.1f}",
+        f'<span class="{tone}">{wve}</span>',
+        style.form_cell(form.get(r.team_id, [])),
+    ])
+style.html_table(
+    [("#", ""), ("Manager" if show_mgr else "Team", ""), ("Record", ""), ("PF", "num"),
+     ("PA", "num"), ("Avg", "num"), ("Wins vs Exp.", "num"), ("Last 4", "")],
+    rows, cut_after=4)
 st.caption(
     "Wins vs Expected compares the head-to-head record with what those scores "
     "usually earn against the rest of the league. Positive means the schedule "

@@ -14,9 +14,10 @@ from data.espn_client import get_validation_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
 from branding import page_icon
+from style import page_header
 
 st.set_page_config(page_title="Data Validation", page_icon=page_icon(), layout="wide")
-st.title("🔧 Data Validation")
+page_header("Data Validation")
 st.caption(
     "Internal data quality checks. Verifies our player-sum calculated scores "
     "against ESPN's reported values. Not for league distribution."

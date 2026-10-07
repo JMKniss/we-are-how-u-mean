@@ -1,18 +1,23 @@
 # assets
 
-League artwork. `branding.py` reads these; everything falls back to the
-football emoji if they go missing.
+Source artwork. Files the browser loads live in `static/` instead, which
+Streamlit serves at `app/static/` and the browser keeps after the first fetch.
+Anything inlined as base64 is re-sent with every page render, by every viewer.
 
 | File | Used for | Notes |
 |---|---|---|
-| `logo.png` | Browser tab icon, every page | The full logo with the words. 256×256 — the tab renders it at 16px, so there is no point shipping more. |
-| `logo-mark.png` | Set inline in the page title, between "We Are" and "How U Mean" | The figure on its blue/red field. 256×256. |
-| `logo-figure.png` | Unused fallback | The same figure with the field removed. Kept for a dark background only: the figure is white, so on the light theme it is invisible. |
+| `logo.png` | Browser tab icon, every page | The full logo with the words. 256×256 — the tab renders it at 16px, so there is no point shipping more. `set_page_config` takes it as a path. |
+| `logo-figure.png` | Unused fallback | The figure with the field removed. White, so invisible on the light page. |
+| `Helmet_Logo.jpg` | Source for every manager's helmet | 2253×1916. Never served. `data/team_images.py` recolours it per manager into `static/helmets/`. |
 
-Both `logo.png` and `logo-mark.png` were resized here from the originals
-(1517² and 2048², 371KB and 3.6MB). The mark especially had to shrink — it is
-base64'd into the HTML of every page render, so its file size is paid on every
-single page load, by every viewer.
+In `static/`:
 
-To replace any of them: drop in a new PNG under the same name, square, and
-resize to 256×256 first.
+| Path | What | Written by |
+|---|---|---|
+| `brand/logo-mark.png` | The figure on its blue/red field, in every page's banner. 256×256. | by hand |
+| `helmets/<manager>.png` | Each manager's helmet, 128px, 64 colours, about 5KB. | `python -m data.team_images --helmets` |
+| `teams/<season>/<team_id>.png` | The current season's ESPN logos, same size. | `weekly_update.py` |
+
+`logo.png` and `logo-mark.png` were resized from the originals (1517² and
+2048², 371KB and 3.6MB). To replace either, drop in a square PNG under the
+same name, resized to 256×256 first.

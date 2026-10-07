@@ -32,7 +32,7 @@ time and wasted context:
 
 | Changed | Run |
 |---|---|
-| `config.py`, `display_utils.py`, `app.py`, `branding.py`, `data/`, `analysis/` | `python check.py` |
+| `config.py`, `display_utils.py`, `app.py`, `branding.py`, `style.py`, `data/`, `analysis/` | `python check.py` |
 | one page | `python check.py Standings` |
 | a caption, a label, a colour | nothing; the file parsing is enough |
 
@@ -75,6 +75,8 @@ ff_app/
 ├── app.py                  # Streamlit home page / entry point
 ├── config.py               # League ID, seasons list, manager/owner maps, season_config()
 ├── display_utils.py        # Shared display helpers: sidebar_display_prefs, prep_display, chart_label
+├── style.py                # The Broadcast look: CSS, banner, tables, cards, badges, bar chart, team pictures
+├── static/                 # Served at app/static/: league mark, helmets, current-season team logos
 ├── .env                    # ESPN_S2 and SWID cookies — NOT committed to git
 ├── requirements.txt
 ├── data/
@@ -82,6 +84,7 @@ ff_app/
 │   ├── legacy_stats.py     # nfl-data-py stats for 2016-2017 seasons
 │   ├── trade_inference.py  # rebuilds a finished season's trades from weekly rosters
 │   ├── game_status.py      # did each player play, at game time (nflverse; build-time only)
+│   ├── team_images.py      # helmets and this season's ESPN logos into static/ (build-time only)
 │   ├── vlog_notes.py       # reads the Romarkable Vlog's notes (build-time only)
 │   ├── vlog.py             # resolves his picks against the archive (build-time only)
 │   ├── vlog_transcribed/   # picks taken from the episodes where his notes leave them out
@@ -128,7 +131,9 @@ the file is opened rather than loaded into every session:
 | The vlog's notes: format, which week, recap vs preview | `data/vlog_notes.py` |
 | The vlog's picks: contests, names, the merge rule | `data/vlog.py`, `VLOG` in `build_archive.py` |
 | Grading his picks; the weekly awards and their titles | `analysis/vlog.py` |
-| Browser icon and title | `branding.py`, `assets/README.md` |
+| Browser icon and the league mark | `branding.py`, `assets/README.md` |
+| The look: colours, fonts, light and dark, tables, charts, badges | `style.py`, `.streamlit/config.toml` |
+| Helmets, team logos, which picture a page shows | `data/team_images.py`, `style.team_image` |
 | Shared page helpers | `display_utils.py` |
 | A page's own behaviour | that page's docstring in `views/` |
 
@@ -170,7 +175,8 @@ visit.
 nfl-data-py, which supplies 2016-2017 player stats and every season's game
 status, and is needed only to build the archive - including the weekly
 update, which runs locally. It pins its own pandas and can drag a source build onto the
-server for code that never runs there. Locally:
+server for code that never runs there. It also adds resvg-py, which turns
+ESPN's SVG logo packs into PNGs for the team logos. Locally:
 
 ```
 pip install -r requirements.txt -r requirements-build.txt
@@ -187,9 +193,12 @@ it, so a password on the site does not make the data private on its own.
 **`.streamlit/config.toml`** sets `toolbarMode = "viewer"`, which hides the
 Deploy button and the developer menu, and `showErrorDetails = false`, so a
 crash shows the league a plain message instead of a traceback. The detail is
-still in Render's logs.
+still in Render's logs. It also holds both themes and turns on
+`enableStaticServing`, which serves `static/` at `app/static/`. Static files
+skip the password gate, so the helmets and logos are public - as they already
+are in the public repo.
 
-**Weekly rhythm.** Run `weekly_update.py` locally, commit `data/archive` on
+**Weekly rhythm.** Run `weekly_update.py` locally, commit `data/archive` and `static/teams` on
 `master`, push (see Git workflow for keeping `dev` in step).
 The site has the new week about two minutes later.
 
@@ -252,6 +261,13 @@ were built that way, but that is a deduction checked against ESPN's trade
 records, and a weekly capture from the feed is a record. 2016-2017 have no
 transactions at all: ESPN kept none, and their rosters are starters only.
 
+**It downloads the current season's team logos** into `static/teams/<season>/`,
+since managers change them mid-season. That needs the ESPN cookies, which is
+why the build fetches them and the site never does. A logo that will not
+download keeps last week's file, and a team with none shows its manager's
+helmet, so this step never fails the update. Commit `static/teams` with the
+archive.
+
 **It refreshes `seasons.json` itself.** That file carries `current_week`, which
 is what the pages read, plus manager and team names. Nothing used to write it,
 so an update could add a week of data while the app went on showing the old one.
@@ -296,7 +312,7 @@ otherwise leave an unattended run waiting on a keypress forever.
 The archive is committed to git, so a run is not finished until you commit it:
 
 ```
-git add data/archive && git commit -m "Archive 2026 through week N"
+git add data/archive static/teams && git commit -m "Archive 2026 through week N"
 ```
 
 ### Starting a new season
@@ -310,10 +326,15 @@ git add data/archive && git commit -m "Archive 2026 through week N"
 4. Add the year to `data/archive/draft_order.csv` once the draft happens.
 5. Add the season's name for the vlog's top-scorer award to `TOP_TITLES` in
    `analysis/vlog.py`. It changes every year with the theme; the bottom one
-   is always the Fascist of the Week.
+   is always the Fascist of the Week. Its icon can follow the theme too:
+   `TOP_BADGE` in `style.py` (2026's bolt is the Pokémon year); a season left
+   out gets a medal.
 6. If the scoring settings changed, check `reception_points()` in `config.py`.
    Draft value rescores earlier seasons into the new scoring through it, and
    receptions are the only offensive setting it can rescore.
+7. A new manager needs a helmet: add him to `HELMETS` in
+   `data/team_images.py` and run `python -m data.team_images --helmets`.
+   Until then he shows a plain grey one.
 
 `DEFAULT_SEASON` needs no attention. It follows the data rather than the season
 list, so the app stays on the previous season until week 1 is archived - a
@@ -531,6 +552,23 @@ NFL moved to 17-game seasons starting in 2021, shifting fantasy playoffs by one 
 `season_config(season)` handles this: ≤2020 uses wks 13–16 for playoffs; ≥2021 uses wks 14–17.
 
 ## Key design decisions and why
+
+**The look is Broadcast, in light and dark.** A TV lower third: black,
+yellow #ffcc00 and red #d50a0a, Anton headings over Barlow Semi Condensed,
+square corners, Material icons. Chosen over a long session of comparisons,
+so do not re-run them; `style.py`'s docstring has the details. Both themes
+are live and follow the viewer's system. Nothing on the page reports which
+theme is showing (Streamlit sets no attribute, and `st.context.theme` can be
+wrong on first load), so the hand-built HTML never asks: its greys are
+color-mix() of currentColor, and its black pieces stay black in both. A chart
+colour named in a figure is fixed, so it has to read on both backgrounds.
+
+**Images are files in static/, never base64.** An inlined image is re-sent on
+every rerun of every page - a ten-helmet table was about 350KB a click. A
+file is fetched once and kept by the browser. Helmets are rendered at build
+time, not on request, so the server does no image work. Old team logos are
+never shown: ESPN deletes many of them, and a past season belongs to the
+manager, so past seasons and All-Time show helmets.
 
 **Streamlit over Jupyter:** The old workflow required manually entering scores each week into
 a notebook. Streamlit gives interactive dropdowns, live charts, and hot-reload editing without

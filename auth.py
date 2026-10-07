@@ -26,8 +26,9 @@ def require_password() -> None:
     if st.session_state.get(_OK):
         return
 
-    st.title("🏈 We Are How U Mean")
-    st.caption("League members only. Ask the commissioner for the password.")
+    from style import page_header
+    page_header("We Are How U Mean", kicker="League members only",
+                sub="Ask the commissioner for the password.")
 
     with st.form("login"):
         supplied = st.text_input("Password", type="password")

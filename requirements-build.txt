@@ -6,3 +6,6 @@
 # Install it with --no-deps if pip starts building pandas from source.
 -r requirements.txt
 nfl-data-py
+# The current season's team logos (data/team_images.py). ESPN's own logo packs
+# are SVG; this renders them to PNG without needing Cairo installed.
+resvg-py

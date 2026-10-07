@@ -85,8 +85,17 @@ def main():
     # the wrote-something and the nothing-new paths.
     run(["--list"], "archive now holds")
 
+    # The current season's team logos, which managers change mid-season. Only
+    # the current season: past seasons show helmets. Never fails the update -
+    # a logo that will not download keeps last week's file, or the page shows
+    # the helmet.
+    if not args.dry_run and args.season == CURRENT_SEASON:
+        print(f"\n--- team logos {args.season} ---", flush=True)
+        from data.team_images import fetch_logos
+        fetch_logos(args.season)
+
     print("\nNext: check the app, then commit the archive so the change is durable.")
-    print("\n  git add data/archive")
+    print("\n  git add data/archive static/teams")
     print(f'  git commit -m "Archive {args.season} through week {{N}}"')
     return 0
 

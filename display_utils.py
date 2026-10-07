@@ -42,7 +42,7 @@ def sidebar_display_prefs() -> tuple[bool, bool]:
 
     # Always show at least one
     if not show_mgr and not show_team:
-        st.sidebar.caption("⚠️ At least one must be shown — defaulting to Manager.")
+        st.sidebar.caption(":material/warning: At least one must be shown — defaulting to Manager.")
         show_mgr = True
         st.session_state["show_manager"] = True
 

@@ -49,9 +49,10 @@ from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 from display_utils import trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
 from branding import page_icon
+from style import page_header
 
 st.set_page_config(page_title="Draft, Waivers & Trades", page_icon=page_icon(), layout="wide")
-st.title("📋 Draft, Waivers & Trades")
+page_header("Draft, Waivers & Trades")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()

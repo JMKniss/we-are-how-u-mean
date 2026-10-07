@@ -24,9 +24,10 @@ from data.espn_client import get_matchups_df, get_manager_map
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 from branding import page_icon
+from style import page_header, series_colours
 
 st.set_page_config(page_title="Scoring", page_icon=page_icon(), layout="wide")
-st.title("📈 Scoring Analysis")
+page_header("Scoring")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
@@ -70,14 +71,14 @@ with tab1:
     if is_median:
         weeks = all_weeks
         scores = weekly_med.values.astype(float)
-        line_color = "#8e44ad"
+        line_color = series_colours()[6]
         display_name = "League Median"
     else:
         selected_team = mgr_to_team[selected_mgr]
         tdf = df[df["team_name"] == selected_team].sort_values("week")
         weeks = tdf["week"].values.astype(float)
         scores = tdf["score"].values.astype(float)
-        line_color = "#3498db"
+        line_color = series_colours()[0]
         display_name = selected_mgr
 
     fig3 = go.Figure()

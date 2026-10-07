@@ -1,33 +1,28 @@
 """
-League branding: the browser icon and the title block.
+League branding: the browser icon and the league mark.
 
 Kept in one place because the browser icon has to be identical on all nine
 pages. Each page calls its own st.set_page_config, and page_icon there
 overrides whatever app.py set - which is why the pages used to show nine
 different emoji in the tab as you moved between them.
 
-Everything degrades to the football emoji when the logo file is missing, so
-the app runs the same whether or not assets/ has been filled in.
+The mark - the figure on its blue/red field - sits in every page's banner
+(style.page_header). It is served from static/ rather than inlined, so the
+browser fetches it once instead of with every page render.
+
+Everything degrades when a file is missing: the football emoji for the tab,
+and a banner without the picture.
 """
-import base64
-from functools import lru_cache
 from pathlib import Path
 
-ASSETS = Path(__file__).parent / "assets"
+ROOT = Path(__file__).parent
 
 # The full square logo, used for the browser tab.
-LOGO = ASSETS / "logo.png"
-# For setting inline in the title, in order of preference:
-#   logo-mark.png    the figure on its blue/red field
-#   logo-figure.png  the same figure with the field dropped
-#   logo.png         the full logo, which reads oddly there because it already
-#                    contains the words, but beats a blank
-#
+LOGO = ROOT / "assets" / "logo.png"
 # The field stays. Dropping it leaves a white figure on transparency, which is
 # invisible against a white page - the MLB mark works precisely because the
 # figure is a hole in a block of colour rather than a shape in its own right.
-LOGO_MARK = ASSETS / "logo-mark.png"
-LOGO_MARK_ALT = ASSETS / "logo-figure.png"
+MARK = ROOT / "static" / "brand" / "logo-mark.png"
 
 FALLBACK_ICON = "🏈"
 
@@ -37,40 +32,6 @@ def page_icon():
     return str(LOGO) if LOGO.exists() else FALLBACK_ICON
 
 
-@lru_cache(maxsize=4)
-def _data_uri(path_str: str) -> str:
-    p = Path(path_str)
-    if not p.exists():
-        return ""
-    return "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
-
-
-def _mark_uri() -> str:
-    for candidate in (LOGO_MARK, LOGO_MARK_ALT, LOGO):
-        if candidate.exists():
-            return _data_uri(str(candidate))
-    return ""
-
-
-def title_html(subtitle: str = "") -> str:
-    """
-    The league name with the figure set between the words, then a subtitle.
-
-    Falls back to plain text when there is no image, so a missing file costs
-    the picture and nothing else.
-    """
-    uri = _mark_uri()
-    mark = (
-        f'<img src="{uri}" alt="" '
-        f'style="height:1.15em;vertical-align:-0.18em;margin:0 0.12em;">'
-        if uri else " "
-    )
-    return f"""
-<div style="line-height:1.1;margin:0 0 0.6rem 0;">
-  <div style="font-size:2.2rem;font-weight:700;letter-spacing:-0.01em;">
-    We Are{mark}How U Mean
-  </div>
-  {f'<div style="font-size:1.05rem;opacity:0.65;margin-top:0.15rem;">{subtitle}</div>'
-   if subtitle else ''}
-</div>
-"""
+def mark_url() -> str:
+    """The mark's address for an <img>, or "" when the file is missing."""
+    return "app/static/brand/logo-mark.png" if MARK.exists() else ""

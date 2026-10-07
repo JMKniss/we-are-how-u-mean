@@ -16,9 +16,10 @@ from analysis.standings import (
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display
 from branding import page_icon
+from style import page_header
 
 st.set_page_config(page_title="Standings", page_icon=page_icon(), layout="wide")
-st.title("📊 Standings")
+page_header("Standings")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()

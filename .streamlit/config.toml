@@ -2,6 +2,10 @@
 
 [server]
 headless = true              # never try to open a browser; required on a server
+# Serves ./static at app/static/. Helmets and team logos are files there
+# rather than base64 in the page: the browser fetches each once and keeps it,
+# where an inlined image is re-sent with every rerun of every page.
+enableStaticServing = true
 
 [browser]
 gatherUsageStats = false
@@ -13,6 +17,51 @@ gatherUsageStats = false
 toolbarMode = "viewer"
 showErrorDetails = false     # a traceback on screen helps nobody but us
 
+# The Broadcast look: black, yellow and red, square corners, condensed type.
+# Both a light and a dark theme are defined, so the site follows each viewer's
+# system setting and the top-right menu can switch it. Anything not themed
+# here - the custom HTML and the chart bars - is in style.py, written to read
+# on either background.
 [theme]
-base = "light"
-primaryColor = "#c8102e"
+font = "Barlow Semi Condensed:https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+headingFont = "Anton:https://fonts.googleapis.com/css2?family=Anton&display=swap"
+# Anton has one weight. Asking for bold makes the browser smear a fake one.
+headingFontWeights = [400, 400, 400, 400, 400, 400]
+baseRadius = "none"
+buttonRadius = "none"
+showSidebarBorder = false
+# Multi-series charts. Ten, for ten managers; every one reads on white and on
+# the near-black dark page, since Plotly gets one colour list for both.
+chartCategoricalColors = ["#2a78d6", "#eb6834", "#1baf7a", "#c98500", "#d55181",
+                          "#008300", "#7a6ad8", "#e34948", "#8c6d46", "#6b7a86"]
+
+[theme.sidebar]
+headingFontWeights = [400, 400, 400, 400, 400, 400]
+
+[theme.light]
+primaryColor = "#d50a0a"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f2f2f0"
+textColor = "#111111"
+borderColor = "#dcdcdc"
+
+[theme.light.sidebar]
+backgroundColor = "#111111"
+secondaryBackgroundColor = "#222222"
+textColor = "#ffffff"
+primaryColor = "#ffcc00"
+borderColor = "#333333"
+
+[theme.dark]
+primaryColor = "#d50a0a"
+backgroundColor = "#0f0f10"
+secondaryBackgroundColor = "#1c1c1f"
+textColor = "#ececec"
+borderColor = "#2c2c30"
+
+[theme.dark.sidebar]
+backgroundColor = "#000000"
+secondaryBackgroundColor = "#1c1c1f"
+textColor = "#ffffff"
+primaryColor = "#ffcc00"
+borderColor = "#2c2c30"

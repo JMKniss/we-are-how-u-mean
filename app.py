@@ -27,6 +27,7 @@ import streamlit as st
 # Imported after sys.path is set above, so it resolves from the app root.
 from auth import require_password
 from branding import page_icon
+import style
 
 st.set_page_config(
     page_title="We Are How U Mean",
@@ -40,34 +41,38 @@ st.set_page_config(
 
 # Runs before any page. Does nothing unless APP_PASSWORD is set, so whether
 # the site is public is a Render setting rather than a code change.
+# The stylesheet goes in before anything is drawn, the password prompt included.
+style.apply()
 require_password()
 
 # url_path is set explicitly so existing links keep working. Left to itself,
 # st.Page would name each route after its file and turn /Dashboard into
 # /1_Dashboard. The default page is served at / and takes no url_path.
+# Material icons, Streamlit's own set: one colour, so they follow the theme -
+# white in the black sidebar, yellow on the page that is open.
 PAGES = [
     # First in the sidebar, but Dashboard is still what / opens on: the order
     # here is the nav order, and default=True alone picks the landing page.
     st.Page("views/6_Champmissioner.py", title="Champmissioner's Dashboard",
-            icon="🎙️", url_path="Champmissioner"),
-    st.Page("views/1_Dashboard.py", title="Dashboard", icon="🏈", default=True),
-    st.Page("views/2_Standings.py", title="Standings", icon="📊",
+            icon=":material/mic:", url_path="Champmissioner"),
+    st.Page("views/1_Dashboard.py", title="Dashboard", icon=":material/sports_football:", default=True),
+    st.Page("views/2_Standings.py", title="Standings", icon=":material/leaderboard:",
             url_path="Standings"),
-    st.Page("views/3_Scoring.py", title="Scoring", icon="📈",
+    st.Page("views/3_Scoring.py", title="Scoring", icon=":material/show_chart:",
             url_path="Scoring"),
-    st.Page("views/4_Lineup_Efficiency.py", title="Lineup Efficiency", icon="🎯",
+    st.Page("views/4_Lineup_Efficiency.py", title="Lineup Efficiency", icon=":material/target:",
             url_path="Lineup_Efficiency"),
-    st.Page("views/5_Playoffs.py", title="Playoffs", icon="🏆",
+    st.Page("views/5_Playoffs.py", title="Playoffs", icon=":material/trophy:",
             url_path="Playoffs"),
     # Was Draft Review. The path stays so links to it keep working.
     st.Page("views/7_Draft_Waivers_Trades.py", title="Draft, Waivers & Trades",
-            icon="📋", url_path="Draft_Review"),
+            icon=":material/swap_horiz:", url_path="Draft_Review"),
     # Hidden rather than removed: it is an internal data-quality check, not
     # something the league needs in the sidebar, but /Data_Validation still
     # answers for whoever wants it.
-    st.Page("views/8_Data_Validation.py", title="Data Validation", icon="🔧",
+    st.Page("views/8_Data_Validation.py", title="Data Validation", icon=":material/build:",
             url_path="Data_Validation", visibility="hidden"),
-    st.Page("views/9_All_Time.py", title="All-Time Records", icon="📜",
+    st.Page("views/9_All_Time.py", title="All-Time Records", icon=":material/history:",
             url_path="All_Time"),
 ]
 

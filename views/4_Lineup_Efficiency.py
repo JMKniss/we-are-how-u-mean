@@ -12,10 +12,11 @@ from analysis.efficiency import (lineup_efficiency, top_players, projected_vs_ac
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, prep_display, chart_label
 from branding import page_icon
+from style import DIVERGING, bar_chart, page_header, series_colours, show_chart
 
 st.set_page_config(page_title="Lineup Efficiency", page_icon=page_icon(), layout="wide")
-st.title("🎯 Lineup Efficiency")
-st.caption("How well did each manager set their lineup? Optimal score = best possible lineup from their roster.")
+page_header("Lineup Efficiency",
+            sub="How well did each manager set their lineup? Optimal score = best possible lineup from their roster.")
 
 season = season_selector(SEASONS, DEFAULT_SEASON)
 show_mgr, show_team = sidebar_display_prefs()
@@ -71,25 +72,14 @@ with tab1:
         st.dataframe(display, width="stretch")
 
         summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
-        fig = px.bar(summary.sort_values("avg_efficiency"), x="avg_efficiency", y="label",
-                     orientation="h", title="Average Lineup Efficiency %",
-                     labels={"avg_efficiency": "Efficiency %", "label": ""},
-                     color="avg_efficiency", color_continuous_scale="RdYlGn",
-                     range_color=[summary["avg_efficiency"].min() - 2, 100])
-        fig.add_vline(x=summary["avg_efficiency"].mean(), line_dash="dash", line_color="gray",
-                      annotation_text="League Avg")
-        fig.update_layout(coloraxis_showscale=False)
-        st.plotly_chart(fig, width="stretch")
+        avg = summary["avg_efficiency"].mean()
+        show_chart(bar_chart(summary, "avg_efficiency", "label",
+                             f"Average lineup efficiency · league {avg:.1f}%", fmt="{:.1f}%"))
 
         col1, col2 = st.columns(2)
         with col1:
-            fig2 = px.bar(summary.sort_values("total_left_on_bench", ascending=False),
-                          x="label", y="total_left_on_bench",
-                          title="Total Points Left on Bench (Season)",
-                          labels={"label": "", "total_left_on_bench": "Points"},
-                          color="total_left_on_bench", color_continuous_scale="Reds")
-            fig2.update_layout(xaxis_tickangle=-30, coloraxis_showscale=False)
-            st.plotly_chart(fig2, width="stretch")
+            show_chart(bar_chart(summary, "total_left_on_bench", "label",
+                                 "Points left on bench, season"))
 
         with col2:
             fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
@@ -117,11 +107,11 @@ with tab2:
             tdf = weekly[weekly["team_name"] == selected_team].sort_values("week")
             lbl = label_for(selected_team)
             fig = go.Figure()
-            fig.add_trace(go.Bar(x=tdf["week"], y=tdf["actual_score"], name="Actual", marker_color="#3498db"))
-            fig.add_trace(go.Bar(x=tdf["week"], y=tdf["optimal_score"], name="Optimal", marker_color="#2ecc71"))
+            fig.add_trace(go.Bar(x=tdf["week"], y=tdf["actual_score"], name="Actual", marker_color=series_colours()[0]))
+            fig.add_trace(go.Bar(x=tdf["week"], y=tdf["optimal_score"], name="Optimal", marker_color=series_colours()[2]))
             fig.add_trace(go.Scatter(x=tdf["week"], y=tdf["points_left_on_bench"],
                                      name="Left on Bench",
-                                     mode="lines+markers", line=dict(color="orange")))
+                                     mode="lines+markers", line=dict(color=series_colours()[1])))
             fig.update_layout(barmode="group", title=f"{lbl} — Actual vs Optimal by Week",
                               xaxis_title="Week", yaxis_title="Points", xaxis=dict(dtick=1))
         st.plotly_chart(fig, width="stretch")
@@ -199,7 +189,8 @@ with tab4:
         fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
                      orientation="h", title="Average Points Above/Below ESPN Projection",
                      labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "label": ""},
-                     color="avg_proj_diff", color_continuous_scale="RdYlGn")
+                     color="avg_proj_diff", color_continuous_scale=DIVERGING,
+                     color_continuous_midpoint=0)
         fig.add_vline(x=0, line_dash="dash", line_color="gray")
         fig.update_layout(coloraxis_showscale=False)
         st.plotly_chart(fig, width="stretch")

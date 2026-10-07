@@ -37,12 +37,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
 import plotly.graph_objects as go
-from plotly.colors import qualitative
 import streamlit as st
 
 from analysis import vlog as av
 from analysis.standings import compute_season_finish_map, playoff_seeds
 from branding import page_icon
+import style
+from style import page_header
 from config import DEFAULT_SEASON, season_config
 from data import archive
 from data.espn_client import get_boxscores_df, get_manager_map, get_matchups_df
@@ -50,8 +51,8 @@ from display_utils import season_selector, sidebar_display_prefs
 
 st.set_page_config(page_title="Champmissioner's Dashboard",
                    page_icon=page_icon(), layout="wide")
-st.title("🎙️ Champmissioner's Dashboard")
-st.caption("Champmissioner Romar's predictions, as seen on the Vlog!")
+page_header("Champmissioner's Dashboard", kicker="The Romarkable Vlog",
+            sub="Champmissioner Romar's predictions, as seen on the Vlog!")
 
 VLOG_SEASONS = archive.seasons_with_data("vlog_matchups")
 if not VLOG_SEASONS:
@@ -222,16 +223,21 @@ def _table_px(df: pd.DataFrame) -> float:
                + CELL_PAD_PX for c in df.columns)
 
 
-def titled(title: str, df: pd.DataFrame):
-    """A subheader and its table, the table at least as wide as the title."""
+def titled(title: str, df: pd.DataFrame, icon: str | None = None):
+    """
+    A subheader and its table, the table at least as wide as the title. icon
+    names a badge in style.BADGES, drawn in the tag before the title.
+    """
     global _titled_n
-    if _table_px(df) >= len(title) * TITLE_PX_PER_CHAR * 0.85:
-        st.subheader(title)
+    heading = (lambda: style.tag(title, icon)) if icon else (lambda: st.subheader(title))
+    width = len(title) * TITLE_PX_PER_CHAR + (30 if icon else 0)
+    if _table_px(df) >= width * 0.85:
+        heading()
         show(df)
         return
     _titled_n += 1
     with st.container(key=f"titled-{_titled_n}"):
-        st.subheader(title)
+        heading()
         st.dataframe(df, hide_index=True, width="stretch")
 
 
@@ -253,7 +259,7 @@ def render_rankings(info: dict):
     last = grid[max(grid.columns)].sort_values()
 
     fig = go.Figure()
-    colours = qualitative.Plotly
+    colours = style.series_colours()
     for i, tid in enumerate(last.index):
         ys = [grid.at[tid, w] if w in grid.columns else None for w in weeks]
         name = mgr.get(tid, "?")
@@ -384,9 +390,9 @@ with tab_season:
 
     left, right = st.columns(2)
     with left:
-        titled(top_count_title(title), count_table(sa, "top"))
+        titled(top_count_title(title), count_table(sa, "top"), style.top_badge(season))
     with right:
-        titled("Fascist Count", count_table(sa, "bottom"))
+        titled("Fascist Count", count_table(sa, "bottom"), "fascist")
 
     top = sa[sa["award"] == "top"]
     bot = sa[sa["award"] == "bottom"]
@@ -463,9 +469,9 @@ with tab_all:
 
     left, right = st.columns(2)
     with left:
-        titled(f"{av.TOP_GENERIC} Count", count_table(awards, "top"))
+        titled(f"{av.TOP_GENERIC} Count", count_table(awards, "top"), "top")
     with right:
-        titled("Fascist Count", count_table(awards, "bottom"))
+        titled("Fascist Count", count_table(awards, "bottom"), "fascist")
 
     titled("Times Picked to Win", picked_to_win(VLOG_SEASONS, rate=True))
     titled("Under-Dawgs", under_dawgs(VLOG_SEASONS))

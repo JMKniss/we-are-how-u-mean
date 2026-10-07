@@ -36,9 +36,10 @@ from analysis.standings import h2h_standings, combined_standings, compute_season
 from config import SEASONS, season_config
 from display_utils import sidebar_display_prefs, trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
 from branding import page_icon
+from style import page_header
 
 st.set_page_config(page_title="All-Time Records", page_icon=page_icon(), layout="wide")
-st.title("📜 All-Time Records")
+page_header("All-Time Records")
 
 show_mgr, show_team = sidebar_display_prefs()
 
@@ -426,12 +427,12 @@ if active_only:
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab_trophy, tab_records, tab_mgr_records, tab_h2h, tab_milestones, tab_moves = st.tabs([
-    "🏆 Trophy Case",
-    "📊 League Records",
-    "👤 Manager Records",
-    "⚔️ Head to Head",
-    "🎯 Milestones",
-    "🔄 Trades & Waiver Data",
+    ":material/trophy: Trophy Case",
+    ":material/leaderboard: League Records",
+    ":material/person: Manager Records",
+    ":material/swords: Head to Head",
+    ":material/flag: Milestones",
+    ":material/swap_horiz: Trades & Waiver Data",
 ])
 
 
