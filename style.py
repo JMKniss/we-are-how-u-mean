@@ -71,11 +71,13 @@ CSS = f"""
 [data-testid="stMetricValue"] {{ font-family: '{HEAD}', sans-serif; }}
 [data-testid="stTab"] p {{ font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }}
 [data-testid="stSidebarNav"] a span {{ font-weight: 600; }}
-/* Anton is tight in mixed case: at chart-title sizes "Score Distribution by
-   Team" ran together. Capitals with a little spacing, a size up, as the bar
-   chart's own titles are set. */
+/* Chart titles are in the body face, bold, not Anton. Anton at chart-title
+   sizes ran its letters together - "Score Distribution by Team" - and
+   capitals and spacing did not rescue it. Streamlit's chart theme gives
+   titles the heading font inline, so this overrides it. */
 [data-testid="stMain"] h4 {{ text-transform: uppercase; letter-spacing: .04em; }}
-.stPlotlyChart .gtitle {{ text-transform: uppercase; letter-spacing: .05em; font-size: 18px !important; }}
+.stPlotlyChart .gtitle {{ font-family: '{BODY}', sans-serif !important; font-weight: 700 !important;
+  text-transform: uppercase; letter-spacing: .04em; font-size: 17px !important; }}
 
 /* ---- the banner at the top of every page ---- */
 .wa-banner {{
@@ -414,7 +416,7 @@ def bar_chart(df: pd.DataFrame, value: str, label: str, title: str = "", fmt: st
     fig.update_layout(
         height=36 * len(vals) + (70 if title else 30), margin=dict(l=10, r=10, t=50 if title else 10, b=4),
         bargap=0.16, showlegend=False,
-        title=dict(text=title.upper(), x=0, xanchor="left", font=dict(family=HEAD, size=20)) if title else None,
+        title=dict(text=title.upper(), x=0, xanchor="left", font=dict(family=BODY, size=17)) if title else None,
         xaxis=dict(visible=False), yaxis=dict(automargin=True, ticksuffix="  ", showgrid=False))
     return fig
 
