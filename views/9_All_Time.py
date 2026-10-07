@@ -35,7 +35,7 @@ from analysis.transactions import move_counts, trade_pairs
 from analysis.trades import trade_grades, summarise
 from analysis.standings import h2h_standings, combined_standings, compute_season_finish_map
 from config import SEASONS, season_config
-from display_utils import sidebar_display_prefs, trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
+from display_utils import sidebar_display_prefs, trade_grade_table, show_trade_grades, TRADE_GRADE_NOTE
 from branding import page_icon
 import style
 from style import helmet_url, page_header
@@ -1397,15 +1397,13 @@ with tab_moves:
             st.markdown("**Career**")
             table, fmt = records(grades, "manager", "Manager")
             table = table.sort_values(("Optimal Lineup Change", "Total"), ascending=False)
-            st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
-                         height=trade_grade_height(len(table)))
+            show_trade_grades(table)
             st.caption(TRADE_GRADE_NOTE)
 
             st.markdown("**Season by Season**")
             mgr = st.selectbox("Manager", sorted(grades["manager"].unique()), key="grades_mgr")
             table, fmt = records(grades[grades["manager"] == mgr], "season", "Season")
-            st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
-                         height=trade_grade_height(len(table)))
+            show_trade_grades(table)
 
             held = grades[grades["weeks"] > 0].sort_values("started", ascending=False)
             st.markdown("**Every Trade**")
@@ -1426,7 +1424,7 @@ with tab_moves:
                 "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
                           for s, dr in zip(held["sends"], held["dropped"])],
             }, index=held.index), held)
-            st.dataframe(every, hide_index=True, width="stretch", height=560, column_config=fmt)
+            show_trade_grades(every, scroll=True)
             st.caption("Click a column to sort it, again to reverse. A trade held "
                        "one week can sort to the top of Per Week or Per Game Played "
                        "on one game.")

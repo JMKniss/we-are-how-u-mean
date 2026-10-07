@@ -18,6 +18,7 @@ Usage pattern in each page:
     px.bar(df, x="label", ...)
 """
 
+import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -227,9 +228,48 @@ def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.Dat
     return table, formats
 
 
-def trade_grade_height(rows: int) -> int:
-    """Height that shows every row under the two header rows, no inner scroll."""
-    return (rows + 2) * 35 + 3
+def show_trade_grades(table: pd.DataFrame, pics: list[str] | None = None,
+                      scroll: bool = False) -> None:
+    """
+    A table from trade_grade_table, drawn as a sortable Broadcast table with
+    its group labels as a header row. The grades are signed, green up and
+    red down, and sort by their raw values. pics, one per row, go beside the
+    first Manager or Team column; without them a Manager column gets the
+    manager's helmet.
+    """
+    from style import esc, helmet_url, html_table, who_cell
+
+    fmts = {(g, label): f.replace("%", "{:") + "}" if f else None
+            for g, cols in TRADE_GRADE_GROUPS for _, label, f in cols}
+    keys = list(table.columns)
+    name_col = next((k for k in keys if k[0] == "" and k[1] in ("Manager", "Team")), None)
+    if pics is None and name_col and name_col[1] == "Manager":
+        pics = [helmet_url(m) for m in table[name_col]]
+
+    rows = []
+    for i, (_, r) in enumerate(table.iterrows()):
+        cells = []
+        for k in keys:
+            v = r[k]
+            if k in fmts and isinstance(v, (int, float, np.number)) and not pd.isna(v):
+                f = fmts[k]
+                text = f.format(v) if f else f"{int(v)}"
+                tone = "wa-pos" if f and v > 0 else ("wa-neg" if f and v < 0 else "")
+                cells.append((f'<span class="{tone}">{text}</span>' if tone else text, "", float(v)))
+            elif k == name_col and pics is not None:
+                cells.append((who_cell(pics[i], str(v)), "", str(v)))
+            else:
+                cells.append(esc("—" if pd.isna(v) else str(v)))
+        rows.append(cells)
+    columns = [(k[1], "num" if k in fmts else "") for k in keys]
+    groups, prev = [], None
+    for k in keys:
+        if groups and k[0] == prev:
+            groups[-1] = (prev, groups[-1][1] + 1)
+        else:
+            groups.append((k[0], 1))
+            prev = k[0]
+    html_table(columns, rows, compact=True, scroll=scroll, groups=groups)
 
 
 TRADE_GRADE_NOTE = """

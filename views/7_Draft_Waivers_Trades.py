@@ -47,7 +47,7 @@ from analysis.trades import trade_grades, manager_summary
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import (season_selector, require_data, sidebar_display_prefs, chart_label,
                            name_lines)
-from display_utils import trade_grade_table, trade_grade_height, TRADE_GRADE_NOTE
+from display_utils import trade_grade_table, show_trade_grades, TRADE_GRADE_NOTE
 from branding import page_icon
 from style import esc, frame, html_table, page_header, player_pic, team_image, who_cell
 
@@ -388,8 +388,8 @@ def grades_section(team: int | None):
         "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
                          zip(summary["up"], summary["even"], summary["down"])],
     }, index=summary.index)], axis=1), summary)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=fmt,
-                 height=trade_grade_height(len(table)))
+    show_trade_grades(table, pics=[team_image(season, t, manager_map.get(t, "?"))
+                                   for t in summary["team_id"]])
     st.caption("Totals are summed over the manager's trades. Per Week and Per "
                "Game Played are taken over all the weeks and games in them.\n"
                + TRADE_GRADE_NOTE)
@@ -407,7 +407,8 @@ def grades_section(team: int | None):
                       for s, dr in zip(shown["sends"], shown["dropped"])],
         }, index=shown.index),
     ], axis=1), shown)
-    st.dataframe(table, hide_index=True, width="stretch", column_config=fmt)
+    show_trade_grades(table, pics=[team_image(season, t, manager_map.get(t, "?"))
+                                   for t in shown["team_id"]], scroll=len(table) > 14)
 
 
 with tab5:

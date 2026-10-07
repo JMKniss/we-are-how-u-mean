@@ -154,6 +154,12 @@ CSS = f"""
 .wa-table td.wa-strong {{ font-weight: 700; }}
 .wa-table td.wa-muted {{ opacity: .55; }}
 .wa-scroll {{ max-height: 560px; overflow-y: auto; }}
+.wa-table th.wa-group {{ text-align: center; color: {YELLOW}; border-bottom: 1px solid #444; cursor: default; }}
+.wa-table th.wa-group:empty {{ border-bottom: none; }}
+.wa-sortable th {{ cursor: pointer; user-select: none; }}
+.wa-sortable th:hover {{ color: {YELLOW}; }}
+.wa-sortable th.wa-asc::after {{ content: " ▲"; color: {YELLOW}; font-size: .7em; }}
+.wa-sortable th.wa-desc::after {{ content: " ▼"; color: {YELLOW}; font-size: .7em; }}
 .wa-scroll .wa-table th {{ position: sticky; top: 0; z-index: 1; }}
 
 /* ---- matchups ---- */
@@ -184,9 +190,92 @@ CSS = f"""
 """
 
 
+# Click-to-sort for the hand-built tables. A dataframe sorts by its headers,
+# and the Broadcast tables replaced most of them, so this puts sorting back.
+#
+# It is a components.v2 script with no HTML of its own, mounted once per run
+# in the app's own DOM (isolate_styles=False), and it sorts by event
+# delegation on the document: one click listener for every table on the page,
+# present and future, so a rerun that redraws a table needs nothing new. The
+# tables themselves are ordinary st.html, so if the script ever fails to load
+# they still show, in their original order, just without sorting.
+#
+# A cell sorts by its data-v attribute where frame() wrote one, else by its
+# text. Numbers sort high-to-low first and text A-Z; the third click on a
+# header puts the original order back. The script also hides an ESPN headshot
+# that fails to load, since st.html strips onerror attributes.
+SORT_JS = r"""
+export default function () {
+  if (window.__waSort) return;
+  window.__waSort = true;
+
+  const num = (s) => {
+    const t = String(s).replace(/[,%$\u2212+σ]/g, "").replace("—", "").trim();
+    const m = t.match(/^-?\d+(\.\d+)?/);
+    return m ? parseFloat(m[0]) * (String(s).trim().startsWith("\u2212") ? -1 : 1) : null;
+  };
+  const key = (td) => (td && td.dataset.v !== undefined ? td.dataset.v : (td ? td.textContent : ""));
+
+  document.addEventListener("click", (e) => {
+    const th = e.target.closest("table.wa-sortable thead th");
+    if (!th) return;
+    const table = th.closest("table");
+    const heads = table.tHead.rows;
+    if (th.parentNode !== heads[heads.length - 1]) return;   // a group label, not a column
+    const idx = [...th.parentNode.children].indexOf(th);
+    const body = table.tBodies[0];
+    const rows = [...body.rows];
+    rows.forEach((r, i) => { if (r.dataset.i === undefined) r.dataset.i = i; });
+
+    const vals = rows.map((r) => key(r.cells[idx]));
+    const numeric = vals.filter((v) => String(v).trim() && String(v).trim() !== "—")
+                        .every((v) => num(v) !== null);
+    const first = numeric ? "desc" : "asc";
+    const state = th.classList.contains("wa-asc") ? "asc" : th.classList.contains("wa-desc") ? "desc" : "";
+    const next = !state ? first : state === first ? (first === "asc" ? "desc" : "asc") : "";
+    [...heads[heads.length - 1].cells].forEach((h) => h.classList.remove("wa-asc", "wa-desc"));
+
+    let order;
+    if (!next) {
+      order = rows.sort((a, b) => a.dataset.i - b.dataset.i);
+    } else {
+      th.classList.add("wa-" + next);
+      const dir = next === "asc" ? 1 : -1;
+      order = rows.sort((a, b) => {
+        const x = key(a.cells[idx]), y = key(b.cells[idx]);
+        if (numeric) {
+          const nx = num(x), ny = num(y);
+          if (nx === null && ny === null) return a.dataset.i - b.dataset.i;
+          if (nx === null) return 1;            // blanks last either way
+          if (ny === null) return -1;
+          return (nx - ny) * dir || a.dataset.i - b.dataset.i;
+        }
+        return String(x).localeCompare(String(y)) * dir || a.dataset.i - b.dataset.i;
+      });
+    }
+    order.forEach((r) => body.appendChild(r));
+  });
+
+  document.addEventListener("error", (e) => {
+    const img = e.target;
+    if (img && img.tagName === "IMG" && img.matches(".wa-head, .wa-nfl")) img.style.visibility = "hidden";
+  }, true);
+}
+"""
+
+_sorter = None
+
+
 def apply() -> None:
-    """Inject the stylesheet. app.py calls this once per run, before the page."""
+    """Inject the stylesheet and the sort script. app.py calls this once per run, before the page."""
+    global _sorter
     st.html(CSS)
+    try:
+        if _sorter is None:
+            _sorter = st.components.v2.component("wa_sort", js=SORT_JS, isolate_styles=False)
+        _sorter(key="wa_sort")
+    except Exception:                       # noqa: BLE001
+        pass                                # tables still render, unsorted
 
 
 # ---------------------------------------------------------------- pictures
@@ -323,28 +412,42 @@ def rank_cell(n: int) -> str:
 
 
 def html_table(columns: list[tuple[str, str]], rows: list[list], cut_after: int | None = None,
-               cut_label: str = "playoff line", compact: bool = False, scroll: bool = False) -> None:
+               cut_label: str = "playoff line", compact: bool = False, scroll: bool = False,
+               sortable: bool | None = None, groups: list[tuple[str, int]] | None = None) -> None:
     """
     A Broadcast table. columns are (header, kind) with kind "" (left), "num"
     (right) or "mid" (centred). Each cell is HTML already escaped by the
-    caller, or (html, extra_class) to tint it. cut_after draws the red dashed
-    playoff line under that many rows. scroll caps a long table's height with
-    the header pinned.
+    caller, or (html, extra_class), or (html, extra_class, sort_value) when
+    the text would sort wrongly. cut_after draws the red dashed playoff line
+    under that many rows. scroll caps a long table's height with the header
+    pinned. groups adds a header row above, (label, columns spanned) each.
+
+    Headers click to sort (see SORT_JS), except where cut_after is set: a
+    table with a playoff line is about its order, and sorting would carry the
+    line off with whichever row it sat under.
     """
+    if sortable is None:
+        sortable = not cut_after
     head = "".join(f'<th class="wa-{k}">{esc(h)}</th>' if k else f"<th>{esc(h)}</th>" for h, k in columns)
+    if groups:
+        top = "".join(f'<th colspan="{n}" class="wa-group">{esc(g)}</th>' for g, n in groups)
+        head = f"{top}</tr><tr>{head}"
     body = []
     for i, r in enumerate(rows):
         cls = ' class="wa-cut"' if cut_after and i == cut_after - 1 and len(rows) > cut_after else ""
         cells = []
         for v, (_, k) in zip(r, columns):
-            v, extra = v if isinstance(v, tuple) else (v, "")
+            v, extra, sv = (v + ("", None))[:3] if isinstance(v, tuple) else (v, "", None)
             names = " ".join(n for n in (f"wa-{k}" if k else "", extra) if n)
-            cells.append(f'<td class="{names}">{v}</td>' if names else f"<td>{v}</td>")
+            attrs = (f' class="{names}"' if names else "") + (
+                f' data-v="{esc(str(sv))}"' if sv is not None else "")
+            cells.append(f"<td{attrs}>{v}</td>")
         body.append(f"<tr{cls}>{''.join(cells)}</tr>")
     note = (f'<div class="wa-cutlabel">- - - {esc(cut_label)}</div>'
             if cut_after and len(rows) > cut_after else "")
     wrap = "wa-tablewrap wa-scroll" if scroll else "wa-tablewrap"
-    st.html(f'<div class="{wrap}"><table class="wa-table{" compact" if compact else ""}"><thead><tr>{head}</tr></thead>'
+    classes = "wa-table" + (" compact" if compact else "") + (" wa-sortable" if sortable else "")
+    st.html(f'<div class="{wrap}"><table class="{classes}"><thead><tr>{head}</tr></thead>'
             f'<tbody>{"".join(body)}</tbody></table></div>{note}')
 
 
@@ -361,7 +464,8 @@ def _fmt(v, f: str | None) -> str:
 def frame(df: pd.DataFrame, *, num=(), signed=(), mid=(), fmt: dict | None = None,
           pics: list[str] | None = None, subs: list[str] | None = None, rank: bool = False,
           classes: pd.DataFrame | None = None, cut_after: int | None = None,
-          compact: bool = False, scroll: bool = False, pic_col: str | None = None) -> None:
+          compact: bool = False, scroll: bool = False, pic_col: str | None = None,
+          sortable: bool | None = None) -> None:
     """
     A DataFrame as a Broadcast table, in the order given.
 
@@ -391,9 +495,16 @@ def frame(df: pd.DataFrame, *, num=(), signed=(), mid=(), fmt: dict | None = Non
             else:
                 html_ = _fmt(v, fmt.get(c))
             extra = classes.iloc[i][c] if classes is not None and c in classes.columns else ""
-            cells.append((html_, extra) if extra else html_)
+            # Sort by the raw number, not its formatted text; a name by itself.
+            if isinstance(v, numbers.Real) and not isinstance(v, bool) and not pd.isna(v):
+                sv = v
+            elif pics is not None and c == (pic_col or cols[0]):
+                sv = str(v)
+            else:
+                sv = None
+            cells.append((html_, extra, sv))
         rows.append(cells)
-    html_table(columns, rows, cut_after=cut_after, compact=compact, scroll=scroll)
+    html_table(columns, rows, cut_after=cut_after, compact=compact, scroll=scroll, sortable=sortable)
 
 
 # ---------------------------------------------------------------- charts
