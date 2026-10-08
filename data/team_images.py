@@ -59,7 +59,7 @@ HELMETS = {
     "David": ("#5e3f6e", "#ffffff", None),         # plum
     "Matt": ("#2a2a2a", "#ffffff", None),          # charcoal
     "JT": ("#7d858c", "#111111", None),            # slate
-    "Mikey": ("#2e6e6e", "#ffffff", None),         # teal
+    "Mikey": ("#101820", "#a71930", "Falcons"),
     "Mitchell": ("#6f6a3a", "#ffffff", None),      # olive
     "B. Pisarcik": ("#8a6a45", "#111111", None),   # tan
 }

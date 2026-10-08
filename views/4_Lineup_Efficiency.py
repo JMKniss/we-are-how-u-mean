@@ -95,8 +95,12 @@ with tab1:
                                  "Points left on bench, season"))
 
         with col2:
+            # Manager names only on the points: manager and team together
+            # crowded ten labels into a small chart.
+            summary["point_label"] = summary["team_id"].map(manager_map).fillna("?")
             fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
-                              text="label", title="Actual Score vs Efficiency",
+                              text="point_label", hover_name="label",
+                              title="Actual Score vs Efficiency",
                               labels={"avg_actual": "Avg Actual Score", "avg_efficiency": "Efficiency %"})
             fig3.update_traces(textposition="top center")
             st.plotly_chart(fig3, width="stretch")
