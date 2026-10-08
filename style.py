@@ -162,18 +162,6 @@ CSS = f"""
 .wa-sortable th.wa-desc::after {{ content: " ▼"; color: {YELLOW}; font-size: .7em; }}
 .wa-scroll .wa-table th {{ position: sticky; top: 0; z-index: 1; }}
 
-/* ---- matchups ---- */
-.wa-matchups {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 8px; margin: 4px 0 8px; }}
-.wa-match {{ display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px;
-  padding: 7px 10px; border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
-  border-left: 5px solid {RED}; }}
-.wa-match .wa-side {{ display: flex; align-items: center; gap: 8px; min-width: 0; }}
-.wa-match .wa-side.away {{ flex-direction: row-reverse; text-align: right; }}
-.wa-match .wa-pic {{ width: 38px; height: 34px; }}
-.wa-match .wa-proj {{ font-family: '{HEAD}', sans-serif; font-size: 1.15rem; white-space: nowrap; font-variant-numeric: tabular-nums;
-  background: {BLACK}; color: {YELLOW}; padding: 2px 8px; }}
-.wa-match .wa-name, .wa-match .wa-team {{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-
 /* ---- badges, with a Material icon or an emoji ---- */
 .wa-badge {{ display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; font-size: .8rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .04em; vertical-align: middle; }}

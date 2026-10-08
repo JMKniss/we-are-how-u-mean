@@ -13,7 +13,6 @@ from display_utils import season_selector, require_data, sidebar_display_prefs
 import display_utils as du
 from branding import page_icon
 import style
-from style import esc
 
 st.set_page_config(page_title="Dashboard", page_icon=page_icon(), layout="wide")
 
@@ -104,16 +103,17 @@ if not upcoming.empty:
             continue
         seen.add(r.team_id)
         seen.add(r.opp_id)
-        home = name_lines(manager_map.get(r.team_id, "?"), r.team_name)
-        away = name_lines(manager_map.get(r.opp_id, "?"), r.opp_name)
-        side = lambda tid, lines, cls: (
-            f'<div class="wa-side {cls}">{style.pic(team_pic(tid))}<div style="min-width:0">'
-            f'<span class="wa-name">{esc(lines[0])}</span>'
-            f'<span class="wa-team">{esc(lines[1])}</span></div></div>')
-        games.append(f'<div class="wa-match">{side(r.team_id, home, "home")}'
-                     f'<span class="wa-proj">{r.projected:.1f} – {r.opp_projected:.1f}</span>'
-                     f'{side(r.opp_id, away, "away")}</div>')
-    st.html(f'<div class="wa-matchups">{"".join(games)}</div>')
+        games.append(r)
+    games.sort(key=lambda r: r.projected + r.opp_projected, reverse=True)
+    style.html_table(
+        [("Home", ""), ("Projection", "mid"), ("Away", "")],
+        [[style.who_cell(team_pic(r.team_id),
+                         *name_lines(manager_map.get(r.team_id, "?"), r.team_name)),
+          f"<b>{r.projected:.1f} – {r.opp_projected:.1f}</b>",
+          style.who_cell(team_pic(r.opp_id),
+                         *name_lines(manager_map.get(r.opp_id, "?"), r.opp_name))]
+         for r in games],
+        sortable=False)
     st.caption("Projections based on highest projected startable lineup per ESPN projections")
 
     # ── Matchups to watch ────────────────────────────────────────────────────
