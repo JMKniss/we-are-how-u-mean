@@ -106,12 +106,13 @@ if not upcoming.empty:
         games.append(r)
     games.sort(key=lambda r: r.projected + r.opp_projected, reverse=True)
     style.html_table(
-        [("Home", ""), ("Projection", "mid"), ("Away", "")],
+        [("Home", ""), ("Projection", "mid"), ("Away", "num")],
         [[style.who_cell(team_pic(r.team_id),
                          *name_lines(manager_map.get(r.team_id, "?"), r.team_name)),
           f"<b>{r.projected:.1f} – {r.opp_projected:.1f}</b>",
           style.who_cell(team_pic(r.opp_id),
-                         *name_lines(manager_map.get(r.opp_id, "?"), r.opp_name))]
+                         *name_lines(manager_map.get(r.opp_id, "?"), r.opp_name),
+                         away=True)]
          for r in games],
         sortable=False)
     st.caption("Projections based on highest projected startable lineup per ESPN projections")

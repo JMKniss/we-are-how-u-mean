@@ -131,6 +131,7 @@ CSS = f"""
   color: {YELLOW}; font-family: '{HEAD}', sans-serif; }}
 .wa-who {{ display: flex; align-items: center; gap: 10px; min-width: 0; }}
 .wa-who .wa-pic {{ width: 42px; height: 36px; }}
+.wa-who.wa-away {{ flex-direction: row-reverse; text-align: right; }}
 .wa-name {{ font-weight: 700; }}
 .wa-head {{ width: 44px; height: 32px; object-fit: cover; object-position: top; flex: none;
   background: color-mix(in srgb, currentColor 8%, transparent); }}
@@ -383,11 +384,13 @@ def cards(items: list[dict]) -> None:
 
 
 # ---------------------------------------------------------------- tables
-def who_cell(img: str, name: str, team: str = "") -> str:
-    """A team picture with the manager's name over the team's."""
+def who_cell(img: str, name: str, team: str = "", away: bool = False) -> str:
+    """A team picture with the manager's name over the team's. away mirrors
+    it, picture on the right, for the right-hand side of a fixture."""
     team_html = f'<span class="wa-team">{esc(team)}</span>' if team else ""
     img_html = pic(img) if img else ""
-    return f'<div class="wa-who">{img_html}<div><span class="wa-name">{esc(name)}</span>{team_html}</div></div>'
+    cls = "wa-who wa-away" if away else "wa-who"
+    return f'<div class="{cls}">{img_html}<div><span class="wa-name">{esc(name)}</span>{team_html}</div></div>'
 
 
 def form_cell(outcomes: list[str]) -> str:
