@@ -18,6 +18,8 @@ Usage pattern in each page:
     px.bar(df, x="label", ...)
 """
 
+import re
+
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -195,15 +197,28 @@ def require_data(df, season, what="data"):
 # ── trade grades ─────────────────────────────────────────────────────────
 # Both trade pages show the same columns under the same headers, and the same
 # note explaining them, so they are defined once here.
+RECORD = re.compile(r"\d+-\d+-\d+")
 TRADE_GRADE_GROUPS = [
     ("Optimal Lineup Change", [("best", "Total", "%+.1f"), ("best_pw", "Per Week", "%+.1f"),
                                ("best_pgp", "Per Game Played", "%+.1f")]),
     ("Actual Starting Lineup Change", [("started", "Total", "%+.1f"), ("started_pw", "Per Week", "%+.1f"),
-                                       ("started_pgp", "Per Game Played", "%+.1f")]),
+                                       ("started_pgp", "Per Game Played", "%+.1f"),
+                                       ("weeks_record", "Weeks Better-Even-Worse", None)]),
     ("Wins and Losses", [("wins_created", "Wins Created", None),
                          ("losses_caused", "Losses Caused", None),
                          ("xwins", "Expected Wins Added", "%+.2f")]),
 ]
+
+
+def record(up, even, down) -> list[str]:
+    """Three counts as one up-even-down record, 5-0-4."""
+    return [f"{int(u)}-{int(e)}-{int(d)}" for u, e, d in zip(up, even, down)]
+
+
+def _record_sort(text: str):
+    """A 5-0-4 record sorts on up minus down, then up, not as text."""
+    up, _, down = (int(n) for n in text.split("-"))
+    return float(up - down) + up / 1000
 
 
 def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
@@ -217,6 +232,8 @@ def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.Dat
     is hidden.
     """
     parts, header, formats = [front], [("", c) for c in front.columns], {}
+    grades = grades.assign(weeks_record=record(grades["weeks_better"], grades["weeks_even"],
+                                               grades["weeks_worse"]))
     for group, cols in TRADE_GRADE_GROUPS:
         for key, label, fmt in cols:
             if fmt:
@@ -258,6 +275,8 @@ def show_trade_grades(table: pd.DataFrame, pics: list[str] | None = None,
                 cells.append((f'<span class="{tone}">{text}</span>' if tone else text, "", float(v)))
             elif k == name_col and pics is not None:
                 cells.append((who_cell(pics[i], str(v)), "", str(v)))
+            elif isinstance(v, str) and RECORD.fullmatch(v):
+                cells.append((esc(v), "", _record_sort(v)))
             else:
                 cells.append(esc("—" if pd.isna(v) else str(v)))
         rows.append(cells)
@@ -294,6 +313,10 @@ it are counted.
 - **Wins Created and Losses Caused:** Games won that would have been lost
   without the trade, and vice versa, against the opponent's actual score.
   Includes playoffs.
+- **Weeks Better-Even-Worse:** Weeks the lineup actually started scored more,
+  the same, or less than it would have without the trade. Even usually means
+  the traded for player sat on the bench. Unlike Wins Created, this ignores the
+  opponent. It counts how often the trade gave the manager a better chance to win.
 - **Expected Wins Added:** cumulative increase or decrease in your odds of
   winning as a result of trades. Basically ignores your actual matchup, looks at
   what you scored, what you would have scored w/o the trade, everyone else's

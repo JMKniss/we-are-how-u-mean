@@ -20,9 +20,10 @@ Two counterfactuals, read side by side, plus one derived from the second:
 
   ASL delta     Actual started lineup. The same subtraction on the lineup the
   (started)     manager actually started. Each received player who started is
-                taken out of his slot, and the slot is refilled with the
-                player the manager would most likely have started instead.
-                The rest of the lineup stays as he set it. A received player
+                taken out, and his place goes to the player the manager
+                would most likely have started instead. The rest of the
+                lineup still starts, free to shift slots to make room. A
+                received player
                 who sat on the bench did nothing that week and counts nothing.
                 This is the trade's actual impact, lineup decisions included.
 
@@ -52,6 +53,14 @@ Two counterfactuals, read side by side, plus one derived from the second:
                 week held counts this way, playoffs included, against that
                 week's other scores rather than the playoff opponent, so it
                 is the steadier companion to the flips, not a copy of them.
+
+  Weeks better  From ASL: the weeks the started lineup scored more with the
+  even, worse   trade than without it, the same, and less. Even is nearly
+                always a received player left on the bench. It ignores the
+                opponent, so it counts how often the trade gave the manager
+                a better chance to win, which a points total cannot: a few
+                big weeks can carry a trade that was worse more often than
+                not, and the reverse.
                 The all-play share (how many of the other nine teams the score
                 beat, as the luck index in analysis/standings.py counts
                 expected wins) was tried first and rejected for this: it moves
@@ -85,11 +94,24 @@ never that week's score, so a bench player nobody would have started cannot
 swing a week with one big game. A player who did not play is never the
 refill: an injured or inactive player is a zero on the bench, not in the
 lineup. A mid-game injury did play, so he can be the refill and scores what
-he scored. Fixed slots are refilled before the flex, so
-a sent RB takes the RB slot and leaves the flex to a sent WR. With the pooled
-candidates that order gave the same result as the best possible assignment
-(the most summed average to date) on every trade in the archive through 2025,
-where refilling the flex first changed 18 sides by up to 31 points.
+he scored.
+
+The rest of the lineup stays in it, but not in its slots. His other starters
+all still start, and may move between the slots they are eligible for, so
+the vacated places go to whichever candidates have the most summed average
+to date that still leaves a legal lineup. Received a WR who started at WR,
+with another WR of his own in the flex: without the trade that WR moves up,
+the flex opens, and a sent RB can have it. The refill was slot-locked at
+first, each vacated slot taken only by a player eligible for that exact
+slot, and that kept a sent player of another position out of the lineup
+whenever the received one started in a fixed slot. Tim's 2021
+Davante Adams trade sent Austin Ekeler: Adams's WR slot was refilled by
+Pittman's 2.3 rather than Ekeler's 35.5 in the flex, and the trade came out
++95.5 over its 15 weeks against -0.5 with the starters free to move. Through
+2026 week 4 the change moved 293 of 1,797 trade-weeks and 103 of 209 sides,
+13 of them across zero; more grades went down than up, since the locked
+refill so often fell back to the replacement level or a weaker player of the
+right position.
 
 A slot nobody on the roster can fill. Received a kicker, sent none, no kicker
 on the bench: the manager would have picked one up. Which free agent is
@@ -155,6 +177,8 @@ regraded, and regrading every season at once is allowed (--grades with no
 with any change here that alters a grade, and until the seasons are regraded
 the pages work the grades out live rather than show stale ones.
 """
+import itertools
+
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
@@ -171,14 +195,15 @@ PLAYED = {"Healthy", "Mid-Game Injury"}
 # Bump on any change that alters a grade. trade_grades.csv rows carry the
 # version they were graded under, and a mismatch is worked out live instead,
 # so a page never shows a grade the current rules would not give.
-GRADES_VERSION = 1
+GRADES_VERSION = 2
 STORED = "trade_grades"
 
 SIDE_COLS = ["transaction_id", "season", "week", "executed_at", "team_id",
              "receives", "sends", "dropped", "partners", "inferred", "notes",
              "weeks", "games", "first_week", "last_week",
              "best", "best_pw", "best_pgp", "started", "started_pw", "started_pgp",
-             "xwins", "wins_flipped", "wins_created", "losses_caused"]
+             "xwins", "wins_flipped", "wins_created", "losses_caused",
+             "weeks_better", "weeks_even", "weeks_worse"]
 WEEK_COLS = ["transaction_id", "season", "team_id", "week", "played",
              "best", "started", "xwins", "flip", "score", "cf_score", "opp_score"]
 # The archive keeps two decimals, which would round a week's change in win
@@ -316,30 +341,64 @@ def _optimal(pool: pd.DataFrame, s: _Season, week: int) -> float:
     return optimal_lineup_points(positions, points, s.slots)
 
 
-def _refill(vacated: list, candidates: list, s: _Season, week: int) -> float:
+def _fits(players: list, slots: list) -> bool:
     """
-    Points the vacated slots would have scored, each refilled by the
-    highest-average eligible candidate not already used, fixed slots first so
-    a sent RB takes the RB slot and leaves the flex to a sent WR. candidates
-    is one pool of (player_id, points): sent, trade-dropped and bench players
-    alike. A player who did not play is not a candidate; a mid-game injury
-    played. A slot nobody can fill is worth the replacement level.
+    Whether these players fill these slots, one each. Each player is
+    (position, only_slot); only_slot, when set, is the one slot he may take.
     """
-    order = sorted(vacated, key=lambda slot: len(SLOT_ELIGIBILITY.get(slot, set())) or 99)
-    used = set()
-    total = 0.0
-    for slot in order:
-        eligible = SLOT_ELIGIBILITY.get(slot)
-        pool = [(pid, p) for pid, p in candidates
-                if pid not in used and s.played(pid, week)
-                and (eligible is None or s.position.get(pid) in eligible)]
-        if pool:
-            best = max(pool, key=lambda c: s.avg_to_date(c[0], week))
-            used.add(best[0])
-            total += best[1]
-        else:
-            total += s.replacement(slot, week)
-    return total
+    held = {}
+
+    def place(i, seen):
+        pos, only = players[i]
+        for j, slot in enumerate(slots):
+            if j in seen or (only is not None and slot != only):
+                continue
+            eligible = SLOT_ELIGIBILITY.get(slot)
+            if only is None and eligible is not None and pos not in eligible:
+                continue
+            seen.add(j)
+            if j not in held or place(held[j], seen):
+                held[j] = i
+                return True
+        return False
+
+    return all(place(i, set()) for i in range(len(players)))
+
+
+def _refill(vacated: list, staying: list, slots: list, candidates: list,
+            s: _Season, week: int) -> float:
+    """
+    Points the vacated places would have scored. staying is (position, slot)
+    for the starters who stay, slots every slot in the lineup as started; the
+    staying starters may move between slots, so the places go to the
+    candidates with the most summed average to date that still make a legal
+    lineup. candidates is one pool of (player_id, points): sent, trade-dropped
+    and bench players alike. A player who did not play is not a candidate; a
+    mid-game injury played. A place nobody can fill is worth the replacement
+    level of the slot that was vacated. A staying starter whose listed
+    position his slot does not take, Taysom Hill at TE, stays in that slot.
+    """
+    fixed = [(pos, None if pos in SLOT_ELIGIBILITY.get(slot, {pos}) else slot)
+             for pos, slot in staying]
+    pool = [(pid, p) for pid, p in candidates if s.played(pid, week)]
+    stand_ins = [(slot, s.replacement(slot, week)) for slot in vacated]
+    k = len(vacated)
+    # Fewest stand-ins first: a real player always beats a replacement.
+    for n in range(k, -1, -1):
+        best = None
+        for real in itertools.combinations(pool, n):
+            avg = sum(s.avg_to_date(pid, week) for pid, _ in real)
+            if best is not None and avg <= best[0]:
+                continue
+            for subs in itertools.combinations(stand_ins, k - n):
+                extra = ([(s.position.get(pid), None) for pid, _ in real]
+                         + [(None, slot) for slot, _ in subs])
+                if _fits(fixed + extra, slots):
+                    best = (avg, sum(p for _, p in real) + sum(p for _, p in subs))
+                    break
+        if best is not None:
+            return best[1]
+    return sum(p for _, p in stand_ins)
 
 
 def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
@@ -388,7 +447,10 @@ def _grade_side(side: pd.Series, s: _Season) -> list[dict]:
         bench = roster[roster["slot"] == "BE"]
         candidates = (list(zip(back["player_id"], back["points"]))
                       + list(zip(bench["player_id"], bench["points"])))
-        refill = _refill(started_received["slot"].tolist(), candidates, s, week)
+        staying = starters[~starters["player_id"].isin(received)]
+        refill = _refill(started_received["slot"].tolist(),
+                         list(zip(staying["position"], staying["slot"])),
+                         starters["slot"].tolist(), candidates, s, week)
         row["started"] = round(float(started_received["points"].sum()) - refill, 2)
 
         # A game played, for per game played: every received player he still
@@ -504,7 +566,8 @@ def trade_grades(season: int) -> pd.DataFrame:
     """
     One row per trade per manager: the trade as the tracker shows it, plus
     the weeks held, the games a received player played, each delta as a
-    total, per week and per game played, and wins flipped. Trades with no
+    total, per week and per game played, wins flipped, and the weeks the
+    started lineup was better, even and worse. Trades with no
     weeks held carry zeros, weeks == 0, and no rates.
     """
     if not supported(season) or not archive.has("transactions", season):
@@ -519,7 +582,8 @@ def trade_grades(season: int) -> pd.DataFrame:
         agg = pd.DataFrame(columns=["transaction_id", "team_id", "weeks", "games",
                                     "first_week", "last_week", "best", "best_played",
                                     "started", "started_played", "xwins", "wins_flipped",
-                                    "wins_created", "losses_caused"])
+                                    "wins_created", "losses_caused",
+                                    "weeks_better", "weeks_even", "weeks_worse"])
     else:
         weekly = weekly.assign(best_played=weekly["best"].where(weekly["played"], 0.0),
                                started_played=weekly["started"].where(weekly["played"], 0.0))
@@ -530,10 +594,14 @@ def trade_grades(season: int) -> pd.DataFrame:
                     started=("started", "sum"), started_played=("started_played", "sum"),
                     xwins=("xwins", "sum"), wins_flipped=("flip", "sum"),
                     wins_created=("flip", lambda f: int((f > 0).sum())),
-                    losses_caused=("flip", lambda f: int((f < 0).sum())))
+                    losses_caused=("flip", lambda f: int((f < 0).sum())),
+                    weeks_better=("started", lambda d: int((d > 0).sum())),
+                    weeks_even=("started", lambda d: int((d == 0).sum())),
+                    weeks_worse=("started", lambda d: int((d < 0).sum())))
                .reset_index())
     out = sides.merge(agg, on=["transaction_id", "team_id"], how="left")
-    for c in ("weeks", "games", "wins_flipped", "wins_created", "losses_caused"):
+    for c in ("weeks", "games", "wins_flipped", "wins_created", "losses_caused",
+              "weeks_better", "weeks_even", "weeks_worse"):
         out[c] = out[c].fillna(0).astype(int)
     for c in ("best", "best_played", "started", "started_played", "xwins"):
         out[c] = out[c].fillna(0.0).round(2)
@@ -551,7 +619,8 @@ def summarise(grades: pd.DataFrame) -> pd.Series:
     the points.
     """
     t = grades[["weeks", "games", "best", "best_played", "started", "started_played",
-                "xwins", "wins_created", "losses_caused", "wins_flipped"]].sum()
+                "xwins", "wins_created", "losses_caused", "wins_flipped",
+                "weeks_better", "weeks_even", "weeks_worse"]].sum()
     out = pd.Series({
         "trades": grades["transaction_id"].nunique(),
         # A trade with no week held yet has no grade, not an even one.
@@ -570,11 +639,13 @@ def manager_summary(grades: pd.DataFrame, manager_map: dict[int, str]) -> pd.Dat
     """One row per manager with at least one trade, from summarise()."""
     cols = ["team_id", "manager", "trades", "up", "even", "down",
             "best", "best_pw", "best_pgp", "started", "started_pw", "started_pgp",
-            "xwins", "wins_created", "losses_caused", "wins_flipped"]
+            "xwins", "wins_created", "losses_caused", "wins_flipped",
+            "weeks_better", "weeks_even", "weeks_worse"]
     if grades.empty:
         return pd.DataFrame(columns=cols)
     out = grades.groupby("team_id").apply(summarise, include_groups=False).reset_index()
     out["manager"] = out["team_id"].map(manager_map)
-    for c in ("trades", "up", "even", "down", "wins_created", "losses_caused", "wins_flipped"):
+    for c in ("trades", "up", "even", "down", "wins_created", "losses_caused", "wins_flipped",
+              "weeks_better", "weeks_even", "weeks_worse"):
         out[c] = out[c].astype(int)
     return out[cols].sort_values("best", ascending=False, ignore_index=True)

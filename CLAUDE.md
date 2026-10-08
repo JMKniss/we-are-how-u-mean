@@ -649,7 +649,13 @@ an early one, per game played to see past weeks a player missed. An emptied
 slot is refilled from one pool of bench, sent and dropped players by average
 to date, a player who did not play never among them - sent players first
 assumed every one of them would have started, and an injured one was picked
-and scored as a zero in the lineup.
+and scored as a zero in the lineup. The other starters may move between
+slots to make room: refilling only the exact slot vacated kept a sent player
+of another position out, and graded Tim's 2021 Adams-for-Ekeler trade +95.5
+where it was about even.
+Weeks better-even-worse counts how often the started lineup beat its
+counterfactual, opponent ignored, because a points total lets a few big
+weeks hide a trade that was worse more often than not.
 Expected wins added sits beside the flipped games: each week's change in
 the chance of beating a typical team, from a normal curve, not the all-play
 share, whose steps of a ninth turned small weekly deltas into noise.
