@@ -300,9 +300,10 @@ python build_archive.py --season 2026 --dataset vlog_upcoming --update
 ### Scheduling it
 
 Two Claude desktop scheduled tasks run it while this PC and the Claude app
-are on: `ff-weekly-update-tuesday` (Tue 7 AM Central, 8 AM Eastern, the
-scores) and `ff-weekly-update-wednesday` (Wed 7 PM Central, after waivers and
-the vlog notes). Each runs the update, commits and pushes `master` if the
+are on: `ff-weekly-update-tuesday` (Tue 7 AM Central, 8 AM Eastern, once
+the scores settle) and `ff-weekly-update-wednesday` (Wed 7 PM Central, after
+waivers and the vlog notes). Both run the full update, not a part of it - the
+timing is why each exists, not a limit on what it does. Each runs the update, commits and pushes `master` if the
 archive changed, and catches `dev` up. Neither uses `--force`: a conflict is
 reported and left for a person. A run due while the app is closed fires when it
 next opens. Their prompts are in `~/.claude/scheduled-tasks/`.
