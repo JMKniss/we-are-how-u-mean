@@ -157,6 +157,10 @@ CSS = f"""
 .wa-scroll {{ max-height: 560px; overflow-y: auto; }}
 .wa-table th.wa-group {{ text-align: center; color: {YELLOW}; border-bottom: 1px solid #444; cursor: default; }}
 .wa-table th.wa-group:empty {{ border-bottom: none; }}
+.wa-table td.wa-key {{ font-weight: 700; }}
+.wa-trade {{ white-space: nowrap; line-height: 1.35; }}
+.wa-table th.wa-gs {{ border-left: 2px solid #555; }}
+.wa-table td.wa-gs {{ border-left: 2px solid color-mix(in srgb, currentColor 30%, transparent); }}
 .wa-sortable th {{ cursor: pointer; user-select: none; }}
 .wa-sortable th:hover {{ color: {YELLOW}; }}
 .wa-sortable th.wa-asc::after {{ content: " ▲"; color: {YELLOW}; font-size: .7em; }}
@@ -419,17 +423,28 @@ def html_table(columns: list[tuple[str, str]], rows: list[list], cut_after: int 
     """
     if sortable is None:
         sortable = not cut_after
-    head = "".join(f'<th class="wa-{k}">{esc(h)}</th>' if k else f"<th>{esc(h)}</th>" for h, k in columns)
+    # A rule down the left of each group after the first, through both header
+    # rows and the body, so a wide table reads as its groups.
+    starts, at = set(), 0
+    for i, (_, n) in enumerate(groups or []):
+        if i:
+            starts.add(at)
+        at += n
+    head = "".join(
+        f'<th class="{" ".join(c for c in (f"wa-{k}" if k else "", "wa-gs" if j in starts else "") if c)}">'
+        f"{esc(h)}</th>" for j, (h, k) in enumerate(columns))
     if groups:
-        top = "".join(f'<th colspan="{n}" class="wa-group">{esc(g)}</th>' for g, n in groups)
+        top = "".join(f'<th colspan="{n}" class="wa-group{" wa-gs" if i else ""}">{esc(g)}</th>'
+                      for i, (g, n) in enumerate(groups))
         head = f"{top}</tr><tr>{head}"
     body = []
     for i, r in enumerate(rows):
         cls = ' class="wa-cut"' if cut_after and i == cut_after - 1 and len(rows) > cut_after else ""
         cells = []
-        for v, (_, k) in zip(r, columns):
+        for j, (v, (_, k)) in enumerate(zip(r, columns)):
             v, extra, sv = (v + ("", None))[:3] if isinstance(v, tuple) else (v, "", None)
-            names = " ".join(n for n in (f"wa-{k}" if k else "", extra) if n)
+            names = " ".join(n for n in (f"wa-{k}" if k else "", extra,
+                                         "wa-gs" if j in starts else "") if n)
             attrs = (f' class="{names}"' if names else "") + (
                 f' data-v="{esc(str(sv))}"' if sv is not None else "")
             cells.append(f"<td{attrs}>{v}</td>")

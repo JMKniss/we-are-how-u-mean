@@ -47,7 +47,8 @@ from analysis.trades import trade_grades, manager_summary
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import (season_selector, require_data, sidebar_display_prefs, chart_label,
                            name_lines)
-from display_utils import trade_grade_table, show_trade_grades, TRADE_GRADE_NOTE
+from display_utils import (trade_grade_table, show_trade_grades, trade_cell, by_chance_to_win,
+                           TRADE_GRADE_NOTE)
 from branding import page_icon
 from style import esc, frame, html_table, page_header, player_pic, team_image, who_cell
 
@@ -279,16 +280,6 @@ def when(executed_at: str) -> str:
     return f"{d:%a %b} {d.day}"
 
 
-def who(frame: pd.DataFrame) -> pd.DataFrame:
-    """Manager and/or Team columns, following the sidebar display toggles."""
-    out = pd.DataFrame(index=frame.index)
-    if show_mgr:
-        out["Manager"] = frame["team_id"].map(manager_map).fillna("?")
-    if show_team:
-        out["Team"] = frame["team_id"].map(team_names).fillna("?")
-    return out
-
-
 def manager_picker(label: str, key: str, team_ids) -> int | None:
     """Selectbox of the managers who appear; returns a team_id, None for all."""
     present = sorted(manager_map[t] for t in set(team_ids) if t in manager_map)
@@ -367,12 +358,17 @@ with tab4:
                     ("Bid", "num")], rows, compact=True, scroll=len(rows) > 14)
     counts_table()
 
-def names_df(frame: pd.DataFrame) -> pd.DataFrame:
-    """who() for a dataframe, where an escaped team name would show its backslashes."""
-    out = who(frame)
-    if "Team" in out:
-        out["Team"] = frame["team_id"].map(team_names).fillna("?")
-    return out
+def grade_names(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[str], list[str]]:
+    """
+    One name column for a grade table, its pictures, and the small line
+    under each name: manager over team with both toggles on, as the trade
+    log above shows them.
+    """
+    lines = [name_lines(manager_map.get(t, "?"), team_names.get(t, "?"), show_mgr, show_team)
+             for t in frame["team_id"]]
+    names = pd.DataFrame({NAME_HEAD: [n for n, _ in lines]}, index=frame.index)
+    pics = [team_image(season, t, manager_map.get(t, "?")) for t in frame["team_id"]]
+    return names, pics, [sub for _, sub in lines]
 
 
 def grades_section(team: int | None):
@@ -381,34 +377,29 @@ def grades_section(team: int | None):
     if grades.empty:
         return
     st.divider()
-    summary = manager_summary(grades, manager_map)
+    summary = by_chance_to_win(manager_summary(grades, manager_map))
     st.subheader(f"{season} Trade Grades by Manager")
-    table, fmt = trade_grade_table(pd.concat([names_df(summary), pd.DataFrame({
-        "Trades": summary["trades"],
-        "Up-Even-Down": [f"{u}-{e}-{d}" for u, e, d in
-                         zip(summary["up"], summary["even"], summary["down"])],
-    }, index=summary.index)], axis=1), summary)
-    show_trade_grades(table, pics=[team_image(season, t, manager_map.get(t, "?"))
-                                   for t in summary["team_id"]])
-    st.caption("Totals are summed over the manager's trades. Per Week and Per "
-               "Game Played are taken over all the weeks and games in them.\n"
+    names, pics, subs = grade_names(summary)
+    table, fmt = trade_grade_table(pd.concat([names, pd.DataFrame(
+        {"Trades": summary["trades"]}, index=summary.index)], axis=1), summary)
+    show_trade_grades(table, pics=pics, subs=subs)
+    st.caption("Totals are summed over the manager's trades. Per Wk and Per "
+               "Game are taken over all the weeks and games in them.\n"
                + TRADE_GRADE_NOTE)
 
     st.subheader(f"{season} Trade Grades")
     shown = grades if team is None else grades[grades["team_id"] == team]
     shown = shown.sort_values(["week", "executed_at", "transaction_id", "team_id"],
                               ascending=[False, False, False, True])
+    names, pics, subs = grade_names(shown)
     table, fmt = trade_grade_table(pd.concat([
         pd.DataFrame({"Week": shown["week"]}, index=shown.index),
-        names_df(shown),
-        pd.DataFrame({
-            "Receives": [", ".join(r) for r in shown["receives"]],
-            "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
-                      for s, dr in zip(shown["sends"], shown["dropped"])],
-        }, index=shown.index),
+        names,
+        pd.DataFrame({"Trade": [trade_cell(r, s_, dr) for r, s_, dr in
+                                zip(shown["receives"], shown["sends"], shown["dropped"])]},
+                     index=shown.index),
     ], axis=1), shown)
-    show_trade_grades(table, pics=[team_image(season, t, manager_map.get(t, "?"))
-                                   for t in shown["team_id"]], scroll=len(table) > 14)
+    show_trade_grades(table, pics=pics, subs=subs, scroll=len(table) > 14)
 
 
 with tab5:

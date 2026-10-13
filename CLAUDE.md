@@ -653,9 +653,13 @@ and scored as a zero in the lineup. The other starters may move between
 slots to make room: refilling only the exact slot vacated kept a sent player
 of another position out, and graded Tim's 2021 Adams-for-Ekeler trade +95.5
 where it was about even.
-Weeks better-even-worse counts how often the started lineup beat its
+Weeks better-worse counts how often the started lineup beat its
 counterfactual, opponent ignored, because a points total lets a few big
-weeks hide a trade that was worse more often than not.
+weeks hide a trade that was worse more often than not. The league ranks it
+the most important grade, then games flipped, since a trade is made to win
+more, so the tables lead with them as Impacted Results and rank by them.
+Records show only plus and minus: an unchanged week is true but
+uninteresting, and the third number cost width on every table.
 Expected wins added sits beside the flipped games: each week's change in
 the chance of beating a typical team, from a normal curve, not the all-play
 share, whose steps of a ninth turned small weekly deltas into noise.

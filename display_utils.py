@@ -197,28 +197,65 @@ def require_data(df, season, what="data"):
 # ── trade grades ─────────────────────────────────────────────────────────
 # Both trade pages show the same columns under the same headers, and the same
 # note explaining them, so they are defined once here.
-RECORD = re.compile(r"\d+-\d+-\d+")
+#
+# Impacted Results comes first and is bold, by the league's own ranking:
+# a trade is made to win more, so how often it made the started lineup
+# better, then the games it flipped, matter most. The point deltas behind
+# them follow as the detail, the lineup actually started before the
+# optimal. Records are plus-minus only: a trade, week or game the trade did
+# not change is left out, because it is true but uninteresting and the
+# third number cost width on every table. The record of trades is a
+# manager's summary column; a single trade's record would only repeat the
+# sign of its Total, so per-trade tables skip it.
+RECORD = re.compile(r"\d+-\d+")
+KEY_GROUP = "Impacted Results"
 TRADE_GRADE_GROUPS = [
-    ("Optimal Lineup Change", [("best", "Total", "%+.1f"), ("best_pw", "Per Week", "%+.1f"),
-                               ("best_pgp", "Per Game Played", "%+.1f")]),
-    ("Actual Starting Lineup Change", [("started", "Total", "%+.1f"), ("started_pw", "Per Week", "%+.1f"),
-                                       ("started_pgp", "Per Game Played", "%+.1f"),
-                                       ("weeks_record", "Weeks Better-Even-Worse", None)]),
-    ("Wins and Losses", [("wins_created", "Wins Created", None),
-                         ("losses_caused", "Losses Caused", None),
-                         ("xwins", "Expected Wins Added", "%+.2f")]),
+    (KEY_GROUP, [("weeks_record", "Weeks Better-Worse", None),
+                 ("games_record", "Games Flipped W-L", None),
+                 ("xwins", "Exp. Wins Added", "%+.2f")]),
+    ("Actual Starting Lineup Change", [("started", "Total", "%+.1f"), ("started_pw", "Per Wk", "%+.1f"),
+                                       ("started_pgp", "Per Game", "%+.1f")]),
+    ("Optimal Lineup Change", [("best", "Total", "%+.1f"), ("best_pw", "Per Wk", "%+.1f"),
+                               ("best_pgp", "Per Game", "%+.1f"),
+                               ("trades_record", "Trades Up-Down", None)]),
 ]
 
 
-def record(up, even, down) -> list[str]:
-    """Three counts as one up-even-down record, 5-0-4."""
-    return [f"{int(u)}-{int(e)}-{int(d)}" for u, e, d in zip(up, even, down)]
+def by_chance_to_win(frame: pd.DataFrame) -> pd.DataFrame:
+    """Graded rows best first by the Impacted Results columns, in their order:
+    weeks better minus worse, then games flipped, then expected wins."""
+    return (frame.assign(_w=frame["weeks_better"] - frame["weeks_worse"],
+                         _g=frame["wins_created"] - frame["losses_caused"])
+            .sort_values(["_w", "_g", "xwins"], ascending=False)
+            .drop(columns=["_w", "_g"]))
+
+
+def record(good, bad) -> list[str]:
+    """Two counts as one good-bad record, 5-4."""
+    return [f"{int(g)}-{int(b)}" for g, b in zip(good, bad)]
 
 
 def _record_sort(text: str):
-    """A 5-0-4 record sorts on up minus down, then up, not as text."""
-    up, _, down = (int(n) for n in text.split("-"))
-    return float(up - down) + up / 1000
+    """A 5-4 record sorts on good minus bad, then good, not as text."""
+    good, bad = (int(n) for n in text.split("-"))
+    return float(good - bad) + good / 1000
+
+
+def _record_html(text: str) -> str:
+    """5-4 with the good count green and the bad count red; a zero stays plain."""
+    good, bad = text.split("-")
+    g = f'<span class="wa-pos">{good}</span>' if good != "0" else good
+    b = f'<span class="wa-neg">{bad}</span>' if bad != "0" else bad
+    return f"{g}-{b}"
+
+
+def trade_cell(receives, sends, dropped=()) -> str:
+    """One trade side as HTML: what came in, each on a + line, over what went out."""
+    from style import esc
+    lines = ([f'<span class="wa-pos"><b>+</b></span> {esc(n)}' for n in receives]
+             + [f'<span class="wa-neg"><b>−</b></span> {esc(n)}' for n in sends]
+             + [f'<span class="wa-neg"><b>−</b></span> {esc(n)} (dropped)' for n in dropped])
+    return f'<div class="wa-trade">{"<br>".join(lines)}</div>'
 
 
 def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
@@ -226,16 +263,23 @@ def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.Dat
     A trade grade table with grouped headers: front's columns (already named
     for display) under a blank parent, then each group's columns from grades,
     which shares front's index. Returns the table and its column_config.
+    The Trades Up-Down column appears only when grades carries up and down,
+    as a manager summary does.
 
     Streamlit takes no column_config by name for grouped columns, so the
     formats are keyed by position, and position 0 is the index even when it
     is hidden.
     """
     parts, header, formats = [front], [("", c) for c in front.columns], {}
-    grades = grades.assign(weeks_record=record(grades["weeks_better"], grades["weeks_even"],
-                                               grades["weeks_worse"]))
+    grades = grades.assign(
+        weeks_record=record(grades["weeks_better"], grades["weeks_worse"]),
+        games_record=record(grades["wins_created"], grades["losses_caused"]))
+    if {"up", "down"} <= set(grades.columns):
+        grades = grades.assign(trades_record=record(grades["up"], grades["down"]))
     for group, cols in TRADE_GRADE_GROUPS:
         for key, label, fmt in cols:
+            if key not in grades:
+                continue
             if fmt:
                 formats[len(header) + 1] = st.column_config.NumberColumn(format=fmt)
             parts.append(grades[key].rename(label))
@@ -246,13 +290,16 @@ def trade_grade_table(front: pd.DataFrame, grades: pd.DataFrame) -> tuple[pd.Dat
 
 
 def show_trade_grades(table: pd.DataFrame, pics: list[str] | None = None,
-                      scroll: bool = False) -> None:
+                      subs: list[str] | None = None, scroll: bool = False) -> None:
     """
     A table from trade_grade_table, drawn as a sortable Broadcast table with
-    its group labels as a header row. The grades are signed, green up and
-    red down, and sort by their raw values. pics, one per row, go beside the
-    first Manager or Team column; without them a Manager column gets the
-    manager's helmet.
+    its group labels as a header row and a rule between groups, and the
+    Impacted Results columns bold. The grades
+    are signed, green up and red down, and sort by their raw values; records
+    sort on their margin. pics, one per row, go beside the first Manager or
+    Team column, with subs as the small line under the name; without pics a
+    Manager column gets the manager's helmet. A Trade column is HTML from
+    trade_cell.
     """
     from style import esc, helmet_url, html_table, who_cell
 
@@ -274,11 +321,16 @@ def show_trade_grades(table: pd.DataFrame, pics: list[str] | None = None,
                 tone = "wa-pos" if f and v > 0 else ("wa-neg" if f and v < 0 else "")
                 cells.append((f'<span class="{tone}">{text}</span>' if tone else text, "", float(v)))
             elif k == name_col and pics is not None:
-                cells.append((who_cell(pics[i], str(v)), "", str(v)))
+                cells.append((who_cell(pics[i], str(v), subs[i] if subs else ""), "", str(v)))
+            elif k[1] == "Trade":
+                cells.append(v)
             elif isinstance(v, str) and RECORD.fullmatch(v):
-                cells.append((esc(v), "", _record_sort(v)))
+                cells.append((_record_html(v), "", _record_sort(v)))
             else:
                 cells.append(esc("—" if pd.isna(v) else str(v)))
+            if k[0] == KEY_GROUP:
+                c = cells[-1]
+                cells[-1] = (c, "wa-key") if isinstance(c, str) else (c[0], "wa-key", c[2])
         rows.append(cells)
     columns = [(k[1], "num" if k in fmts else "") for k in keys]
     groups, prev = [], None
@@ -297,30 +349,33 @@ performance, and does not consider how it worked out for the manager on the
 other side of trades. Weeks that manager held at least one player received in
 it are counted.
 
-- **Up-Even-Down**. Trades that increased, didn't change, or decreased the
-  optimal lineup score.
+- **Impacted Results:** How trades impacted actual week to week results.
+  **These columns are the most important trade measurements.**
+- **Weeks Better-Worse:** Weeks the lineup actually started scored more or less
+  than it would have without the trade. Unlike Games Flipped, this ignores the
+  opponent. It counts how often the trade gave the manager a better chance to win.
+- **Games Flipped W-L:** Games won that would have been lost without the trade,
+  and vice versa, against the opponent's actual score. Includes playoffs.
+- **Exp. Wins Added:** cumulative increase or decrease in your odds of
+  winning as a result of trades. Basically ignores your actual matchup, looks at
+  what you scored, what you would have scored w/o the trade, everyone else's
+  score across the league, and how your scores compare.
+- **Actual Starting Lineup Change:** Points actually scored minus the expected
+  score without the trade. Unlike Optimal Lineup, this does account for
+  Start/Sit decisions. **These columns represent real impact.**
 - **Optimal Lineup Change** The best lineup the roster could have started with
   the trade, minus the best it could have started without it. What the trade did
   for the roster, not affected by start/sit decisions. **These columns represent
   trade value.**
-- **Actual Starting Lineup Change:** Points actually scored minus the expected
-  score without the trade. Unlike Optimal Lineup, this does account for
-  Start/Sit decisions. **These columns represent real impact.**
-- **Total** is over all weeks traded for players were held. **Per Week** divides
+- **Total** is over all weeks traded for players were held. **Per Wk** divides
   by the weeks held, so an early trade and a late trade can be compared. **Per
-  Game Played** counts only weeks where traded for players were healthy and not
+  Game** counts only weeks where traded for players were healthy and not
   on bye, so missed games don't look like a bad trade decision.
-- **Wins Created and Losses Caused:** Games won that would have been lost
-  without the trade, and vice versa, against the opponent's actual score.
-  Includes playoffs.
-- **Weeks Better-Even-Worse:** Weeks the lineup actually started scored more,
-  the same, or less than it would have without the trade. Even usually means
-  the traded for player sat on the bench. Unlike Wins Created, this ignores the
-  opponent. It counts how often the trade gave the manager a better chance to win.
-- **Expected Wins Added:** cumulative increase or decrease in your odds of
-  winning as a result of trades. Basically ignores your actual matchup, looks at
-  what you scored, what you would have scored w/o the trade, everyone else's
-  score across the league, and how your scores compare.
+- **Trades Up-Down:** Trades that increased or decreased the optimal lineup
+  score.
+
+Records leave out the trades, weeks and games the trade did not change, which
+usually means the traded for player sat on the bench.
 
 Hypothetical lineups if the trade had not been made are based on the assumption
 the manager would have started the player on the bench (or given away in the

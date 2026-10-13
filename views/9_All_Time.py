@@ -25,7 +25,9 @@ counts trades per pair of managers, each pair stored once in name order;
 picking a manager finds the pair from either side and puts that manager first.
 Career Trading Grade sums every manager's graded trades over his career, lists them
 season by season, and lists every single trade in one sortable table, so
-each reader ranks them on the column he cares about; the grading is analysis/trades.py, and the season in progress counts,
+each reader ranks them on the column he cares about. Career and Every Trade
+open ranked by Impacted Results - weeks better minus worse, then games flipped -
+because that is what the league trades for; the grading is analysis/trades.py, and the season in progress counts,
 graded up to the last week archived.
 """
 import re
@@ -42,7 +44,8 @@ from analysis.transactions import move_counts, trade_pairs
 from analysis.trades import trade_grades, summarise
 from analysis.standings import h2h_standings, combined_standings, compute_season_finish_map
 from config import SEASONS, season_config
-from display_utils import sidebar_display_prefs, trade_grade_table, show_trade_grades, TRADE_GRADE_NOTE
+from display_utils import (sidebar_display_prefs, trade_grade_table, show_trade_grades,
+                           trade_cell, by_chance_to_win, TRADE_GRADE_NOTE)
 from branding import page_icon
 import style
 from style import helmet_url, page_header
@@ -1458,21 +1461,22 @@ with tab_moves:
         if grades.empty:
             st.info("No trades are archived yet.")
         else:
-            def records(frame: pd.DataFrame, by: str, label: str) -> tuple[pd.DataFrame, dict]:
-                """One row per group of sides, with the trade grade columns."""
+            def records(frame: pd.DataFrame, by: str, label: str,
+                        ranked: bool = False) -> tuple[pd.DataFrame, dict]:
+                """One row per group of sides, with the trade grade columns;
+                ranked puts the best Impacted Results first."""
                 r = frame.groupby(by).apply(summarise, include_groups=False).reset_index()
+                if ranked:
+                    r = by_chance_to_win(r).reset_index(drop=True)
                 front = pd.DataFrame({
                     label: r[by].astype(str),
                     "Trades": r["trades"].astype(int),
-                    "Up-Even-Down": [f"{int(u)}-{int(e)}-{int(d)}"
-                                     for u, e, d in zip(r["up"], r["even"], r["down"])],
                 })
                 r[["wins_created", "losses_caused"]] = r[["wins_created", "losses_caused"]].astype(int)
                 return trade_grade_table(front, r)
 
             st.markdown("**Career**")
-            table, fmt = records(grades, "manager", "Manager")
-            table = table.sort_values(("Optimal Lineup Change", "Total"), ascending=False)
+            table, fmt = records(grades, "manager", "Manager", ranked=True)
             show_trade_grades(table)
             st.caption(TRADE_GRADE_NOTE)
 
@@ -1481,7 +1485,7 @@ with tab_moves:
             table, fmt = records(grades[grades["manager"] == mgr], "season", "Season")
             show_trade_grades(table)
 
-            held = grades[grades["weeks"] > 0].sort_values("started", ascending=False)
+            held = by_chance_to_win(grades[grades["weeks"] > 0])
             st.markdown("**Every Trade**")
             c1, c2 = st.columns(2)
             pick_mgr = c1.multiselect("Manager", sorted(held["manager"].unique()),
@@ -1496,11 +1500,10 @@ with tab_moves:
                 "Season": held["season"].astype(str),
                 "Week": held["week"],
                 "Manager": held["manager"],
-                "Receives": [", ".join(r) for r in held["receives"]],
-                "Sends": [", ".join(list(s) + [f"{d} (dropped)" for d in dr])
-                          for s, dr in zip(held["sends"], held["dropped"])],
+                "Trade": [trade_cell(r, s, dr) for r, s, dr in
+                          zip(held["receives"], held["sends"], held["dropped"])],
             }, index=held.index), held)
             show_trade_grades(every, scroll=True)
             st.caption("Click a column to sort it, again to reverse. A trade held "
-                       "one week can sort to the top of Per Week or Per Game Played "
+                       "one week can sort to the top of Per Wk or Per Game "
                        "on one game.")
