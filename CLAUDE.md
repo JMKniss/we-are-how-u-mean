@@ -297,9 +297,21 @@ cookies needed:
 python build_archive.py --season 2026 --dataset vlog_upcoming --update
 ```
 
-### Scheduling it for Tuesday noon
+### Scheduling it
 
-Task Scheduler, run as your own user, "Run only when user is logged on" (the
+Two Claude desktop scheduled tasks run it while this PC and the Claude app
+are on: `ff-weekly-update-tuesday` (Tue 7 AM Central, 8 AM Eastern, the
+scores) and `ff-weekly-update-wednesday` (Wed 7 PM Central, after waivers and
+the vlog notes). Each runs the update, commits and pushes `master` if the
+archive changed, and catches `dev` up. Neither uses `--force`: a conflict is
+reported and left for a person. A run due while the app is closed fires when it
+next opens. Their prompts are in `~/.claude/scheduled-tasks/`.
+
+GitHub Actions would not need the PC on, but was turned down for now: the
+vlog notes live only in Drive, and reaching them from the cloud needs a Google
+service account.
+
+The older alternative, without Claude, is Task Scheduler, run as your own user, "Run only when user is logged on" (the
 ESPN cookies live in `ff_app/.env` under your profile):
 
 ```
