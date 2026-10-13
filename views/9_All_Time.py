@@ -10,6 +10,13 @@ average - waits until its regular season is over, because a running tally is
 not a season: two games in, everyone without a win would share the record
 for fewest wins.
 
+Head to Head ends with the Rank vs Rank matrix and two tables cut from it:
+2nd Best, Still Lost (the week's 2nd scorer beaten by the 1st) and 9th Best,
+Still Won (the 9th beating the 10th), each by manager with every game under
+an expander. They share the matrix's frame and its rules - regular season,
+every manager, the Active filter ignored - so the counts always agree with
+the 1-2 and 9-10 cells above them.
+
 Trades & Waiver Data averages each manager's waiver adds and trades over
 completed seasons only - a season in progress is a running tally and would
 drag every average down - and lists the per-season counts, including the
@@ -334,7 +341,11 @@ def load_bench_records():
 def rank_meetings_all_seasons():
     """
     How often each weekly scoring rank has faced each other rank, pooled over
-    every season.
+    every season. Returns (meetings, games): the rank-by-rank crosstab, and
+    every regular season game row with its manager, weekly rank and the
+    opponent's rank, so the tables that pick out one cell of the matrix -
+    the 2nd best losing to the 1st, the 9th beating the 10th - read the same
+    ranks rather than working them out again.
 
     Deliberately built from the raw seasons rather than the page's filtered
     frames: ranks are a property of all ten scores in a week, so dropping
@@ -359,17 +370,51 @@ def rank_meetings_all_seasons():
         lookup = reg.set_index(["week", "team_id"])["rank"]
         reg["opp_rank"] = [lookup.get((w, o)) for w, o in
                            zip(reg["week"], reg["opp_id"])]
+        mgr_map = get_manager_map(yr)
+        reg["manager"] = reg["team_id"].map(mgr_map)
+        reg["opp_manager"] = reg["opp_id"].map(mgr_map)
         frames.append(reg)
     if not frames:
-        return pd.DataFrame()
+        return pd.DataFrame(), pd.DataFrame()
 
     allr = pd.concat(frames, ignore_index=True).dropna(subset=["opp_rank"])
-    meetings = pd.crosstab(allr["rank"], allr["opp_rank"].astype(int))
+    allr["opp_rank"] = allr["opp_rank"].astype(int)
+    meetings = pd.crosstab(allr["rank"], allr["opp_rank"])
     # Same-rank meetings put both rows in one cell, so that cell counts double.
     for i in meetings.index:
         if i in meetings.columns:
             meetings.loc[i, i] = meetings.loc[i, i] // 2
-    return meetings
+    return meetings, allr
+
+
+def rank_upsets(games: pd.DataFrame, rank: int, opp_rank: int, outcome: str):
+    """
+    The games where the week's `rank` scorer met the `opp_rank` scorer and
+    got `outcome`, as (by manager, game list). Both tables name the manager
+    at `rank`: how many times, when it last happened, and every game with
+    both scores and the margin, newest first.
+    """
+    g = games[(games["rank"] == rank) & (games["opp_rank"] == opp_rank)
+              & (games["outcome"] == outcome)]
+    g = g.sort_values(["season", "week"], ascending=False)
+    if g.empty:
+        return pd.DataFrame(), pd.DataFrame()
+    by_mgr = (g.groupby("manager")
+                .agg(Times=("week", "size"), Last=("season", "max"))
+                .reset_index().rename(columns={"manager": "Manager"})
+                .sort_values(["Times", "Manager"], ascending=[False, True])
+                .reset_index(drop=True))
+    by_mgr["Last"] = by_mgr["Last"].astype(int).astype(str)
+    games_out = pd.DataFrame({
+        f"#{rank} Scorer": g["manager"],
+        "Score": g["score"],
+        f"#{opp_rank} Scorer": g["opp_manager"],
+        "Opp Score": g["opp_score"],
+        "Margin": (g["score"] - g["opp_score"]).abs().round(2),
+        "Season": g["season"].astype(int).astype(str),
+        "Week": g["week"].astype(int).astype(str),
+    }).reset_index(drop=True)
+    return by_mgr, games_out
 
 
 # ── Load ──────────────────────────────────────────────────────────────────────
@@ -1186,7 +1231,7 @@ with tab_h2h:
         "the matrix is symmetric. Ranks depend on all ten scores in a week, so "
         "this table always covers every manager and ignores the Active filter."
     )
-    all_meetings = rank_meetings_all_seasons()
+    all_meetings, rank_games = rank_meetings_all_seasons()
     if all_meetings.empty:
         st.info("No rank data available.")
     else:
@@ -1208,7 +1253,38 @@ with tab_h2h:
         st.caption(f"{total:,} regular season matchups across "
                    f"{played} seasons.")
 
+    # Two cells of the matrix above, by who was on the wrong end of them.
+    # Same source and the same rules: regular season, every manager, the
+    # Active filter ignored.
+    st.divider()
+    st.subheader("2nd Best, Still Lost")
+    st.markdown("*You think it do, but it don't.*")
+    st.caption(
+        "The weeks a manager had the 2nd highest score in the league and "
+        "lost anyway."
+    )
+    second_mgr, second_games = rank_upsets(rank_games, 2, 1, "L")
+    if second_mgr.empty:
+        st.info("It has never happened.")
+    else:
+        records_table(second_mgr, mid=["Last"])
+        with st.expander(f"Every one ({len(second_games)})"):
+            records_table(second_games, mid=["Season", "Week"])
 
+    st.divider()
+    st.subheader("9th Best, Still Won")
+    st.markdown("*You think it don't, but it do.*")
+    st.caption(
+        "The weeks a manager had the 9th highest score in the league and "
+        "won anyway."
+    )
+    ninth_mgr, ninth_games = rank_upsets(rank_games, 9, 10, "W")
+    if ninth_mgr.empty:
+        st.info("It has never happened.")
+    else:
+        records_table(ninth_mgr, mid=["Last"])
+        with st.expander(f"Every one ({len(ninth_games)})"):
+            records_table(ninth_games, mid=["Season", "Week"])
 
 
 # ══════════════════════════════════════════════════════════════════════════════
