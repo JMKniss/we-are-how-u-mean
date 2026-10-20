@@ -19,3 +19,6 @@ logs/
 
 # Streamlit secrets — credentials belong in the host env, never the repo.
 .streamlit/secrets.toml
+
+# Personal Claude Code settings (permission rules for this machine).
+.claude/settings.local.json
