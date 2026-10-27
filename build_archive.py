@@ -327,6 +327,30 @@ def report_player_weeks(pw, box, season):
               f"card {r['points_card']}")
 
 
+def keep_archived_pro_team(pw, existing, season):
+    """
+    The NFL team already archived for a week, in place of the card's.
+
+    ESPN's player card has only the player's team today, and get_player_weeks_df
+    stamps it on every week. A player traded or released after week 1 therefore
+    came back with every earlier week "restated" - Marvin Harrison Jr.'s ARI
+    weeks as HOU, Najee Harris's NYG weeks as no team at all - while his points
+    were untouched. The archived team was right on the day, and the conflicts
+    would have grown every week a rostered player moved, burying the
+    restatement of points the conflict report exists to catch.
+    """
+    if existing.empty or "pro_team" not in existing or "pro_team" not in pw:
+        return pw
+    keys = ["week", "player_id"]
+    had = existing.loc[existing["season"] == season, keys + ["pro_team"]]
+    m = pw.merge(had.drop_duplicates(keys), on=keys, how="left",
+                 suffixes=("", "_arch"), indicator=True)
+    archived = (m["_merge"] == "both").values
+    pw = pw.copy()
+    pw.loc[archived, "pro_team"] = m.loc[archived, "pro_team_arch"].values
+    return pw
+
+
 def canonical(df: pd.DataFrame) -> pd.DataFrame:
     """
     Values rendered as text, so a CSV round trip cannot look like a change.
@@ -683,6 +707,7 @@ def main():
                 continue
 
             if name == "player_weeks":
+                fresh = keep_archived_pro_team(fresh, existing, season)
                 report_player_weeks(fresh, planned.get("boxscores", load_archive("boxscores")),
                                     season)
 

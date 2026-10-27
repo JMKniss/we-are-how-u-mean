@@ -891,6 +891,10 @@ def get_player_weeks_df(season: int, boxscores: pd.DataFrame = None) -> pd.DataF
     there and only the rest from here. build_archive reports both kinds of
     disagreement whenever it writes this file.
 
+    pro_team is the player's team on the day of the pull, not that week's: the
+    card has no other. build_archive keeps the archived team for any week
+    already held, so a trade or release does not rewrite his earlier weeks.
+
     2016-2017 are absent: ESPN kept no weekly player stats for them.
     """
     arc = _from_archive("player_weeks", season)
