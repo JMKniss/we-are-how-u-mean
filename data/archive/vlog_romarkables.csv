@@ -498,9 +498,9 @@ season,week,position,player_id,player_name,team_id,graded,source
 2026,6,RB,4696981,Cam Skattebo,8,,recap
 2026,6,WR,4426502,Drake London,9,miss,recap
 2026,6,QB,4361741,Brock Purdy,10,miss,recap
-2026,7,QB,4036378,Jordan Love,2,,preview
-2026,7,WR,4241389,CeeDee Lamb,3,,preview
-2026,7,TE,4723086,Colston Loveland,4,,preview
-2026,7,K,2473037,Jason Myers,6,,preview
-2026,7,RB,4241985,J.K. Dobbins,8,,preview
-2026,7,FLEX,4596448,Bucky Irving,10,,preview
+2026,7,QB,4036378,Jordan Love,2,miss,recap
+2026,7,WR,4241389,CeeDee Lamb,3,hit,recap
+2026,7,TE,4723086,Colston Loveland,4,hit,recap
+2026,7,K,2473037,Jason Myers,6,miss,recap
+2026,7,RB,4241985,J.K. Dobbins,8,miss,recap
+2026,7,FLEX,4596448,Bucky Irving,10,hit,recap

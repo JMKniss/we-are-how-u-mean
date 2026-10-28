@@ -5465,3 +5465,7 @@ season,week,executed_at,transaction_id,kind,action,from_team_id,to_team_id,playe
 2026,7,2026-10-24 04:04:32,b450530e-2c91-45e7-8117-4ba8a8e9597b,waiver,drop,5,0,-16012,Chiefs D/ST,D/ST,0.0,espn,
 2026,7,2026-10-24 19:45:17,4d9c3bfe-e591-48ed-adba-122b3c5ffb38,free_agent,add,0,9,4870653,KC Concepcion,WR,,espn,
 2026,7,2026-10-24 19:45:17,4d9c3bfe-e591-48ed-adba-122b3c5ffb38,free_agent,drop,9,0,4722893,Jaleel McLaughlin,RB,,espn,
+2026,8,2026-10-27 11:29:35,df172ae2-6e60-4ec9-87ac-113f74d52ca5,free_agent,drop,8,0,4710855,Konata Mumpfield,WR,,espn,
+2026,8,2026-10-27 11:29:58,deba0590-1a76-4e0c-934c-5467a4186071,free_agent,drop,8,0,4586312,Jaylin Noel,WR,,espn,
+2026,8,2026-10-27 11:30:12,5619f099-4fe0-4538-bc1f-8d6c067c8124,free_agent,drop,8,0,8439,Aaron Rodgers,QB,,espn,
+2026,8,2026-10-27 14:36:55,656d8cbb-8fe4-4e58-9f33-f1dc5964278a,free_agent,drop,2,0,3895856,Christian Kirk,WR,,espn,
