@@ -36808,7 +36808,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,7,-16029,Panthers D/ST,D/ST,CAR,-2.0,0.0
 2026,7,-16027,Buccaneers D/ST,D/ST,TB,25.0,0.0
 2026,7,-16026,Seahawks D/ST,D/ST,SEA,8.0,0.0
-2026,7,-16025,49ers D/ST,D/ST,SF,-1.0,0.0
+2026,7,-16025,49ers D/ST,D/ST,SF,0.0,0.0
 2026,7,-16023,Steelers D/ST,D/ST,PIT,8.0,0.0
 2026,7,-16021,Eagles D/ST,D/ST,PHI,-3.0,0.0
 2026,7,-16020,Jets D/ST,D/ST,NYJ,1.0,0.0
@@ -36946,7 +36946,7 @@ season,week,player_id,player_name,position,pro_team,points,receptions
 2026,7,4429835,George Holani,RB,SEA,2.8,1.0
 2026,7,4430027,Sam LaPorta,TE,DET,2.3,1.0
 2026,7,4430737,Kyren Williams,RB,LAR,17.1,2.0
-2026,7,4430807,Bijan Robinson,RB,ATL,14.7,5.0
+2026,7,4430807,Bijan Robinson,RB,ATL,13.7,5.0
 2026,7,4430834,Jalen McMillan,WR,TB,0.0,0.0
 2026,7,4430878,Jaxon Smith-Njigba,WR,SEA,26.8,9.0
 2026,7,4431299,Rome Odunze,WR,CHI,8.9,4.0

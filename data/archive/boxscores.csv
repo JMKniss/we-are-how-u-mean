@@ -26797,7 +26797,7 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,7,4,Pickenschuuuuuuuuuu,4723086,Colston Loveland,TE,RB/WR/TE,16.4,9.43,True,False,110.62,106.85,CHI,-1.0
 2026,7,4,Pickenschuuuuuuuuuu,4870808,Jeremiyah Love,RB,BE,0.0,0.0,False,True,110.62,106.85,ARI,-1.0
 2026,7,4,Pickenschuuuuuuuuuu,4887558,Emanuel Wilson,RB,RB,18.0,10.02,True,False,110.62,106.85,SEA,-1.0
-2026,7,5,This isnt my final Eveelotution,-16025,49ers D/ST,D/ST,BE,-1.0,5.85,False,True,92.62,118.98,SF,-1.0
+2026,7,5,This isnt my final Eveelotution,-16025,49ers D/ST,D/ST,BE,0.0,5.85,False,True,92.62,118.98,SF,-1.0
 2026,7,5,This isnt my final Eveelotution,-16007,Broncos D/ST,D/ST,D/ST,4.0,6.86,True,False,92.62,118.98,DEN,-1.0
 2026,7,5,This isnt my final Eveelotution,3121023,Dallas Goedert,TE,BE,7.3,8.78,False,True,92.62,118.98,PHI,-1.0
 2026,7,5,This isnt my final Eveelotution,3916387,Lamar Jackson,QB,IR,0.0,0.0,False,False,92.62,118.98,BAL,-1.0
@@ -26890,23 +26890,23 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,7,9,SlowKing Henry and Company,4685261,Germie Bernard,WR,RB/WR/TE,4.2,10.75,True,False,94.2,121.22,PIT,-1.0
 2026,7,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,4.0,5.12,True,False,94.2,121.22,BAL,-1.0
 2026,7,9,SlowKing Henry and Company,4870653,KC Concepcion,WR,BE,19.2,6.8,False,True,94.2,121.22,CLE,-1.0
-2026,7,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,9.0,8.46,True,False,128.92,133.87,MIN,-1.0
-2026,7,10,Brock,16737,Mike Evans,WR,BE,0.0,0.0,False,True,128.92,133.87,SF,-1.0
-2026,7,10,Brock,17372,Chris Boswell,K,K,6.0,6.84,True,False,128.92,133.87,PIT,-1.0
-2026,7,10,Brock,3040151,George Kittle,TE,TE,10.8,13.92,True,False,128.92,133.87,SF,-1.0
-2026,7,10,Brock,3046779,Jared Goff,QB,BE,17.02,18.19,False,True,128.92,133.87,DET,-1.0
-2026,7,10,Brock,3916148,Tony Pollard,RB,BE,35.0,12.84,False,True,128.92,133.87,TEN,-1.0
-2026,7,10,Brock,3916433,Jakobi Meyers,WR,BE,0.0,0.0,False,True,128.92,133.87,JAX,-1.0
-2026,7,10,Brock,4047650,DK Metcalf,WR,RB/WR/TE,6.6,12.52,True,False,128.92,133.87,PIT,-1.0
-2026,7,10,Brock,4241474,Brian Robinson Jr.,RB,BE,0.0,0.0,False,True,128.92,133.87,ATL,-1.0
-2026,7,10,Brock,4361741,Brock Purdy,QB,QB,12.02,20.24,True,False,128.92,133.87,SF,-1.0
-2026,7,10,Brock,4426385,Zach Charbonnet,RB,BE,0.0,0.0,False,True,128.92,133.87,SEA,-1.0
-2026,7,10,Brock,4429615,Zay Flowers,WR,WR,23.7,11.94,True,False,128.92,133.87,BAL,-1.0
-2026,7,10,Brock,4430807,Bijan Robinson,RB,RB,14.7,19.14,True,False,128.92,133.87,ATL,-1.0
-2026,7,10,Brock,4596448,Bucky Irving,RB,RB/WR/TE,22.5,12.73,True,False,128.92,133.87,TB,-1.0
-2026,7,10,Brock,4685472,Tetairoa McMillan,WR,WR,6.0,12.98,True,False,128.92,133.87,CAR,-1.0
-2026,7,10,Brock,4890973,Ashton Jeanty,RB,RB,17.6,15.1,True,False,128.92,133.87,LV,-1.0
-2026,7,10,Brock,5083076,Harold Fannin Jr.,TE,BE,10.1,6.48,False,True,128.92,133.87,CLE,-1.0
+2026,7,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,9.0,8.46,True,False,127.92,133.87,MIN,-1.0
+2026,7,10,Brock,16737,Mike Evans,WR,BE,0.0,0.0,False,True,127.92,133.87,SF,-1.0
+2026,7,10,Brock,17372,Chris Boswell,K,K,6.0,6.84,True,False,127.92,133.87,PIT,-1.0
+2026,7,10,Brock,3040151,George Kittle,TE,TE,10.8,13.92,True,False,127.92,133.87,SF,-1.0
+2026,7,10,Brock,3046779,Jared Goff,QB,BE,17.02,18.19,False,True,127.92,133.87,DET,-1.0
+2026,7,10,Brock,3916148,Tony Pollard,RB,BE,35.0,12.84,False,True,127.92,133.87,TEN,-1.0
+2026,7,10,Brock,3916433,Jakobi Meyers,WR,BE,0.0,0.0,False,True,127.92,133.87,JAX,-1.0
+2026,7,10,Brock,4047650,DK Metcalf,WR,RB/WR/TE,6.6,12.52,True,False,127.92,133.87,PIT,-1.0
+2026,7,10,Brock,4241474,Brian Robinson Jr.,RB,BE,0.0,0.0,False,True,127.92,133.87,ATL,-1.0
+2026,7,10,Brock,4361741,Brock Purdy,QB,QB,12.02,20.24,True,False,127.92,133.87,SF,-1.0
+2026,7,10,Brock,4426385,Zach Charbonnet,RB,BE,0.0,0.0,False,True,127.92,133.87,SEA,-1.0
+2026,7,10,Brock,4429615,Zay Flowers,WR,WR,23.7,11.94,True,False,127.92,133.87,BAL,-1.0
+2026,7,10,Brock,4430807,Bijan Robinson,RB,RB,13.7,19.14,True,False,127.92,133.87,ATL,-1.0
+2026,7,10,Brock,4596448,Bucky Irving,RB,RB/WR/TE,22.5,12.73,True,False,127.92,133.87,TB,-1.0
+2026,7,10,Brock,4685472,Tetairoa McMillan,WR,WR,6.0,12.98,True,False,127.92,133.87,CAR,-1.0
+2026,7,10,Brock,4890973,Ashton Jeanty,RB,RB,17.6,15.1,True,False,127.92,133.87,LV,-1.0
+2026,7,10,Brock,5083076,Harold Fannin Jr.,TE,BE,10.1,6.48,False,True,127.92,133.87,CLE,-1.0
 2026,8,1,Rapidash to the Endzone,-16027,Buccaneers D/ST,D/ST,D/ST,13.0,5.56,True,False,142.56,127.37,TB,-1.0
 2026,8,1,Rapidash to the Endzone,2971573,Ka'imi Fairbairn,K,BE,0.0,0.0,False,True,142.56,127.37,HOU,-1.0
 2026,8,1,Rapidash to the Endzone,3915511,Joe Burrow,QB,BE,39.48,22.66,False,True,142.56,127.37,CIN,-1.0
