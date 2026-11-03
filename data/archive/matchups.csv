@@ -1729,3 +1729,13 @@ season,week,team_id,team_name,score,opp_id,opp_name,opp_score,outcome,is_playoff
 2026,7,8,Team Rocket,104.0,5,This isnt my final Eveelotution,92.62,W,False
 2026,7,9,SlowKing Henry and Company,94.2,10,Brock,128.92,L,False
 2026,7,10,Brock,128.92,9,SlowKing Henry and Company,94.2,W,False
+2026,8,1,Rapidash to the Endzone,142.56,6,GottaCatchaBall,124.26,W,False
+2026,8,2,Machampionship Bound,130.52,10,Brock,110.84,W,False
+2026,8,3,Nine tails is hot,121.48,8,Team Rocket,110.08,W,False
+2026,8,4,Pickenschuuuuuuuuuu,94.48,9,SlowKing Henry and Company,113.1,L,False
+2026,8,5,This isnt my final Eveelotution,65.8,7,J’Diglett Morgoones,168.48,L,False
+2026,8,6,GottaCatchaBall,124.26,1,Rapidash to the Endzone,142.56,L,False
+2026,8,7,J’Diglett Morgoones,168.48,5,This isnt my final Eveelotution,65.8,W,False
+2026,8,8,Team Rocket,110.08,3,Nine tails is hot,121.48,L,False
+2026,8,9,SlowKing Henry and Company,113.1,4,Pickenschuuuuuuuuuu,94.48,W,False
+2026,8,10,Brock,110.84,2,Machampionship Bound,130.52,L,False

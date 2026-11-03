@@ -1,11 +1,11 @@
 season,week,team_id,team_name,projected,opp_id,opp_name,opp_projected,is_playoff
-2026,8,1,Rapidash to the Endzone,130.15,6,GottaCatchaBall,117.54,False
-2026,8,2,Machampionship Bound,102.12,10,Brock,124.97,False
-2026,8,3,Nine tails is hot,107.16,8,Team Rocket,107.99,False
-2026,8,4,Pickenschuuuuuuuuuu,113.33,9,SlowKing Henry and Company,124.45,False
-2026,8,5,This isnt my final Eveelotution,121.09,7,J’Diglett Morgoones,132.72,False
-2026,8,6,GottaCatchaBall,117.54,1,Rapidash to the Endzone,130.15,False
-2026,8,7,J’Diglett Morgoones,132.72,5,This isnt my final Eveelotution,121.09,False
-2026,8,8,Team Rocket,107.99,3,Nine tails is hot,107.16,False
-2026,8,9,SlowKing Henry and Company,124.45,4,Pickenschuuuuuuuuuu,113.33,False
-2026,8,10,Brock,124.97,2,Machampionship Bound,102.12,False
+2026,9,1,Rapidash to the Endzone,124.97,9,SlowKing Henry and Company,112.85,False
+2026,9,2,Machampionship Bound,118.56,3,Nine tails is hot,115.29,False
+2026,9,3,Nine tails is hot,115.29,2,Machampionship Bound,118.56,False
+2026,9,4,Pickenschuuuuuuuuuu,115.15,5,This isnt my final Eveelotution,111.29,False
+2026,9,5,This isnt my final Eveelotution,111.29,4,Pickenschuuuuuuuuuu,115.15,False
+2026,9,6,GottaCatchaBall,116.02,10,Brock,122.13,False
+2026,9,7,J’Diglett Morgoones,138.25,8,Team Rocket,118.03,False
+2026,9,8,Team Rocket,118.03,7,J’Diglett Morgoones,138.25,False
+2026,9,9,SlowKing Henry and Company,112.85,1,Rapidash to the Endzone,124.97,False
+2026,9,10,Brock,122.13,6,GottaCatchaBall,116.02,False
