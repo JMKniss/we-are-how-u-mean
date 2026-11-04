@@ -80,6 +80,23 @@ def best_ball_matchups(matchups_df: pd.DataFrame, weekly_eff: pd.DataFrame) -> p
     return df
 
 
+def official_standings(matchups_df: pd.DataFrame, season: int) -> pd.DataFrame:
+    """
+    combined_standings in the season's official order, with the Vs All record
+    (every other team, every week) as the text column vs_all. Median wins
+    became official in 2025; before that the order follows head-to-head, or
+    the table would rewrite history.
+    """
+    df = combined_standings(matchups_df)
+    alt = alternate_schedule_standings(matchups_df).set_index("team_id")
+    df["vs_all"] = [
+        f"{int(alt.loc[t, 'alt_wins'])}-{int(alt.loc[t, 'alt_games'] - alt.loc[t, 'alt_wins'])}"
+        if t in alt.index else "—" for t in df["team_id"]]
+    if season < 2025:
+        df = df.sort_values(["wins", "points_for"], ascending=False)
+    return df
+
+
 def strength_of_schedule(matchups_df: pd.DataFrame) -> pd.DataFrame:
     """Average opponent score faced by each team."""
     grp = matchups_df.groupby(["team_id", "team_name"]).agg(

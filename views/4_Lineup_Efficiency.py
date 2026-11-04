@@ -6,9 +6,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from data.espn_client import get_boxscores_df, get_manager_map
+from data.espn_client import get_boxscores_df, get_matchups_df, get_manager_map
 from analysis.efficiency import lineup_efficiency
-from config import SEASONS, DEFAULT_SEASON
+from analysis.standings import best_ball_matchups, official_standings
+from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import season_selector, require_data, sidebar_display_prefs, chart_label, who_columns
 from branding import page_icon
 from style import bar_chart, frame, page_header, series_colours, show_chart
@@ -62,7 +63,7 @@ if not efficiency_available:
         "alternative lineup to compare against."
     )
 
-tab1, tab2 = st.tabs(["Season Summary", "Weekly Efficiency"])
+tab1, tab2, tab3 = st.tabs(["Season Summary", "Weekly Efficiency", "Best-Ball Record"])
 
 with tab1:
     if not efficiency_available:
@@ -132,3 +133,28 @@ with tab2:
             frame(tdf, mid=("Week",), num=("Actual", "Optimal", "Left on Bench", "Eff%"), compact=True,
                   fmt={"Actual": "{:.2f}", "Optimal": "{:.2f}", "Left on Bench": "{:.2f}",
                        "Eff%": "{:.1f}%"})
+
+
+with tab3:
+    st.subheader("Best-Ball Record")
+    st.caption("Standings if everyone played their optimal lineup each week")
+    if not efficiency_available:
+        st.caption("Not available for this season - see the note above.")
+    else:
+        # Every regular-season game replayed with both sides on their optimal
+        # lineup, through the same standings code as the Standings page.
+        games = get_matchups_df(season)
+        games = games[games["week"] <= season_config(season)["reg_season_end"]]
+        bb = official_standings(best_ball_matchups(games, weekly), season)
+
+        def record(w, l):
+            return w.astype(int).astype(str) + "-" + l.astype(int).astype(str)
+
+        team_frame(bb, {
+            "Total": record(bb["total_wins"], bb["total_losses"]),
+            "H2H": record(bb["wins"], bb["losses"]),
+            "Median": record(bb["median_wins"], bb["median_losses"]),
+            "Vs All": bb["vs_all"],
+            "PF": bb["points_for"], "PA": bb["points_against"], "Avg": bb["avg_score"],
+        }, rank=True, cut_after=4, mid=("Total", "H2H", "Median", "Vs All"),
+            num=("PF", "PA", "Avg"))
