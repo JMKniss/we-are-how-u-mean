@@ -20,11 +20,13 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from data.espn_client import get_matchups_df, get_manager_map
+from data.espn_client import get_boxscores_df, get_matchups_df, get_manager_map
+from analysis.efficiency import top_players, projected_vs_actual, player_manager_sequence
 from config import SEASONS, DEFAULT_SEASON
-from display_utils import season_selector, require_data, sidebar_display_prefs, chart_label, name_lines
+from display_utils import season_selector, require_data, sidebar_display_prefs, chart_label, name_lines, who_columns
 from branding import page_icon
-from style import RED, esc, frame, html_table, page_header, rank_cell, series_colours, team_image, who_cell
+from style import (DIVERGING, RED, esc, frame, html_table, page_header, player_pic, rank_cell,
+                   series_colours, team_image, who_cell)
 
 st.set_page_config(page_title="Scoring", page_icon=page_icon(), layout="wide")
 page_header("Scoring")
@@ -44,11 +46,9 @@ require_data(df, season, "scoring data")
 # team_name → display label helper
 tid_by_name = df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
 def label_for(tname: str) -> str:
+    """A team's chart label: its manager, never the team name (see chart_label)."""
     tid = tid_by_name.get(tname)
-    mgr = manager_map.get(tid, "?") if tid is not None else "?"
-    if show_mgr and show_team:
-        return f"{mgr} — {tname}"
-    return mgr if show_mgr else tname
+    return manager_map.get(tid, "?") if tid is not None else "?"
 
 teams = sorted(df["team_name"].unique())
 
@@ -62,7 +62,9 @@ def who_html(tid, tname):
 def result_badge(outcome):
     return f'<span class="wa-dot {outcome}">{outcome}</span>' if outcome in ("W", "L", "T") else ""
 
-tab1, tab2, tab3, tab4 = st.tabs(["Weekly Trends", "Score Distributions", "Best & Worst", "Head-to-Head Scores"])
+tab1, tab2, tab3, tab4, tab_top, tab_proj = st.tabs(
+    ["Weekly Trends", "Score Distributions", "Best & Worst", "Head-to-Head Scores",
+     "Top Players", "Projections vs Actual"])
 
 with tab1:
     # ── Individual manager trend ───────────────────────────────────────────────
@@ -146,7 +148,10 @@ with tab1:
 
     # ── All teams chart ────────────────────────────────────────────────────────
     st.subheader("Weekly Scoring Trends — All Teams")
-    selected = st.multiselect("Filter teams", teams, default=teams)
+    # Managers rather than team names, like the legend: ten long team names
+    # filled a phone screen before the chart began.
+    picked = st.multiselect("Filter managers", sorted(mgr_to_team), default=sorted(mgr_to_team))
+    selected = [mgr_to_team[m] for m in picked]
     filtered = df[df["team_name"].isin(selected)]
 
     fig = go.Figure()
@@ -190,7 +195,7 @@ with tab2:
 
     with col1:
         df_box = df.copy()
-        df_box["label"] = chart_label(df_box, manager_map, show_mgr, show_team)
+        df_box["label"] = chart_label(df_box, manager_map)
         fig = px.box(df_box, x="label", y="score", color="label",
                      title="Score Distribution by Team",
                      labels={"label": "Team", "score": "Points"})
@@ -315,3 +320,94 @@ with tab4:
     grid_pics = [team_image(season, tid_by_name.get(t), manager_map.get(tid_by_name.get(t), "?"))
                  for t in teams]
     frame(grid, pics=grid_pics, mid=list(matrix.columns), classes=classes, compact=True)
+
+
+# ── Player-level tabs, from the box scores ────────────────────────────────────
+@st.cache_data(ttl=300)
+def load_box(season):
+    return get_boxscores_df(season)
+
+
+box_df = load_box(season)
+
+
+def team_frame(df, columns, **kw):
+    """A table led by each team's picture and name, in df's order."""
+    names, subs, pics = who_columns(df, manager_map, season, show_mgr, show_team)
+    out = pd.DataFrame({"Manager" if show_mgr else "Team": names})
+    for head, values in columns.items():
+        out[head] = list(values)
+    frame(out, pics=pics, subs=subs, **kw)
+
+
+with tab_top:
+    st.subheader("Top Scoring Players")
+    if season < 2018:
+        st.info(f"Player data for {season} may not be 100% accurate. But I'm still counting it against you.")
+    positions = ["All"] + sorted(box_df["position"].dropna().unique().tolist())
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        pos_filter = st.selectbox("Position", positions)
+        top_n = st.slider("Show top N", 10, 50, 20)
+    pos = None if pos_filter == "All" else pos_filter
+    top = top_players(box_df, position=pos, top_n=top_n)
+
+    if top.empty:
+        st.info("No player data for this selection.")
+    else:
+        def player_label(row):
+            """Josh Allen (BUF), or just the name when the team is unknown."""
+            team = row["pro_team"]
+            if isinstance(team, str) and team.strip() and team.strip().lower() != "nan":
+                return f"{row['player_name']} ({team.strip()})"
+            return row["player_name"]
+
+        # Who rostered each of these players, in order. Only the displayed
+        # players are looked up, and the slider caps that at 50.
+        seqs = player_manager_sequence(box_df, top["player_id"])
+
+        def manager_chain(pid):
+            teams = seqs.get(pid, [])
+            names = [manager_map.get(t, "?") for t in teams]
+            # collapse again in case two team_ids map to the same manager
+            chain = [n for i, n in enumerate(names) if i == 0 or n != names[i - 1]]
+            return " → ".join(chain)
+
+        rows = []
+        for i, r in enumerate(top.itertuples()):
+            player = (f'<div class="wa-who">{player_pic(r.player_id, r.pro_team)}'
+                      f'<span class="wa-name">{esc(player_label(r._asdict()))}</span></div>')
+            rows.append([rank_cell(i + 1), esc(str(r.position)), player,
+                         esc(manager_chain(r.player_id)), f"<b>{r.total_points:,.1f}</b>",
+                         f"{r.avg_points:.1f}", str(r.weeks_played)])
+        html_table([("#", ""), ("Pos", ""), ("Player", ""), ("Manager", ""), ("Total", "num"),
+                    ("Avg", "num"), ("Weeks", "mid")], rows, compact=True, scroll=len(rows) > 15)
+
+with tab_proj:
+    st.subheader("Projected vs Actual Scoring")
+    st.caption("Did teams consistently outscore or underperform their ESPN projections?")
+    # 2016-2017 carry no ESPN projections at all, so every team "beats" a
+    # projection of zero. The comparison is meaningless for those seasons.
+    projections_available = (box_df["projected"].fillna(0) != 0).any()
+    if not projections_available:
+        st.info(
+            f"ESPN projections are not available for {season}, so there is "
+            "nothing to compare actual scoring against."
+        )
+    else:
+        proj_df = projected_vs_actual(box_df)
+        team_frame(proj_df, {
+            "Avg Proj": proj_df["avg_projected"], "Times Beat Proj": proj_df["times_beat_proj"],
+            "Beat Proj %": proj_df["beat_proj_pct"],
+        }, num=("Avg Proj", "Times Beat Proj", "Beat Proj %"),
+            fmt={"Avg Proj": "{:.1f}", "Beat Proj %": "{:.1f}%"})
+
+        proj_df["label"] = chart_label(proj_df, manager_map)
+        fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
+                     orientation="h", title="Average Points Above/Below ESPN Projection",
+                     labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "label": ""},
+                     color="avg_proj_diff", color_continuous_scale=DIVERGING,
+                     color_continuous_midpoint=0)
+        fig.add_vline(x=0, line_dash="dash", line_color="gray")
+        fig.update_layout(coloraxis_showscale=False)
+        st.plotly_chart(fig, width="stretch")

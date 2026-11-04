@@ -7,13 +7,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from data.espn_client import get_boxscores_df, get_manager_map
-from analysis.efficiency import (lineup_efficiency, top_players, projected_vs_actual,
-                                 player_manager_sequence)
+from analysis.efficiency import lineup_efficiency
 from config import SEASONS, DEFAULT_SEASON
 from display_utils import season_selector, require_data, sidebar_display_prefs, chart_label, who_columns
 from branding import page_icon
-from style import (DIVERGING, bar_chart, esc, frame, html_table, page_header, player_pic,
-                   rank_cell, series_colours, show_chart)
+from style import bar_chart, frame, page_header, series_colours, show_chart
 
 st.set_page_config(page_title="Lineup Efficiency", page_icon=page_icon(), layout="wide")
 page_header("Lineup Efficiency",
@@ -37,11 +35,9 @@ if season < 2018:
 # team_name → team_id lookup from box_df
 tid_by_name = box_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
 def label_for(tname: str) -> str:
+    """A team's chart label: its manager, never the team name (see chart_label)."""
     tid = tid_by_name.get(tname)
-    mgr = manager_map.get(tid, "?") if tid is not None else "?"
-    if show_mgr and show_team:
-        return f"{mgr} — {tname}"
-    return mgr if show_mgr else tname
+    return manager_map.get(tid, "?") if tid is not None else "?"
 
 summary, weekly = lineup_efficiency(box_df)
 
@@ -63,11 +59,10 @@ if not efficiency_available:
         f"Lineup efficiency is not available for {season}. Player data for "
         "2016-2017 comes from nfl-data-py and covers only the nine starters "
         "each week, with no bench and no lineup-slot detail, so there is no "
-        "alternative lineup to compare against. Top Players below is "
-        "unaffected."
+        "alternative lineup to compare against."
     )
 
-tab1, tab2, tab3, tab4 = st.tabs(["Season Summary", "Weekly Efficiency", "Top Players", "Projections vs Actual"])
+tab1, tab2 = st.tabs(["Season Summary", "Weekly Efficiency"])
 
 with tab1:
     if not efficiency_available:
@@ -84,7 +79,7 @@ with tab1:
             fmt={"Avg Actual": "{:.2f}", "Avg Optimal": "{:.2f}", "Efficiency": "{:.1f}%",
                  "Avg Left on Bench": "{:.2f}", "Total Left on Bench": "{:,.1f}"})
 
-        summary["label"] = chart_label(summary, manager_map, show_mgr, show_team)
+        summary["label"] = chart_label(summary, manager_map)
         avg = summary["avg_efficiency"].mean()
         show_chart(bar_chart(summary, "avg_efficiency", "label",
                              f"Average lineup efficiency · league {avg:.1f}%", fmt="{:.1f}%"))
@@ -95,11 +90,7 @@ with tab1:
                                  "Points left on bench, season"))
 
         with col2:
-            # Manager names only on the points: manager and team together
-            # crowded ten labels into a small chart.
-            summary["point_label"] = summary["team_id"].map(manager_map).fillna("?")
-            fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency",
-                              text="point_label", hover_name="label",
+            fig3 = px.scatter(summary, x="avg_actual", y="avg_efficiency", text="label",
                               title="Actual Score vs Efficiency",
                               labels={"avg_actual": "Avg Actual Score", "avg_efficiency": "Efficiency %"})
             fig3.update_traces(textposition="top center")
@@ -114,7 +105,7 @@ with tab2:
         selected_team = st.selectbox("Select Team", ["All Teams"] + teams)
 
         if selected_team == "All Teams":
-            weekly["label"] = chart_label(weekly, manager_map, show_mgr, show_team)
+            weekly["label"] = chart_label(weekly, manager_map)
             fig = px.line(weekly.sort_values("week"), x="week", y="efficiency_pct",
                           color="label", markers=True,
                           title="Lineup Efficiency % by Week",
@@ -141,73 +132,3 @@ with tab2:
             frame(tdf, mid=("Week",), num=("Actual", "Optimal", "Left on Bench", "Eff%"), compact=True,
                   fmt={"Actual": "{:.2f}", "Optimal": "{:.2f}", "Left on Bench": "{:.2f}",
                        "Eff%": "{:.1f}%"})
-
-with tab3:
-    st.subheader("Top Scoring Players")
-    positions = ["All"] + sorted(box_df["position"].dropna().unique().tolist())
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        pos_filter = st.selectbox("Position", positions)
-        top_n = st.slider("Show top N", 10, 50, 20)
-    pos = None if pos_filter == "All" else pos_filter
-    top = top_players(box_df, position=pos, top_n=top_n)
-
-    if top.empty:
-        st.info("No player data for this selection.")
-    else:
-        def player_label(row):
-            """Josh Allen (BUF), or just the name when the team is unknown."""
-            team = row["pro_team"]
-            if isinstance(team, str) and team.strip() and team.strip().lower() != "nan":
-                return f"{row['player_name']} ({team.strip()})"
-            return row["player_name"]
-
-        # Who rostered each of these players, in order. Only the displayed
-        # players are looked up, and the slider caps that at 50.
-        seqs = player_manager_sequence(box_df, top["player_id"])
-
-        def manager_chain(pid):
-            teams = seqs.get(pid, [])
-            names = [manager_map.get(t, "?") for t in teams]
-            # collapse again in case two team_ids map to the same manager
-            chain = [n for i, n in enumerate(names) if i == 0 or n != names[i - 1]]
-            return " → ".join(chain)
-
-        rows = []
-        for i, r in enumerate(top.itertuples()):
-            player = (f'<div class="wa-who">{player_pic(r.player_id, r.pro_team)}'
-                      f'<span class="wa-name">{esc(player_label(r._asdict()))}</span></div>')
-            rows.append([rank_cell(i + 1), esc(str(r.position)), player,
-                         esc(manager_chain(r.player_id)), f"<b>{r.total_points:,.1f}</b>",
-                         f"{r.avg_points:.1f}", str(r.weeks_played)])
-        html_table([("#", ""), ("Pos", ""), ("Player", ""), ("Manager", ""), ("Total", "num"),
-                    ("Avg", "num"), ("Weeks", "mid")], rows, compact=True, scroll=len(rows) > 15)
-
-with tab4:
-    st.subheader("Projected vs Actual Scoring")
-    st.caption("Did teams consistently outscore or underperform their ESPN projections?")
-    # 2016-2017 carry no ESPN projections at all, so every team "beats" a
-    # projection of zero. The comparison is meaningless for those seasons.
-    projections_available = (box_df["projected"].fillna(0) != 0).any()
-    if not projections_available:
-        st.info(
-            f"ESPN projections are not available for {season}, so there is "
-            "nothing to compare actual scoring against."
-        )
-    else:
-        proj_df = projected_vs_actual(box_df)
-        team_frame(proj_df, {
-            "Avg Proj": proj_df["avg_projected"], "Times Beat Proj": proj_df["times_beat_proj"],
-            "Beat Proj %": proj_df["beat_proj_pct"],
-        }, num=("Avg Proj", "Times Beat Proj", "Beat Proj %"),
-            fmt={"Avg Proj": "{:.1f}", "Beat Proj %": "{:.1f}%"})
-
-        proj_df["label"] = chart_label(proj_df, manager_map, show_mgr, show_team)
-        fig = px.bar(proj_df.sort_values("avg_proj_diff"), x="avg_proj_diff", y="label",
-                     orientation="h", title="Average Points Above/Below ESPN Projection",
-                     labels={"avg_proj_diff": "Avg Diff (Actual − Projected)", "label": ""},
-                     color="avg_proj_diff", color_continuous_scale=DIVERGING,
-                     color_continuous_midpoint=0)
-        fig.add_vline(x=0, line_dash="dash", line_color="gray")
-        fig.update_layout(coloraxis_showscale=False)
-        st.plotly_chart(fig, width="stretch")

@@ -89,21 +89,6 @@ with st.spinner("Loading draft data..."):
 
 require_data(draft_df, season, "draft data")
 
-# team_name → team_id from draft_df (if present) or box_df
-if "team_id" in draft_df.columns:
-    tid_by_name = draft_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
-elif not box_df.empty and "team_id" in box_df.columns:
-    tid_by_name = box_df[["team_id", "team_name"]].drop_duplicates().set_index("team_name")["team_id"]
-else:
-    tid_by_name = {}
-
-def label_for(tname: str) -> str:
-    tid = tid_by_name.get(tname) if isinstance(tid_by_name, dict) else tid_by_name.get(tname)
-    mgr = manager_map.get(tid, "?") if tid is not None else "?"
-    if show_mgr and show_team:
-        return f"{mgr} — {tname}"
-    return mgr if show_mgr else tname
-
 teams = sorted(draft_df["team_name"].unique())
 NAME_HEAD = "Manager" if show_mgr else "Team"
 team_names = archive.team_names(season) or (
@@ -194,7 +179,7 @@ with tab3:
     else:
         picks, curve, frozen = load_value(season)
 
-        picks["label"] = chart_label(picks, manager_map, show_mgr, show_team)
+        picks["label"] = chart_label(picks, manager_map)
         fig = px.scatter(
             picks, x="overall_pick", y="vor", color="label",
             hover_name="player_name",

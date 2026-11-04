@@ -523,8 +523,9 @@ Only relevant when pulling a season not yet archived. Delete freely.
 | 2018 | ESPN API (rosterForCurrentScoringPeriod) | 100% exact |
 | 2019–2025 | ESPN API (box_scores) | 100% exact |
 
-Pages 4 (Lineup Efficiency) and 7 (Draft, Waivers & Trades) show a warning banner when 2016 or 2017
-is selected, noting that player data may not be 100% accurate.
+Pages 4 (Lineup Efficiency) and 7 (Draft, Waivers & Trades), and Scoring's Top Players tab, show a
+warning banner when 2016 or 2017 is selected, noting that player data may not be 100% accurate.
+Standings' Best-Ball Record needs a bench, so it is not shown for those seasons at all.
 
 ## Season quirks
 

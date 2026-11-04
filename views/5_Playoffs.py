@@ -439,7 +439,7 @@ def render_projections():
             st.caption("Proj. Wins and #1 Seed % are from the player model"
                        + (" and count median wins." if median_game else "."))
 
-        odds["label"] = chart_label(odds, manager_map, show_mgr, show_team)
+        odds["label"] = chart_label(odds, manager_map)
         fig = go.Figure()
         fig.add_bar(x=odds["label"], y=odds["team_pct"], name="Team model",
                     marker_color=series_colours()[0], text=[f"{p:.0f}%" for p in odds["team_pct"]],
@@ -460,7 +460,7 @@ def render_projections():
         seed_mat = np.vstack(seed_src["seed_dist"].values) * 100
         fig = go.Figure(go.Heatmap(
             z=seed_mat, x=list(range(1, seed_mat.shape[1] + 1)),
-            y=chart_label(seed_src, manager_map, show_mgr, show_team),
+            y=chart_label(seed_src, manager_map),
             # Transparent to red, so an unlikely seed is the page itself in
             # either theme rather than a white tile on the dark one.
             colorscale=[[0, "rgba(213,10,10,0)"], [1, RED]], zmin=0, zmax=100, showscale=False,
@@ -481,7 +481,7 @@ def render_projections():
                    "separates the teams.")
         with st.spinner("Replaying the season..."):
             trend = team_odds_by_week(season, playoff_spots)
-        trend["label"] = chart_label(trend, manager_map, show_mgr, show_team)
+        trend["label"] = chart_label(trend, manager_map)
         fig = px.line(trend, x="after_week", y="playoff_pct", color="label", markers=True,
                       labels={"after_week": "After week", "playoff_pct": "Playoff odds %",
                               "label": ""})
@@ -512,7 +512,7 @@ def render_projections():
                    num=[h for h in headers[1:] if h != "Games"], mid=("Games",),
                    fmt={h: "{:.2f}" for h in headers[1:] if h != "Games"})
 
-        stats["label"] = chart_label(stats, manager_map, show_mgr, show_team)
+        stats["label"] = chart_label(stats, manager_map)
         fig = px.scatter(stats, x="mean", y="std", text="label", size="count",
                          title="Mean Score vs Consistency (lower Std Dev = more consistent)",
                          labels={"mean": "Average Score", "std": "Std Deviation (consistency)"})

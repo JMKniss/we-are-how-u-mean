@@ -85,26 +85,14 @@ def prep_display(
     return display
 
 
-def chart_label(
-    df: pd.DataFrame,
-    manager_map: dict[int, str],
-    show_manager: bool,
-    show_team: bool,
-) -> pd.Series:
+def chart_label(df: pd.DataFrame, manager_map: dict[int, str]) -> pd.Series:
     """
-    Returns a Series of display labels for chart axes, one per row.
-    Replaces raw team_name with the appropriate label based on toggle state.
-    Source df must have team_id and team_name columns.
+    Chart labels, one per row: the manager's name, never the team's. Team
+    names run long and on a phone a legend or axis of ten of them squeezed
+    the plot itself to a sliver, so charts ignore the name toggles that
+    tables follow. Source df must have a team_id column.
     """
-    mgr = df["team_id"].map(manager_map).fillna("?")
-    team = df["team_name"]
-
-    if show_manager and show_team:
-        return mgr + " — " + team
-    elif show_manager:
-        return mgr
-    else:
-        return team
+    return df["team_id"].map(manager_map).fillna("?")
 
 
 def name_lines(mgr: str, team: str, show_manager: bool, show_team: bool) -> tuple[str, str]:

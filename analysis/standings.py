@@ -59,6 +59,27 @@ def combined_standings(matchups_df: pd.DataFrame) -> pd.DataFrame:
     return merged
 
 
+def best_ball_matchups(matchups_df: pd.DataFrame, weekly_eff: pd.DataFrame) -> pd.DataFrame:
+    """
+    The same games with both sides scoring their optimal lineup, so every
+    standings function above works on it unchanged. weekly_eff is the weekly
+    frame from analysis.efficiency.lineup_efficiency.
+
+    A week is kept only when both sides have an optimal score; a game where one
+    side is unknown has no best-ball result, and guessing it would be worse
+    than leaving it out. 2016-2017 have no bench, so they come back empty.
+    """
+    opt = (weekly_eff.dropna(subset=["optimal_score"])
+           .set_index(["week", "team_id"])["optimal_score"])
+    df = matchups_df.copy()
+    df["score"] = [opt.get((w, t)) for w, t in zip(df["week"], df["team_id"])]
+    df["opp_score"] = [opt.get((w, o)) for w, o in zip(df["week"], df["opp_id"])]
+    df = df.dropna(subset=["score", "opp_score"])
+    df["outcome"] = np.select([df["score"] > df["opp_score"], df["score"] < df["opp_score"]],
+                              ["W", "L"], "T")
+    return df
+
+
 def strength_of_schedule(matchups_df: pd.DataFrame) -> pd.DataFrame:
     """Average opponent score faced by each team."""
     grp = matchups_df.groupby(["team_id", "team_name"]).agg(

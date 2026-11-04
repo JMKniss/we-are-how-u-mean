@@ -5,9 +5,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 import pandas as pd
 import numpy as np
-from data.espn_client import get_matchups_df, get_manager_map
+from data.espn_client import get_boxscores_df, get_matchups_df, get_manager_map
+from analysis.efficiency import lineup_efficiency
 from analysis.standings import (
-    combined_standings,
+    best_ball_matchups, combined_standings,
     strength_of_schedule, alternate_schedule_standings,
     luck_breakdown, luck_total,
     opponent_vs_own_average,
@@ -75,30 +76,49 @@ def _current_standings(df):
     }, rank=True, cut_after=4, mid=("Total", "H2H", "Median", "Vs All"), num=("PF", "PA", "Avg"))
 
 
-tab1, tab4, tab5 = st.tabs(
-    ["Standings", "Strength of Schedule", "Luck"])
-
-# ── Tab 1 ─────────────────────────────────────────────────────────────────────
-with tab1:
-    st.subheader("Standings")
-    df = combined_standings(matchups_df)
-    # Record if you had played every other team every week, folded in here so
-    # the schedule-free view sits beside the schedule-bound ones.
-    _alt = alternate_schedule_standings(matchups_df).set_index("team_id")
+def standings_frame(games):
+    """
+    The standings for a set of games, in the season's official order, with
+    Vs All folded in: the record if you had played every other team every
+    week, so the schedule-free view sits beside the schedule-bound ones.
+    """
+    df = combined_standings(games)
+    _alt = alternate_schedule_standings(games).set_index("team_id")
     df["_vs_all"] = [
         f"{int(_alt.loc[t, 'alt_wins'])}-"
         f"{int(_alt.loc[t, 'alt_games'] - _alt.loc[t, 'alt_wins'])}"
         if t in _alt.index else "—" for t in df["team_id"]]
+    if not official_combined:
+        # Median wins were not official before 2025, so the order has to follow
+        # head-to-head or the table would rewrite history. The median column is
+        # still shown, since the games were played either way.
+        df = df.sort_values(["wins", "points_for"], ascending=False)
+    return df
+
+
+@st.cache_data(ttl=300)
+def best_ball_games(season, games):
+    """This season's games with both sides playing their optimal lineup."""
+    box = get_boxscores_df(season)
+    if box is None or box.empty:
+        return games.iloc[0:0]
+    _, weekly = lineup_efficiency(box)
+    return best_ball_matchups(games, weekly)
+
+
+tab1, tab_bb, tab4, tab5 = st.tabs(
+    ["Standings", "Best-Ball Record", "Strength of Schedule", "Luck"])
+
+# ── Tab 1 ─────────────────────────────────────────────────────────────────────
+with tab1:
+    st.subheader("Standings")
+    df = standings_frame(matchups_df)
     if official_combined:
         st.caption("Two games per week: one H2H matchup and one vs-median. "
                    "Sorted by total wins, which is the official standing from "
                    "2025. Vs All is the record if you had played every other "
                    "team every week, which removes the schedule entirely.")
     else:
-        # Median wins were not official before 2025, so the order has to follow
-        # head-to-head or the table would rewrite history. The median column is
-        # still shown, since the games were played either way.
-        df = df.sort_values(["wins", "points_for"], ascending=False)
         st.caption("Head-to-head decided the standings before 2025, so the order "
                    "follows H2H. Median and Vs All are shown for reference "
                    "only; Vs All is the record if you had played every other "
@@ -150,6 +170,20 @@ with tab1:
               fmt={**{c: cell_fmt for c in week_cols}, "Avg": avg_fmt})
 
     week_grid(rank_tbl, "{:.0f}", "{:.1f}")
+
+
+# ── Best-Ball Record ──────────────────────────────────────────────────────────
+with tab_bb:
+    st.subheader("Best-Ball Record")
+    st.caption("Standings if everyone played their optimal lineup each week")
+    with st.spinner("Finding every optimal lineup..."):
+        bb_games = best_ball_games(season, matchups_df)
+    if bb_games.empty:
+        st.info(f"Not available for {season}. Player data for 2016-2017 covers "
+                "only the starters, with no bench, so there is no optimal "
+                "lineup to play.")
+    else:
+        _current_standings(standings_frame(bb_games))
 
 
 # ── Tab 4: Strength of Schedule ───────────────────────────────────────────────
