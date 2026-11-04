@@ -145,7 +145,8 @@ with tab3:
         # lineup, through the same standings code as the Standings page.
         games = get_matchups_df(season)
         games = games[games["week"] <= season_config(season)["reg_season_end"]]
-        bb = official_standings(best_ball_matchups(games, weekly), season)
+        bb_games = best_ball_matchups(games, weekly)
+        bb = official_standings(bb_games, season)
 
         def record(w, l):
             return w.astype(int).astype(str) + "-" + l.astype(int).astype(str)
@@ -158,3 +159,27 @@ with tab3:
             "PF": bb["points_for"], "PA": bb["points_against"], "Avg": bb["avg_score"],
         }, rank=True, cut_after=4, mid=("Total", "H2H", "Median", "Vs All"),
             num=("PF", "PA", "Avg"))
+
+        # The single best and worst optimal lineups of the regular season.
+        def one_score(row):
+            team_frame(row, {"Week": row["week"], "Score": row["score"]},
+                       mid=("Week",), num=("Score",), fmt={"Score": "{:.2f}"}, compact=True)
+
+        st.divider()
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("#### Best best-ball score")
+            one_score(bb_games.nlargest(1, "score"))
+        with c2:
+            st.markdown("#### Worst best-ball score")
+            one_score(bb_games.nsmallest(1, "score"))
+
+        # Each manager's best and worst, in the best-ball standings order.
+        st.markdown("#### By manager")
+        hi = bb_games.loc[bb_games.groupby("team_id")["score"].idxmax()].set_index("team_id")
+        lo = bb_games.loc[bb_games.groupby("team_id")["score"].idxmin()].set_index("team_id")
+        team_frame(bb, {
+            "Best": hi.loc[bb["team_id"], "score"], "Best Wk": hi.loc[bb["team_id"], "week"],
+            "Worst": lo.loc[bb["team_id"], "score"], "Worst Wk": lo.loc[bb["team_id"], "week"],
+        }, num=("Best", "Worst"), mid=("Best Wk", "Worst Wk"),
+            fmt={"Best": "{:.2f}", "Worst": "{:.2f}"}, compact=True)
