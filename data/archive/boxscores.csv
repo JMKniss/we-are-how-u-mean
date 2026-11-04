@@ -25766,40 +25766,40 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,1,7,J’Diglett Morgoones,4869961,Chris Bell,WR,BE,3.0,5.9,False,True,145.3,113.38,MIA,-1.0
 2026,1,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,5.8,7.31,False,True,145.3,113.38,CLE,-1.0
 2026,1,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,145.3,113.38,NO,-1.0
-2026,1,8,Team Rocket,-16007,Broncos D/ST,D/ST,D/ST,3.0,6.56,True,False,99.4,117.39,DEN,-1.0
-2026,1,8,Team Rocket,12483,Matthew Stafford,QB,QB,4.1,17.27,True,False,99.4,117.39,LAR,-1.0
-2026,1,8,Team Rocket,15847,Travis Kelce,TE,TE,8.6,7.68,True,False,99.4,117.39,KC,-1.0
-2026,1,8,Team Rocket,3128429,Courtland Sutton,WR,BE,2.1,9.62,False,True,99.4,117.39,DEN,-1.0
-2026,1,8,Team Rocket,3915416,DJ Moore,WR,BE,18.5,9.61,False,True,99.4,117.39,BUF,-1.0
-2026,1,8,Team Rocket,4035538,David Montgomery,RB,RB/WR/TE,27.4,11.64,True,False,99.4,117.39,HOU,-1.0
-2026,1,8,Team Rocket,4241985,J.K. Dobbins,RB,BE,3.6,8.86,False,True,99.4,117.39,DEN,-1.0
-2026,1,8,Team Rocket,4426515,Puka Nacua,WR,WR,9.9,17.34,True,False,99.4,117.39,LAR,-1.0
-2026,1,8,Team Rocket,4428331,Rashee Rice,WR,WR,8.9,11.68,True,False,99.4,117.39,KC,-1.0
-2026,1,8,Team Rocket,4428718,Tre Tucker,WR,BE,3.7,8.37,False,True,99.4,117.39,LV,-1.0
-2026,1,8,Team Rocket,4429160,De'Von Achane,RB,RB,8.6,16.26,True,False,99.4,117.39,MIA,-1.0
-2026,1,8,Team Rocket,4429205,Jordan Addison,WR,BE,0.0,8.12,False,True,99.4,117.39,MIN,-1.0
-2026,1,8,Team Rocket,4569987,Jaylen Warren,RB,RB/WR/TE,7.8,11.22,True,False,99.4,117.39,PIT,-1.0
-2026,1,8,Team Rocket,4685247,Braelon Allen,RB,BE,4.0,4.23,False,True,99.4,117.39,NYJ,-1.0
-2026,1,8,Team Rocket,4686361,Cam Little,K,K,8.0,5.45,True,False,99.4,117.39,JAX,-1.0
-2026,1,8,Team Rocket,4689114,Jaxson Dart,QB,BE,25.6,18.28,False,True,99.4,117.39,NYG,-1.0
-2026,1,8,Team Rocket,4696981,Cam Skattebo,RB,RB,13.1,12.29,True,False,99.4,117.39,NYG,-1.0
-2026,1,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,19.0,7.32,True,False,132.06,121.31,PIT,-1.0
-2026,1,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,34.8,15.62,True,False,132.06,121.31,BAL,-1.0
-2026,1,9,SlowKing Henry and Company,4038941,Justin Herbert,QB,QB,13.26,18.77,True,False,132.06,121.31,LAC,-1.0
-2026,1,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,RB,11.3,13.43,True,False,132.06,121.31,NO,-1.0
-2026,1,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,BE,26.1,16.68,False,True,132.06,121.31,JAX,-1.0
-2026,1,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,BE,11.9,9.0,False,True,132.06,121.31,MIN,-1.0
-2026,1,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,BE,22.8,7.56,False,True,132.06,121.31,NYG,-1.0
-2026,1,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,2.2,16.39,True,False,132.06,121.31,CIN,-1.0
-2026,1,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,4.5,11.0,True,False,132.06,121.31,ATL,-1.0
-2026,1,9,SlowKing Henry and Company,4429022,Kayshon Boutte,WR,BE,2.6,7.68,False,True,132.06,121.31,HOU,-1.0
-2026,1,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,TE,8.8,9.72,True,False,132.06,121.31,IND,-1.0
-2026,1,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,RB/WR/TE,12.0,12.35,True,False,132.06,121.31,NE,-1.0
-2026,1,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,BE,19.4,9.47,False,True,132.06,121.31,CHI,-1.0
-2026,1,9,SlowKing Henry and Company,4612826,Ladd McConkey,WR,RB/WR/TE,16.7,11.42,True,False,132.06,121.31,LAC,-1.0
-2026,1,9,SlowKing Henry and Company,4682648,Malachi Fields,WR,BE,3.5,5.59,False,True,132.06,121.31,NYG,-1.0
-2026,1,9,SlowKing Henry and Company,4688813,Josh Downs,WR,BE,4.7,7.04,False,True,132.06,121.31,IND,-1.0
-2026,1,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,9.5,5.29,True,False,132.06,121.31,BAL,-1.0
+2026,1,8,Pokemon Team Name,-16007,Broncos D/ST,D/ST,D/ST,3.0,6.56,True,False,99.4,117.39,DEN,-1.0
+2026,1,8,Pokemon Team Name,12483,Matthew Stafford,QB,QB,4.1,17.27,True,False,99.4,117.39,LAR,-1.0
+2026,1,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,8.6,7.68,True,False,99.4,117.39,KC,-1.0
+2026,1,8,Pokemon Team Name,3128429,Courtland Sutton,WR,BE,2.1,9.62,False,True,99.4,117.39,DEN,-1.0
+2026,1,8,Pokemon Team Name,3915416,DJ Moore,WR,BE,18.5,9.61,False,True,99.4,117.39,BUF,-1.0
+2026,1,8,Pokemon Team Name,4035538,David Montgomery,RB,RB/WR/TE,27.4,11.64,True,False,99.4,117.39,HOU,-1.0
+2026,1,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,BE,3.6,8.86,False,True,99.4,117.39,DEN,-1.0
+2026,1,8,Pokemon Team Name,4426515,Puka Nacua,WR,WR,9.9,17.34,True,False,99.4,117.39,LAR,-1.0
+2026,1,8,Pokemon Team Name,4428331,Rashee Rice,WR,WR,8.9,11.68,True,False,99.4,117.39,KC,-1.0
+2026,1,8,Pokemon Team Name,4428718,Tre Tucker,WR,BE,3.7,8.37,False,True,99.4,117.39,LV,-1.0
+2026,1,8,Pokemon Team Name,4429160,De'Von Achane,RB,RB,8.6,16.26,True,False,99.4,117.39,MIA,-1.0
+2026,1,8,Pokemon Team Name,4429205,Jordan Addison,WR,BE,0.0,8.12,False,True,99.4,117.39,MIN,-1.0
+2026,1,8,Pokemon Team Name,4569987,Jaylen Warren,RB,RB/WR/TE,7.8,11.22,True,False,99.4,117.39,PIT,-1.0
+2026,1,8,Pokemon Team Name,4685247,Braelon Allen,RB,BE,4.0,4.23,False,True,99.4,117.39,NYJ,-1.0
+2026,1,8,Pokemon Team Name,4686361,Cam Little,K,K,8.0,5.45,True,False,99.4,117.39,JAX,-1.0
+2026,1,8,Pokemon Team Name,4689114,Jaxson Dart,QB,BE,25.6,18.28,False,True,99.4,117.39,NYG,-1.0
+2026,1,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB,13.1,12.29,True,False,99.4,117.39,NYG,-1.0
+2026,1,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,19.0,7.32,True,False,132.06,121.31,PIT,-1.0
+2026,1,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,34.8,15.62,True,False,132.06,121.31,BAL,-1.0
+2026,1,9,Who's That Puka-mon??,4038941,Justin Herbert,QB,QB,13.26,18.77,True,False,132.06,121.31,LAC,-1.0
+2026,1,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,RB,11.3,13.43,True,False,132.06,121.31,NO,-1.0
+2026,1,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,BE,26.1,16.68,False,True,132.06,121.31,JAX,-1.0
+2026,1,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,BE,11.9,9.0,False,True,132.06,121.31,MIN,-1.0
+2026,1,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,BE,22.8,7.56,False,True,132.06,121.31,NYG,-1.0
+2026,1,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,2.2,16.39,True,False,132.06,121.31,CIN,-1.0
+2026,1,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,4.5,11.0,True,False,132.06,121.31,ATL,-1.0
+2026,1,9,Who's That Puka-mon??,4429022,Kayshon Boutte,WR,BE,2.6,7.68,False,True,132.06,121.31,HOU,-1.0
+2026,1,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,TE,8.8,9.72,True,False,132.06,121.31,IND,-1.0
+2026,1,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,RB/WR/TE,12.0,12.35,True,False,132.06,121.31,NE,-1.0
+2026,1,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,BE,19.4,9.47,False,True,132.06,121.31,CHI,-1.0
+2026,1,9,Who's That Puka-mon??,4612826,Ladd McConkey,WR,RB/WR/TE,16.7,11.42,True,False,132.06,121.31,LAC,-1.0
+2026,1,9,Who's That Puka-mon??,4682648,Malachi Fields,WR,BE,3.5,5.59,False,True,132.06,121.31,NYG,-1.0
+2026,1,9,Who's That Puka-mon??,4688813,Josh Downs,WR,BE,4.7,7.04,False,True,132.06,121.31,IND,-1.0
+2026,1,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,9.5,5.29,True,False,132.06,121.31,BAL,-1.0
 2026,1,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,9.0,5.95,True,False,148.56,113.37,MIN,-1.0
 2026,1,10,Brock,16737,Mike Evans,WR,RB/WR/TE,13.9,8.86,True,False,148.56,113.37,SF,-1.0
 2026,1,10,Brock,3040151,George Kittle,TE,TE,2.2,6.59,True,False,148.56,113.37,SF,-1.0
@@ -25941,41 +25941,41 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,2,7,J’Diglett Morgoones,4869961,Chris Bell,WR,BE,0.0,5.55,False,True,106.44,120.61,MIA,-1.0
 2026,2,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,5.2,7.73,False,True,106.44,120.61,CLE,-1.0
 2026,2,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,106.44,120.61,NO,-1.0
-2026,2,8,Team Rocket,-16004,Bengals D/ST,D/ST,D/ST,8.0,6.23,True,False,67.4,111.99,CIN,-1.0
-2026,2,8,Team Rocket,12483,Matthew Stafford,QB,BE,26.98,17.98,False,True,67.4,111.99,LAR,-1.0
-2026,2,8,Team Rocket,15847,Travis Kelce,TE,TE,20.6,8.42,True,False,67.4,111.99,KC,-1.0
-2026,2,8,Team Rocket,3128429,Courtland Sutton,WR,BE,4.0,9.96,False,True,67.4,111.99,DEN,-1.0
-2026,2,8,Team Rocket,3915416,DJ Moore,WR,WR,-0.1,10.46,True,False,67.4,111.99,BUF,-1.0
-2026,2,8,Team Rocket,4035538,David Montgomery,RB,RB,3.4,13.03,True,False,67.4,111.99,HOU,-1.0
-2026,2,8,Team Rocket,4241985,J.K. Dobbins,RB,RB/WR/TE,3.6,11.81,True,False,67.4,111.99,DEN,-1.0
-2026,2,8,Team Rocket,4426515,Puka Nacua,WR,BE,0.0,0.0,False,True,67.4,111.99,LAR,-1.0
-2026,2,8,Team Rocket,4428331,Rashee Rice,WR,WR,10.3,12.28,True,False,67.4,111.99,KC,-1.0
-2026,2,8,Team Rocket,4429160,De'Von Achane,RB,RB,10.8,15.01,True,False,67.4,111.99,MIA,-1.0
-2026,2,8,Team Rocket,4429205,Jordan Addison,WR,BE,3.1,8.75,False,True,67.4,111.99,MIN,-1.0
-2026,2,8,Team Rocket,4569987,Jaylen Warren,RB,BE,8.7,10.07,False,True,67.4,111.99,PIT,-1.0
-2026,2,8,Team Rocket,4685247,Braelon Allen,RB,BE,8.0,6.94,False,True,67.4,111.99,NYJ,-1.0
-2026,2,8,Team Rocket,4686361,Cam Little,K,K,3.5,4.91,True,False,67.4,111.99,JAX,-1.0
-2026,2,8,Team Rocket,4689114,Jaxson Dart,QB,QB,0.8,17.92,True,False,67.4,111.99,NYG,-1.0
-2026,2,8,Team Rocket,4696981,Cam Skattebo,RB,RB/WR/TE,6.5,11.92,True,False,67.4,111.99,NYG,-1.0
-2026,2,8,Team Rocket,4710855,Konata Mumpfield,WR,BE,1.7,4.38,False,True,67.4,111.99,LAR,-1.0
-2026,2,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,9.0,7.35,True,False,92.28,116.17,PIT,-1.0
-2026,2,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,16.2,16.87,True,False,92.28,116.17,BAL,-1.0
-2026,2,9,SlowKing Henry and Company,4038941,Justin Herbert,QB,QB,4.88,19.25,True,False,92.28,116.17,LAC,-1.0
-2026,2,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,RB,6.1,11.27,True,False,92.28,116.17,NO,-1.0
-2026,2,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,BE,6.16,15.65,False,True,92.28,116.17,JAX,-1.0
-2026,2,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,92.28,116.17,MIN,-1.0
-2026,2,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,BE,5.8,8.75,False,True,92.28,116.17,NYG,-1.0
-2026,2,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,23.0,15.38,True,False,92.28,116.17,CIN,-1.0
-2026,2,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,6.9,10.31,True,False,92.28,116.17,ATL,-1.0
-2026,2,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,TE,11.4,8.97,True,False,92.28,116.17,IND,-1.0
-2026,2,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,BE,3.1,11.51,False,True,92.28,116.17,NE,-1.0
-2026,2,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,RB/WR/TE,6.8,9.06,True,False,92.28,116.17,CHI,-1.0
-2026,2,9,SlowKing Henry and Company,4612826,Ladd McConkey,WR,RB/WR/TE,5.0,11.98,True,False,92.28,116.17,LAC,-1.0
-2026,2,9,SlowKing Henry and Company,4682648,Malachi Fields,WR,BE,4.0,4.98,False,True,92.28,116.17,NYG,-1.0
-2026,2,9,SlowKing Henry and Company,4688813,Josh Downs,WR,BE,10.7,7.29,False,True,92.28,116.17,IND,-1.0
-2026,2,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,3.0,5.73,True,False,92.28,116.17,BAL,-1.0
-2026,2,9,SlowKing Henry and Company,4832955,Emmett Johnson,RB,BE,4.5,5.73,False,True,92.28,116.17,KC,-1.0
-2026,2,9,SlowKing Henry and Company,5081432,Antonio Williams,WR,BE,3.9,4.92,False,True,92.28,116.17,WSH,-1.0
+2026,2,8,Pokemon Team Name,-16004,Bengals D/ST,D/ST,D/ST,8.0,6.23,True,False,67.4,111.99,CIN,-1.0
+2026,2,8,Pokemon Team Name,12483,Matthew Stafford,QB,BE,26.98,17.98,False,True,67.4,111.99,LAR,-1.0
+2026,2,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,20.6,8.42,True,False,67.4,111.99,KC,-1.0
+2026,2,8,Pokemon Team Name,3128429,Courtland Sutton,WR,BE,4.0,9.96,False,True,67.4,111.99,DEN,-1.0
+2026,2,8,Pokemon Team Name,3915416,DJ Moore,WR,WR,-0.1,10.46,True,False,67.4,111.99,BUF,-1.0
+2026,2,8,Pokemon Team Name,4035538,David Montgomery,RB,RB,3.4,13.03,True,False,67.4,111.99,HOU,-1.0
+2026,2,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,RB/WR/TE,3.6,11.81,True,False,67.4,111.99,DEN,-1.0
+2026,2,8,Pokemon Team Name,4426515,Puka Nacua,WR,BE,0.0,0.0,False,True,67.4,111.99,LAR,-1.0
+2026,2,8,Pokemon Team Name,4428331,Rashee Rice,WR,WR,10.3,12.28,True,False,67.4,111.99,KC,-1.0
+2026,2,8,Pokemon Team Name,4429160,De'Von Achane,RB,RB,10.8,15.01,True,False,67.4,111.99,MIA,-1.0
+2026,2,8,Pokemon Team Name,4429205,Jordan Addison,WR,BE,3.1,8.75,False,True,67.4,111.99,MIN,-1.0
+2026,2,8,Pokemon Team Name,4569987,Jaylen Warren,RB,BE,8.7,10.07,False,True,67.4,111.99,PIT,-1.0
+2026,2,8,Pokemon Team Name,4685247,Braelon Allen,RB,BE,8.0,6.94,False,True,67.4,111.99,NYJ,-1.0
+2026,2,8,Pokemon Team Name,4686361,Cam Little,K,K,3.5,4.91,True,False,67.4,111.99,JAX,-1.0
+2026,2,8,Pokemon Team Name,4689114,Jaxson Dart,QB,QB,0.8,17.92,True,False,67.4,111.99,NYG,-1.0
+2026,2,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB/WR/TE,6.5,11.92,True,False,67.4,111.99,NYG,-1.0
+2026,2,8,Pokemon Team Name,4710855,Konata Mumpfield,WR,BE,1.7,4.38,False,True,67.4,111.99,LAR,-1.0
+2026,2,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,9.0,7.35,True,False,92.28,116.17,PIT,-1.0
+2026,2,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,16.2,16.87,True,False,92.28,116.17,BAL,-1.0
+2026,2,9,Who's That Puka-mon??,4038941,Justin Herbert,QB,QB,4.88,19.25,True,False,92.28,116.17,LAC,-1.0
+2026,2,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,RB,6.1,11.27,True,False,92.28,116.17,NO,-1.0
+2026,2,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,BE,6.16,15.65,False,True,92.28,116.17,JAX,-1.0
+2026,2,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,92.28,116.17,MIN,-1.0
+2026,2,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,BE,5.8,8.75,False,True,92.28,116.17,NYG,-1.0
+2026,2,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,23.0,15.38,True,False,92.28,116.17,CIN,-1.0
+2026,2,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,6.9,10.31,True,False,92.28,116.17,ATL,-1.0
+2026,2,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,TE,11.4,8.97,True,False,92.28,116.17,IND,-1.0
+2026,2,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,BE,3.1,11.51,False,True,92.28,116.17,NE,-1.0
+2026,2,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,RB/WR/TE,6.8,9.06,True,False,92.28,116.17,CHI,-1.0
+2026,2,9,Who's That Puka-mon??,4612826,Ladd McConkey,WR,RB/WR/TE,5.0,11.98,True,False,92.28,116.17,LAC,-1.0
+2026,2,9,Who's That Puka-mon??,4682648,Malachi Fields,WR,BE,4.0,4.98,False,True,92.28,116.17,NYG,-1.0
+2026,2,9,Who's That Puka-mon??,4688813,Josh Downs,WR,BE,10.7,7.29,False,True,92.28,116.17,IND,-1.0
+2026,2,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,3.0,5.73,True,False,92.28,116.17,BAL,-1.0
+2026,2,9,Who's That Puka-mon??,4832955,Emmett Johnson,RB,BE,4.5,5.73,False,True,92.28,116.17,KC,-1.0
+2026,2,9,Who's That Puka-mon??,5081432,Antonio Williams,WR,BE,3.9,4.92,False,True,92.28,116.17,WSH,-1.0
 2026,2,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,14.0,5.82,True,False,100.58,118.26,MIN,-1.0
 2026,2,10,Brock,16737,Mike Evans,WR,WR,6.9,11.02,True,False,100.58,118.26,SF,-1.0
 2026,2,10,Brock,3040151,George Kittle,TE,BE,16.0,8.71,False,True,100.58,118.26,SF,-1.0
@@ -26119,42 +26119,42 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,3,7,J’Diglett Morgoones,4869961,Chris Bell,WR,BE,8.7,5.97,False,True,157.74,120.22,MIA,-1.0
 2026,3,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,1.9,9.15,False,True,157.74,120.22,CLE,-1.0
 2026,3,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,157.74,120.22,NO,-1.0
-2026,3,8,Team Rocket,-16004,Bengals D/ST,D/ST,D/ST,3.0,6.68,True,False,102.9,113.51,CIN,-1.0
-2026,3,8,Team Rocket,12483,Matthew Stafford,QB,QB,20.9,15.49,True,False,102.9,113.51,LAR,-1.0
-2026,3,8,Team Rocket,15847,Travis Kelce,TE,TE,12.9,10.2,True,False,102.9,113.51,KC,-1.0
-2026,3,8,Team Rocket,3128429,Courtland Sutton,WR,BE,6.1,8.99,False,True,102.9,113.51,DEN,-1.0
-2026,3,8,Team Rocket,3915416,DJ Moore,WR,WR,9.7,10.45,True,False,102.9,113.51,BUF,-1.0
-2026,3,8,Team Rocket,3917315,Kyler Murray,QB,BE,10.42,17.08,False,True,102.9,113.51,MIN,-1.0
-2026,3,8,Team Rocket,4035538,David Montgomery,RB,RB/WR/TE,5.8,11.12,True,False,102.9,113.51,HOU,-1.0
-2026,3,8,Team Rocket,4241985,J.K. Dobbins,RB,BE,4.8,10.25,False,True,102.9,113.51,DEN,-1.0
-2026,3,8,Team Rocket,4360234,Evan McPherson,K,K,7.0,4.77,True,False,102.9,113.51,CIN,-1.0
-2026,3,8,Team Rocket,4426515,Puka Nacua,WR,IR,0.0,0.0,False,False,102.9,113.51,LAR,-1.0
-2026,3,8,Team Rocket,4428331,Rashee Rice,WR,WR,12.3,10.46,True,False,102.9,113.51,KC,-1.0
-2026,3,8,Team Rocket,4428718,Tre Tucker,WR,BE,6.3,8.04,False,True,102.9,113.51,LV,-1.0
-2026,3,8,Team Rocket,4429160,De'Von Achane,RB,RB,1.7,17.2,True,False,102.9,113.51,MIA,-1.0
-2026,3,8,Team Rocket,4429205,Jordan Addison,WR,BE,17.5,8.62,False,True,102.9,113.51,MIN,-1.0
-2026,3,8,Team Rocket,4569987,Jaylen Warren,RB,RB/WR/TE,19.1,14.09,True,False,102.9,113.51,PIT,-1.0
-2026,3,8,Team Rocket,4685247,Braelon Allen,RB,BE,3.2,5.98,False,True,102.9,113.51,NYJ,-1.0
-2026,3,8,Team Rocket,4696981,Cam Skattebo,RB,RB,10.5,13.05,True,False,102.9,113.51,NYG,-1.0
-2026,3,8,Team Rocket,4870795,Makai Lemon,WR,BE,4.4,6.3,False,True,102.9,113.51,PHI,-1.0
-2026,3,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,4.0,7.39,True,False,134.38,115.8,PIT,-1.0
-2026,3,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,21.4,16.9,True,False,134.38,115.8,BAL,-1.0
-2026,3,9,SlowKing Henry and Company,4038941,Justin Herbert,QB,BE,12.74,17.01,False,True,134.38,115.8,LAC,-1.0
-2026,3,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,RB,8.0,10.72,True,False,134.38,115.8,NO,-1.0
-2026,3,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,QB,19.78,17.22,True,False,134.38,115.8,JAX,-1.0
-2026,3,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,134.38,115.8,MIN,-1.0
-2026,3,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,BE,2.3,9.9,False,True,134.38,115.8,NYG,-1.0
-2026,3,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,20.3,15.24,True,False,134.38,115.8,CIN,-1.0
-2026,3,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,23.9,12.48,True,False,134.38,115.8,ATL,-1.0
-2026,3,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,TE,10.2,9.95,True,False,134.38,115.8,IND,-1.0
-2026,3,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,BE,5.3,10.57,False,True,134.38,115.8,NE,-1.0
-2026,3,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,BE,3.1,7.64,False,True,134.38,115.8,CHI,-1.0
-2026,3,9,SlowKing Henry and Company,4612826,Ladd McConkey,WR,RB/WR/TE,8.6,10.99,True,False,134.38,115.8,LAC,-1.0
-2026,3,9,SlowKing Henry and Company,4682648,Malachi Fields,WR,BE,2.9,6.82,False,True,134.38,115.8,NYG,-1.0
-2026,3,9,SlowKing Henry and Company,4688813,Josh Downs,WR,RB/WR/TE,10.2,9.48,True,False,134.38,115.8,IND,-1.0
-2026,3,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,8.0,5.43,True,False,134.38,115.8,BAL,-1.0
-2026,3,9,SlowKing Henry and Company,4819231,Kaleb Johnson,RB,BE,2.1,7.49,False,True,134.38,115.8,GB,-1.0
-2026,3,9,SlowKing Henry and Company,4887558,Emanuel Wilson,RB,BE,1.4,8.4,False,True,134.38,115.8,SEA,-1.0
+2026,3,8,Pokemon Team Name,-16004,Bengals D/ST,D/ST,D/ST,3.0,6.68,True,False,102.9,113.51,CIN,-1.0
+2026,3,8,Pokemon Team Name,12483,Matthew Stafford,QB,QB,20.9,15.49,True,False,102.9,113.51,LAR,-1.0
+2026,3,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,12.9,10.2,True,False,102.9,113.51,KC,-1.0
+2026,3,8,Pokemon Team Name,3128429,Courtland Sutton,WR,BE,6.1,8.99,False,True,102.9,113.51,DEN,-1.0
+2026,3,8,Pokemon Team Name,3915416,DJ Moore,WR,WR,9.7,10.45,True,False,102.9,113.51,BUF,-1.0
+2026,3,8,Pokemon Team Name,3917315,Kyler Murray,QB,BE,10.42,17.08,False,True,102.9,113.51,MIN,-1.0
+2026,3,8,Pokemon Team Name,4035538,David Montgomery,RB,RB/WR/TE,5.8,11.12,True,False,102.9,113.51,HOU,-1.0
+2026,3,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,BE,4.8,10.25,False,True,102.9,113.51,DEN,-1.0
+2026,3,8,Pokemon Team Name,4360234,Evan McPherson,K,K,7.0,4.77,True,False,102.9,113.51,CIN,-1.0
+2026,3,8,Pokemon Team Name,4426515,Puka Nacua,WR,IR,0.0,0.0,False,False,102.9,113.51,LAR,-1.0
+2026,3,8,Pokemon Team Name,4428331,Rashee Rice,WR,WR,12.3,10.46,True,False,102.9,113.51,KC,-1.0
+2026,3,8,Pokemon Team Name,4428718,Tre Tucker,WR,BE,6.3,8.04,False,True,102.9,113.51,LV,-1.0
+2026,3,8,Pokemon Team Name,4429160,De'Von Achane,RB,RB,1.7,17.2,True,False,102.9,113.51,MIA,-1.0
+2026,3,8,Pokemon Team Name,4429205,Jordan Addison,WR,BE,17.5,8.62,False,True,102.9,113.51,MIN,-1.0
+2026,3,8,Pokemon Team Name,4569987,Jaylen Warren,RB,RB/WR/TE,19.1,14.09,True,False,102.9,113.51,PIT,-1.0
+2026,3,8,Pokemon Team Name,4685247,Braelon Allen,RB,BE,3.2,5.98,False,True,102.9,113.51,NYJ,-1.0
+2026,3,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB,10.5,13.05,True,False,102.9,113.51,NYG,-1.0
+2026,3,8,Pokemon Team Name,4870795,Makai Lemon,WR,BE,4.4,6.3,False,True,102.9,113.51,PHI,-1.0
+2026,3,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,4.0,7.39,True,False,134.38,115.8,PIT,-1.0
+2026,3,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,21.4,16.9,True,False,134.38,115.8,BAL,-1.0
+2026,3,9,Who's That Puka-mon??,4038941,Justin Herbert,QB,BE,12.74,17.01,False,True,134.38,115.8,LAC,-1.0
+2026,3,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,RB,8.0,10.72,True,False,134.38,115.8,NO,-1.0
+2026,3,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,QB,19.78,17.22,True,False,134.38,115.8,JAX,-1.0
+2026,3,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,134.38,115.8,MIN,-1.0
+2026,3,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,BE,2.3,9.9,False,True,134.38,115.8,NYG,-1.0
+2026,3,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,20.3,15.24,True,False,134.38,115.8,CIN,-1.0
+2026,3,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,23.9,12.48,True,False,134.38,115.8,ATL,-1.0
+2026,3,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,TE,10.2,9.95,True,False,134.38,115.8,IND,-1.0
+2026,3,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,BE,5.3,10.57,False,True,134.38,115.8,NE,-1.0
+2026,3,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,BE,3.1,7.64,False,True,134.38,115.8,CHI,-1.0
+2026,3,9,Who's That Puka-mon??,4612826,Ladd McConkey,WR,RB/WR/TE,8.6,10.99,True,False,134.38,115.8,LAC,-1.0
+2026,3,9,Who's That Puka-mon??,4682648,Malachi Fields,WR,BE,2.9,6.82,False,True,134.38,115.8,NYG,-1.0
+2026,3,9,Who's That Puka-mon??,4688813,Josh Downs,WR,RB/WR/TE,10.2,9.48,True,False,134.38,115.8,IND,-1.0
+2026,3,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,8.0,5.43,True,False,134.38,115.8,BAL,-1.0
+2026,3,9,Who's That Puka-mon??,4819231,Kaleb Johnson,RB,BE,2.1,7.49,False,True,134.38,115.8,GB,-1.0
+2026,3,9,Who's That Puka-mon??,4887558,Emanuel Wilson,RB,BE,1.4,8.4,False,True,134.38,115.8,SEA,-1.0
 2026,3,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,17.0,7.51,True,False,139.08,123.01,MIN,-1.0
 2026,3,10,Brock,16737,Mike Evans,WR,RB/WR/TE,10.9,10.57,True,False,139.08,123.01,SF,-1.0
 2026,3,10,Brock,3040151,George Kittle,TE,TE,23.2,10.51,True,False,139.08,123.01,SF,-1.0
@@ -26302,42 +26302,42 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,4,7,J’Diglett Morgoones,4869961,Chris Bell,WR,BE,0.0,6.99,False,True,119.5,127.9,MIA,-1.0
 2026,4,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,8.9,7.54,False,True,119.5,127.9,CLE,-1.0
 2026,4,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,119.5,127.9,NO,-1.0
-2026,4,8,Team Rocket,-16009,Packers D/ST,D/ST,D/ST,8.0,7.09,True,False,84.08,120.8,GB,-1.0
-2026,4,8,Team Rocket,12483,Matthew Stafford,QB,BE,9.68,16.28,False,True,84.08,120.8,LAR,-1.0
-2026,4,8,Team Rocket,15847,Travis Kelce,TE,TE,2.5,9.51,True,False,84.08,120.8,KC,-1.0
-2026,4,8,Team Rocket,2973405,Kalif Raymond,WR,BE,1.6,7.69,False,True,84.08,120.8,CHI,-1.0
-2026,4,8,Team Rocket,3128429,Courtland Sutton,WR,BE,0.9,8.6,False,True,84.08,120.8,DEN,-1.0
-2026,4,8,Team Rocket,3915416,DJ Moore,WR,WR,2.2,10.81,True,False,84.08,120.8,BUF,-1.0
-2026,4,8,Team Rocket,3917315,Kyler Murray,QB,QB,11.48,18.95,True,False,84.08,120.8,MIN,-1.0
-2026,4,8,Team Rocket,4035538,David Montgomery,RB,RB/WR/TE,4.3,12.46,True,False,84.08,120.8,HOU,-1.0
-2026,4,8,Team Rocket,4241985,J.K. Dobbins,RB,BE,6.2,9.53,False,True,84.08,120.8,DEN,-1.0
-2026,4,8,Team Rocket,4360234,Evan McPherson,K,K,3.5,5.25,True,False,84.08,120.8,CIN,-1.0
-2026,4,8,Team Rocket,4426515,Puka Nacua,WR,WR,23.2,14.9,True,False,84.08,120.8,LAR,-1.0
-2026,4,8,Team Rocket,4428331,Rashee Rice,WR,BE,0.0,12.08,False,True,84.08,120.8,KC,-1.0
-2026,4,8,Team Rocket,4429205,Jordan Addison,WR,BE,7.1,12.46,False,True,84.08,120.8,MIN,-1.0
-2026,4,8,Team Rocket,4569987,Jaylen Warren,RB,RB,14.1,15.27,True,False,84.08,120.8,PIT,-1.0
-2026,4,8,Team Rocket,4685247,Braelon Allen,RB,RB/WR/TE,7.7,11.84,True,False,84.08,120.8,NYJ,-1.0
-2026,4,8,Team Rocket,4696981,Cam Skattebo,RB,RB,7.1,14.72,True,False,84.08,120.8,NYG,-1.0
-2026,4,8,Team Rocket,4711533,Ollie Gordon II,RB,BE,17.0,8.0,False,True,84.08,120.8,MIA,-1.0
-2026,4,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,7.0,8.36,True,False,118.08,130.28,PIT,-1.0
-2026,4,9,SlowKing Henry and Company,2991662,Mack Hollins,WR,BE,6.8,7.83,False,True,118.08,130.28,NE,-1.0
-2026,4,9,SlowKing Henry and Company,3042519,Aaron Jones Sr.,RB,RB,13.8,16.55,True,False,118.08,130.28,MIN,-1.0
-2026,4,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,14.9,19.52,True,False,118.08,130.28,BAL,-1.0
-2026,4,9,SlowKing Henry and Company,4038941,Justin Herbert,QB,BE,9.56,12.16,False,True,118.08,130.28,LAC,-1.0
-2026,4,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,118.08,130.28,NO,-1.0
-2026,4,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,QB,13.08,18.27,True,False,118.08,130.28,JAX,-1.0
-2026,4,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,118.08,130.28,MIN,-1.0
-2026,4,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,BE,10.1,9.57,False,True,118.08,130.28,NYG,-1.0
-2026,4,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,4.2,16.49,True,False,118.08,130.28,CIN,-1.0
-2026,4,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,12.1,13.67,True,False,118.08,130.28,ATL,-1.0
-2026,4,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,TE,6.6,10.31,True,False,118.08,130.28,IND,-1.0
-2026,4,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,RB/WR/TE,16.9,10.13,True,False,118.08,130.28,NE,-1.0
-2026,4,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,BE,27.5,7.54,False,True,118.08,130.28,CHI,-1.0
-2026,4,9,SlowKing Henry and Company,4612826,Ladd McConkey,WR,BE,0.0,9.16,False,True,118.08,130.28,LAC,-1.0
-2026,4,9,SlowKing Henry and Company,4682745,Jaylen Wright,RB,BE,0.7,6.58,False,True,118.08,130.28,MIA,-1.0
-2026,4,9,SlowKing Henry and Company,4695404,Isaiah Davis,RB,BE,0.0,8.26,False,True,118.08,130.28,NYJ,-1.0
-2026,4,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,5.0,5.97,True,False,118.08,130.28,BAL,-1.0
-2026,4,9,SlowKing Henry and Company,4887558,Emanuel Wilson,RB,RB/WR/TE,24.5,11.01,True,False,118.08,130.28,SEA,-1.0
+2026,4,8,Pokemon Team Name,-16009,Packers D/ST,D/ST,D/ST,8.0,7.09,True,False,84.08,120.8,GB,-1.0
+2026,4,8,Pokemon Team Name,12483,Matthew Stafford,QB,BE,9.68,16.28,False,True,84.08,120.8,LAR,-1.0
+2026,4,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,2.5,9.51,True,False,84.08,120.8,KC,-1.0
+2026,4,8,Pokemon Team Name,2973405,Kalif Raymond,WR,BE,1.6,7.69,False,True,84.08,120.8,CHI,-1.0
+2026,4,8,Pokemon Team Name,3128429,Courtland Sutton,WR,BE,0.9,8.6,False,True,84.08,120.8,DEN,-1.0
+2026,4,8,Pokemon Team Name,3915416,DJ Moore,WR,WR,2.2,10.81,True,False,84.08,120.8,BUF,-1.0
+2026,4,8,Pokemon Team Name,3917315,Kyler Murray,QB,QB,11.48,18.95,True,False,84.08,120.8,MIN,-1.0
+2026,4,8,Pokemon Team Name,4035538,David Montgomery,RB,RB/WR/TE,4.3,12.46,True,False,84.08,120.8,HOU,-1.0
+2026,4,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,BE,6.2,9.53,False,True,84.08,120.8,DEN,-1.0
+2026,4,8,Pokemon Team Name,4360234,Evan McPherson,K,K,3.5,5.25,True,False,84.08,120.8,CIN,-1.0
+2026,4,8,Pokemon Team Name,4426515,Puka Nacua,WR,WR,23.2,14.9,True,False,84.08,120.8,LAR,-1.0
+2026,4,8,Pokemon Team Name,4428331,Rashee Rice,WR,BE,0.0,12.08,False,True,84.08,120.8,KC,-1.0
+2026,4,8,Pokemon Team Name,4429205,Jordan Addison,WR,BE,7.1,12.46,False,True,84.08,120.8,MIN,-1.0
+2026,4,8,Pokemon Team Name,4569987,Jaylen Warren,RB,RB,14.1,15.27,True,False,84.08,120.8,PIT,-1.0
+2026,4,8,Pokemon Team Name,4685247,Braelon Allen,RB,RB/WR/TE,7.7,11.84,True,False,84.08,120.8,NYJ,-1.0
+2026,4,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB,7.1,14.72,True,False,84.08,120.8,NYG,-1.0
+2026,4,8,Pokemon Team Name,4711533,Ollie Gordon II,RB,BE,17.0,8.0,False,True,84.08,120.8,MIA,-1.0
+2026,4,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,7.0,8.36,True,False,118.08,130.28,PIT,-1.0
+2026,4,9,Who's That Puka-mon??,2991662,Mack Hollins,WR,BE,6.8,7.83,False,True,118.08,130.28,NE,-1.0
+2026,4,9,Who's That Puka-mon??,3042519,Aaron Jones Sr.,RB,RB,13.8,16.55,True,False,118.08,130.28,MIN,-1.0
+2026,4,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,14.9,19.52,True,False,118.08,130.28,BAL,-1.0
+2026,4,9,Who's That Puka-mon??,4038941,Justin Herbert,QB,BE,9.56,12.16,False,True,118.08,130.28,LAC,-1.0
+2026,4,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,118.08,130.28,NO,-1.0
+2026,4,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,QB,13.08,18.27,True,False,118.08,130.28,JAX,-1.0
+2026,4,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,118.08,130.28,MIN,-1.0
+2026,4,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,BE,10.1,9.57,False,True,118.08,130.28,NYG,-1.0
+2026,4,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,4.2,16.49,True,False,118.08,130.28,CIN,-1.0
+2026,4,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,12.1,13.67,True,False,118.08,130.28,ATL,-1.0
+2026,4,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,TE,6.6,10.31,True,False,118.08,130.28,IND,-1.0
+2026,4,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,RB/WR/TE,16.9,10.13,True,False,118.08,130.28,NE,-1.0
+2026,4,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,BE,27.5,7.54,False,True,118.08,130.28,CHI,-1.0
+2026,4,9,Who's That Puka-mon??,4612826,Ladd McConkey,WR,BE,0.0,9.16,False,True,118.08,130.28,LAC,-1.0
+2026,4,9,Who's That Puka-mon??,4682745,Jaylen Wright,RB,BE,0.7,6.58,False,True,118.08,130.28,MIA,-1.0
+2026,4,9,Who's That Puka-mon??,4695404,Isaiah Davis,RB,BE,0.0,8.26,False,True,118.08,130.28,NYJ,-1.0
+2026,4,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,5.0,5.97,True,False,118.08,130.28,BAL,-1.0
+2026,4,9,Who's That Puka-mon??,4887558,Emanuel Wilson,RB,RB/WR/TE,24.5,11.01,True,False,118.08,130.28,SEA,-1.0
 2026,4,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,7.0,8.49,True,False,158.82,128.81,MIN,-1.0
 2026,4,10,Brock,16737,Mike Evans,WR,BE,10.1,9.82,False,True,158.82,128.81,SF,-1.0
 2026,4,10,Brock,3040151,George Kittle,TE,TE,15.0,11.28,True,False,158.82,128.81,SF,-1.0
@@ -26484,44 +26484,44 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,5,7,J’Diglett Morgoones,4697815,Rachaad White,RB,BE,2.5,6.83,False,True,156.72,135.38,WSH,-1.0
 2026,5,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,1.0,8.28,False,True,156.72,135.38,CLE,-1.0
 2026,5,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,156.72,135.38,NO,-1.0
-2026,5,8,Team Rocket,-16030,Jaguars D/ST,D/ST,D/ST,2.0,7.62,True,False,109.02,110.59,JAX,-1.0
-2026,5,8,Team Rocket,12483,Matthew Stafford,QB,QB,27.32,17.99,True,False,109.02,110.59,LAR,-1.0
-2026,5,8,Team Rocket,15847,Travis Kelce,TE,BE,0.0,0.0,False,True,109.02,110.59,KC,-1.0
-2026,5,8,Team Rocket,3126486,Deebo Samuel Sr.,WR,WR,1.5,9.23,True,False,109.02,110.59,SF,-1.0
-2026,5,8,Team Rocket,3128429,Courtland Sutton,WR,BE,8.8,8.59,False,True,109.02,110.59,DEN,-1.0
-2026,5,8,Team Rocket,3915416,DJ Moore,WR,IR,0.0,0.0,False,False,109.02,110.59,BUF,-1.0
-2026,5,8,Team Rocket,4035538,David Montgomery,RB,BE,1.1,10.89,False,True,109.02,110.59,HOU,-1.0
-2026,5,8,Team Rocket,4241985,J.K. Dobbins,RB,BE,14.4,10.08,False,True,109.02,110.59,DEN,-1.0
-2026,5,8,Team Rocket,4242557,Colby Parkinson,TE,BE,0.8,6.42,False,True,109.02,110.59,LAR,-1.0
-2026,5,8,Team Rocket,4360234,Evan McPherson,K,K,5.5,5.6,True,False,109.02,110.59,CIN,-1.0
-2026,5,8,Team Rocket,4426515,Puka Nacua,WR,RB/WR/TE,29.2,18.02,True,False,109.02,110.59,LAR,-1.0
-2026,5,8,Team Rocket,4428331,Rashee Rice,WR,BE,0.0,0.0,False,True,109.02,110.59,KC,-1.0
-2026,5,8,Team Rocket,4429205,Jordan Addison,WR,IR,0.0,0.0,False,False,109.02,110.59,MIN,-1.0
-2026,5,8,Team Rocket,4685247,Braelon Allen,RB,RB/WR/TE,17.1,12.88,True,False,109.02,110.59,NYJ,-1.0
-2026,5,8,Team Rocket,4688813,Josh Downs,WR,WR,6.2,9.56,True,False,109.02,110.59,IND,-1.0
-2026,5,8,Team Rocket,4696981,Cam Skattebo,RB,RB,6.1,12.14,True,False,109.02,110.59,NYG,-1.0
-2026,5,8,Team Rocket,4711533,Ollie Gordon II,RB,RB,14.8,10.02,True,False,109.02,110.59,MIA,-1.0
-2026,5,8,Team Rocket,5083315,Kenyon Sadiq,TE,TE,-0.7,7.53,True,False,109.02,110.59,NYJ,-1.0
-2026,5,8,Team Rocket,5123663,Isaac TeSlaa,WR,BE,0.0,6.43,False,True,109.02,110.59,DET,-1.0
-2026,5,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,1.0,7.34,True,False,153.04,128.03,PIT,-1.0
-2026,5,9,SlowKing Henry and Company,3042519,Aaron Jones Sr.,RB,RB,17.2,15.84,True,False,153.04,128.03,MIN,-1.0
-2026,5,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,20.5,15.83,True,False,153.04,128.03,BAL,-1.0
-2026,5,9,SlowKing Henry and Company,3917315,Kyler Murray,QB,BE,18.26,17.69,False,True,153.04,128.03,MIN,-1.0
-2026,5,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,153.04,128.03,NO,-1.0
-2026,5,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,QB,19.74,18.62,True,False,153.04,128.03,JAX,-1.0
-2026,5,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,153.04,128.03,MIN,-1.0
-2026,5,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,TE,26.9,10.34,True,False,153.04,128.03,NYG,-1.0
-2026,5,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,16.7,17.73,True,False,153.04,128.03,CIN,-1.0
-2026,5,9,SlowKing Henry and Company,4426386,Roschon Johnson,RB,BE,6.5,6.63,False,True,153.04,128.03,CHI,-1.0
-2026,5,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,15.3,13.21,True,False,153.04,128.03,ATL,-1.0
-2026,5,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,BE,17.9,9.19,False,True,153.04,128.03,IND,-1.0
-2026,5,9,SlowKing Henry and Company,4431492,Roman Wilson,WR,BE,0.0,8.37,False,True,153.04,128.03,PIT,-1.0
-2026,5,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,RB/WR/TE,16.0,11.79,True,False,153.04,128.03,NE,-1.0
-2026,5,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,BE,0.0,0.0,False,True,153.04,128.03,CHI,-1.0
-2026,5,9,SlowKing Henry and Company,4612826,Ladd McConkey,WR,BE,0.0,0.0,False,True,153.04,128.03,LAC,-1.0
-2026,5,9,SlowKing Henry and Company,4686612,Tre' Harris,WR,BE,2.6,7.97,False,True,153.04,128.03,LAC,-1.0
-2026,5,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,7.5,4.75,True,False,153.04,128.03,BAL,-1.0
-2026,5,9,SlowKing Henry and Company,4887558,Emanuel Wilson,RB,RB/WR/TE,12.2,12.58,True,False,153.04,128.03,SEA,-1.0
+2026,5,8,Pokemon Team Name,-16030,Jaguars D/ST,D/ST,D/ST,2.0,7.62,True,False,109.02,110.59,JAX,-1.0
+2026,5,8,Pokemon Team Name,12483,Matthew Stafford,QB,QB,27.32,17.99,True,False,109.02,110.59,LAR,-1.0
+2026,5,8,Pokemon Team Name,15847,Travis Kelce,TE,BE,0.0,0.0,False,True,109.02,110.59,KC,-1.0
+2026,5,8,Pokemon Team Name,3126486,Deebo Samuel Sr.,WR,WR,1.5,9.23,True,False,109.02,110.59,SF,-1.0
+2026,5,8,Pokemon Team Name,3128429,Courtland Sutton,WR,BE,8.8,8.59,False,True,109.02,110.59,DEN,-1.0
+2026,5,8,Pokemon Team Name,3915416,DJ Moore,WR,IR,0.0,0.0,False,False,109.02,110.59,BUF,-1.0
+2026,5,8,Pokemon Team Name,4035538,David Montgomery,RB,BE,1.1,10.89,False,True,109.02,110.59,HOU,-1.0
+2026,5,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,BE,14.4,10.08,False,True,109.02,110.59,DEN,-1.0
+2026,5,8,Pokemon Team Name,4242557,Colby Parkinson,TE,BE,0.8,6.42,False,True,109.02,110.59,LAR,-1.0
+2026,5,8,Pokemon Team Name,4360234,Evan McPherson,K,K,5.5,5.6,True,False,109.02,110.59,CIN,-1.0
+2026,5,8,Pokemon Team Name,4426515,Puka Nacua,WR,RB/WR/TE,29.2,18.02,True,False,109.02,110.59,LAR,-1.0
+2026,5,8,Pokemon Team Name,4428331,Rashee Rice,WR,BE,0.0,0.0,False,True,109.02,110.59,KC,-1.0
+2026,5,8,Pokemon Team Name,4429205,Jordan Addison,WR,IR,0.0,0.0,False,False,109.02,110.59,MIN,-1.0
+2026,5,8,Pokemon Team Name,4685247,Braelon Allen,RB,RB/WR/TE,17.1,12.88,True,False,109.02,110.59,NYJ,-1.0
+2026,5,8,Pokemon Team Name,4688813,Josh Downs,WR,WR,6.2,9.56,True,False,109.02,110.59,IND,-1.0
+2026,5,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB,6.1,12.14,True,False,109.02,110.59,NYG,-1.0
+2026,5,8,Pokemon Team Name,4711533,Ollie Gordon II,RB,RB,14.8,10.02,True,False,109.02,110.59,MIA,-1.0
+2026,5,8,Pokemon Team Name,5083315,Kenyon Sadiq,TE,TE,-0.7,7.53,True,False,109.02,110.59,NYJ,-1.0
+2026,5,8,Pokemon Team Name,5123663,Isaac TeSlaa,WR,BE,0.0,6.43,False,True,109.02,110.59,DET,-1.0
+2026,5,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,1.0,7.34,True,False,153.04,128.03,PIT,-1.0
+2026,5,9,Who's That Puka-mon??,3042519,Aaron Jones Sr.,RB,RB,17.2,15.84,True,False,153.04,128.03,MIN,-1.0
+2026,5,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,20.5,15.83,True,False,153.04,128.03,BAL,-1.0
+2026,5,9,Who's That Puka-mon??,3917315,Kyler Murray,QB,BE,18.26,17.69,False,True,153.04,128.03,MIN,-1.0
+2026,5,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,153.04,128.03,NO,-1.0
+2026,5,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,QB,19.74,18.62,True,False,153.04,128.03,JAX,-1.0
+2026,5,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,153.04,128.03,MIN,-1.0
+2026,5,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,TE,26.9,10.34,True,False,153.04,128.03,NYG,-1.0
+2026,5,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,16.7,17.73,True,False,153.04,128.03,CIN,-1.0
+2026,5,9,Who's That Puka-mon??,4426386,Roschon Johnson,RB,BE,6.5,6.63,False,True,153.04,128.03,CHI,-1.0
+2026,5,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,15.3,13.21,True,False,153.04,128.03,ATL,-1.0
+2026,5,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,BE,17.9,9.19,False,True,153.04,128.03,IND,-1.0
+2026,5,9,Who's That Puka-mon??,4431492,Roman Wilson,WR,BE,0.0,8.37,False,True,153.04,128.03,PIT,-1.0
+2026,5,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,RB/WR/TE,16.0,11.79,True,False,153.04,128.03,NE,-1.0
+2026,5,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,BE,0.0,0.0,False,True,153.04,128.03,CHI,-1.0
+2026,5,9,Who's That Puka-mon??,4612826,Ladd McConkey,WR,BE,0.0,0.0,False,True,153.04,128.03,LAC,-1.0
+2026,5,9,Who's That Puka-mon??,4686612,Tre' Harris,WR,BE,2.6,7.97,False,True,153.04,128.03,LAC,-1.0
+2026,5,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,7.5,4.75,True,False,153.04,128.03,BAL,-1.0
+2026,5,9,Who's That Puka-mon??,4887558,Emanuel Wilson,RB,RB/WR/TE,12.2,12.58,True,False,153.04,128.03,SEA,-1.0
 2026,5,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,10.0,7.48,True,False,121.26,123.18,MIN,-1.0
 2026,5,10,Brock,16737,Mike Evans,WR,WR,22.8,10.5,True,False,121.26,123.18,SF,-1.0
 2026,5,10,Brock,3040151,George Kittle,TE,TE,4.9,11.14,True,False,121.26,123.18,SF,-1.0
@@ -26668,44 +26668,44 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,6,7,J’Diglett Morgoones,4697815,Rachaad White,RB,BE,13.7,9.27,False,True,110.8,126.62,WSH,-1.0
 2026,6,7,J’Diglett Morgoones,4870653,KC Concepcion,WR,BE,5.9,6.35,False,True,110.8,126.62,CLE,-1.0
 2026,6,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,110.8,126.62,NO,-1.0
-2026,6,8,Team Rocket,-16030,Jaguars D/ST,D/ST,D/ST,1.0,6.38,True,False,86.28,106.69,JAX,-1.0
-2026,6,8,Team Rocket,8439,Aaron Rodgers,QB,BE,16.02,14.63,False,True,86.28,106.69,PIT,-1.0
-2026,6,8,Team Rocket,12483,Matthew Stafford,QB,QB,15.88,19.43,True,False,86.28,106.69,LAR,-1.0
-2026,6,8,Team Rocket,15847,Travis Kelce,TE,TE,7.3,9.28,True,False,86.28,106.69,KC,-1.0
-2026,6,8,Team Rocket,3126486,Deebo Samuel Sr.,WR,IR,0.0,0.0,False,False,86.28,106.69,SF,-1.0
-2026,6,8,Team Rocket,3128429,Courtland Sutton,WR,BE,2.9,7.02,False,True,86.28,106.69,DEN,-1.0
-2026,6,8,Team Rocket,3915416,DJ Moore,WR,BE,0.0,0.0,False,True,86.28,106.69,BUF,-1.0
-2026,6,8,Team Rocket,4035538,David Montgomery,RB,IR,0.0,0.0,False,False,86.28,106.69,HOU,-1.0
-2026,6,8,Team Rocket,4241457,Najee Harris,RB,BE,0.2,6.67,False,True,86.28,106.69,NYG,-1.0
-2026,6,8,Team Rocket,4241985,J.K. Dobbins,RB,RB/WR/TE,12.1,9.61,True,False,86.28,106.69,DEN,-1.0
-2026,6,8,Team Rocket,4426515,Puka Nacua,WR,WR,11.0,19.12,True,False,86.28,106.69,LAR,-1.0
-2026,6,8,Team Rocket,4428331,Rashee Rice,WR,BE,0.0,0.0,False,True,86.28,106.69,KC,-1.0
-2026,6,8,Team Rocket,4429205,Jordan Addison,WR,BE,0.0,0.0,False,True,86.28,106.69,MIN,-1.0
-2026,6,8,Team Rocket,4635008,Keon Coleman,WR,RB/WR/TE,13.9,9.03,True,False,86.28,106.69,BUF,-1.0
-2026,6,8,Team Rocket,4685247,Braelon Allen,RB,RB,11.4,13.08,True,False,86.28,106.69,NYJ,-1.0
-2026,6,8,Team Rocket,4686361,Cam Little,K,K,7.0,4.75,True,False,86.28,106.69,JAX,-1.0
-2026,6,8,Team Rocket,4688813,Josh Downs,WR,WR,6.7,7.85,True,False,86.28,106.69,IND,-1.0
-2026,6,8,Team Rocket,4696981,Cam Skattebo,RB,RB,0.0,8.16,True,False,86.28,106.69,NYG,-1.0
-2026,6,8,Team Rocket,4711533,Ollie Gordon II,RB,BE,0.0,0.0,False,True,86.28,106.69,MIA,-1.0
-2026,6,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,9.0,8.15,True,False,117.74,113.23,PIT,-1.0
-2026,6,9,SlowKing Henry and Company,3042519,Aaron Jones Sr.,RB,BE,0.0,0.0,False,True,117.74,113.23,MIN,-1.0
-2026,6,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,4.5,17.52,True,False,117.74,113.23,BAL,-1.0
-2026,6,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,117.74,113.23,NO,-1.0
-2026,6,9,SlowKing Henry and Company,4360238,Dameon Pierce,RB,RB/WR/TE,13.0,11.33,True,False,117.74,113.23,PHI,-1.0
-2026,6,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,QB,27.34,17.41,True,False,117.74,113.23,JAX,-1.0
-2026,6,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,117.74,113.23,MIN,-1.0
-2026,6,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,TE,20.9,11.99,True,False,117.74,113.23,NYG,-1.0
-2026,6,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,BE,0.0,0.0,False,True,117.74,113.23,CIN,-1.0
-2026,6,9,SlowKing Henry and Company,4426388,Jameson Williams,WR,BE,0.0,0.0,False,True,117.74,113.23,DET,-1.0
-2026,6,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,10.2,12.78,True,False,117.74,113.23,ATL,-1.0
-2026,6,9,SlowKing Henry and Company,4430539,Brenton Strange,TE,BE,6.9,7.68,False,True,117.74,113.23,JAX,-1.0
-2026,6,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,117.74,113.23,IND,-1.0
-2026,6,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,RB,3.6,11.8,True,False,117.74,113.23,NE,-1.0
-2026,6,9,SlowKing Henry and Company,4597500,Adonai Mitchell,WR,BE,0.0,0.0,False,True,117.74,113.23,NYJ,-1.0
-2026,6,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,BE,0.0,0.0,False,True,117.74,113.23,CHI,-1.0
-2026,6,9,SlowKing Henry and Company,4685261,Germie Bernard,WR,WR,20.2,7.75,True,False,117.74,113.23,PIT,-1.0
-2026,6,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,1.5,5.39,True,False,117.74,113.23,BAL,-1.0
-2026,6,9,SlowKing Henry and Company,4722893,Jaleel McLaughlin,RB,RB/WR/TE,7.5,9.11,True,False,117.74,113.23,CLE,-1.0
+2026,6,8,Pokemon Team Name,-16030,Jaguars D/ST,D/ST,D/ST,1.0,6.38,True,False,86.28,106.69,JAX,-1.0
+2026,6,8,Pokemon Team Name,8439,Aaron Rodgers,QB,BE,16.02,14.63,False,True,86.28,106.69,PIT,-1.0
+2026,6,8,Pokemon Team Name,12483,Matthew Stafford,QB,QB,15.88,19.43,True,False,86.28,106.69,LAR,-1.0
+2026,6,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,7.3,9.28,True,False,86.28,106.69,KC,-1.0
+2026,6,8,Pokemon Team Name,3126486,Deebo Samuel Sr.,WR,IR,0.0,0.0,False,False,86.28,106.69,SF,-1.0
+2026,6,8,Pokemon Team Name,3128429,Courtland Sutton,WR,BE,2.9,7.02,False,True,86.28,106.69,DEN,-1.0
+2026,6,8,Pokemon Team Name,3915416,DJ Moore,WR,BE,0.0,0.0,False,True,86.28,106.69,BUF,-1.0
+2026,6,8,Pokemon Team Name,4035538,David Montgomery,RB,IR,0.0,0.0,False,False,86.28,106.69,HOU,-1.0
+2026,6,8,Pokemon Team Name,4241457,Najee Harris,RB,BE,0.2,6.67,False,True,86.28,106.69,NYG,-1.0
+2026,6,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,RB/WR/TE,12.1,9.61,True,False,86.28,106.69,DEN,-1.0
+2026,6,8,Pokemon Team Name,4426515,Puka Nacua,WR,WR,11.0,19.12,True,False,86.28,106.69,LAR,-1.0
+2026,6,8,Pokemon Team Name,4428331,Rashee Rice,WR,BE,0.0,0.0,False,True,86.28,106.69,KC,-1.0
+2026,6,8,Pokemon Team Name,4429205,Jordan Addison,WR,BE,0.0,0.0,False,True,86.28,106.69,MIN,-1.0
+2026,6,8,Pokemon Team Name,4635008,Keon Coleman,WR,RB/WR/TE,13.9,9.03,True,False,86.28,106.69,BUF,-1.0
+2026,6,8,Pokemon Team Name,4685247,Braelon Allen,RB,RB,11.4,13.08,True,False,86.28,106.69,NYJ,-1.0
+2026,6,8,Pokemon Team Name,4686361,Cam Little,K,K,7.0,4.75,True,False,86.28,106.69,JAX,-1.0
+2026,6,8,Pokemon Team Name,4688813,Josh Downs,WR,WR,6.7,7.85,True,False,86.28,106.69,IND,-1.0
+2026,6,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB,0.0,8.16,True,False,86.28,106.69,NYG,-1.0
+2026,6,8,Pokemon Team Name,4711533,Ollie Gordon II,RB,BE,0.0,0.0,False,True,86.28,106.69,MIA,-1.0
+2026,6,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,9.0,8.15,True,False,117.74,113.23,PIT,-1.0
+2026,6,9,Who's That Puka-mon??,3042519,Aaron Jones Sr.,RB,BE,0.0,0.0,False,True,117.74,113.23,MIN,-1.0
+2026,6,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,4.5,17.52,True,False,117.74,113.23,BAL,-1.0
+2026,6,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,117.74,113.23,NO,-1.0
+2026,6,9,Who's That Puka-mon??,4360238,Dameon Pierce,RB,RB/WR/TE,13.0,11.33,True,False,117.74,113.23,PHI,-1.0
+2026,6,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,QB,27.34,17.41,True,False,117.74,113.23,JAX,-1.0
+2026,6,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,IR,0.0,0.0,False,False,117.74,113.23,MIN,-1.0
+2026,6,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,TE,20.9,11.99,True,False,117.74,113.23,NYG,-1.0
+2026,6,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,BE,0.0,0.0,False,True,117.74,113.23,CIN,-1.0
+2026,6,9,Who's That Puka-mon??,4426388,Jameson Williams,WR,BE,0.0,0.0,False,True,117.74,113.23,DET,-1.0
+2026,6,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,10.2,12.78,True,False,117.74,113.23,ATL,-1.0
+2026,6,9,Who's That Puka-mon??,4430539,Brenton Strange,TE,BE,6.9,7.68,False,True,117.74,113.23,JAX,-1.0
+2026,6,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,117.74,113.23,IND,-1.0
+2026,6,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,RB,3.6,11.8,True,False,117.74,113.23,NE,-1.0
+2026,6,9,Who's That Puka-mon??,4597500,Adonai Mitchell,WR,BE,0.0,0.0,False,True,117.74,113.23,NYJ,-1.0
+2026,6,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,BE,0.0,0.0,False,True,117.74,113.23,CHI,-1.0
+2026,6,9,Who's That Puka-mon??,4685261,Germie Bernard,WR,WR,20.2,7.75,True,False,117.74,113.23,PIT,-1.0
+2026,6,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,1.5,5.39,True,False,117.74,113.23,BAL,-1.0
+2026,6,9,Who's That Puka-mon??,4722893,Jaleel McLaughlin,RB,RB/WR/TE,7.5,9.11,True,False,117.74,113.23,CLE,-1.0
 2026,6,10,Brock,-16025,49ers D/ST,D/ST,D/ST,5.0,6.16,True,False,101.66,135.24,SF,-1.0
 2026,6,10,Brock,-16016,Vikings D/ST,D/ST,BE,0.0,0.0,False,True,101.66,135.24,MIN,-1.0
 2026,6,10,Brock,16737,Mike Evans,WR,BE,10.9,12.57,False,True,101.66,135.24,SF,-1.0
@@ -26852,44 +26852,44 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,7,7,J’Diglett Morgoones,4697815,Rachaad White,RB,BE,0.0,0.0,False,True,96.28,136.68,WSH,-1.0
 2026,7,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,96.28,136.68,NO,-1.0
 2026,7,7,J’Diglett Morgoones,5081432,Antonio Williams,WR,BE,0.0,0.0,False,True,96.28,136.68,WSH,-1.0
-2026,7,8,Team Rocket,-16004,Bengals D/ST,D/ST,D/ST,9.0,6.67,True,False,104.0,103.82,CIN,-1.0
-2026,7,8,Team Rocket,8439,Aaron Rodgers,QB,BE,13.08,19.23,False,True,104.0,103.82,PIT,-1.0
-2026,7,8,Team Rocket,12483,Matthew Stafford,QB,QB,17.5,18.36,True,False,104.0,103.82,LAR,-1.0
-2026,7,8,Team Rocket,15847,Travis Kelce,TE,TE,6.4,7.94,True,False,104.0,103.82,KC,-1.0
-2026,7,8,Team Rocket,3126486,Deebo Samuel Sr.,WR,IR,0.0,0.0,False,False,104.0,103.82,SF,-1.0
-2026,7,8,Team Rocket,3915416,DJ Moore,WR,BE,0.0,0.0,False,True,104.0,103.82,BUF,-1.0
-2026,7,8,Team Rocket,4035538,David Montgomery,RB,IR,0.0,0.0,False,False,104.0,103.82,HOU,-1.0
-2026,7,8,Team Rocket,4241985,J.K. Dobbins,RB,RB/WR/TE,8.3,12.66,True,False,104.0,103.82,DEN,-1.0
-2026,7,8,Team Rocket,4249087,Matt Gay,K,K,3.5,5.84,True,False,104.0,103.82,LV,-1.0
-2026,7,8,Team Rocket,4426515,Puka Nacua,WR,RB/WR/TE,17.8,18.72,True,False,104.0,103.82,LAR,-1.0
-2026,7,8,Team Rocket,4428331,Rashee Rice,WR,BE,0.0,0.0,False,True,104.0,103.82,KC,-1.0
-2026,7,8,Team Rocket,4429205,Jordan Addison,WR,WR,3.3,9.04,True,False,104.0,103.82,MIN,-1.0
-2026,7,8,Team Rocket,4586312,Jaylin Noel,WR,BE,0.7,7.14,False,True,104.0,103.82,HOU,-1.0
-2026,7,8,Team Rocket,4685247,Braelon Allen,RB,BE,16.4,13.53,False,True,104.0,103.82,NYJ,-1.0
-2026,7,8,Team Rocket,4688813,Josh Downs,WR,WR,2.8,6.41,True,False,104.0,103.82,IND,-1.0
-2026,7,8,Team Rocket,4696981,Cam Skattebo,RB,RB,18.6,7.18,True,False,104.0,103.82,NYG,-1.0
-2026,7,8,Team Rocket,4710855,Konata Mumpfield,WR,BE,2.0,6.2,False,True,104.0,103.82,LAR,-1.0
-2026,7,8,Team Rocket,4711533,Ollie Gordon II,RB,RB,16.8,11.0,True,False,104.0,103.82,MIA,-1.0
-2026,7,8,Team Rocket,4723820,Omar Cooper Jr.,WR,BE,20.0,6.59,False,True,104.0,103.82,NYJ,-1.0
-2026,7,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,8.0,7.36,True,False,94.2,121.22,PIT,-1.0
-2026,7,9,SlowKing Henry and Company,3042519,Aaron Jones Sr.,RB,RB,2.1,10.79,True,False,94.2,121.22,MIN,-1.0
-2026,7,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,5.4,17.28,True,False,94.2,121.22,BAL,-1.0
-2026,7,9,SlowKing Henry and Company,3917315,Kyler Murray,QB,QB,13.9,17.78,True,False,94.2,121.22,MIN,-1.0
-2026,7,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,94.2,121.22,NO,-1.0
-2026,7,9,SlowKing Henry and Company,4360238,Dameon Pierce,RB,BE,11.3,5.8,False,True,94.2,121.22,PHI,-1.0
-2026,7,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,BE,0.0,0.0,False,True,94.2,121.22,JAX,-1.0
-2026,7,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,BE,6.8,9.77,False,True,94.2,121.22,MIN,-1.0
-2026,7,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,TE,2.2,11.46,True,False,94.2,121.22,NYG,-1.0
-2026,7,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,14.7,17.81,True,False,94.2,121.22,CIN,-1.0
-2026,7,9,SlowKing Henry and Company,4426388,Jameson Williams,WR,RB/WR/TE,23.6,8.93,True,False,94.2,121.22,DET,-1.0
-2026,7,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,16.1,13.94,True,False,94.2,121.22,ATL,-1.0
-2026,7,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,94.2,121.22,IND,-1.0
-2026,7,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,BE,20.0,10.07,False,True,94.2,121.22,NE,-1.0
-2026,7,9,SlowKing Henry and Company,4597500,Adonai Mitchell,WR,BE,0.0,6.68,False,True,94.2,121.22,NYJ,-1.0
-2026,7,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,IR,0.0,0.0,False,False,94.2,121.22,CHI,-1.0
-2026,7,9,SlowKing Henry and Company,4685261,Germie Bernard,WR,RB/WR/TE,4.2,10.75,True,False,94.2,121.22,PIT,-1.0
-2026,7,9,SlowKing Henry and Company,4697745,Tyler Loop,K,K,4.0,5.12,True,False,94.2,121.22,BAL,-1.0
-2026,7,9,SlowKing Henry and Company,4870653,KC Concepcion,WR,BE,19.2,6.8,False,True,94.2,121.22,CLE,-1.0
+2026,7,8,Pokemon Team Name,-16004,Bengals D/ST,D/ST,D/ST,9.0,6.67,True,False,104.0,103.82,CIN,-1.0
+2026,7,8,Pokemon Team Name,8439,Aaron Rodgers,QB,BE,13.08,19.23,False,True,104.0,103.82,PIT,-1.0
+2026,7,8,Pokemon Team Name,12483,Matthew Stafford,QB,QB,17.5,18.36,True,False,104.0,103.82,LAR,-1.0
+2026,7,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,6.4,7.94,True,False,104.0,103.82,KC,-1.0
+2026,7,8,Pokemon Team Name,3126486,Deebo Samuel Sr.,WR,IR,0.0,0.0,False,False,104.0,103.82,SF,-1.0
+2026,7,8,Pokemon Team Name,3915416,DJ Moore,WR,BE,0.0,0.0,False,True,104.0,103.82,BUF,-1.0
+2026,7,8,Pokemon Team Name,4035538,David Montgomery,RB,IR,0.0,0.0,False,False,104.0,103.82,HOU,-1.0
+2026,7,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,RB/WR/TE,8.3,12.66,True,False,104.0,103.82,DEN,-1.0
+2026,7,8,Pokemon Team Name,4249087,Matt Gay,K,K,3.5,5.84,True,False,104.0,103.82,LV,-1.0
+2026,7,8,Pokemon Team Name,4426515,Puka Nacua,WR,RB/WR/TE,17.8,18.72,True,False,104.0,103.82,LAR,-1.0
+2026,7,8,Pokemon Team Name,4428331,Rashee Rice,WR,BE,0.0,0.0,False,True,104.0,103.82,KC,-1.0
+2026,7,8,Pokemon Team Name,4429205,Jordan Addison,WR,WR,3.3,9.04,True,False,104.0,103.82,MIN,-1.0
+2026,7,8,Pokemon Team Name,4586312,Jaylin Noel,WR,BE,0.7,7.14,False,True,104.0,103.82,HOU,-1.0
+2026,7,8,Pokemon Team Name,4685247,Braelon Allen,RB,BE,16.4,13.53,False,True,104.0,103.82,NYJ,-1.0
+2026,7,8,Pokemon Team Name,4688813,Josh Downs,WR,WR,2.8,6.41,True,False,104.0,103.82,IND,-1.0
+2026,7,8,Pokemon Team Name,4696981,Cam Skattebo,RB,RB,18.6,7.18,True,False,104.0,103.82,NYG,-1.0
+2026,7,8,Pokemon Team Name,4710855,Konata Mumpfield,WR,BE,2.0,6.2,False,True,104.0,103.82,LAR,-1.0
+2026,7,8,Pokemon Team Name,4711533,Ollie Gordon II,RB,RB,16.8,11.0,True,False,104.0,103.82,MIA,-1.0
+2026,7,8,Pokemon Team Name,4723820,Omar Cooper Jr.,WR,BE,20.0,6.59,False,True,104.0,103.82,NYJ,-1.0
+2026,7,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,8.0,7.36,True,False,94.2,121.22,PIT,-1.0
+2026,7,9,Who's That Puka-mon??,3042519,Aaron Jones Sr.,RB,RB,2.1,10.79,True,False,94.2,121.22,MIN,-1.0
+2026,7,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,5.4,17.28,True,False,94.2,121.22,BAL,-1.0
+2026,7,9,Who's That Puka-mon??,3917315,Kyler Murray,QB,QB,13.9,17.78,True,False,94.2,121.22,MIN,-1.0
+2026,7,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,94.2,121.22,NO,-1.0
+2026,7,9,Who's That Puka-mon??,4360238,Dameon Pierce,RB,BE,11.3,5.8,False,True,94.2,121.22,PHI,-1.0
+2026,7,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,BE,0.0,0.0,False,True,94.2,121.22,JAX,-1.0
+2026,7,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,BE,6.8,9.77,False,True,94.2,121.22,MIN,-1.0
+2026,7,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,TE,2.2,11.46,True,False,94.2,121.22,NYG,-1.0
+2026,7,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,14.7,17.81,True,False,94.2,121.22,CIN,-1.0
+2026,7,9,Who's That Puka-mon??,4426388,Jameson Williams,WR,RB/WR/TE,23.6,8.93,True,False,94.2,121.22,DET,-1.0
+2026,7,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,16.1,13.94,True,False,94.2,121.22,ATL,-1.0
+2026,7,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,BE,0.0,0.0,False,True,94.2,121.22,IND,-1.0
+2026,7,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,BE,20.0,10.07,False,True,94.2,121.22,NE,-1.0
+2026,7,9,Who's That Puka-mon??,4597500,Adonai Mitchell,WR,BE,0.0,6.68,False,True,94.2,121.22,NYJ,-1.0
+2026,7,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,IR,0.0,0.0,False,False,94.2,121.22,CHI,-1.0
+2026,7,9,Who's That Puka-mon??,4685261,Germie Bernard,WR,RB/WR/TE,4.2,10.75,True,False,94.2,121.22,PIT,-1.0
+2026,7,9,Who's That Puka-mon??,4697745,Tyler Loop,K,K,4.0,5.12,True,False,94.2,121.22,BAL,-1.0
+2026,7,9,Who's That Puka-mon??,4870653,KC Concepcion,WR,BE,19.2,6.8,False,True,94.2,121.22,CLE,-1.0
 2026,7,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,9.0,8.46,True,False,127.92,133.87,MIN,-1.0
 2026,7,10,Brock,16737,Mike Evans,WR,BE,0.0,0.0,False,True,127.92,133.87,SF,-1.0
 2026,7,10,Brock,17372,Chris Boswell,K,K,6.0,6.84,True,False,127.92,133.87,PIT,-1.0
@@ -27034,42 +27034,42 @@ season,week,team_id,team_name,player_id,player_name,position,slot,points,project
 2026,8,7,J’Diglett Morgoones,4697815,Rachaad White,RB,BE,13.0,11.12,False,True,168.48,134.02,WSH,-1.0
 2026,8,7,J’Diglett Morgoones,4880281,Jordyn Tyson,WR,IR,0.0,0.0,False,False,168.48,134.02,NO,-1.0
 2026,8,7,J’Diglett Morgoones,5081432,Antonio Williams,WR,BE,7.9,6.74,False,True,168.48,134.02,WSH,-1.0
-2026,8,8,Team Rocket,-16004,Bengals D/ST,D/ST,D/ST,7.0,6.7,True,False,110.08,115.2,CIN,-1.0
-2026,8,8,Team Rocket,12483,Matthew Stafford,QB,QB,8.28,16.76,True,False,110.08,115.2,LAR,-1.0
-2026,8,8,Team Rocket,15847,Travis Kelce,TE,TE,9.2,7.42,True,False,110.08,115.2,KC,-1.0
-2026,8,8,Team Rocket,3126486,Deebo Samuel Sr.,WR,BE,0.0,0.0,False,True,110.08,115.2,SF,-1.0
-2026,8,8,Team Rocket,3915416,DJ Moore,WR,RB/WR/TE,14.6,11.41,True,False,110.08,115.2,BUF,-1.0
-2026,8,8,Team Rocket,4035538,David Montgomery,RB,BE,0.0,0.0,False,True,110.08,115.2,HOU,-1.0
-2026,8,8,Team Rocket,4241985,J.K. Dobbins,RB,BE,1.3,8.12,False,True,110.08,115.2,DEN,-1.0
-2026,8,8,Team Rocket,4249087,Matt Gay,K,K,7.5,5.85,True,False,110.08,115.2,LV,-1.0
-2026,8,8,Team Rocket,4426515,Puka Nacua,WR,RB/WR/TE,19.5,19.0,True,False,110.08,115.2,LAR,-1.0
-2026,8,8,Team Rocket,4428331,Rashee Rice,WR,WR,14.8,9.91,True,False,110.08,115.2,KC,-1.0
-2026,8,8,Team Rocket,4429205,Jordan Addison,WR,BE,10.1,8.06,False,True,110.08,115.2,MIN,-1.0
-2026,8,8,Team Rocket,4430968,Kimani Vidal,RB,BE,4.0,6.91,False,True,110.08,115.2,LAC,-1.0
-2026,8,8,Team Rocket,4685247,Braelon Allen,RB,RB,22.3,16.01,True,False,110.08,115.2,NYJ,-1.0
-2026,8,8,Team Rocket,4688813,Josh Downs,WR,BE,10.3,6.5,False,True,110.08,115.2,IND,-1.0
-2026,8,8,Team Rocket,4696981,Cam Skattebo,RB,BE,0.0,0.0,False,True,110.08,115.2,NYG,-1.0
-2026,8,8,Team Rocket,4711533,Ollie Gordon II,RB,RB,6.9,13.31,True,False,110.08,115.2,MIA,-1.0
-2026,8,8,Team Rocket,4723820,Omar Cooper Jr.,WR,WR,0.0,8.83,True,False,110.08,115.2,NYJ,-1.0
-2026,8,9,SlowKing Henry and Company,-16023,Steelers D/ST,D/ST,D/ST,16.0,8.41,True,False,113.1,126.3,PIT,-1.0
-2026,8,9,SlowKing Henry and Company,3042519,Aaron Jones Sr.,RB,BE,5.0,9.0,False,True,113.1,126.3,MIN,-1.0
-2026,8,9,SlowKing Henry and Company,3043078,Derrick Henry,RB,RB,13.0,18.03,True,False,113.1,126.3,BAL,-1.0
-2026,8,9,SlowKing Henry and Company,3150744,Chase McLaughlin,K,K,6.5,5.8,True,False,113.1,126.3,TB,-1.0
-2026,8,9,SlowKing Henry and Company,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,113.1,126.3,NO,-1.0
-2026,8,9,SlowKing Henry and Company,4241555,Elijah Mitchell,RB,BE,5.7,5.03,False,True,113.1,126.3,PHI,-1.0
-2026,8,9,SlowKing Henry and Company,4360310,Trevor Lawrence,QB,QB,19.4,20.09,True,False,113.1,126.3,JAX,-1.0
-2026,8,9,SlowKing Henry and Company,4360569,Jordan Mason,RB,RB,2.0,8.83,True,False,113.1,126.3,MIN,-1.0
-2026,8,9,SlowKing Henry and Company,4361050,Isaiah Likely,TE,BE,0.0,0.0,False,True,113.1,126.3,NYG,-1.0
-2026,8,9,SlowKing Henry and Company,4362628,Ja'Marr Chase,WR,WR,25.6,18.32,True,False,113.1,126.3,CIN,-1.0
-2026,8,9,SlowKing Henry and Company,4426388,Jameson Williams,WR,RB/WR/TE,15.0,9.3,True,False,113.1,126.3,DET,-1.0
-2026,8,9,SlowKing Henry and Company,4426502,Drake London,WR,WR,1.3,14.77,True,False,113.1,126.3,ATL,-1.0
-2026,8,9,SlowKing Henry and Company,4431459,Tyler Warren,TE,TE,3.8,8.71,True,False,113.1,126.3,IND,-1.0
-2026,8,9,SlowKing Henry and Company,4569173,Rhamondre Stevenson,RB,RB/WR/TE,10.5,14.04,True,False,113.1,126.3,NE,-1.0
-2026,8,9,SlowKing Henry and Company,4597500,Adonai Mitchell,WR,BE,23.7,6.43,False,True,113.1,126.3,NYJ,-1.0
-2026,8,9,SlowKing Henry and Company,4608686,Kyle Monangai,RB,IR,0.0,0.0,False,False,113.1,126.3,CHI,-1.0
-2026,8,9,SlowKing Henry and Company,4635008,Keon Coleman,WR,BE,0.9,6.1,False,True,113.1,126.3,BUF,-1.0
-2026,8,9,SlowKing Henry and Company,4685261,Germie Bernard,WR,BE,5.5,8.42,False,True,113.1,126.3,PIT,-1.0
-2026,8,9,SlowKing Henry and Company,4870653,KC Concepcion,WR,BE,5.2,7.89,False,True,113.1,126.3,CLE,-1.0
+2026,8,8,Pokemon Team Name,-16004,Bengals D/ST,D/ST,D/ST,7.0,6.7,True,False,110.08,115.2,CIN,-1.0
+2026,8,8,Pokemon Team Name,12483,Matthew Stafford,QB,QB,8.28,16.76,True,False,110.08,115.2,LAR,-1.0
+2026,8,8,Pokemon Team Name,15847,Travis Kelce,TE,TE,9.2,7.42,True,False,110.08,115.2,KC,-1.0
+2026,8,8,Pokemon Team Name,3126486,Deebo Samuel Sr.,WR,BE,0.0,0.0,False,True,110.08,115.2,SF,-1.0
+2026,8,8,Pokemon Team Name,3915416,DJ Moore,WR,RB/WR/TE,14.6,11.41,True,False,110.08,115.2,BUF,-1.0
+2026,8,8,Pokemon Team Name,4035538,David Montgomery,RB,BE,0.0,0.0,False,True,110.08,115.2,HOU,-1.0
+2026,8,8,Pokemon Team Name,4241985,J.K. Dobbins,RB,BE,1.3,8.12,False,True,110.08,115.2,DEN,-1.0
+2026,8,8,Pokemon Team Name,4249087,Matt Gay,K,K,7.5,5.85,True,False,110.08,115.2,LV,-1.0
+2026,8,8,Pokemon Team Name,4426515,Puka Nacua,WR,RB/WR/TE,19.5,19.0,True,False,110.08,115.2,LAR,-1.0
+2026,8,8,Pokemon Team Name,4428331,Rashee Rice,WR,WR,14.8,9.91,True,False,110.08,115.2,KC,-1.0
+2026,8,8,Pokemon Team Name,4429205,Jordan Addison,WR,BE,10.1,8.06,False,True,110.08,115.2,MIN,-1.0
+2026,8,8,Pokemon Team Name,4430968,Kimani Vidal,RB,BE,4.0,6.91,False,True,110.08,115.2,LAC,-1.0
+2026,8,8,Pokemon Team Name,4685247,Braelon Allen,RB,RB,22.3,16.01,True,False,110.08,115.2,NYJ,-1.0
+2026,8,8,Pokemon Team Name,4688813,Josh Downs,WR,BE,10.3,6.5,False,True,110.08,115.2,IND,-1.0
+2026,8,8,Pokemon Team Name,4696981,Cam Skattebo,RB,BE,0.0,0.0,False,True,110.08,115.2,NYG,-1.0
+2026,8,8,Pokemon Team Name,4711533,Ollie Gordon II,RB,RB,6.9,13.31,True,False,110.08,115.2,MIA,-1.0
+2026,8,8,Pokemon Team Name,4723820,Omar Cooper Jr.,WR,WR,0.0,8.83,True,False,110.08,115.2,NYJ,-1.0
+2026,8,9,Who's That Puka-mon??,-16023,Steelers D/ST,D/ST,D/ST,16.0,8.41,True,False,113.1,126.3,PIT,-1.0
+2026,8,9,Who's That Puka-mon??,3042519,Aaron Jones Sr.,RB,BE,5.0,9.0,False,True,113.1,126.3,MIN,-1.0
+2026,8,9,Who's That Puka-mon??,3043078,Derrick Henry,RB,RB,13.0,18.03,True,False,113.1,126.3,BAL,-1.0
+2026,8,9,Who's That Puka-mon??,3150744,Chase McLaughlin,K,K,6.5,5.8,True,False,113.1,126.3,TB,-1.0
+2026,8,9,Who's That Puka-mon??,4239996,Travis Etienne Jr.,RB,IR,0.0,0.0,False,False,113.1,126.3,NO,-1.0
+2026,8,9,Who's That Puka-mon??,4241555,Elijah Mitchell,RB,BE,5.7,5.03,False,True,113.1,126.3,PHI,-1.0
+2026,8,9,Who's That Puka-mon??,4360310,Trevor Lawrence,QB,QB,19.4,20.09,True,False,113.1,126.3,JAX,-1.0
+2026,8,9,Who's That Puka-mon??,4360569,Jordan Mason,RB,RB,2.0,8.83,True,False,113.1,126.3,MIN,-1.0
+2026,8,9,Who's That Puka-mon??,4361050,Isaiah Likely,TE,BE,0.0,0.0,False,True,113.1,126.3,NYG,-1.0
+2026,8,9,Who's That Puka-mon??,4362628,Ja'Marr Chase,WR,WR,25.6,18.32,True,False,113.1,126.3,CIN,-1.0
+2026,8,9,Who's That Puka-mon??,4426388,Jameson Williams,WR,RB/WR/TE,15.0,9.3,True,False,113.1,126.3,DET,-1.0
+2026,8,9,Who's That Puka-mon??,4426502,Drake London,WR,WR,1.3,14.77,True,False,113.1,126.3,ATL,-1.0
+2026,8,9,Who's That Puka-mon??,4431459,Tyler Warren,TE,TE,3.8,8.71,True,False,113.1,126.3,IND,-1.0
+2026,8,9,Who's That Puka-mon??,4569173,Rhamondre Stevenson,RB,RB/WR/TE,10.5,14.04,True,False,113.1,126.3,NE,-1.0
+2026,8,9,Who's That Puka-mon??,4597500,Adonai Mitchell,WR,BE,23.7,6.43,False,True,113.1,126.3,NYJ,-1.0
+2026,8,9,Who's That Puka-mon??,4608686,Kyle Monangai,RB,IR,0.0,0.0,False,False,113.1,126.3,CHI,-1.0
+2026,8,9,Who's That Puka-mon??,4635008,Keon Coleman,WR,BE,0.9,6.1,False,True,113.1,126.3,BUF,-1.0
+2026,8,9,Who's That Puka-mon??,4685261,Germie Bernard,WR,BE,5.5,8.42,False,True,113.1,126.3,PIT,-1.0
+2026,8,9,Who's That Puka-mon??,4870653,KC Concepcion,WR,BE,5.2,7.89,False,True,113.1,126.3,CLE,-1.0
 2026,8,10,Brock,-16016,Vikings D/ST,D/ST,D/ST,6.0,6.14,True,False,110.84,126.4,MIN,-1.0
 2026,8,10,Brock,16737,Mike Evans,WR,BE,0.0,0.0,False,True,110.84,126.4,SF,-1.0
 2026,8,10,Brock,17372,Chris Boswell,K,K,5.0,5.99,True,False,110.84,126.4,PIT,-1.0
