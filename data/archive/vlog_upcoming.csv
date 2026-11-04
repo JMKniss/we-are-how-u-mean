@@ -1,1 +1,12 @@
 season,week,kind,position,team_id,opp_id,pick_id,player_id,player_name,projected
+2026,9,player,RB,1,,,4702555.0,Jonah Coleman,12.94
+2026,9,matchup,,2,3.0,2.0,,,
+2026,9,player,TE,3,,,4430027.0,Sam LaPorta,9.85
+2026,9,player,WR,4,,,4262921.0,Justin Jefferson,14.85
+2026,9,matchup,,4,5.0,4.0,,,
+2026,9,player,FLEX,6,,,4239993.0,Tee Higgins,13.79
+2026,9,matchup,,6,10.0,6.0,,,
+2026,9,matchup,,7,8.0,7.0,,,
+2026,9,player,QB,8,,,12483.0,Matthew Stafford,16.7
+2026,9,player,K,8,,,4249087.0,Matt Gay,5.34
+2026,9,matchup,,9,1.0,9.0,,,

@@ -399,8 +399,8 @@ season,week,end_week,team_id,opp_id,pick_id,graded,source
 2026,7,7,4,6,6,miss,recap
 2026,7,7,5,8,5,miss,recap
 2026,7,7,9,10,10,hit,recap
-2026,8,8,1,6,1,,preview
-2026,8,8,2,10,10,,preview
-2026,8,8,3,8,8,,preview
-2026,8,8,4,9,9,,preview
-2026,8,8,5,7,7,,preview
+2026,8,8,1,6,1,hit,recap
+2026,8,8,2,10,10,miss,recap
+2026,8,8,3,8,8,miss,recap
+2026,8,8,4,9,9,hit,recap
+2026,8,8,5,7,7,hit,recap
