@@ -1,1 +1,12 @@
 season,week,kind,position,team_id,opp_id,pick_id,player_id,player_name,projected
+2026,10,player,FLEX,1,,,4832800.0,Denzel Boston,10.76
+2026,10,matchup,,1,5.0,1.0,,,
+2026,10,player,RB,2,,,3117251.0,Christian McCaffrey,19.31
+2026,10,matchup,,2,4.0,2.0,,,
+2026,10,player,K,4,,,4571557.0,Spencer Shrader,6.13
+2026,10,player,QB,6,,,4431452.0,Drake Maye,21.65
+2026,10,matchup,,7,6.0,7.0,,,
+2026,10,player,WR,8,,,4426388.0,Jameson Williams,10.09
+2026,10,player,TE,9,,,4361050.0,Isaiah Likely,9.95
+2026,10,matchup,,9,3.0,9.0,,,
+2026,10,matchup,,10,8.0,10.0,,,
