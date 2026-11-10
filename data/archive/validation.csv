@@ -1165,7 +1165,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,1,5,This isnt my final Eveelotution,regular_season,Wk 1,125.56,125.56,0.0
 2026,1,6,GottaCatchaBall,regular_season,Wk 1,115.32,115.32,0.0
 2026,1,7,J’Diglett Morgoones,regular_season,Wk 1,145.3,145.3,0.0
-2026,1,8,Pokemon Team Name,regular_season,Wk 1,99.4,99.4,0.0
+2026,1,8,Team Rocket,regular_season,Wk 1,99.4,99.4,0.0
 2026,1,9,Who's That Puka-mon??,regular_season,Wk 1,132.06,132.06,0.0
 2026,1,10,Brock,regular_season,Wk 1,148.56,148.56,0.0
 2026,2,1,Rapidash to the Endzone,regular_season,Wk 2,156.02,156.02,0.0
@@ -1175,7 +1175,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,2,5,This isnt my final Eveelotution,regular_season,Wk 2,102.2,102.2,0.0
 2026,2,6,GottaCatchaBall,regular_season,Wk 2,131.12,131.12,0.0
 2026,2,7,J’Diglett Morgoones,regular_season,Wk 2,106.44,106.44,0.0
-2026,2,8,Pokemon Team Name,regular_season,Wk 2,67.4,67.4,0.0
+2026,2,8,Team Rocket,regular_season,Wk 2,67.4,67.4,0.0
 2026,2,9,Who's That Puka-mon??,regular_season,Wk 2,92.28,92.28,0.0
 2026,2,10,Brock,regular_season,Wk 2,100.58,100.58,0.0
 2026,3,1,Rapidash to the Endzone,regular_season,Wk 3,137.72,137.72,0.0
@@ -1185,7 +1185,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,3,5,This isnt my final Eveelotution,regular_season,Wk 3,85.04,85.04,0.0
 2026,3,6,GottaCatchaBall,regular_season,Wk 3,96.86,96.86,0.0
 2026,3,7,J’Diglett Morgoones,regular_season,Wk 3,157.74,157.74,0.0
-2026,3,8,Pokemon Team Name,regular_season,Wk 3,102.9,102.9,0.0
+2026,3,8,Team Rocket,regular_season,Wk 3,102.9,102.9,0.0
 2026,3,9,Who's That Puka-mon??,regular_season,Wk 3,134.38,134.38,0.0
 2026,3,10,Brock,regular_season,Wk 3,139.08,139.08,0.0
 2026,4,1,Rapidash to the Endzone,regular_season,Wk 4,110.12,110.12,0.0
@@ -1195,7 +1195,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,4,5,This isnt my final Eveelotution,regular_season,Wk 4,144.38,144.38,0.0
 2026,4,6,GottaCatchaBall,regular_season,Wk 4,104.96,104.96,0.0
 2026,4,7,J’Diglett Morgoones,regular_season,Wk 4,119.5,119.5,0.0
-2026,4,8,Pokemon Team Name,regular_season,Wk 4,84.08,84.08,0.0
+2026,4,8,Team Rocket,regular_season,Wk 4,84.08,84.08,0.0
 2026,4,9,Who's That Puka-mon??,regular_season,Wk 4,118.08,118.08,0.0
 2026,4,10,Brock,regular_season,Wk 4,158.82,158.82,0.0
 2026,5,1,Rapidash to the Endzone,regular_season,Wk 5,172.7,172.7,0.0
@@ -1205,7 +1205,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,5,5,This isnt my final Eveelotution,regular_season,Wk 5,88.58,88.58,0.0
 2026,5,6,GottaCatchaBall,regular_season,Wk 5,94.86,94.86,0.0
 2026,5,7,J’Diglett Morgoones,regular_season,Wk 5,156.72,156.72,0.0
-2026,5,8,Pokemon Team Name,regular_season,Wk 5,109.02,109.02,0.0
+2026,5,8,Team Rocket,regular_season,Wk 5,109.02,109.02,0.0
 2026,5,9,Who's That Puka-mon??,regular_season,Wk 5,153.04,153.04,0.0
 2026,5,10,Brock,regular_season,Wk 5,121.26,121.26,0.0
 2026,6,1,Rapidash to the Endzone,regular_season,Wk 6,94.4,94.4,0.0
@@ -1215,7 +1215,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,6,5,This isnt my final Eveelotution,regular_season,Wk 6,104.84,104.84,0.0
 2026,6,6,GottaCatchaBall,regular_season,Wk 6,117.6,117.6,0.0
 2026,6,7,J’Diglett Morgoones,regular_season,Wk 6,110.8,110.8,0.0
-2026,6,8,Pokemon Team Name,regular_season,Wk 6,86.28,86.28,0.0
+2026,6,8,Team Rocket,regular_season,Wk 6,86.28,86.28,0.0
 2026,6,9,Who's That Puka-mon??,regular_season,Wk 6,117.74,117.74,0.0
 2026,6,10,Brock,regular_season,Wk 6,101.66,101.66,0.0
 2026,7,1,Rapidash to the Endzone,regular_season,Wk 7,123.08,123.08,0.0
@@ -1225,7 +1225,7 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,7,5,This isnt my final Eveelotution,regular_season,Wk 7,92.62,92.62,0.0
 2026,7,6,GottaCatchaBall,regular_season,Wk 7,108.14,108.14,0.0
 2026,7,7,J’Diglett Morgoones,regular_season,Wk 7,96.28,96.28,0.0
-2026,7,8,Pokemon Team Name,regular_season,Wk 7,104.0,104.0,0.0
+2026,7,8,Team Rocket,regular_season,Wk 7,104.0,104.0,0.0
 2026,7,9,Who's That Puka-mon??,regular_season,Wk 7,94.2,94.2,0.0
 2026,7,10,Brock,regular_season,Wk 7,127.92,127.92,0.0
 2026,8,1,Rapidash to the Endzone,regular_season,Wk 8,142.56,142.56,0.0
@@ -1235,6 +1235,16 @@ season,week,team_id,team_name,check_type,label,our_score,espn_score,diff
 2026,8,5,This isnt my final Eveelotution,regular_season,Wk 8,65.8,65.8,0.0
 2026,8,6,GottaCatchaBall,regular_season,Wk 8,124.26,124.26,0.0
 2026,8,7,J’Diglett Morgoones,regular_season,Wk 8,168.48,168.48,0.0
-2026,8,8,Pokemon Team Name,regular_season,Wk 8,110.08,110.08,0.0
+2026,8,8,Team Rocket,regular_season,Wk 8,110.08,110.08,0.0
 2026,8,9,Who's That Puka-mon??,regular_season,Wk 8,113.1,113.1,0.0
 2026,8,10,Brock,regular_season,Wk 8,110.84,110.84,0.0
+2026,9,1,Rapidash to the Endzone,regular_season,Wk 9,142.64,142.64,0.0
+2026,9,2,Machampionship Bound,regular_season,Wk 9,131.08,131.08,0.0
+2026,9,3,Nine tails is hot,regular_season,Wk 9,106.04,106.04,0.0
+2026,9,4,Pickenschuuuuuuuuuu,regular_season,Wk 9,57.16,57.16,0.0
+2026,9,5,This isnt my final Eveelotution,regular_season,Wk 9,77.98,77.98,0.0
+2026,9,6,GottaCatchaBall,regular_season,Wk 9,125.56,125.56,0.0
+2026,9,7,J’Diglett Morgoones,regular_season,Wk 9,146.3,146.3,0.0
+2026,9,8,Team Rocket,regular_season,Wk 9,77.8,77.8,0.0
+2026,9,9,Who's That Puka-mon??,regular_season,Wk 9,123.08,123.08,0.0
+2026,9,10,Brock,regular_season,Wk 9,130.38,130.38,0.0

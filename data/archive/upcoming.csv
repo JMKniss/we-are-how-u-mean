@@ -1,11 +1,11 @@
 season,week,team_id,team_name,projected,opp_id,opp_name,opp_projected,is_playoff
-2026,9,1,Rapidash to the Endzone,124.35,9,Who's That Puka-mon??,119.91,False
-2026,9,2,Machampionship Bound,118.52,3,Nine tails is hot,115.44,False
-2026,9,3,Nine tails is hot,115.44,2,Machampionship Bound,118.52,False
-2026,9,4,Pickenschuuuuuuuuuu,115.47,5,This isnt my final Eveelotution,111.78,False
-2026,9,5,This isnt my final Eveelotution,111.78,4,Pickenschuuuuuuuuuu,115.47,False
-2026,9,6,GottaCatchaBall,115.99,10,Brock,119.68,False
-2026,9,7,J’Diglett Morgoones,140.45,8,Pokemon Team Name,110.43,False
-2026,9,8,Pokemon Team Name,110.43,7,J’Diglett Morgoones,140.45,False
-2026,9,9,Who's That Puka-mon??,119.91,1,Rapidash to the Endzone,124.35,False
-2026,9,10,Brock,119.68,6,GottaCatchaBall,115.99,False
+2026,10,1,Rapidash to the Endzone,132.27,5,This isnt my final Eveelotution,100.86,False
+2026,10,2,Machampionship Bound,119.49,4,Pickenschuuuuuuuuuu,86.47,False
+2026,10,3,Nine tails is hot,110.64,9,Who's That Puka-mon??,100.65,False
+2026,10,4,Pickenschuuuuuuuuuu,86.47,2,Machampionship Bound,119.49,False
+2026,10,5,This isnt my final Eveelotution,100.86,1,Rapidash to the Endzone,132.27,False
+2026,10,6,GottaCatchaBall,112.28,7,J’Diglett Morgoones,132.32,False
+2026,10,7,J’Diglett Morgoones,132.32,6,GottaCatchaBall,112.28,False
+2026,10,8,Team Rocket,111.71,10,Brock,120.45,False
+2026,10,9,Who's That Puka-mon??,100.65,3,Nine tails is hot,110.64,False
+2026,10,10,Brock,120.45,8,Team Rocket,111.71,False
