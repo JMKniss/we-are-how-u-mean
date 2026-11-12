@@ -25,14 +25,11 @@ a share, so one measurement priced two ways reads on one scale, and in the
 points a manager thinks in - each team's record under its name as on
 Draft Value, and its two biggest losses by draft capital; a separate playoff table for the four playoff teams once
 the playoffs start, never folded into the regular season; a player-by-player
-detail for one team; and What We Checked, every measure tried against the
-standings for the completed seasons, so the league can see why games lost
-is not the headline. The measures, constants and reasoning are in
+detail for one team; and Playoff vs Non-Playoff Teams, the average loss of
+each group over the completed seasons. The measures, constants and
+reasoning, and the What We Checked table that used to sit here, are in
 analysis/health.py. 2016-2017 have no game status and no replacement level,
 and say so.
-
-The ρ headers in What We Checked are written out as Correlation because the
-Broadcast headers are uppercase, and a capital rho reads as a P.
 """
 import sys
 from pathlib import Path
@@ -547,38 +544,10 @@ with tab6:
                  for r in detail.itertuples()],
                 groups=[("", 2), ("Draft Capital", 3), ("Actual Value", 3)])
 
-        # ── Every measure tried, and how it did ───────────────────────────────
+        # ── Playoff teams against the rest ────────────────────────────────────
         st.divider()
-        st.subheader("What We Checked")
-        measures, split = load_checked(tuple(SEASONS))
-        first, last = measures.attrs["first"], measures.attrs["last"]
-        st.caption(
-            f"Every way we measured injury luck, against the standings for {first}–{last}. "
-            "Correlation with points for is negative when injuries cost points; "
-            "correlation with finish is positive when injuries pushed a team down the "
-            "table. The last column is how often the least- and most-injured third of "
-            "teams made the playoffs. Weighing each lost game by what the player was worth "
-            "beats counting games, and the share the headline ranks on is the best against "
-            "finish, but none of these explains more than about a sixth of the spread in "
-            "points scored. Most of a season is still the roster and the schedule."
-        )
-        frame(pd.DataFrame({
-            "Measure": measures["measure"],
-            "What it values a lost game at": measures["value_at"],
-            "Correlation, points for": measures["rho_pf"],
-            "Correlation, reg-season rank": measures["rho_rank"],
-            "Playoff rate, least / most injured third": [
-                f"{a:.0f}% / {b:.0f}%" for a, b in
-                zip(measures["playoffs_least"], measures["playoffs_most"])],
-        }), num=("Correlation, points for", "Correlation, reg-season rank"),
-            mid=("Playoff rate, least / most injured third",),
-            fmt={"Correlation, points for": "{:+.2f}", "Correlation, reg-season rank": "{:+.2f}"},
-            sortable=False)
-
-        st.markdown("**Playoff teams vs the rest**")
-        st.caption("Playoff teams lost as many games to injury as everyone else, and their "
-                   "injured players were worth more. What differed was how much of the "
-                   "team it took.")
+        st.subheader("Playoff vs Non-Playoff Teams")
+        _, split = load_checked(tuple(SEASONS))
         frame(pd.DataFrame({
             "": split["group"],
             "Games lost": split["games_lost"],

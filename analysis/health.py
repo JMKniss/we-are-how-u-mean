@@ -126,8 +126,8 @@ you lost of what you paid at the draft, the ratio asks the same priced at
 the trade, plain asks what left the field. Unbounded, early-season values
 clamp to zero and the ratio ran from 0 to 550, so each player's trade-time
 value is floored at FLOOR and one trade's ratio is bounded to [1/RATIO_CAP,
-RATIO_CAP]. It correlates no better than plain frozen and is shown only in
-What We Checked.
+RATIO_CAP]. It correlates no better than plain frozen and appears only in
+What We Checked, below.
 
 So is the hard minimum: healthy PPG above replacement with no shrinkage,
 falling back to the draft expectation under MIN_GAMES games. It ranks teams
@@ -139,10 +139,24 @@ to date is the best current estimate of what each player is worth, and it
 converges on the hindsight number as the season completes. Replacement is
 the level to date as well.
 
-What We Checked keeps every measure tried on the page, with how each ranks
-against points for and the regular-season finish over the completed
-seasons, because the league would otherwise ask why games lost is not the
-number. Counted only for starting assets it is respectable, but weighing
+What We Checked: every measure tried, ranked against the standings over the
+completed seasons. It was a table on the page and was taken off in November
+2026; what_we_checked() still builds it, and its second frame is the
+Playoff vs Non-Playoff Teams table the page keeps. As it stood, 2018-2025,
+Spearman on within-season z-scores, playoff rate for the least- and
+most-injured third of teams:
+
+    measure                           pts for  finish  playoffs least / most
+    Games lost                        -0.29   +0.23    33% /  38%
+    Draft capital                     -0.41   +0.26    33% /  38%
+    Draft capital, no trade handling  -0.41   +0.27    33% /  41%
+    Actual value, total               -0.13   +0.06    33% /  47%
+    Actual value, share               -0.39   +0.31    50% /  41%
+    Actual value, hard minimum        -0.37   +0.27    46% /  41%
+    In-season, frozen                 -0.38   +0.27    42% /  41%
+    In-season with trade ratio        -0.38   +0.28    38% /  41%
+
+Counted only for starting assets, games lost is respectable, but weighing
 each game by what the player was worth does better, and none of them
 explains more than about a sixth of the spread in points scored.
 

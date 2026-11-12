@@ -688,9 +688,10 @@ was not the draft test: the curve gives nearly every pick a sliver of it.
 Games lost is shown but does not lead; weighing each game by value predicts
 better. Those
 measures - games lost, draft capital without trade handling, the hard
-minimum, the in-season frozen value with and without a trade ratio - stay
-on the page in a What We Checked table, because the league would otherwise
-ask. Computed live, about a fifth of a second a season, so it has no archive
+minimum, the in-season frozen value with and without a trade ratio - were
+a What We Checked table on the page until the league took it off; the table
+as it stood is in the docstring of `analysis/health.py`, and
+`what_we_checked()` rebuilds it. Computed live, about a fifth of a second a season, so it has no archive
 file. Reasoning in the docstring of `analysis/health.py`.
 
 **Trades are graded on the weeks held, by counterfactual, never by projection.**
