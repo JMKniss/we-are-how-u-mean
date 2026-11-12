@@ -666,11 +666,13 @@ not a drafter. The reasoning and the numbers behind it are in the docstring
 of `analysis/draft_value.py`.
 
 **Injury luck is two numbers, with the rest shown as what was checked.**
-Standings' Injury Luck tab leads with draft capital lost (games lost times
+Standings' Injury Luck tab leads with draft capital lost (games lost valued at
 the pick's expected VOR, carried through trades as a cost basis) and actual
 value lost (games lost times healthy PPG above replacement, shrunk toward
 the pick, as a share of the team's capacity; players keep their own value
-whoever has them). Raw actual value is never shown as a leaderboard because
+whoever has them). Both are shown as shares of what the team had, so the two
+read on one scale: they are one measurement priced two ways, and a VOR-games
+total beside a percent looked like two different things. Raw actual value is never shown as a leaderboard because
 good rosters have more to lose: playoff teams lost more of it than the rest,
 and its total does not correlate with points for at all. Games lost is shown
 but does not lead, being the weakest predictor of the measures tried. Those

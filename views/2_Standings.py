@@ -19,8 +19,10 @@ twice (analysis/standings.py, luck_breakdown). Then the chance of each
 week's result given only the score's rank, and how often each rank met each.
 
 Injury Luck - the same question for injuries. A headline table, ranked by
-the share of the team's actual value lost, with games lost and draft capital
-lost beside it; a separate playoff table for the four playoff teams once
+the share of the team's actual value lost, with games lost and the share of
+its draft capital lost beside it - both shares, so one measurement priced
+two ways reads on one scale - each team's record under its name as on
+Draft Value, and its two biggest losses by draft capital; a separate playoff table for the four playoff teams once
 the playoffs start, never folded into the regular season; a player-by-player
 detail for one team; and What We Checked, every measure tried against the
 standings for the completed seasons, so the league can see why games lost
@@ -50,7 +52,8 @@ from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import season_selector, require_data, sidebar_display_prefs, who_columns
 from branding import page_icon
 from analysis import health
-from style import esc, frame, html_table, page_header, player_pic, team_image
+from style import (esc, frame, html_table, page_header, player_pic, rank_cell,
+                   team_image, who_cell)
 
 st.set_page_config(page_title="Standings", page_icon=page_icon(), layout="wide")
 page_header("Standings")
@@ -441,17 +444,47 @@ def _games(g):
     return f"{g:.1f}".rstrip("0").rstrip(".") + "g"
 
 
+def _records():
+    """Each team's official regular-season record, as Draft Value shows it:
+    head-to-head before 2025, head-to-head plus the median game from 2025."""
+    df = combined_standings(matchups_df)
+    pre = "total_" if official_combined else ""
+    ties = df["ties"] + (df["median_ties"] if official_combined else 0)
+    return {t: f"{int(w)}-{int(l)}" + (f"-{int(x)}" if x else "")
+            for t, w, l, x in zip(df["team_id"], df[pre + "wins"], df[pre + "losses"], ties)}
+
+
 def injury_table(window):
+    """
+    Teams ranked by actual value lost, each with its record as a third line
+    under the name. Both value columns are shares of the team's capacity, so
+    they read on one scale.
+    """
     t = load_health(season, window).sort_values("actual_share", ascending=False)
-    team_table(t, {
-        "Games Lost": t["games_lost"],
-        "Draft Capital Lost": t["draft_capital_lost"],
-        "Actual Value Lost": t["actual_share"],
-        "Biggest Losses": [", ".join(f"{n} ({_games(g)})" for n, _, g in b) or "—"
-                           for b in t["biggest"]],
-    }, rank=True, num=("Games Lost", "Draft Capital Lost", "Actual Value Lost"),
-        fmt={"Games Lost": "{:.1f}", "Draft Capital Lost": "{:.1f}",
-             "Actual Value Lost": "{:.1f}%"})
+    names, subs, pics = who_columns(t, manager_map, season, show_mgr, show_team)
+    records = _records()
+
+    def team_cell(tid, name, sub, img):
+        rec = records.get(tid)
+        cell = who_cell(img, name, sub)
+        if not rec:
+            return cell
+        return cell.replace("</div></div>",
+                            f'<span class="wa-team">{esc(rec)}</span></div></div>', 1)
+
+    rows = []
+    for i, (r, name, sub, img) in enumerate(zip(t.itertuples(), names, subs, pics)):
+        rows.append([
+            (rank_cell(i + 1), "", i + 1),
+            (team_cell(r.team_id, name, sub, img), "", name),
+            (f"{r.games_lost:.1f}", "", r.games_lost),
+            (f"{r.draft_capital_share:.1f}%", "", r.draft_capital_share),
+            (f"{r.actual_share:.1f}%", "", r.actual_share),
+            esc(", ".join(f"{n} ({_games(g)})" for n, _, g in r.biggest) or "—"),
+        ])
+    html_table([("#", ""), (NAME_HEAD, ""), ("Games Lost", "num"),
+                ("Draft Capital Lost", "num"), ("Actual Value Lost", "num"),
+                ("Biggest Losses", "")], rows)
     return t
 
 
@@ -462,13 +495,18 @@ with tab6:
                 f"Injury status and replacement level are not available for {season}.")
     else:
         st.caption(
-            "How much each team lost to injury. Games Lost counts them. Draft Capital "
-            "Lost weighs each by what the pick was expected to return, so a lost "
-            "first-rounder costs more than a lost tenth, and follows what a manager "
-            "paid when the player came by trade. Actual Value Lost weighs each by what "
-            "the player was actually scoring above a replacement starter, as a share of "
-            "everything the team had. Mid-game injuries count as the part of the game "
-            "missed. Byes, suspensions and healthy scratches are not injuries."
+            "How much of each team sat out injured. Games Lost counts the games, with a "
+            "mid-game injury as the part of the game missed. The next two are one "
+            "measurement priced two ways, the share of everything the team had on the "
+            "field across the season that was out injured. Draft Capital Lost prices each "
+            "player at what his draft pick was expected to score above a replacement "
+            "starter, and a player who came by trade at what the manager gave up for him. "
+            "Actual Value Lost prices him at what he was actually scoring above a "
+            "replacement starter. 15% in either column means 15% of the team was on the "
+            "sideline. Draft well above actual means the injured players were drafted high "
+            "and were not living up to it, and the reverse means they were outplaying "
+            "their pick. Biggest Losses are the two players whose injuries cost the most "
+            "draft capital. Byes, suspensions and healthy scratches are not injuries."
         )
         weeks = health.weeks_to_date(season)
         if weeks < cfg["reg_season_end"]:
@@ -487,19 +525,13 @@ with tab6:
         st.divider()
         st.subheader("Team Detail")
         st.caption("Every player who lost a game or part of one for this team in the "
-                   "regular season. Worth per game is what he scored above a replacement "
-                   "starter, leaning on his draft slot until he has played a few games.")
+                   "regular season. Pick Worth and Play Worth are points per game above a "
+                   "replacement starter, by draft slot and by what he actually scored. "
+                   "The two Lost columns are his share of the team, and add up to the "
+                   "team's numbers above.")
         by_mgr = dict(zip(reg_health["manager"], reg_health["team_id"]))
-        c1, c2 = st.columns(2)
-        with c1:
-            mgr = st.selectbox("Manager", sorted(by_mgr), key="injury_manager")
-        with c2:
-            sort_by = st.radio("Sort", ["Actual value lost", "Draft capital lost", "Games lost"],
-                               horizontal=True, key="injury_sort")
+        mgr = st.selectbox("Manager", sorted(by_mgr), key="injury_manager")
         detail = load_health_detail(season, int(by_mgr[mgr]))
-        detail = detail.sort_values({"Actual value lost": "actual_lost",
-                                     "Draft capital lost": "draft_capital_lost",
-                                     "Games lost": "games_lost"}[sort_by], ascending=False)
         if detail.empty:
             st.info(f"{mgr} lost nobody to injury.")
         else:
@@ -509,13 +541,15 @@ with tab6:
                         f'<span class="wa-team">{esc(pos)}</span></div></div>')
 
             html_table(
-                [("Player", ""), ("Games Lost", "num"), ("Worth per Game", "num"),
-                 ("Actual Value Lost", "num"), ("Draft Capital Lost", "num")],
+                [("Player", ""), ("Games Lost", "num"), ("Pick Worth", "num"),
+                 ("Play Worth", "num"), ("Draft Capital Lost", "num"),
+                 ("Actual Value Lost", "num")],
                 [[(player_cell(r.player_id, r.player_name, r.position), "", r.player_name),
                   (f"{r.games_lost:.1f}", "", r.games_lost),
+                  (f"{r.basis:.2f}", "", r.basis),
                   (f"{r.actual:.2f}", "", r.actual),
-                  (f"{r.actual_lost:.1f}", "", r.actual_lost),
-                  (f"{r.draft_capital_lost:.1f}", "", r.draft_capital_lost)]
+                  (f"{r.draft_capital_share:.1f}%", "", r.draft_capital_share),
+                  (f"{r.actual_share:.1f}%", "", r.actual_share)]
                  for r in detail.itertuples()])
 
         # ── Every measure tried, and how it did ───────────────────────────────

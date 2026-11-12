@@ -1,15 +1,24 @@
 """
 Injury luck: how much of each team the season's injuries took.
 
-Two numbers lead, both in the draft value's per-game VOR units (points per
-game above the last starter at the position), summed over every rostered
-player-week a player lost to injury:
+Two numbers lead, both the same measurement on two bases: of everything the
+team had on the field, the share that sat out injured. Each player-week is
+valued in the draft value's per-game VOR units (points per game above the
+last starter at the position); a team's loss is that value times the part of
+the game lost, summed; its capacity is the value summed over every counted
+roster week; the share is loss / capacity.
 
     games lost          Out or IR = 1, Mid-Game Injury = injury_weight
-    draft capital lost  games lost x the pick's expected VOR, carried
-                        through trades as a cost basis
-    actual value lost   games lost x what the player was actually worth,
-                        as a share of the team's whole capacity
+    draft capital lost  valued at the pick's expected VOR, carried through
+                        trades as a cost basis: what the team expected
+    actual value lost   valued at what the player was actually worth: what
+                        the team was getting
+
+Shown as shares so the two read on one scale - 15% by draft capital and 15%
+by actual value mean the same fraction of the team, priced two ways. A team
+whose draft share is well above its actual share lost players who were
+drafted high and not living up to it; the reverse, players outplaying their
+pick.
 
 Each piece answers a question settled in the November 2026 exploration
 (Claude outputs/TEAM_HEALTH_RESULTS.md has the tables).
@@ -51,7 +60,10 @@ would rank the strongest rosters as the unluckiest. Divided by the team's
 capacity - the same values summed over every counted roster week - it
 correlates -0.39 with points for and +0.33 with finish, the best of every
 measure tried. Draft capital does not have this problem, because the snake
-evens capacity out (ρ 0.15 with points for), so it is shown as a total.
+evens capacity out (ρ 0.15 with points for), so its total and its share rank
+teams nearly alike; it is shown as a share only so it sits on the same
+scale as actual value. It was a total in VOR-games at first, which read as
+a different kind of number from the percent beside it.
 
 Draft capital through trades is a cost basis. A drafted player starts at his
 pick's expected VOR (undrafted, 0). In a trade each side's incoming players
@@ -301,7 +313,10 @@ def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
     One row per team over the regular season ("reg") or the playoff weeks
     ("playoff", the four seeds only). Totals are VOR-games; shares are
     percents of the team's capacity under the same measure. biggest is up to
-    three (player_name, player_id, games_lost) by actual value lost.
+    two (player_name, player_id, games_lost) by draft capital lost: the
+    players the team expected most from and lost, which reads as the injury
+    story of a season more plainly than actual value, where a hurt star who
+    was having a down year drops out of the list.
     """
     x = _window(season, window, k).copy()
     x["frozen_ratio"] = x["frozen"] * x["ratio"]
@@ -327,14 +342,14 @@ def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
         "frozen_share": share("frozen"),
         "frozen_ratio_share": share("frozen_ratio"),
     })
-    x["actual_lost"] = x["actual"] * x["lost"]
+    x["draft_lost"] = x["basis"] * x["lost"]
     per = (x.groupby(["team_id", "player_id"])
            .agg(player_name=("player_name", "first"), games=("lost", "sum"),
-                value=("actual_lost", "sum"))
+                value=("draft_lost", "sum"))
            .reset_index())
     per = per[per["value"] > 0].sort_values(["team_id", "value"], ascending=[True, False])
     out["biggest"] = pd.Series({
-        tid: [(r.player_name, r.player_id, r.games) for r in grp.head(3).itertuples()]
+        tid: [(r.player_name, r.player_id, r.games) for r in grp.head(2).itertuples()]
         for tid, grp in per.groupby("team_id")})
     out["biggest"] = out["biggest"].apply(lambda v: v if isinstance(v, list) else [])
     out["manager"] = out.index.map(archive.manager_map(season))
@@ -346,11 +361,15 @@ def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
 def team_detail(season: int, team_id: int, window: str = "reg") -> pd.DataFrame:
     """
     One row per player who lost any of a game for this team in the window:
-    his position, games lost, what he was worth per game, and the actual
-    value and draft capital the team lost with him.
+    his position, games lost, what he was worth per game by his pick (basis)
+    and by his play (actual), and the share of the team's capacity lost with
+    him under each. The shares sum to the team's draft_capital_share and
+    actual_share in team_health.
     """
     x = _window(season, window, K)
-    x = x[(x["team_id"] == team_id) & (x["lost"] > 0)].copy()
+    x = x[x["team_id"] == team_id].copy()
+    draft_cap, actual_cap = x["basis"].sum(), x["actual"].sum()
+    x = x[x["lost"] > 0]
     x["actual_lost"] = x["actual"] * x["lost"]
     x["draft_lost"] = x["basis"] * x["lost"]
     out = (x.groupby("player_id")
@@ -359,7 +378,9 @@ def team_detail(season: int, team_id: int, window: str = "reg") -> pd.DataFrame:
                 expected=("expected", "first"), basis=("basis", "last"),
                 actual_lost=("actual_lost", "sum"), draft_capital_lost=("draft_lost", "sum"))
            .reset_index())
-    return out.sort_values("actual_lost", ascending=False).reset_index(drop=True)
+    out["draft_capital_share"] = out["draft_capital_lost"] / draft_cap * 100 if draft_cap else 0.0
+    out["actual_share"] = out["actual_lost"] / actual_cap * 100 if actual_cap else 0.0
+    return out.sort_values("draft_capital_lost", ascending=False).reset_index(drop=True)
 
 
 def season_outcomes(season: int) -> pd.DataFrame:
