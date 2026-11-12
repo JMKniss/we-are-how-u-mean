@@ -497,7 +497,7 @@ with tab6:
     else:
         st.caption(
             "Measure of games and value (~ points) lost to injury. Games lost counts "
-            "players above replacement. Draft Capital looks at expected points based on draft "
+            "start-worthy players. Draft Capital looks at expected points based on draft "
             "position. Actual Value looks at PPG in games played. Share is value lost as a "
             "percent of the team's total."
         )
