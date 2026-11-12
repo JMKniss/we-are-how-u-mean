@@ -26,7 +26,8 @@ points a manager thinks in - each team's record under its name as on
 Draft Value, and its two biggest losses by draft capital; a separate playoff table for the four playoff teams once
 the playoffs start, never folded into the regular season; a player-by-player
 detail for one team; and Playoff vs Non-Playoff Teams, the average loss of
-each group over the completed seasons. The measures, constants and
+each group in the selected season, by the current top four while the
+regular season is still being played. The measures, constants and
 reasoning, and the What We Checked table that used to sit here, are in
 analysis/health.py. 2016-2017 have no game status and no replacement level,
 and say so.
@@ -432,9 +433,9 @@ def load_health_detail(season, team_id):
     return health.team_detail(season, team_id)
 
 
-@st.cache_data(ttl=3600)
-def load_checked(seasons):
-    return health.what_we_checked(seasons)
+@st.cache_data(ttl=300)
+def load_playoff_split(season):
+    return health.playoff_split(season)
 
 
 def _games(g):
@@ -547,9 +548,11 @@ with tab6:
         # ── Playoff teams against the rest ────────────────────────────────────
         st.divider()
         st.subheader("Playoff vs Non-Playoff Teams")
-        _, split = load_checked(tuple(SEASONS))
+        split = load_playoff_split(season)
+        groups = (["In playoff position", "Outside"] if split.attrs["in_progress"]
+                  else ["Made the playoffs", "Missed"])
         frame(pd.DataFrame({
-            "": split["group"],
+            "": groups,
             "Games lost": split["games_lost"],
             "Actual value lost, total": split["actual_lost"],
             "Actual value lost, share": split["actual_share"],

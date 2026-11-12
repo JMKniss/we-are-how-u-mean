@@ -141,8 +141,9 @@ the level to date as well.
 
 What We Checked: every measure tried, ranked against the standings over the
 completed seasons. It was a table on the page and was taken off in November
-2026; what_we_checked() still builds it, and its second frame is the
-Playoff vs Non-Playoff Teams table the page keeps. As it stood, 2018-2025,
+2026; what_we_checked() still builds it, with a playoff split pooled over
+the seasons (the page's Playoff vs Non-Playoff Teams is playoff_split, one
+season). As it stood, 2018-2025,
 Spearman on within-season z-scores, playoff rate for the least- and
 most-injured third of teams:
 
@@ -487,6 +488,22 @@ def season_outcomes(season: int) -> pd.DataFrame:
     out["reg_rank"] = pd.Series(range(1, len(order) + 1), index=order)
     seeds = playoff_seeds(season, m)
     out["playoffs"] = out.index.isin(seeds[:4])
+    return out
+
+
+def playoff_split(season: int) -> pd.DataFrame:
+    """
+    Mean regular-season games lost, actual value lost and its share for the
+    season's four playoff seeds and the rest. Before the regular season ends
+    the seeds are the current top four, so in_progress is set and the page
+    labels the groups as positions rather than results.
+    """
+    t = team_health(season, "reg").set_index("team_id")
+    m = archive.get("matchups", season)
+    t["playoffs"] = t.index.isin(playoff_seeds(season, m)[:4])
+    out = (t.groupby("playoffs")[["games_lost", "actual_lost", "actual_share"]].mean()
+           .reindex([True, False]))
+    out.attrs["in_progress"] = weeks_to_date(season) < season_config(season)["reg_season_end"]
     return out
 
 
