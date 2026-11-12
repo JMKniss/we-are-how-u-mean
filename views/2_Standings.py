@@ -1,3 +1,36 @@
+"""
+Standings: the season's table, and how much of it was luck.
+
+Regular season only throughout; the playoffs are the Playoffs page's. Four
+tabs:
+
+Standings - the table, with H2H, median and Vs All records. From 2025 it is
+ordered by combined (H2H + median) wins, the official format; before that by
+H2H, since median games did not count and ordering on them would rewrite
+history. Below it, each manager's weekly scoring rank.
+
+Strength of Schedule - how much opponents scored against each team, how that
+compares with what they scored against everyone else, and the swapped-schedule
+matrix: every team's real scores played against every other team's schedule.
+
+Luck - wins got minus wins the scores deserved, split into opponent,
+schedule, field and median luck so the parts add up with nothing counted
+twice (analysis/standings.py, luck_breakdown). Then the chance of each
+week's result given only the score's rank, and how often each rank met each.
+
+Injury Luck - the same question for injuries. A headline table, ranked by
+the share of the team's actual value lost, with games lost and draft capital
+lost beside it; a separate playoff table for the four playoff teams once
+the playoffs start, never folded into the regular season; a player-by-player
+detail for one team; and What We Checked, every measure tried against the
+standings for the completed seasons, so the league can see why games lost
+is not the headline. The measures, constants and reasoning are in
+analysis/health.py. 2016-2017 have no game status and no replacement level,
+and say so.
+
+The ρ headers in What We Checked are written out as Correlation because the
+Broadcast headers are uppercase, and a capital rho reads as a P.
+"""
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -16,7 +49,8 @@ from analysis.standings import (
 from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import season_selector, require_data, sidebar_display_prefs, who_columns
 from branding import page_icon
-from style import frame, page_header, team_image
+from analysis import health
+from style import esc, frame, html_table, page_header, player_pic, team_image
 
 st.set_page_config(page_title="Standings", page_icon=page_icon(), layout="wide")
 page_header("Standings")
@@ -75,8 +109,8 @@ def _current_standings(df):
     }, rank=True, cut_after=4, mid=("Total", "H2H", "Median", "Vs All"), num=("PF", "PA", "Avg"))
 
 
-tab1, tab4, tab5 = st.tabs(
-    ["Standings", "Strength of Schedule", "Luck"])
+tab1, tab4, tab5, tab6 = st.tabs(
+    ["Standings", "Strength of Schedule", "Luck", "Injury Luck"])
 
 # ── Tab 1 ─────────────────────────────────────────────────────────────────────
 with tab1:
@@ -384,3 +418,143 @@ with tab5:
     for c in mm_tbl.columns:
         mm[str(c)] = [("" if pd.isna(v) else int(v)) for v in mm_tbl[c]]
     frame(mm, mid=[str(c) for c in mm_tbl.columns], compact=True)
+
+
+# ── Tab 6: Injury Luck ────────────────────────────────────────────────────────
+@st.cache_data(ttl=300)
+def load_health(season, window):
+    return health.team_health(season, window)
+
+
+@st.cache_data(ttl=300)
+def load_health_detail(season, team_id):
+    return health.team_detail(season, team_id)
+
+
+@st.cache_data(ttl=3600)
+def load_checked(seasons):
+    return health.what_we_checked(seasons)
+
+
+def _games(g):
+    """Games as the page writes them: 5g, 8.7g."""
+    return f"{g:.1f}".rstrip("0").rstrip(".") + "g"
+
+
+def injury_table(window):
+    t = load_health(season, window).sort_values("actual_share", ascending=False)
+    team_table(t, {
+        "Games Lost": t["games_lost"],
+        "Draft Capital Lost": t["draft_capital_lost"],
+        "Actual Value Lost": t["actual_share"],
+        "Biggest Losses": [", ".join(f"{n} ({_games(g)})" for n, _, g in b) or "—"
+                           for b in t["biggest"]],
+    }, rank=True, num=("Games Lost", "Draft Capital Lost", "Actual Value Lost"),
+        fmt={"Games Lost": "{:.1f}", "Draft Capital Lost": "{:.1f}",
+             "Actual Value Lost": "{:.1f}%"})
+    return t
+
+
+with tab6:
+    st.subheader(f"Injury Luck, {season}")
+    if not health.supported(season):
+        st.info("There is not enough preserved data to perform this analysis. "
+                f"Injury status and replacement level are not available for {season}.")
+    else:
+        st.caption(
+            "How much each team lost to injury. Games Lost counts them. Draft Capital "
+            "Lost weighs each by what the pick was expected to return, so a lost "
+            "first-rounder costs more than a lost tenth, and follows what a manager "
+            "paid when the player came by trade. Actual Value Lost weighs each by what "
+            "the player was actually scoring above a replacement starter, as a share of "
+            "everything the team had. Mid-game injuries count as the part of the game "
+            "missed. Byes, suspensions and healthy scratches are not injuries."
+        )
+        weeks = health.weeks_to_date(season)
+        if weeks < cfg["reg_season_end"]:
+            st.caption(f"Through week {weeks}. Actual value uses the games played so far "
+                       "and settles as the season goes.")
+        reg_health = injury_table("reg")
+
+        if weeks >= cfg["playoff_weeks"][0]:
+            st.divider()
+            st.subheader("Playoff Injury Luck")
+            st.caption("Injuries in the playoff weeks, for the four teams that played "
+                       "them. Kept apart from the regular season, which decided who got here.")
+            injury_table("playoff")
+
+        # ── One team's injuries, player by player ─────────────────────────────
+        st.divider()
+        st.subheader("Team Detail")
+        st.caption("Every player who lost a game or part of one for this team in the "
+                   "regular season. Worth per game is what he scored above a replacement "
+                   "starter, leaning on his draft slot until he has played a few games.")
+        by_mgr = dict(zip(reg_health["manager"], reg_health["team_id"]))
+        c1, c2 = st.columns(2)
+        with c1:
+            mgr = st.selectbox("Manager", sorted(by_mgr), key="injury_manager")
+        with c2:
+            sort_by = st.radio("Sort", ["Actual value lost", "Draft capital lost", "Games lost"],
+                               horizontal=True, key="injury_sort")
+        detail = load_health_detail(season, int(by_mgr[mgr]))
+        detail = detail.sort_values({"Actual value lost": "actual_lost",
+                                     "Draft capital lost": "draft_capital_lost",
+                                     "Games lost": "games_lost"}[sort_by], ascending=False)
+        if detail.empty:
+            st.info(f"{mgr} lost nobody to injury.")
+        else:
+            def player_cell(pid, name, pos):
+                return (f'<div class="wa-who">{player_pic(pid)}<div>'
+                        f'<span class="wa-name">{esc(name)}</span>'
+                        f'<span class="wa-team">{esc(pos)}</span></div></div>')
+
+            html_table(
+                [("Player", ""), ("Games Lost", "num"), ("Worth per Game", "num"),
+                 ("Actual Value Lost", "num"), ("Draft Capital Lost", "num")],
+                [[(player_cell(r.player_id, r.player_name, r.position), "", r.player_name),
+                  (f"{r.games_lost:.1f}", "", r.games_lost),
+                  (f"{r.actual:.2f}", "", r.actual),
+                  (f"{r.actual_lost:.1f}", "", r.actual_lost),
+                  (f"{r.draft_capital_lost:.1f}", "", r.draft_capital_lost)]
+                 for r in detail.itertuples()])
+
+        # ── Every measure tried, and how it did ───────────────────────────────
+        st.divider()
+        st.subheader("What We Checked")
+        measures, split = load_checked(tuple(SEASONS))
+        first, last = measures.attrs["first"], measures.attrs["last"]
+        st.caption(
+            f"Every way we measured injury luck, against the standings for {first}–{last}. "
+            "Correlation with points for is negative when injuries cost points; "
+            "correlation with finish is positive when injuries pushed a team down the "
+            "table. The last column is how often the least- and most-injured third of "
+            "teams made the playoffs. Counting games is the weakest measure, weighing "
+            "by value is better, and the version the headline uses is the best of them, "
+            "but none of these explains more than about a seventh of the spread in "
+            "points scored. Most of a season is still the roster and the schedule."
+        )
+        frame(pd.DataFrame({
+            "Measure": measures["measure"],
+            "What it values a lost game at": measures["value_at"],
+            "Correlation, points for": measures["rho_pf"],
+            "Correlation, reg-season rank": measures["rho_rank"],
+            "Playoff rate, least / most injured third": [
+                f"{a:.0f}% / {b:.0f}%" for a, b in
+                zip(measures["playoffs_least"], measures["playoffs_most"])],
+        }), num=("Correlation, points for", "Correlation, reg-season rank"),
+            mid=("Playoff rate, least / most injured third",),
+            fmt={"Correlation, points for": "{:+.2f}", "Correlation, reg-season rank": "{:+.2f}"},
+            sortable=False)
+
+        st.markdown("**Playoff teams vs the rest**")
+        st.caption("Playoff teams lost as many games to injury as everyone else, and their "
+                   "injured players were worth more. What differed was how much of the "
+                   "team it took.")
+        frame(pd.DataFrame({
+            "": split["group"],
+            "Games lost": split["games_lost"],
+            "Actual value lost, total": split["actual_lost"],
+            "Actual value lost, share": split["actual_share"],
+        }), num=("Games lost", "Actual value lost, total", "Actual value lost, share"),
+            fmt={"Games lost": "{:.1f}", "Actual value lost, total": "{:.1f}",
+                 "Actual value lost, share": "{:.1f}%"}, compact=True, sortable=False)

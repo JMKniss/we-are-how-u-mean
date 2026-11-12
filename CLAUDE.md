@@ -94,6 +94,7 @@ ff_app/
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
 │   ├── projections.py      # playoff odds (team and player models), magic numbers
 │   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
+│   ├── health.py           # Injury luck: games, draft capital and actual value lost
 │   ├── vlog.py             # grades the Champmissioner's picks; weekly top/bottom scorer
 │   ├── transactions.py     # Waiver moves and trade sides from the transactions log
 │   └── trades.py           # Trade grades: two lineup counterfactuals per side, wins flipped
@@ -125,6 +126,7 @@ the file is opened rather than loaded into every session:
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
+| Injury luck: the measures, K, trades, what was checked and dropped | `analysis/health.py` |
 | Trade grades: both counterfactuals, the refill, the rates, the window, storage, what was rejected | `analysis/trades.py` |
 | Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
@@ -662,6 +664,21 @@ otherwise hide what a team found late. Hindsight rank is on VOR, so zero-VOR
 picks tie. No team measure repeats year to year, so it describes a draft,
 not a drafter. The reasoning and the numbers behind it are in the docstring
 of `analysis/draft_value.py`.
+
+**Injury luck is two numbers, with the rest shown as what was checked.**
+Standings' Injury Luck tab leads with draft capital lost (games lost times
+the pick's expected VOR, carried through trades as a cost basis) and actual
+value lost (games lost times healthy PPG above replacement, shrunk toward
+the pick, as a share of the team's capacity; players keep their own value
+whoever has them). Raw actual value is never shown as a leaderboard because
+good rosters have more to lose: playoff teams lost more of it than the rest,
+and its total does not correlate with points for at all. Games lost is shown
+but does not lead, being the weakest predictor of the measures tried. Those
+measures - games lost, draft capital without trade handling, the hard
+minimum, the in-season frozen value with and without a trade ratio - stay
+on the page in a What We Checked table, because the league would otherwise
+ask. Computed live, about a fifth of a second a season, so it has no archive
+file. Reasoning in the docstring of `analysis/health.py`.
 
 **Trades are graded on the weeks held, by counterfactual, never by projection.**
 Each side of a trade is scored alone: the manager's best possible lineup, and
