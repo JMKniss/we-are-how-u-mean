@@ -654,6 +654,15 @@ the pick of record - silently, by the league's choice. His own hit/miss
 verdict stands where he gave one. Checked against the season records he
 states on camera (2023 through week 10: 42-8 and 29-28), the archive agrees.
 
+**Team draft value is a plain sum, split after round 5.** The Draft Value
+tab's team table adds up each team's pick values with no adjustment for the
+seat, because the snake already evens draft capital out, and splits rounds
+1-5 from 6+ because the early rounds hold nearly all the value and would
+otherwise hide what a team found late. Hindsight rank is on VOR, so zero-VOR
+picks tie. No team measure repeats year to year, so it describes a draft,
+not a drafter. The reasoning and the numbers behind it are in the docstring
+of `analysis/draft_value.py`.
+
 **Trades are graded on the weeks held, by counterfactual, never by projection.**
 Each side of a trade is scored alone: the manager's best possible lineup, and
 the lineup he actually started, against the same roster with the trade undone,

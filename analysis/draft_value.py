@@ -76,6 +76,32 @@ not change the value, since the pick still cost what it cost.
 
 2016 and 2017 get nothing: ESPN kept only starters and season totals, so
 neither free-agent weeks nor a replacement level can be measured.
+
+Team draft value is a plain sum of a team's pick values, with no further
+adjustment for the draft capital it started with. The snake already evens
+that out: a team's expected, summed over its QB/RB/WR/TE picks, runs only
+18-22, and what spread there is comes from the seat and from how many picks
+it spent on kickers and D/ST. Normalising on top would mostly be measuring
+the seat. Share is the team's VOR as a percent of the whole draft's, so 10%
+is an average draft.
+
+The split falls after round 5 (EARLY_ROUNDS). Over 2018-2025 the share of
+picks returning any VOR runs 84, 75, 68, 59 and 56% through the first five
+rounds, then 45% in round 6 and never above 50 again; median VOR reaches
+zero in round 6, and a changepoint on hit rate lands at pick 55. The early
+rounds are where nearly all the value is, so a team total alone is mostly a
+verdict on rounds 1-5 and hides what a team found later.
+
+Hindsight rank orders a season's scored picks by VOR, so it puts positions on
+the same footing: a QB ranks ahead of a RB only if he beat the last starting
+QB by more than the RB beat the last starting RB. Every zero-VOR pick ties at
+the first non-hit rank (method="min"). A pick that returned nothing has no
+hindsight position, and ordering the zeros among themselves would invent
+one. picks_gained, overall pick minus hindsight rank, is only read for hits.
+
+None of it repeats. A manager's team value in one season correlates -0.20
+with the next, and no other team measure did better, so the table describes
+a draft, not a drafter.
 """
 import numpy as np
 import pandas as pd
@@ -86,6 +112,7 @@ from data import archive
 
 FIRST_SEASON = 2018
 POSITIONS = ("QB", "RB", "WR", "TE")
+EARLY_ROUNDS = 5
 CURVES = archive.ARCHIVE_DIR / "draft_value_curves.csv"
 
 
@@ -231,13 +258,17 @@ def draft_value(season: int, draft: pd.DataFrame | None = None) -> tuple[pd.Data
     """
     Each QB/RB/WR/TE pick's value per game against its season's curve.
 
-    Returns (picks, curve, frozen). Adds expected, value, injury_games, and
-    dropped - whether the drafting team cut him at any point that season.
+    Returns (picks, curve, frozen). Adds expected, value, injury_games,
+    dropped - whether the drafting team cut him at any point that season -
+    and the hindsight columns: hind_rank, hind_round and picks_gained.
     """
     curve, frozen = curve_for(season)
     picks = pick_vor(season, draft=draft)
     picks["expected"] = curve["intercept"] + curve["slope"] * np.log(picks["overall_pick"])
     picks["value"] = picks["vor"] - picks["expected"]
+    picks["hind_rank"] = picks["vor"].rank(ascending=False, method="min").astype(int)
+    picks["hind_round"] = (picks["hind_rank"] - 1) // 10 + 1
+    picks["picks_gained"] = picks["overall_pick"] - picks["hind_rank"]
     picks["injury_games"] = picks["player_id"].map(injury_games(season)).fillna(0.0)
 
     tx = archive.get("transactions", season) if archive.has("transactions", season) else pd.DataFrame()
@@ -248,3 +279,36 @@ def draft_value(season: int, draft: pd.DataFrame | None = None) -> tuple[pd.Data
         cut = set(zip(drops["player_name"], drops["from_team_id"]))
         picks["dropped"] = [(p, t) in cut for p, t in zip(picks["player_name"], picks["team_id"])]
     return picks, curve, frozen
+
+
+def team_draft_value(season: int) -> pd.DataFrame:
+    """
+    One row per team: summed value, share of the draft's VOR, hits, the
+    early/late split at EARLY_ROUNDS, and its best-value and best-hindsight
+    picks. Ranking is left to the caller.
+
+    Best hindsight is taken from the hits the drafter kept all season. A
+    player he cut found his value somewhere else, so it is not the draft's
+    best find for that team; hind_rank itself still ranks every pick.
+    """
+    picks, _, _ = draft_value(season)
+    by_team = picks.groupby("team_id")
+    early = picks["round"] <= EARLY_ROUNDS
+    out = pd.DataFrame({
+        "value": by_team["value"].sum(),
+        "share": by_team["vor"].sum() / picks["vor"].sum() * 100,
+        "hits": (picks["vor"] > 0).groupby(picks["team_id"]).sum(),
+        "scored": by_team.size(),
+        "early_value": picks["value"].where(early, 0).groupby(picks["team_id"]).sum(),
+        "late_value": picks["value"].where(~early, 0).groupby(picks["team_id"]).sum(),
+    })
+    best = picks.loc[by_team["value"].idxmax(), ["team_id", "player_id", "player_name",
+                                                  "round", "value", "dropped"]]
+    out = out.join(best.set_index("team_id").add_prefix("best_value_"))
+    hits = picks[(picks["vor"] > 0) & ~picks["dropped"]]
+    hind = hits.loc[hits.groupby("team_id")["picks_gained"].idxmax(),
+                    ["team_id", "player_id", "player_name", "round", "hind_round",
+                     "picks_gained", "dropped"]]
+    out = out.join(hind.set_index("team_id").add_prefix("best_hind_"))
+    out["manager"] = out.index.map(archive.manager_map(season))
+    return out.reset_index()

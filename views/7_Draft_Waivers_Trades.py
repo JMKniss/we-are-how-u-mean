@@ -14,7 +14,10 @@ a control instead of a column header for the same reason.
 Draft Value plots each pick's points above replacement against the curve of
 what that slot normally returns; the method, and why each part of it is the
 way it is, is in analysis/draft_value.py. It is empty for 2016-2017, which
-kept too little to measure a replacement level.
+kept too little to measure a replacement level. Under the scatter, Team Draft
+Value sums each team's picks (analysis.draft_value.team_draft_value), split at
+round 5, with a pie of each team's share of the draft's VOR in the scatter's
+colours. Best Value Picks and Biggest Busts show each pick's hindsight rank.
 
 Trades also grades every side of every trade, on the weeks that manager held
 what he received: the best lineup his roster could have started against the
@@ -35,16 +38,18 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 from data import archive
 from data.espn_client import (get_draft_df, get_boxscores_df, get_manager_map,
-                              get_transactions_df)
+                              get_transactions_df, get_matchups_df)
 from analysis.draft import apply_recorded_order
 from analysis import draft_value
 from analysis.transactions import waiver_moves, trade_sides, move_counts
 from analysis.trades import trade_grades, manager_summary
-from config import SEASONS, DEFAULT_SEASON
+from analysis.standings import combined_standings
+from config import SEASONS, DEFAULT_SEASON, season_config
 from display_utils import (season_selector, require_data, sidebar_display_prefs, chart_label,
                            name_lines)
 from display_utils import (trade_grade_table, show_trade_grades, trade_cell, by_chance_to_win,
@@ -79,6 +84,24 @@ def load(season):
 @st.cache_data(ttl=3600)
 def load_value(season):
     return draft_value.draft_value(season)
+
+@st.cache_data(ttl=3600)
+def load_team_value(season):
+    return draft_value.team_draft_value(season)
+
+@st.cache_data(ttl=3600)
+def load_records(season):
+    """Each team's official regular-season record, by team_id: head-to-head
+    before 2025, head-to-head plus the median game from 2025 on."""
+    m = get_matchups_df(season)
+    m = m[m["week"] <= season_config(season)["reg_season_end"]]
+    if m.empty:
+        return {}
+    df = combined_standings(m)
+    pre = "total_" if season >= 2025 else ""
+    ties = df["ties"] + (df["median_ties"] if season >= 2025 else 0)
+    return {t: f"{int(w)}-{int(l)}" + (f"-{int(x)}" if x else "")
+            for t, w, l, x in zip(df["team_id"], df[pre + "wins"], df[pre + "losses"], ties)}
 
 @st.cache_data(ttl=3600)
 def load_grades(season):
@@ -197,7 +220,9 @@ with tab3:
         # was dropped showed hollow there too. Each team's legend entry is a
         # solid stand-in instead, grouped with its trace so clicks still work.
         fig.update_traces(marker=dict(size=9, line=dict(width=1.5)))
+        colour_of = {}
         for trace in list(fig.data):
+            colour_of[trace.name] = trace.marker.color
             dropped = picks.loc[picks["label"] == trace.name, "dropped"]
             trace.marker.symbol = np.where(dropped, "circle-open", "circle").tolist()
             trace.legendgroup, trace.showlegend = trace.name, False
@@ -214,6 +239,73 @@ with tab3:
                         line=dict(dash="dash", color="gray"))
         st.plotly_chart(fig, width="stretch")
 
+        st.subheader("Team Draft Value")
+        st.caption("Draft value is the sum of a manager's picks' values: points per game "
+                   "above a replacement starter, minus expected. The analysis splits "
+                   "rounds 1–5 and 6+ because value in 1-5 outweighs and hides later "
+                   "pick value.")
+        teams_v = load_team_value(season).sort_values("value", ascending=False)
+        records = load_records(season)
+
+        def team_cell(tid):
+            """who_html with the season's record as a third, small line."""
+            rec = records.get(tid)
+            cell = who_html(tid)
+            if not rec:
+                return cell
+            return cell.replace("</div></div>",
+                                f'<span class="wa-team">{esc(rec)}</span></div></div>', 1)
+
+        def pick_cell(pid, name, line, dropped):
+            """A headshot, the player, and a small line under him; marked if cut."""
+            sub = line + (" · dropped" if dropped else "")
+            return (f'<div class="wa-who">{player_pic(pid)}<div>'
+                    f'<span class="wa-name">{esc(name)}</span>'
+                    f'<span class="wa-team">{esc(sub)}</span></div></div>')
+
+        def signed(v):
+            tone = "wa-pos" if v > 0 else "wa-neg"
+            return f'<span class="{tone}">{v:+.2f}</span>'
+
+        rows = []
+        for i, r in enumerate(teams_v.itertuples(), 1):
+            best = pick_cell(r.best_value_player_id, r.best_value_player_name,
+                             f"Rd {int(r.best_value_round)}, {r.best_value_value:+.1f}",
+                             bool(r.best_value_dropped))
+            if pd.isna(r.best_hind_player_id):
+                hind = ("—", "", -999)
+            else:
+                hind = (pick_cell(r.best_hind_player_id, r.best_hind_player_name,
+                                  f"Rd {int(r.best_hind_round)} → "
+                                  f"Rd {int(r.best_hind_hind_round)}",
+                                  bool(r.best_hind_dropped)),
+                        "", int(r.best_hind_picks_gained))
+            rows.append([f'<span class="wa-rank">{i}</span>', team_cell(r.team_id),
+                         f"<b>{signed(r.value)}</b>",
+                         (f"{int(r.hits)}/{int(r.scored)}", "", r.hits / r.scored),
+                         signed(r.early_value), signed(r.late_value),
+                         (best, "", round(r.best_value_value, 2)), hind])
+        html_table([("Rank", "mid"), (NAME_HEAD, ""), ("Value", "num"),
+                    ("Hits", "mid"), ("Rd 1-5", "num"), ("Rd 6+", "num"),
+                    ("Best Value", ""), ("Best Hindsight", "")], rows, compact=True)
+        st.caption("Hindsight ranks every drafted player by where they should have been "
+                   "drafted (i.e. where they finished). Only picks worth starting count.")
+
+        # Largest slice first, clockwise from twelve o'clock, in the
+        # scatter's colours so a manager is the same colour in both.
+        pie_src = teams_v.sort_values("share", ascending=False)
+        pie_labels = chart_label(pie_src, manager_map)
+        pie = go.Figure(go.Pie(
+            labels=pie_labels, values=pie_src["share"], sort=False, direction="clockwise",
+            marker=dict(colors=[colour_of.get(m) for m in pie_labels],
+                        line=dict(width=1, color="#ffffff")),
+            textinfo="label+percent", texttemplate="%{label}<br>%{percent:.1%}",
+            textposition="inside", insidetextorientation="horizontal",
+            hovertemplate="%{label}: %{percent:.1%}<extra></extra>"))
+        pie.update_layout(showlegend=False, margin=dict(l=10, r=10, t=10, b=10), height=440)
+        st.plotly_chart(pie, width="stretch")
+        st.caption("Share of the draft's total value by team.")
+
         def value_table(rows_df, missed=False):
             """Each pick with the player's headshot and the drafter's picture."""
             rows = []
@@ -224,17 +316,19 @@ with tab3:
                 row = [f'<span class="wa-rank">{int(r.overall_pick)}</span>', str(int(r.round)),
                        player, esc(str(r.position)), who_html(r.team_id), str(int(r.games)),
                        f"{r.ppg:.2f}", f"{r.vor:+.2f}", f"{r.expected:+.2f}",
-                       f'<b class="{tone}">{r.value:+.2f}</b>']
+                       f'<b class="{tone}">{r.value:+.2f}</b>', str(int(r.hind_rank))]
                 if missed:
                     row.append("—" if pd.isna(r.injury_games) else f"{r.injury_games:g}")
                 rows.append(row)
             heads = [("Pick", ""), ("Rd", "mid"), ("Player", ""), ("Pos", ""), (NAME_HEAD, ""),
                      ("Games", "mid"), ("Pts/G", "num"), ("Over Repl.", "num"),
-                     ("Expected", "num"), ("Value", "num")]
+                     ("Expected", "num"), ("Value", "num"), ("Finished", "mid")]
             html_table(heads + ([("Games Missed", "mid")] if missed else []), rows, compact=True)
 
         st.subheader("Best Value Picks")
         value_table(picks.nlargest(15, "value"))
+        st.caption("Finished is where the player ranked among all drafted players that "
+                   "season, counting only startable players.")
 
         # A count rather than a Y/N: an N read as "not injured" for a player
         # who missed two games. See analysis/draft_value.py.
