@@ -681,7 +681,8 @@ that dropped him, each week he is still Out or IR, until he plays or is
 picked up: cutting a season-ending injury is the right move, and it should
 not wipe the injury off the books. Raw actual value is never what the table ranks on because
 good rosters have more to lose: playoff teams lost more of it than the rest,
-and its total does not correlate with points for at all. Games lost is shown
+and its total does not correlate with points for at all. Games lost counts only players above replacement, since the WR40
+missing a month is not a loss a team felt; it is shown
 but does not lead, being the weakest predictor of the measures tried. Those
 measures - games lost, draft capital without trade handling, the hard
 minimum, the in-season frozen value with and without a trade ratio - stay

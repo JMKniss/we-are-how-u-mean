@@ -8,7 +8,8 @@ last starter at the position); a team's loss is that value times the part of
 the game lost, summed; its capacity is the value summed over every counted
 roster week; the share is loss / capacity.
 
-    games lost          Out or IR = 1, Mid-Game Injury = injury_weight
+    games lost          Out or IR = 1, Mid-Game Injury = injury_weight,
+                        for players above replacement only
     draft capital lost  valued at the pick's expected VOR, carried through
                         trades as a cost basis: what the team expected
     actual value lost   valued at what the player was actually worth: what
@@ -43,7 +44,17 @@ lost each week, while he stays Out or IR. The carry ends the week he plays,
 is a healthy scratch or suspended, or anyone rosters him, and a bye passes
 without counting. His value is the one he left with, basis included. It
 adds 30 to 76 regular-season weeks a season. Draft capital gains most from
-it, -0.35 to -0.41 against points for; games lost slips, -0.31 to -0.25.
+it, -0.35 to -0.41 against points for.
+
+Games lost counts only starting assets: players whose actual value is above
+replacement. The 40th receiver missing a month is not an injury a team
+felt, and counting him made a deep bench of fringe players look unlucky. It
+roughly halves the count, and weakens it further as a measure of luck,
+-0.15 against points for: good rosters have more starters to lose, the same
+reason raw actual value lost does not lead. The two value columns need no such rule, since a
+player at or below replacement is worth nothing in them already. Biggest
+Losses and Team Detail show each player's own games, so a drafted starter
+who was playing below replacement still shows what he missed.
 
 QB, RB, WR and TE only, as in draft value. A kicker or defence has no draft
 expectation worth the name - the curve expects late picks to be bench RBs -
@@ -384,7 +395,7 @@ def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
         return lost(col) / g[col].sum().replace(0, np.nan) * 100
 
     out = pd.DataFrame({
-        "games_lost": g["lost"].sum(),
+        "games_lost": x["lost"].where(x["actual"] > 0, 0.0).groupby(x["team_id"]).sum(),
         "draft_capital_lost": lost("basis"),
         "draft_capital_capacity": g["basis"].sum(),
         "draft_capital_share": share("basis"),
@@ -452,7 +463,7 @@ def season_outcomes(season: int) -> pd.DataFrame:
 
 
 MEASURES = [
-    ("Games lost", "1", "games_lost"),
+    ("Games lost", "1 per game, players above replacement only", "games_lost"),
     ("Draft capital", "the pick's expected VOR, cost basis through trades",
      "draft_capital_share"),
     ("Draft capital, no trade handling", "the pick's expected VOR, player keeps it",

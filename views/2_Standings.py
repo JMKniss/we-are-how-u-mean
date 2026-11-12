@@ -499,8 +499,8 @@ with tab6:
                 f"Injury status and replacement level are not available for {season}.")
     else:
         st.caption(
-            "Measure of games and value (~ points) lost to injury. Games lost includes all "
-            "rostered players. Draft Capital looks at expected points based on draft "
+            "Measure of games and value (~ points) lost to injury. Games lost counts "
+            "players above replacement. Draft Capital looks at expected points based on draft "
             "position. Actual Value looks at PPG in games played."
         )
         weeks = health.weeks_to_date(season)
