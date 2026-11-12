@@ -666,7 +666,7 @@ not a drafter. The reasoning and the numbers behind it are in the docstring
 of `analysis/draft_value.py`.
 
 **Injury luck is two numbers, with the rest shown as what was checked.**
-Standings' Injury Luck tab leads with draft capital lost (games lost valued at
+Standings' Injury tab leads with draft capital lost (games lost valued at
 the pick's expected VOR, carried through trades as a cost basis) and actual
 value lost (games lost times healthy PPG above replacement, shrunk toward
 the pick, as a share of the team's capacity; players keep their own value

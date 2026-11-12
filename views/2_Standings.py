@@ -18,7 +18,7 @@ schedule, field and median luck so the parts add up with nothing counted
 twice (analysis/standings.py, luck_breakdown). Then the chance of each
 week's result given only the score's rank, and how often each rank met each.
 
-Injury Luck - the same question for injuries. A headline table, ranked by
+Injury - the same question for injuries. A headline table, ranked by
 the share of the team's actual value lost, with games lost and the share of
 its draft capital lost beside it - each as points above replacement and as
 a share, so one measurement priced two ways reads on one scale, and in the
@@ -114,7 +114,7 @@ def _current_standings(df):
 
 
 tab1, tab4, tab5, tab6 = st.tabs(
-    ["Standings", "Strength of Schedule", "Luck", "Injury Luck"])
+    ["Standings", "Strength of Schedule", "Luck", "Injury"])
 
 # ── Tab 1 ─────────────────────────────────────────────────────────────────────
 with tab1:
@@ -424,7 +424,7 @@ with tab5:
     frame(mm, mid=[str(c) for c in mm_tbl.columns], compact=True)
 
 
-# ── Tab 6: Injury Luck ────────────────────────────────────────────────────────
+# ── Tab 6: Injury ──────────────────────────────────────────────────────────────
 @st.cache_data(ttl=300)
 def load_health(season, window):
     return health.team_health(season, window)
