@@ -493,7 +493,7 @@ def injury_table(window):
 
 
 with tab6:
-    st.subheader(f"Injury Luck, {season}")
+    st.subheader("Injury Luck")
     if not health.supported(season):
         st.info("There is not enough preserved data to perform this analysis. "
                 f"Injury status and replacement level are not available for {season}.")
