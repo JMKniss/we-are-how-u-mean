@@ -14,8 +14,11 @@ roster week; the share is loss / capacity.
     actual value lost   valued at what the player was actually worth: what
                         the team was getting
 
-Shown as shares so the two read on one scale - 15% by draft capital and 15%
-by actual value mean the same fraction of the team, priced two ways. A team
+Each is shown as points and as a share. Points is the VOR-points lost: what
+the injured players would have scored above replacement in the games they
+missed, which is the number a manager thinks in. The share puts the two on
+one scale - 15% by draft capital and 15% by actual value mean the same
+fraction of the team, priced two ways. A team
 whose draft share is well above its actual share lost players who were
 drafted high and not living up to it; the reverse, players outplaying their
 pick.
@@ -42,7 +45,11 @@ his whole season to date, playoffs included, rostered or not: Healthy weeks
 only, since a mid-game exit would mark him down for the injury being
 measured. Replacement is the draft value rule on healthy PPG - the Nth best
 at the position among players with at least half the season's games, N the
-league's weekly starters there from the box scores. It is shrunk toward the
+league's weekly starters there from the box scores. It is one number per
+position for the whole league, never the manager's own bench: valuing a
+lost player against whoever replaced him would measure depth, and a deep
+roster would look as if its injuries cost less when it had only covered
+them. It is shrunk toward the
 draft expectation by K games:
 
     actual = max(0, (n x (healthy PPG - replacement) + K x expected) / (n + K))
@@ -53,17 +60,19 @@ from 3 to 12 gives the same ranking of teams; 5 is where rank correlation
 with the standings peaks and where the in-season version, which has the
 fewest games to go on, stops being starved toward the prior.
 
-Raw actual value lost is never shown as a total. Good teams have more to
-lose: over 2018-2025 playoff teams lost 21.1 to the rest's 18.2, and the raw
+Raw actual value lost is never what the table ranks on. Good teams have more
+to lose: over 2018-2025 playoff teams lost 21.1 to the rest's 18.2, and the raw
 total correlates -0.09 with points for, i.e. not at all. As a leaderboard it
 would rank the strongest rosters as the unluckiest. Divided by the team's
 capacity - the same values summed over every counted roster week - it
 correlates -0.39 with points for and +0.33 with finish, the best of every
 measure tried. Draft capital does not have this problem, because the snake
 evens capacity out (ρ 0.15 with points for), so its total and its share rank
-teams nearly alike; it is shown as a share only so it sits on the same
-scale as actual value. It was a total in VOR-games at first, which read as
-a different kind of number from the percent beside it.
+teams nearly alike. Its share is there so it sits on the same scale as
+actual value. Both totals were VOR-games at first, a games-weighted per-game
+value that read as a different kind of number from the percent beside it,
+and that no manager would recognise; points above replacement is the same
+thing multiplied out.
 
 Draft capital through trades is a cost basis. A drafted player starts at his
 pick's expected VOR (undrafted, 0). In a trade each side's incoming players

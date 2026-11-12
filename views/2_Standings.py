@@ -20,8 +20,9 @@ week's result given only the score's rank, and how often each rank met each.
 
 Injury Luck - the same question for injuries. A headline table, ranked by
 the share of the team's actual value lost, with games lost and the share of
-its draft capital lost beside it - both shares, so one measurement priced
-two ways reads on one scale - each team's record under its name as on
+its draft capital lost beside it - each as points above replacement and as
+a share, so one measurement priced two ways reads on one scale, and in the
+points a manager thinks in - each team's record under its name as on
 Draft Value, and its two biggest losses by draft capital; a separate playoff table for the four playoff teams once
 the playoffs start, never folded into the regular season; a player-by-player
 detail for one team; and What We Checked, every measure tried against the
@@ -478,13 +479,16 @@ def injury_table(window):
             (rank_cell(i + 1), "", i + 1),
             (team_cell(r.team_id, name, sub, img), "", name),
             (f"{r.games_lost:.1f}", "", r.games_lost),
+            (f"{r.draft_capital_lost:.1f}", "", r.draft_capital_lost),
             (f"{r.draft_capital_share:.1f}%", "", r.draft_capital_share),
+            (f"{r.actual_lost:.1f}", "", r.actual_lost),
             (f"{r.actual_share:.1f}%", "", r.actual_share),
             esc(", ".join(f"{n} ({_games(g)})" for n, _, g in r.biggest) or "—"),
         ])
     html_table([("#", ""), (NAME_HEAD, ""), ("Games Lost", "num"),
-                ("Draft Capital Lost", "num"), ("Actual Value Lost", "num"),
-                ("Biggest Losses", "")], rows)
+                ("Points", "num"), ("Share", "num"), ("Points", "num"), ("Share", "num"),
+                ("Biggest Losses", "")], rows,
+               groups=[("", 3), ("Draft Capital Lost", 2), ("Actual Value Lost", 2), ("", 1)])
     return t
 
 
@@ -496,17 +500,23 @@ with tab6:
     else:
         st.caption(
             "How much of each team sat out injured. Games Lost counts the games, with a "
-            "mid-game injury as the part of the game missed. The next two are one "
-            "measurement priced two ways, the share of everything the team had on the "
-            "field across the season that was out injured. Draft Capital Lost prices each "
-            "player at what his draft pick was expected to score above a replacement "
-            "starter, and a player who came by trade at what the manager gave up for him. "
-            "Actual Value Lost prices him at what he was actually scoring above a "
-            "replacement starter. 15% in either column means 15% of the team was on the "
-            "sideline. Draft well above actual means the injured players were drafted high "
-            "and were not living up to it, and the reverse means they were outplaying "
-            "their pick. Biggest Losses are the two players whose injuries cost the most "
-            "draft capital. Byes, suspensions and healthy scratches are not injuries."
+            "mid-game injury as the part of the game missed. Draft Capital Lost and Actual "
+            "Value Lost are one measurement priced two ways. Points is the points the "
+            "injured players would have scored above replacement in the games they missed. "
+            "Replacement is one number per position for the whole league, the last starter's "
+            "worth, the 10th best QB and so on, not whoever was on the manager's bench, so "
+            "a deep roster does not make an injury cost less. Draft Capital prices each player at what his draft pick was expected to "
+            "score, and a player who came by trade at what the manager gave up for him. "
+            "Actual Value prices him at what he was actually scoring. Share is those points "
+            "as a part of everything the team had on the field across the season, so 15% "
+            "means 15% of the team was on the sideline. Every team starts with about the "
+            "same draft capital, so its share means the same thing for every manager. "
+            "Actual value depends on the rest of the roster, so the same injury is a "
+            "smaller share of a strong team. Draft well above actual means the injured "
+            "players were drafted high and were not living up to it, and the reverse means "
+            "they were outplaying their pick. Biggest Losses are the two players whose "
+            "injuries cost the most draft capital. Byes, suspensions and healthy scratches "
+            "are not injuries."
         )
         weeks = health.weeks_to_date(season)
         if weeks < cfg["reg_season_end"]:
@@ -525,10 +535,9 @@ with tab6:
         st.divider()
         st.subheader("Team Detail")
         st.caption("Every player who lost a game or part of one for this team in the "
-                   "regular season. Pick Worth and Play Worth are points per game above a "
-                   "replacement starter, by draft slot and by what he actually scored. "
-                   "The two Lost columns are his share of the team, and add up to the "
-                   "team's numbers above.")
+                   "regular season. Per Game is what he was worth above league replacement "
+                   "each game, by his draft slot and by what he actually scored. Points and "
+                   "Share are what the team lost with him, and add up to the team's row above.")
         by_mgr = dict(zip(reg_health["manager"], reg_health["team_id"]))
         mgr = st.selectbox("Manager", sorted(by_mgr), key="injury_manager")
         detail = load_health_detail(season, int(by_mgr[mgr]))
@@ -541,16 +550,19 @@ with tab6:
                         f'<span class="wa-team">{esc(pos)}</span></div></div>')
 
             html_table(
-                [("Player", ""), ("Games Lost", "num"), ("Pick Worth", "num"),
-                 ("Play Worth", "num"), ("Draft Capital Lost", "num"),
-                 ("Actual Value Lost", "num")],
+                [("Player", ""), ("Games Lost", "num"),
+                 ("Per Game", "num"), ("Points", "num"), ("Share", "num"),
+                 ("Per Game", "num"), ("Points", "num"), ("Share", "num")],
                 [[(player_cell(r.player_id, r.player_name, r.position), "", r.player_name),
                   (f"{r.games_lost:.1f}", "", r.games_lost),
                   (f"{r.basis:.2f}", "", r.basis),
-                  (f"{r.actual:.2f}", "", r.actual),
+                  (f"{r.draft_capital_lost:.1f}", "", r.draft_capital_lost),
                   (f"{r.draft_capital_share:.1f}%", "", r.draft_capital_share),
+                  (f"{r.actual:.2f}", "", r.actual),
+                  (f"{r.actual_lost:.1f}", "", r.actual_lost),
                   (f"{r.actual_share:.1f}%", "", r.actual_share)]
-                 for r in detail.itertuples()])
+                 for r in detail.itertuples()],
+                groups=[("", 2), ("Draft Capital", 3), ("Actual Value", 3)])
 
         # ── Every measure tried, and how it did ───────────────────────────────
         st.divider()
