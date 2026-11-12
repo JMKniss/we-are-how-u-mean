@@ -9,7 +9,7 @@ the game lost, summed; its capacity is the value summed over every counted
 roster week; the share is loss / capacity.
 
     games lost          Out or IR = 1, Mid-Game Injury = injury_weight,
-                        for players above replacement only
+                        for players above replacement by draft or by play
     draft capital lost  valued at the pick's expected VOR, carried through
                         trades as a cost basis: what the team expected
     actual value lost   valued at what the player was actually worth: what
@@ -46,15 +46,19 @@ without counting. His value is the one he left with, basis included. It
 adds 30 to 76 regular-season weeks a season. Draft capital gains most from
 it, -0.35 to -0.41 against points for.
 
-Games lost counts only starting assets: players whose actual value is above
-replacement. The 40th receiver missing a month is not an injury a team
-felt, and counting him made a deep bench of fringe players look unlucky. It
-roughly halves the count, and weakens it further as a measure of luck,
--0.15 against points for: good rosters have more starters to lose, the same
-reason raw actual value lost does not lead. The two value columns need no such rule, since a
-player at or below replacement is worth nothing in them already. Biggest
-Losses and Team Detail show each player's own games, so a drafted starter
-who was playing below replacement still shows what he missed.
+Games lost counts only starting assets: a player above replacement by his
+play (actual value above zero) or by his draft (taken among the first N at
+his position, N the league's weekly starters there - the 31st receiver off
+the board is a starter, the 40th is not). Either qualifies him, once. The
+40th receiver missing a month is not an injury a team felt, and counting
+every rostered player made a bench of fringe players look unlucky. The
+draft half is a draft rank rather than expected value above zero because
+the draft curve gives nearly every pick through round 16 a sliver of
+expected value, so that test would have counted everyone drafted. A
+drafted starter keeps qualifying after he is traded or dropped. The two
+value columns need no such rule, since a player at or below replacement is
+worth nothing in them already. Biggest Losses and Team Detail show each
+player's own games.
 
 QB, RB, WR and TE only, as in draft value. A kicker or defence has no draft
 expectation worth the name - the curve expects late picks to be bench RBs -
@@ -138,8 +142,9 @@ the level to date as well.
 What We Checked keeps every measure tried on the page, with how each ranks
 against points for and the regular-season finish over the completed
 seasons, because the league would otherwise ask why games lost is not the
-number. The answer is that it is the weakest of them, and that none of them
-explains more than about a seventh of the spread in points scored.
+number. Counted only for starting assets it is respectable, but weighing
+each game by what the player was worth does better, and none of them
+explains more than about a sixth of the spread in points scored.
 
 2016 and 2017 get nothing: there is no game status for them, and ESPN kept
 only starters, so neither a lost game nor a replacement level can be read.
@@ -212,6 +217,13 @@ def _player_weeks(season: int, k: int) -> pd.DataFrame:
     picks, _, _ = dv.draft_value(season)
     picks = picks[picks["player_id"] != 0]
     expected = picks.drop_duplicates("player_id").set_index("player_id")["expected"].clip(lower=0)
+    # Drafted as a starter: among the first N taken at his position, N the
+    # same weekly starter count that sets replacement.
+    picks = picks.drop_duplicates("player_id").sort_values("overall_pick")
+    pos_rank = picks.groupby("position").cumcount() + 1
+    drafted_starter = pd.Series(
+        pos_rank.values <= picks["position"].map(lambda p: int(starters.get(p, 10))).values,
+        index=picks["player_id"].values)
 
     d = box[["week", "team_id", "player_id", "player_name", "position", "slot", "points"]].merge(
         gs, on=["week", "player_id"], how="left")
@@ -220,6 +232,7 @@ def _player_weeks(season: int, k: int) -> pd.DataFrame:
                           [1.0, d["injury_weight"].fillna(0)], 0.0)
     d["counted"] = ~d["status"].isin(NOT_A_GAME)
     d["expected"] = d["player_id"].map(expected).fillna(0.0)
+    d["drafted_starter"] = d["player_id"].map(drafted_starter).fillna(False).astype(bool)
     d["replacement"] = d["position"].map(repl)
     d["healthy_games"] = d["player_id"].map(hs["games"]).fillna(0).astype(int)
     d["healthy_ppg"] = d["player_id"].map(hs["ppg"])
@@ -395,7 +408,8 @@ def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
         return lost(col) / g[col].sum().replace(0, np.nan) * 100
 
     out = pd.DataFrame({
-        "games_lost": x["lost"].where(x["actual"] > 0, 0.0).groupby(x["team_id"]).sum(),
+        "games_lost": x["lost"].where((x["actual"] > 0) | x["drafted_starter"], 0.0)
+                      .groupby(x["team_id"]).sum(),
         "draft_capital_lost": lost("basis"),
         "draft_capital_capacity": g["basis"].sum(),
         "draft_capital_share": share("basis"),
@@ -463,7 +477,8 @@ def season_outcomes(season: int) -> pd.DataFrame:
 
 
 MEASURES = [
-    ("Games lost", "1 per game, players above replacement only", "games_lost"),
+    ("Games lost", "1 per game, players above replacement by draft or play",
+     "games_lost"),
     ("Draft capital", "the pick's expected VOR, cost basis through trades",
      "draft_capital_share"),
     ("Draft capital, no trade handling", "the pick's expected VOR, player keeps it",

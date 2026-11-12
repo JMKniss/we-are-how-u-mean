@@ -560,9 +560,9 @@ with tab6:
             "Correlation with points for is negative when injuries cost points; "
             "correlation with finish is positive when injuries pushed a team down the "
             "table. The last column is how often the least- and most-injured third of "
-            "teams made the playoffs. Counting games is the weakest measure, weighing "
-            "by value is better, and the version the headline uses is the best of them, "
-            "but none of these explains more than about a seventh of the spread in "
+            "teams made the playoffs. Weighing each lost game by what the player was worth "
+            "beats counting games, and the share the headline ranks on is the best against "
+            "finish, but none of these explains more than about a sixth of the spread in "
             "points scored. Most of a season is still the roster and the schedule."
         )
         frame(pd.DataFrame({
