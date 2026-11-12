@@ -501,7 +501,8 @@ with tab6:
         st.caption(
             "Measure of games and value (~ points) lost to injury. Games lost counts "
             "players above replacement. Draft Capital looks at expected points based on draft "
-            "position. Actual Value looks at PPG in games played."
+            "position. Actual Value looks at PPG in games played. Share is value lost as a "
+            "percent of the team's total."
         )
         weeks = health.weeks_to_date(season)
         if weeks < cfg["reg_season_end"]:
@@ -519,11 +520,7 @@ with tab6:
         # ── One team's injuries, player by player ─────────────────────────────
         st.divider()
         st.subheader("Team Detail")
-        st.caption("Every player who lost a game or part of one for this team in the "
-                   "regular season, including weeks after he was dropped while still hurt. "
-                   "Per Game is what he was worth above league replacement "
-                   "each game, by his draft slot and by what he actually scored. Points and "
-                   "Share are what the team lost with him, and add up to the team's row above.")
+        st.caption("Every injured player from every team.")
         by_mgr = dict(zip(reg_health["manager"], reg_health["team_id"]))
         mgr = st.selectbox("Manager", sorted(by_mgr), key="injury_manager")
         detail = load_health_detail(season, int(by_mgr[mgr]))
