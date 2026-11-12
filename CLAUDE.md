@@ -676,7 +676,10 @@ share so the two read on one scale, being one measurement priced two ways.
 Replacement is one league-wide number per position, never the manager's own
 bench, because valuing a lost player against whoever filled in measures
 depth, and a deep roster would look as if its injuries cost less when it had
-only covered them. Raw actual value is never what the table ranks on because
+only covered them. A player dropped while hurt stays charged to the team
+that dropped him, each week he is still Out or IR, until he plays or is
+picked up: cutting a season-ending injury is the right move, and it should
+not wipe the injury off the books. Raw actual value is never what the table ranks on because
 good rosters have more to lose: playoff teams lost more of it than the rest,
 and its total does not correlate with points for at all. Games lost is shown
 but does not lead, being the weakest predictor of the measures tried. Those

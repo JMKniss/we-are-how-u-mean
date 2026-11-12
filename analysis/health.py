@@ -35,6 +35,16 @@ coach's. Those weeks leave both the loss and the capacity, so a team is not
 charged for a bye and not credited with a week's value it could never have
 used. A player-week with no status at all is Healthy.
 
+A player dropped while hurt stays charged to the team that dropped him.
+Cutting a player out for the season is the sensible move and should not
+make the injury disappear from the books, so when a team's last week with
+a player is one he lost any of, he is carried on that team, a whole game
+lost each week, while he stays Out or IR. The carry ends the week he plays,
+is a healthy scratch or suspended, or anyone rosters him, and a bye passes
+without counting. His value is the one he left with, basis included. It
+adds 30 to 76 regular-season weeks a season. Draft capital gains most from
+it, -0.35 to -0.41 against points for; games lost slips, -0.31 to -0.25.
+
 QB, RB, WR and TE only, as in draft value. A kicker or defence has no draft
 expectation worth the name - the curve expects late picks to be bench RBs -
 and the replacement kicker is a waiver claim away, so losing one costs a
@@ -61,13 +71,13 @@ with the standings peaks and where the in-season version, which has the
 fewest games to go on, stops being starved toward the prior.
 
 Raw actual value lost is never what the table ranks on. Good teams have more
-to lose: over 2018-2025 playoff teams lost 21.1 to the rest's 18.2, and the raw
-total correlates -0.09 with points for, i.e. not at all. As a leaderboard it
+to lose: over 2018-2025 playoff teams lost 25.5 to the rest's 22.3, and the raw
+total correlates -0.13 with points for, i.e. hardly at all. As a leaderboard it
 would rank the strongest rosters as the unluckiest. Divided by the team's
 capacity - the same values summed over every counted roster week - it
-correlates -0.39 with points for and +0.33 with finish, the best of every
-measure tried. Draft capital does not have this problem, because the snake
-evens capacity out (ρ 0.15 with points for), so its total and its share rank
+correlates -0.39 with points for and +0.31 with finish, the best against
+finish of every measure tried. Draft capital does not have this problem, because the snake
+evens capacity out (ρ 0.10 with points for), so its total and its share rank
 teams nearly alike. Its share is there so it sits on the same scale as
 actual value. Both totals were VOR-games at first, a games-weighted per-game
 value that read as a different kind of number from the percent beside it,
@@ -106,7 +116,7 @@ What We Checked.
 
 So is the hard minimum: healthy PPG above replacement with no shrinkage,
 falling back to the draft expectation under MIN_GAMES games. It ranks teams
-almost exactly as the shrunk value does (ρ 0.95), and the shrunk value needs
+almost exactly as the shrunk value does (ρ 0.94), and the shrunk value needs
 no cliff at three games.
 
 A season in progress needs no special case. Actual value over the archive
@@ -220,6 +230,7 @@ def _player_weeks(season: int, k: int) -> pd.DataFrame:
     d["frozen"] = _shrunk(n_w, pd.Series(above_w), d["expected"], k)
 
     d = _apply_trades(d, season)
+    d = _carry_dropped(d, gs, cw)
     d["reg"] = d["week"] <= reg_end
     d["playoff"] = d["week"].isin(cfg["playoff_weeks"])
     return d
@@ -288,6 +299,41 @@ def _apply_trades(d: pd.DataFrame, season: int, log: list | None = None) -> pd.D
             d.loc[(d["player_id"] == p) & later, "basis"] = b
         for p, f in new_ratio.items():
             d.loc[(d["player_id"] == p) & later, "ratio"] = f
+    return d
+
+
+def _carry_dropped(d: pd.DataFrame, gs: pd.DataFrame, cw: int) -> pd.DataFrame:
+    """
+    Keep charging a team for a player it let go while he was hurt. When a
+    team's last week with a player is one he lost any of, he stays on that
+    team's books, Out or IR, every following week until he plays, sits as a
+    healthy scratch or suspension, or anyone rosters him. Each carried week
+    is his last rostered row with the week and status changed, so his values,
+    basis and ratio are the ones he left with. A bye passes without a row.
+    """
+    d["dropped"] = False
+    held = set(zip(d["week"], d["team_id"], d["player_id"]))
+    rostered = set(zip(d["week"], d["player_id"]))
+    status = gs.set_index(["week", "player_id"])["status"].to_dict()
+    ends = d[(d["lost"] > 0) & (d["week"] < cw)
+             & np.array([(w + 1, t, p) not in held
+                         for w, t, p in zip(d["week"], d["team_id"], d["player_id"])])]
+    carried = []
+    for _, row in ends.iterrows():
+        for week in range(int(row["week"]) + 1, cw + 1):
+            s = status.get((week, row["player_id"]))
+            if (week, row["player_id"]) in rostered or s not in INJURED + ("Bye",):
+                break
+            if s == "Bye":
+                continue
+            r = row.copy()
+            r["week"], r["status"], r["lost"], r["points"] = week, s, 1.0, 0.0
+            r["slot"], r["counted"], r["dropped"] = "Dropped", True, True
+            carried.append(r)
+    if carried:
+        d = pd.concat([d, pd.DataFrame(carried).astype(d.dtypes.to_dict())],
+                      ignore_index=True)
+        d = d.sort_values(["week", "player_id"]).reset_index(drop=True)
     return d
 
 

@@ -499,24 +499,9 @@ with tab6:
                 f"Injury status and replacement level are not available for {season}.")
     else:
         st.caption(
-            "How much of each team sat out injured. Games Lost counts the games, with a "
-            "mid-game injury as the part of the game missed. Draft Capital Lost and Actual "
-            "Value Lost are one measurement priced two ways. Points is the points the "
-            "injured players would have scored above replacement in the games they missed. "
-            "Replacement is one number per position for the whole league, the last starter's "
-            "worth, the 10th best QB and so on, not whoever was on the manager's bench, so "
-            "a deep roster does not make an injury cost less. Draft Capital prices each player at what his draft pick was expected to "
-            "score, and a player who came by trade at what the manager gave up for him. "
-            "Actual Value prices him at what he was actually scoring. Share is those points "
-            "as a part of everything the team had on the field across the season, so 15% "
-            "means 15% of the team was on the sideline. Every team starts with about the "
-            "same draft capital, so its share means the same thing for every manager. "
-            "Actual value depends on the rest of the roster, so the same injury is a "
-            "smaller share of a strong team. Draft well above actual means the injured "
-            "players were drafted high and were not living up to it, and the reverse means "
-            "they were outplaying their pick. Biggest Losses are the two players whose "
-            "injuries cost the most draft capital. Byes, suspensions and healthy scratches "
-            "are not injuries."
+            "Measure of games and value (~ points) lost to injury. Games lost includes all "
+            "rostered players. Draft Capital looks at expected points based on draft "
+            "position. Actual Value looks at PPG in games played."
         )
         weeks = health.weeks_to_date(season)
         if weeks < cfg["reg_season_end"]:
@@ -535,7 +520,8 @@ with tab6:
         st.divider()
         st.subheader("Team Detail")
         st.caption("Every player who lost a game or part of one for this team in the "
-                   "regular season. Per Game is what he was worth above league replacement "
+                   "regular season, including weeks after he was dropped while still hurt. "
+                   "Per Game is what he was worth above league replacement "
                    "each game, by his draft slot and by what he actually scored. Points and "
                    "Share are what the team lost with him, and add up to the team's row above.")
         by_mgr = dict(zip(reg_health["manager"], reg_health["team_id"]))
