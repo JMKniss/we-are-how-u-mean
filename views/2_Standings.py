@@ -491,7 +491,7 @@ def injury_table(window):
 
 
 with tab6:
-    st.subheader("Injury Luck")
+    st.subheader("Injury Impact")
     if not health.supported(season):
         st.info("There is not enough preserved data to perform this analysis. "
                 f"Injury status and replacement level are not available for {season}.")
@@ -510,7 +510,7 @@ with tab6:
 
         if weeks >= cfg["playoff_weeks"][0]:
             st.divider()
-            st.subheader("Playoff Injury Luck")
+            st.subheader("Playoff Injury Impact")
             st.caption("Injuries in the playoff weeks, for the four teams that played "
                        "them. Kept apart from the regular season, which decided who got here.")
             injury_table("playoff")
