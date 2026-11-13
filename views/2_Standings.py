@@ -328,8 +328,8 @@ with tab5:
         c5, _ = st.columns(2)
         with c5:
             st.markdown("**Injury luck**")
-            st.caption("Points lost due to injury, and the estimated wins it cost, "
-                       "all compared to league average.")
+            st.caption("Points lost due to injury, and the estimated win chance that "
+                       "it cost. Luck is win impact compared to league average.")
             it = pd.DataFrame({"Manager": il["team_id"].map(manager_map).fillna("?").values,
                                "Points Lost": il["points_lost"].values,
                                "Wins Lost": il["wins_lost"].values,
