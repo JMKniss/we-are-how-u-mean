@@ -200,7 +200,13 @@ exactly, and this is one on the team's own. Known to undercount, by the
 league's own note: points lost in a week the rest of the roster had
 already lost still count toward points for, the first tiebreaker, and a
 great player's average understates the explosion weeks he takes with him.
-Something for the luck revisit, not for a boom-bust model.
+And it is on a different scale from the rest of the tab: the chain counts
+whole games won or lost, this counts marginal win chance, which moves at
+most about 0.15 per ten points near the middle of a week and almost
+nothing in a week lost by thirty. 2026 through week 9: Brian lost 85.7
+points, nearly ten a week, and it read -0.56, less than one bad median
+week. Kept as is by the league's choice; the first thing to fix when the
+luck metric is redefined. Not a boom-bust model.
 
 2016 and 2017 get nothing: there is no game status for them, and ESPN kept
 only starters, so neither a lost game nor a replacement level can be read.
