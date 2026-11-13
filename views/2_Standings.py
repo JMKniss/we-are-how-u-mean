@@ -15,8 +15,11 @@ matrix: every team's real scores played against every other team's schedule.
 
 Luck - wins got minus wins the scores deserved, split into opponent,
 schedule, field and median luck so the parts add up with nothing counted
-twice (analysis/standings.py, luck_breakdown). Then the chance of each
-week's result given only the score's rank, and how often each rank met each.
+twice (analysis/standings.py, luck_breakdown), with injury luck beside
+them: the regular season's actual value lost to injury, in wins
+(analysis/health.py, injury_luck), next to the total and never in it. Then
+the chance of each week's result given only the score's rank, and how often
+each rank met each.
 
 Injury - the same question for injuries. A headline table, ranked by
 the share of the team's actual value lost, with games lost and the share of
@@ -109,6 +112,11 @@ def _current_standings(df):
         "Vs All": df["_vs_all"],
         "PF": df["points_for"], "PA": df["points_against"], "Avg": df["avg_score"],
     }, rank=True, cut_after=4, mid=("Total", "H2H", "Median", "Vs All"), num=("PF", "PA", "Avg"))
+
+
+@st.cache_data(ttl=300)
+def load_injury_luck(season):
+    return health.injury_luck(season)
 
 
 tab1, tab4, tab5, tab6 = st.tabs(
@@ -318,6 +326,26 @@ with tab5:
         small(["opp_luck", "opp_form_pts"], ["Luck", "Points"],
               "opp_luck")
 
+    injury = None
+    if health.supported(season):
+        il = load_injury_luck(season).sort_values("injury_luck", ascending=False)
+        c5, _ = st.columns(2)
+        with c5:
+            st.markdown("**Injury luck**")
+            st.caption("Points lost to injury, valued as the Injury tab values them, "
+                       "and what they were worth in wins: each week's lost points put "
+                       "back on your score and read as the change in your chance of "
+                       "beating a typical team that week. Luck is the league's average "
+                       "wins lost minus yours, so a healthy season reads as lucky.")
+            it = pd.DataFrame({"Manager": il["team_id"].map(manager_map).fillna("?").values,
+                               "Points Lost": il["points_lost"].values,
+                               "Wins Lost": il["wins_lost"].values,
+                               "Luck": il["injury_luck"].values})
+            frame(it, pics=[pic(x) for x in il["team_id"]], compact=True,
+                  num=("Points Lost", "Wins Lost"), signed=("Luck",),
+                  fmt={"Points Lost": "{:.1f}", "Wins Lost": "{:.2f}", "Luck": "{:+.2f}"})
+        injury = il.set_index("team_id")["injury_luck"]
+
     st.divider()
     st.markdown("**Cumulative luck**")
     tot = luck_total(lb, official_combined)
@@ -332,7 +360,9 @@ with tab5:
     td = tot[cols].copy()
     td.columns = heads
     td["Rating"] = td["Rating"].map(lambda z: f"{z:+.1f}σ")
-    games = [h for h in heads if h not in ("Manager", "Rating", "")]
+    if injury is not None:
+        td["Injury"] = tot["team_id"].map(injury).fillna(0.0).values
+    games = [h for h in td.columns if h not in ("Manager", "Rating", "")]
     frame(td, pics=[pic(x) for x in tot["team_id"]], signed=games, num=("Rating",),
           fmt={h: "{:+.2f}" for h in games})
     st.caption(
@@ -346,6 +376,8 @@ with tab5:
         "league this season, so it says how unusual the total is rather than "
         "just how big: a quiet season and a wild one can hand out the same "
         "number of games and mean very different things."
+        + (" Injury is the injury luck above, in games. It stands beside the "
+           "total and is in neither the total nor the rating." if injury is not None else "")
     )
 
     # ── How likely that result was, given the score ────────────────────────

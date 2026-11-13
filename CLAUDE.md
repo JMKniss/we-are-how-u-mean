@@ -94,7 +94,7 @@ ff_app/
 │   ├── efficiency.py       # Lineup efficiency, bench waste, top players, proj vs actual
 │   ├── projections.py      # playoff odds (team and player models), magic numbers
 │   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
-│   ├── health.py           # Injury luck: games, draft capital and actual value lost
+│   ├── health.py           # Injury: draft capital and actual value lost; injury luck in wins
 │   ├── vlog.py             # grades the Champmissioner's picks; weekly top/bottom scorer
 │   ├── transactions.py     # Waiver moves and trade sides from the transactions log
 │   └── trades.py           # Trade grades: two lineup counterfactuals per side, wins flipped
@@ -126,7 +126,7 @@ the file is opened rather than loaded into every session:
 | Game-time injury status: categories, sources, accuracy | `data/game_status.py` |
 | Every player's weekly points, rostered or not | `get_player_weeks_df` in `data/espn_client.py` |
 | Draft value: the formula, and why each part is shaped as it is | `analysis/draft_value.py` |
-| Injury luck: the measures, K, trades, what was checked and dropped | `analysis/health.py` |
+| Injury: the measures, the games-played curve, mid-game injuries, trades, the luck line, what was checked | `analysis/health.py` |
 | Trade grades: both counterfactuals, the refill, the rates, the window, storage, what was rejected | `analysis/trades.py` |
 | Playoff odds: both models, their calibration, magic numbers | `analysis/projections.py` |
 | Matchups-to-watch notes | `analysis/matchup_notes.py` |
@@ -668,9 +668,10 @@ of `analysis/draft_value.py`.
 **Injury luck is two numbers, with the rest shown as what was checked.**
 Standings' Injury tab leads with draft capital lost (games lost valued at
 the pick's expected VOR, carried through trades as a cost basis) and actual
-value lost (games lost times healthy PPG above replacement, shrunk toward
-the pick, as a share of the team's capacity; players keep their own value
-whoever has them). Each is shown as points above replacement and as a share
+value lost (games lost times healthy PPG above replacement, blended with
+the pick on a logistic in games played - his pick through three games, his
+play from seven - as a share of the team's capacity; players keep their own
+value whoever has them). Each is shown as points above replacement and as a share
 of what the team had: points because that is what a manager thinks in, the
 share so the two read on one scale, being one measurement priced two ways.
 Replacement is one league-wide number per position, never the manager's own
@@ -679,7 +680,17 @@ depth, and a deep roster would look as if its injuries cost less when it had
 only covered them. A player dropped while hurt stays charged to the team
 that dropped him, each week he is still Out or IR, until he plays or is
 picked up: cutting a season-ending injury is the right move, and it should
-not wipe the injury off the books. Raw actual value is never what the table ranks on because
+not wipe the injury off the books. A player hurt mid-game in the lineup is
+charged his full points for the share of the game missed, replacement
+included because nobody filled in, capped at his shortfall to a full game:
+two players hurt at halftime are not equally unlucky when one had his
+points by then, and the cap is what keeps a flop's bad half out of the
+injury column. Hurt on the bench he is charged like an Out. The Luck tab
+carries the same loss in wins - each week's points put back on the score
+and read through the trade grades' normal curve, league average minus the
+team's so a healthy season reads as lucky - beside the luck total and never
+in it, since the total is an exact chain on the opponent's side of the
+scoreboard. Raw actual value is never what the table ranks on because
 good rosters have more to lose: playoff teams lost more of it than the rest,
 and its total does not correlate with points for at all. Games lost counts only starting assets - above replacement by actual
 value, or drafted among the league's starters at the position - since the

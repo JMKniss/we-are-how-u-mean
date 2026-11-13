@@ -5,8 +5,9 @@ Two numbers lead, both the same measurement on two bases: of everything the
 team had on the field, the share that sat out injured. Each player-week is
 valued in the draft value's per-game VOR units (points per game above the
 last starter at the position); a team's loss is that value times the part of
-the game lost, summed; its capacity is the value summed over every counted
-roster week; the share is loss / capacity.
+the game lost, summed (a mid-game injury in the lineup is priced differently,
+below); its capacity is the value summed over every counted roster week; the
+share is loss / capacity.
 
     games lost          Out or IR = 1, Mid-Game Injury = injury_weight,
                         for players above replacement by draft or by play
@@ -14,6 +15,9 @@ roster week; the share is loss / capacity.
                         trades as a cost basis: what the team expected
     actual value lost   valued at what the player was actually worth: what
                         the team was getting
+    injury luck         actual value lost in wins, for the Luck tab: each
+                        week's points put back on the score and read as a
+                        change in the chance of winning
 
 Each is shown as points and as a share. Points is the VOR-points lost: what
 the injured players would have scored above replacement in the games they
@@ -29,8 +33,21 @@ Each piece answers a question settled in the November 2026 exploration
 
 A lost game is read from game_status.csv, which records whether each player
 played at game time, from the NFL rather than ESPN. Out and IR are a whole
-game; a mid-game injury is the share of the team's offensive plays after he
-went down. Bye, Suspended and Inactive are not injuries: a bye everyone
+game, valued above replacement, since a replacement-level player stood in
+the slot. A mid-game injury in the lineup is different: nobody filled in,
+so the loss is his full points, replacement included, times the share of
+the team's offensive plays after he went down - capped at the shortfall to
+his full-game expectation, and floored at zero. Two players hurt at
+halftime are not equally unlucky when one had 12 points by then and the
+other none: on an expectation of 14 the first lost his shortfall, 2, the
+second the missed half, 7. The cap is what keeps a flop out of the injury
+column: an injury cannot cost more than the part of the game it took, nor
+the points he had already scored, and a poor half is the other luck
+measures' business. Hurt mid-game on the bench he is valued like an Out,
+above replacement times the share, since someone stood in the slot. Under
+this rule mid-game injuries are about a fifth of actual value lost; priced
+above replacement times the share, as they were before, a twentieth. Bye,
+Suspended and Inactive are not injuries: a bye everyone
 takes, a suspension is the player's doing, and a healthy scratch is the
 coach's. Those weeks leave both the loss and the capacity, so a team is not
 charged for a bye and not credited with a week's value it could never have
@@ -74,16 +91,22 @@ league's weekly starters there from the box scores. It is one number per
 position for the whole league, never the manager's own bench: valuing a
 lost player against whoever replaced him would measure depth, and a deep
 roster would look as if its injuries cost less when it had only covered
-them. It is shrunk toward the
-draft expectation by K games:
+them. It is blended with the
+draft expectation by a logistic in his healthy games:
 
-    actual = max(0, (n x (healthy PPG - replacement) + K x expected) / (n + K))
+    w = 1 / (1 + exp(-(n - MIDPOINT) / SLOPE))
+    actual = max(0, w x (healthy PPG - replacement) + (1 - w) x expected)
 
-so a player hurt in week 2 is worth roughly what he was drafted to be worth,
-and a player with twelve healthy games is worth what he did. K is 5. Anything
-from 3 to 12 gives the same ranking of teams; 5 is where rank correlation
-with the standings peaks and where the in-season version, which has the
-fewest games to go on, stops being starved toward the prior.
+MIDPOINT 4.5, SLOPE 1: one to three games barely move him off his pick (w
+0.03, 0.08, 0.18), six or seven settle him on what he did (0.82, 0.92), and
+by nine it is all his play. The curve is the league's reading of when a
+player's season is known: a hit or a bust shows in four to six games, and
+seven games of PPG, noisy as that still is, outranks the pick. Before it
+the blend was n / (n + 5), which still weighed a twelve-game player's pick
+at 30%; midpoints from 3.5 to 6 rank teams alike, as K from 3 to 12 did.
+The floor at zero is replacement value, not nothing: an undrafted player's
+expectation is zero above replacement, so a waiver pickup hurt in week 3
+is worth replacement plus whatever the curve lets his two weeks say.
 
 Raw actual value lost is never what the table ranks on. Good teams have more
 to lose: over 2018-2025 playoff teams lost 25.5 to the rest's 22.3, and the raw
@@ -131,8 +154,8 @@ What We Checked, below.
 
 So is the hard minimum: healthy PPG above replacement with no shrinkage,
 falling back to the draft expectation under MIN_GAMES games. It ranks teams
-almost exactly as the shrunk value does (ρ 0.94), and the shrunk value needs
-no cliff at three games.
+almost exactly as the blended value does, and the blended value needs no
+cliff at three games.
 
 A season in progress needs no special case. Actual value over the archive
 to date is the best current estimate of what each player is worth, and it
@@ -148,18 +171,36 @@ Spearman on within-season z-scores, playoff rate for the least- and
 most-injured third of teams:
 
     measure                           pts for  finish  playoffs least / most
-    Games lost                        -0.29   +0.23    33% /  38%
-    Draft capital                     -0.41   +0.26    33% /  38%
-    Draft capital, no trade handling  -0.41   +0.27    33% /  41%
-    Actual value, total               -0.13   +0.06    33% /  47%
-    Actual value, share               -0.39   +0.31    50% /  41%
-    Actual value, hard minimum        -0.37   +0.27    46% /  41%
-    In-season, frozen                 -0.38   +0.27    42% /  41%
-    In-season with trade ratio        -0.38   +0.28    38% /  41%
+    Games lost                        -0.29   +0.20    29% /  41%
+    Draft capital                     -0.42   +0.25    33% /  41%
+    Draft capital, no trade handling  -0.44   +0.26    38% /  34%
+    Actual value, total               -0.18   +0.09    33% /  50%
+    Actual value, share               -0.46   +0.35    42% /  44%
+    Actual value, hard minimum        -0.42   +0.30    46% /  41%
+    In-season, frozen                 -0.44   +0.30    38% /  47%
+    In-season with trade ratio        -0.44   +0.30    33% /  41%
 
 Counted only for starting assets, games lost is respectable, but weighing
 each game by what the player was worth does better, and none of them
-explains more than about a sixth of the spread in points scored.
+explains more than about a fifth of the spread in points scored. The
+logistic blend and the mid-game rule (November 2026) moved actual value's
+share from -0.39 to -0.46 against points for and left the order of the
+measures as it was.
+
+Injury luck, on the Luck tab, is actual value lost in wins. Each week's
+points lost are added back to the team's score, and the chance of beating a
+typical other team that week - a normal curve centred on the other teams'
+average, with the season's usual spread of a score around its week's
+average, the trade grades' expected wins - is read before and after. The
+differences sum to wins lost; luck is the league's average minus the
+team's, so a healthy season reads as lucky and the column sums to zero. It
+sits beside the luck total, never in it: the total is a chain of
+counterfactuals on the opponent's side of the scoreboard that adds up
+exactly, and this is one on the team's own. Known to undercount, by the
+league's own note: points lost in a week the rest of the roster had
+already lost still count toward points for, the first tiebreaker, and a
+great player's average understates the explosion weeks he takes with him.
+Something for the luck revisit, not for a boom-bust model.
 
 2016 and 2017 get nothing: there is no game status for them, and ESPN kept
 only starters, so neither a lost game nor a replacement level can be read.
@@ -168,6 +209,7 @@ from functools import lru_cache
 
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 from analysis import draft_value as dv
 from analysis.standings import playoff_seeds
@@ -175,7 +217,9 @@ from config import season_config
 from data import archive
 
 POSITIONS = ("QB", "RB", "WR", "TE")   # as draft value; K and D/ST out
-K = 5          # shrinkage games toward the draft expectation
+MIDPOINT = 4.5  # healthy games at which his play and his pick weigh the same
+SLOPE = 1.0     # games per step of the logistic; smaller is steeper
+CURVE = (MIDPOINT, SLOPE)
 FLOOR = 0.5    # a player's value when pricing a trade is never below this
 RATIO_CAP = 3  # one trade's ratio is bounded to [1/3, 3]
 MIN_GAMES = 3  # the hard-minimum variant, second tier only
@@ -193,13 +237,36 @@ def weeks_to_date(season: int) -> int:
     return min(archive.current_week(season) or 0, season_config(season)["total_weeks"])
 
 
-def _shrunk(n, above, expected, k):
-    """The actual-value formula: n games above replacement, k games of prior."""
-    return ((n * above + k * expected) / (n + k)).clip(lower=0)
+def _blend(n, above, expected, curve=CURVE):
+    """
+    The actual-value formula: a logistic in healthy games n weighs what he
+    did above replacement against what his pick expected. Floored at zero,
+    which is replacement value, not nothing.
+    """
+    midpoint, slope = curve
+    w = 1 / (1 + np.exp(-(np.asarray(n, dtype=float) - midpoint) / slope))
+    return (w * above + (1 - w) * expected).clip(lower=0)
+
+
+def _lost_points(x: pd.DataFrame, col: str) -> np.ndarray:
+    """
+    Points lost under one value column. Out, IR, or hurt mid-game on the
+    bench: the value times the share of the game lost, since a
+    replacement-level player stood in his slot. Hurt mid-game in the
+    lineup: full points, replacement included, since nobody filled in,
+    times the share of the game missed - but never more than the shortfall
+    to his full-game expectation, so a player who had his points before he
+    went down was not unlucky, and never below zero, since an injury is
+    never lucky.
+    """
+    full = x[col] + x["replacement"]
+    capped = np.minimum(full * x["lost"], full - x["points"]).clip(lower=0)
+    in_lineup = (x["status"] == "Mid-Game Injury") & x["is_active_slot"]
+    return np.where(in_lineup, capped, x[col] * x["lost"])
 
 
 @lru_cache(maxsize=32)
-def _player_weeks(season: int, k: int) -> pd.DataFrame:
+def _player_weeks(season: int, curve: tuple = CURVE) -> pd.DataFrame:
     cfg = season_config(season)
     reg_end = cfg["reg_season_end"]
     cw = weeks_to_date(season)
@@ -240,7 +307,8 @@ def _player_weeks(season: int, k: int) -> pd.DataFrame:
         pos_rank.values <= picks["position"].map(lambda p: int(starters.get(p, 10))).values,
         index=picks["player_id"].values)
 
-    d = box[["week", "team_id", "player_id", "player_name", "position", "slot", "points"]].merge(
+    d = box[["week", "team_id", "player_id", "player_name", "position", "slot",
+             "is_active_slot", "points"]].merge(
         gs, on=["week", "player_id"], how="left")
     d["status"] = d["status"].fillna("Healthy")
     d["lost"] = np.select([d["status"].isin(INJURED), d["status"] == "Mid-Game Injury"],
@@ -252,7 +320,7 @@ def _player_weeks(season: int, k: int) -> pd.DataFrame:
     d["healthy_games"] = d["player_id"].map(hs["games"]).fillna(0).astype(int)
     d["healthy_ppg"] = d["player_id"].map(hs["ppg"])
     above = (d["healthy_ppg"] - d["replacement"]).fillna(0.0)
-    d["actual"] = _shrunk(d["healthy_games"], above, d["expected"], k)
+    d["actual"] = _blend(d["healthy_games"], above, d["expected"], curve)
     d["actual_hard"] = np.where(d["healthy_games"] >= MIN_GAMES, above.clip(lower=0),
                                 d["expected"])
 
@@ -266,7 +334,7 @@ def _player_weeks(season: int, k: int) -> pd.DataFrame:
     n_w = before["cum_n"].fillna(0)
     above_w = np.where(n_w > 0, before["cum_pts"].fillna(0) / n_w.where(n_w > 0, 1)
                        - d["replacement"], 0.0)
-    d["frozen"] = _shrunk(n_w, pd.Series(above_w), d["expected"], k)
+    d["frozen"] = _blend(n_w, pd.Series(above_w), d["expected"], curve)
 
     d = _apply_trades(d, season)
     d = _carry_dropped(d, gs, cw)
@@ -376,25 +444,25 @@ def _carry_dropped(d: pd.DataFrame, gs: pd.DataFrame, cw: int) -> pd.DataFrame:
     return d
 
 
-def player_weeks(season: int, k: int = K) -> pd.DataFrame:
+def player_weeks(season: int, curve: tuple = CURVE) -> pd.DataFrame:
     """
     One row per rostered QB/RB/WR/TE player-week through the archive's
     current week: who had him, whether and how much of the game he lost,
     and his value per game under every measure (expected, actual,
     actual_hard, frozen, basis, ratio). See the module docstring.
     """
-    return _player_weeks(season, k).copy()
+    return _player_weeks(season, curve).copy()
 
 
 def trade_log(season: int) -> pd.DataFrame:
     """Every trade side's basis and ratio bookkeeping, for checking."""
     log = []
-    _apply_trades(_player_weeks(season, K).drop(columns=["basis", "ratio"]).copy(), season, log)
+    _apply_trades(_player_weeks(season).drop(columns=["basis", "ratio"]).copy(), season, log)
     return pd.DataFrame(log)
 
 
-def _window(season: int, window: str, k: int) -> pd.DataFrame:
-    d = _player_weeks(season, k)
+def _window(season: int, window: str, curve: tuple = CURVE) -> pd.DataFrame:
+    d = _player_weeks(season, curve)
     x = d[d[window] & d["counted"]]
     if window == "playoff":
         seeds = playoff_seeds(season, archive.get("matchups", season))[:4]
@@ -402,22 +470,22 @@ def _window(season: int, window: str, k: int) -> pd.DataFrame:
     return x
 
 
-def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
+def team_health(season: int, window: str = "reg", curve: tuple = CURVE) -> pd.DataFrame:
     """
     One row per team over the regular season ("reg") or the playoff weeks
-    ("playoff", the four seeds only). Totals are VOR-games; shares are
+    ("playoff", the four seeds only). Totals are points lost; shares are
     percents of the team's capacity under the same measure. biggest is up to
     two (player_name, player_id, games_lost) by draft capital lost: the
     players the team expected most from and lost, which reads as the injury
     story of a season more plainly than actual value, where a hurt star who
     was having a down year drops out of the list.
     """
-    x = _window(season, window, k).copy()
+    x = _window(season, window, curve).copy()
     x["frozen_ratio"] = x["frozen"] * x["ratio"]
     g = x.groupby("team_id")
 
     def lost(col):
-        return (x[col] * x["lost"]).groupby(x["team_id"]).sum()
+        return pd.Series(_lost_points(x, col), index=x.index).groupby(x["team_id"]).sum()
 
     def share(col):
         return lost(col) / g[col].sum().replace(0, np.nan) * 100
@@ -437,7 +505,7 @@ def team_health(season: int, window: str = "reg", k: int = K) -> pd.DataFrame:
         "frozen_share": share("frozen"),
         "frozen_ratio_share": share("frozen_ratio"),
     })
-    x["draft_lost"] = x["basis"] * x["lost"]
+    x["draft_lost"] = _lost_points(x, "basis")
     per = (x.groupby(["team_id", "player_id"])
            .agg(player_name=("player_name", "first"), games=("lost", "sum"),
                 value=("draft_lost", "sum"))
@@ -461,12 +529,12 @@ def team_detail(season: int, team_id: int, window: str = "reg") -> pd.DataFrame:
     him under each. The shares sum to the team's draft_capital_share and
     actual_share in team_health.
     """
-    x = _window(season, window, K)
+    x = _window(season, window)
     x = x[x["team_id"] == team_id].copy()
     draft_cap, actual_cap = x["basis"].sum(), x["actual"].sum()
     x = x[x["lost"] > 0]
-    x["actual_lost"] = x["actual"] * x["lost"]
-    x["draft_lost"] = x["basis"] * x["lost"]
+    x["actual_lost"] = _lost_points(x, "actual")
+    x["draft_lost"] = _lost_points(x, "basis")
     out = (x.groupby("player_id")
            .agg(player_name=("player_name", "first"), position=("position", "first"),
                 games_lost=("lost", "sum"), actual=("actual", "first"),
@@ -476,6 +544,41 @@ def team_detail(season: int, team_id: int, window: str = "reg") -> pd.DataFrame:
     out["draft_capital_share"] = out["draft_capital_lost"] / draft_cap * 100 if draft_cap else 0.0
     out["actual_share"] = out["actual_lost"] / actual_cap * 100 if actual_cap else 0.0
     return out.sort_values("draft_capital_lost", ascending=False).reset_index(drop=True)
+
+
+def injury_luck(season: int) -> pd.DataFrame:
+    """
+    One row per team: regular-season actual value lost, in points and in
+    games, and the luck it amounts to. Each week's points lost are added
+    back to the team's score, and the chance of beating a typical other
+    team that week - a normal curve centred on the other teams' average,
+    with the season's usual spread of a score around its week's average, as
+    the trade grades count expected wins - is read before and after. The
+    difference, summed over the weeks, is wins lost. Luck is the league's
+    average wins lost minus the team's, so a healthy team reads as lucky
+    and the column sums to zero.
+    """
+    x = _window(season, "reg")
+    lost = (pd.Series(_lost_points(x, "actual"), index=x.index)
+            .groupby([x["team_id"], x["week"]]).sum())
+    m = archive.get("matchups", season)
+    m = m[m["week"] <= min(weeks_to_date(season), season_config(season)["reg_season_end"])]
+    week_mean = m.groupby("week")["score"].transform("mean")
+    n = m.groupby("week")["score"].transform("size")
+    others = (week_mean * n - m["score"]) / (n - 1).replace(0, np.nan)
+    sd = float((m["score"] - week_mean).std()) if len(m) > 1 else 0.0
+    pts = pd.Series([float(lost.get((t, w), 0.0)) for t, w in zip(m["team_id"], m["week"])],
+                    index=m.index)
+    if sd > 0:
+        gain = norm.cdf((m["score"] + pts - others) / sd) - norm.cdf((m["score"] - others) / sd)
+    else:
+        gain = np.zeros(len(m))
+    out = pd.DataFrame({
+        "points_lost": pts.groupby(m["team_id"]).sum(),
+        "wins_lost": pd.Series(gain, index=m.index).fillna(0.0).groupby(m["team_id"]).sum()})
+    out["injury_luck"] = out["wins_lost"].mean() - out["wins_lost"]
+    out["manager"] = out.index.map(archive.manager_map(season))
+    return out.reset_index()
 
 
 def season_outcomes(season: int) -> pd.DataFrame:
@@ -514,7 +617,7 @@ MEASURES = [
      "draft_capital_share"),
     ("Draft capital, no trade handling", "the pick's expected VOR, player keeps it",
      "draft_capital_naive_share"),
-    ("Actual value, total", "healthy PPG above replacement, shrunk toward the pick",
+    ("Actual value, total", "healthy PPG above replacement, blended with the pick by games played",
      "actual_lost"),
     ("Actual value, share", "the same, as a share of the team's total", "actual_share"),
     ("Actual value, hard minimum",
@@ -531,7 +634,7 @@ def checked_seasons(seasons) -> list[int]:
     return [s for s in seasons if supported(s) and dv.season_complete(s)]
 
 
-def what_we_checked(seasons, k: int = K) -> tuple[pd.DataFrame, pd.DataFrame]:
+def what_we_checked(seasons, curve: tuple = CURVE) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     (measures, playoff_split) over the completed seasons among those given.
 
@@ -545,7 +648,7 @@ def what_we_checked(seasons, k: int = K) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     rows = []
     for s in checked_seasons(seasons):
-        t = team_health(s, "reg", k).set_index("team_id").join(season_outcomes(s))
+        t = team_health(s, "reg", curve).set_index("team_id").join(season_outcomes(s))
         t["season"] = s
         rows.append(t)
     pooled = pd.concat(rows)
