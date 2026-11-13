@@ -342,35 +342,41 @@ with tab5:
     st.divider()
     st.markdown("**Cumulative luck**")
     tot = luck_total(lb, official_combined)
-    cols = ["Manager", "opp_luck", "schedule_luck", "field_luck"]
-    heads = ["Manager", "Opponent", "Schedule", "Field"]
+    # Columns in the order the tables above appear on the page.
+    tot = tot.sort_values("total_luck", ascending=False)
+    if injury is not None:
+        tot["injury_luck"] = tot["team_id"].map(injury).fillna(0.0).values
+    cols = ["Manager", "schedule_luck", "field_luck"]
+    heads = ["Manager", "Schedule", "Field"]
     if official_combined:
         cols.append("median_luck")
         heads.append("Median")
+    cols.append("opp_luck")
+    heads.append("Opponent")
+    if injury is not None:
+        cols.append("injury_luck")
+        heads.append("Injury")
     cols += ["total_luck", "luck_sigma", "luck_label"]
     heads += ["Total", "Rating", ""]
-    tot = tot.sort_values("total_luck", ascending=False)
     td = tot[cols].copy()
     td.columns = heads
     td["Rating"] = td["Rating"].map(lambda z: f"{z:+.1f}σ")
-    if injury is not None:
-        td["Injury"] = tot["team_id"].map(injury).fillna(0.0).values
-    games = [h for h in td.columns if h not in ("Manager", "Rating", "")]
+    games = [h for h in heads if h not in ("Manager", "Rating", "")]
     frame(td, pics=[pic(x) for x in tot["team_id"]], signed=games, num=("Rating",),
           fmt={h: "{:+.2f}" for h in games})
     st.caption(
-        ("Opponent + Schedule + Field + Median, in games. "
+        ("Schedule + Field + Median + Opponent, in games. "
          if official_combined else
-         "Opponent + Schedule + Field, in games. Median is left out because it "
+         "Schedule + Field + Opponent, in games. Median is left out because it "
          "did not count toward the standings before 2025. ")
-        + "The first three are steps down a chain, each removing one kind of "
-        "luck from the one before, so they add up exactly with nothing counted "
-        "twice. Rating divides the total by how much luck varied across the "
+        + "Schedule, Field and Opponent are steps down a chain, each removing one "
+        "kind of luck from the one before, so they add up exactly with nothing "
+        "counted twice. Rating divides the total by how much luck varied across the "
         "league this season, so it says how unusual the total is rather than "
         "just how big: a quiet season and a wild one can hand out the same "
         "number of games and mean very different things."
-        + (" Injury is the injury luck above, in games. It stands beside the "
-           "total and is in neither the total nor the rating." if injury is not None else "")
+        + (" Injury is the injury luck above, in games. It is in neither the "
+           "total nor the rating." if injury is not None else "")
     )
 
     # ── How likely that result was, given the score ────────────────────────
