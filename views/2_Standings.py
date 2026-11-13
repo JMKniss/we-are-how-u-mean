@@ -275,10 +275,7 @@ with tab4:
 # ── Tab 5: Luck Index ─────────────────────────────────────────────────────────
 with tab5:
     st.subheader("Luck")
-    st.caption(
-        "Each number is wins you got minus wins your scores deserved. "
-        "Positive means lucky, negative means unlucky."
-    )
+    st.caption("Luck is measured in difference in expected wins.")
     lb = luck_breakdown(matchups_df)
     lb.insert(0, "Manager", lb["team_id"].map(manager_map).fillna("?"))
 
@@ -294,19 +291,18 @@ with tab5:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Schedule luck**")
-        st.caption("Did you draw easy opponents? Schedule Wins is what your "
-                   "scores were worth against the opponents you actually drew, "
-                   "with each playing at their usual level. Expected Wins is "
-                   "what the same scores were worth against the whole league. "
-                   "Both are fractions of a win, because outscoring six of nine "
-                   "teams is not a whole number of anything.")
+        st.caption("Which opponents you drew, each taken at their usual level. "
+                   "Positive means you drew opponents your scores beat more often "
+                   "than they would have beaten the rest of the league.")
         small(["w_form", "w_field", "schedule_luck"],
               ["Schedule Wins", "Expected Wins", "Luck"],
               "schedule_luck")
     with c2:
         st.markdown("**Field luck**")
-        st.caption("Did your good scores land on low-scoring weeks? Lucky if "
-                   "you scored well when the rest of the league did not.")
+        st.caption("Your relative performance vs the league's relative performance. "
+                   "A positive score means your best performances came when the rest "
+                   "of the league scored below average. Negative means your good weeks "
+                   "were overshadowed by other teams also doing well.")
         small(["w_field", "w_season", "field_luck"],
               ["Expected Wins", "vs Whole Season", "Luck"],
               "field_luck")
@@ -315,14 +311,14 @@ with tab5:
     with c3:
         st.markdown("**Median luck**")
         st.caption("Median wins you got compared with what your scores usually "
-                   "get. Lucky if you beat the median in weak weeks.")
+                   "get. Positive means you beat the median when the median was low.")
         small(["median_wins", "xmedian", "median_luck"],
               ["Median Wins", "Expected Wins", "Luck"],
               "median_luck")
     with c4:
         st.markdown("**Opponent form**")
-        st.caption("Did opponents play above or below their usual level "
-                   "against you? Shown in games, with the points behind it.")
+        st.caption("Whether your opponents played above or below their own "
+                   "average when they faced you.")
         small(["opp_luck", "opp_form_pts"], ["Luck", "Points"],
               "opp_luck")
 
@@ -332,11 +328,8 @@ with tab5:
         c5, _ = st.columns(2)
         with c5:
             st.markdown("**Injury luck**")
-            st.caption("Points lost to injury, valued as the Injury tab values them, "
-                       "and what they were worth in wins: each week's lost points put "
-                       "back on your score and read as the change in your chance of "
-                       "beating a typical team that week. Luck is the league's average "
-                       "wins lost minus yours, so a healthy season reads as lucky.")
+            st.caption("Points lost due to injury, and the estimated wins it cost, "
+                       "all compared to league average.")
             it = pd.DataFrame({"Manager": il["team_id"].map(manager_map).fillna("?").values,
                                "Points Lost": il["points_lost"].values,
                                "Wins Lost": il["wins_lost"].values,
