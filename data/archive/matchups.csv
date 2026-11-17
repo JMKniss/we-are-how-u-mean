@@ -1749,3 +1749,13 @@ season,week,team_id,team_name,score,opp_id,opp_name,opp_score,outcome,is_playoff
 2026,9,8,Team Rocket,77.8,7,J’Diglett Morgoones,146.3,L,False
 2026,9,9,Who's That Puka-mon??,123.08,1,Rapidash to the Endzone,142.64,L,False
 2026,9,10,Brock,130.38,6,GottaCatchaBall,125.56,W,False
+2026,10,1,Rapidash to the Endzone,118.34,5,This isnt my final Eveelotution,49.7,W,False
+2026,10,2,Machampionship Bound,151.68,4,Pickenschuuuuuuuuuu,148.04,W,False
+2026,10,3,Nine tails is hot,109.32,9,Who's That Puka-mon??,146.18,L,False
+2026,10,4,Pickenschuuuuuuuuuu,148.04,2,Machampionship Bound,151.68,L,False
+2026,10,5,This isnt my final Eveelotution,49.7,1,Rapidash to the Endzone,118.34,L,False
+2026,10,6,GottaCatchaBall,78.72,7,J’Diglett Morgoones,156.96,L,False
+2026,10,7,J’Diglett Morgoones,156.96,6,GottaCatchaBall,78.72,W,False
+2026,10,8,Team Rocket,121.76,10,Brock,122.86,L,False
+2026,10,9,Who's That Puka-mon??,146.18,3,Nine tails is hot,109.32,W,False
+2026,10,10,Brock,122.86,8,Team Rocket,121.76,W,False
