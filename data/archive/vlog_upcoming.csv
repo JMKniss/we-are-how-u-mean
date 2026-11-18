@@ -1,1 +1,12 @@
 season,week,kind,position,team_id,opp_id,pick_id,player_id,player_name,projected
+2026,11,player,WR,1,,,4432620.0,Parker Washington,13.3
+2026,11,matchup,,2,1.0,2.0,,,
+2026,11,matchup,,4,8.0,4.0,,,
+2026,11,player,RB,5,,,4361579.0,Javonte Williams,18.21
+2026,11,player,K,5,,,4567104.0,Will Reichard,5.84
+2026,11,player,FLEX,7,,,4880281.0,Jordyn Tyson,9.03
+2026,11,matchup,,7,3.0,7.0,,,
+2026,11,player,TE,8,,,15847.0,Travis Kelce,9.49
+2026,11,player,QB,9,,,4360310.0,Trevor Lawrence,19.26
+2026,11,matchup,,9,6.0,9.0,,,
+2026,11,matchup,,10,5.0,10.0,,,
