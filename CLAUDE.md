@@ -96,6 +96,7 @@ ff_app/
 │   ├── draft_value.py      # Draft value: VOR per game against a frozen per-season curve
 │   ├── health.py           # Injury: draft capital and actual value lost; injury luck in wins
 │   ├── vlog.py             # grades the Champmissioner's picks; weekly top/bottom scorer
+│   ├── takeover.py         # Jason's brag tables, a guest tab on the Champmissioner page; removable
 │   ├── transactions.py     # Waiver moves and trade sides from the transactions log
 │   └── trades.py           # Trade grades: two lineup counterfactuals per side, wins flipped
 └── views/

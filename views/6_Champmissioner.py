@@ -1,7 +1,7 @@
 """
 Champmissioner's Dashboard: The Champmissioner's calls on the Romarkable Vlog, graded.
 
-Four tabs. This Week shows his preview of the next week to be played, his
+Five tabs. This Week shows his preview of the next week to be played, his
 matchup picks and his Romarkable players with ESPN's projection, from
 vlog_upcoming.csv. It always shows the latest season, whatever the selector
 says, and says so when his notes for the week are not in yet.
@@ -28,6 +28,10 @@ replay of his picks. Weeks he made no picks for simply do not count, and a
 pick he changed off air counts as the one his recap says he stood by. How the
 picks are read and graded is in data/vlog.py and analysis/vlog.py.
 
+J’Diglett Takeover!!! is a guest tab and not his: Jason's brag tables, two to a
+row, his rows in gold, always the latest season. What it shows and why is in
+analysis/takeover.py, along with how to take it down.
+
 Only seasons with vlog picks are offered. The weekly awards are regular
 season only, as on the vlog.
 """
@@ -39,6 +43,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from analysis import takeover
 from analysis import vlog as av
 from analysis.standings import compute_season_finish_map, playoff_seeds
 from branding import page_icon
@@ -300,8 +305,8 @@ def render_rankings(info: dict):
         st.caption("Final standings are added when the playoffs finish.")
 
 
-tab_week, tab_season, tab_ranks, tab_all = st.tabs(
-    ["This Week", "Season Records", "Power Rankings", "All-Time"])
+tab_week, tab_season, tab_ranks, tab_all, tab_take = st.tabs(
+    ["This Week", "Season Records", "Power Rankings", "All-Time", "J’Diglett Takeover!!!"])
 
 # ── This Week ─────────────────────────────────────────────────────────────────
 with tab_week:
@@ -452,3 +457,15 @@ with tab_all:
 
     titled("Times Picked to Win", picked_to_win(VLOG_SEASONS, rate=True))
     titled("Under-Dawgs", under_dawgs(VLOG_SEASONS))
+
+# ── J’Diglett Takeover!!! ─────────────────────────────────────────────────────
+takeover_tables = st.cache_data(ttl=300)(takeover.tables)
+
+with tab_take:
+    page_header("Non-Humble Brag", sub="A Jason Kniss success story")
+    brags = takeover_tables()
+    for i in range(0, len(brags), 2):
+        for col, t in zip(st.columns(2), brags[i:i + 2]):
+            with col:
+                style.tag(t["title"])
+                style.html_table(t["columns"], t["rows"], compact=True)
