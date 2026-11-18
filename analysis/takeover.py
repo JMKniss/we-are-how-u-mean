@@ -7,8 +7,10 @@ Every number is real and computed from the archive on each load; only the
 choice of what to show is partisan. tables() returns them ready for
 style.html_table, and the Champmissioner page draws them two to a row.
 
-To take it down: delete this file, and the tab that imports it in
-views/6_Champmissioner.py. Nothing else reads it.
+The tab takes itself down: views/6_Champmissioner.py shows it only until
+TAKEOVER_ENDS. This file is kept on purpose after that, at Jason's request, so
+do not tidy it away as dead code. Moving that date brings the tab back.
+Nothing else reads this module.
 
 The windows are deliberate, and chosen to flatter:
   - nothing before 2018, Jason's first season

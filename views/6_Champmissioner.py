@@ -29,13 +29,16 @@ pick he changed off air counts as the one his recap says he stood by. How the
 picks are read and graded is in data/vlog.py and analysis/vlog.py.
 
 J’Diglett Takeover!!! is a guest tab and not his: Jason's brag tables, two to a
-row, his rows in gold, always the latest season. What it shows and why is in
-analysis/takeover.py, along with how to take it down.
+row, his rows in gold, always the latest season. It sits second, after This
+Week, and only until TAKEOVER_ENDS, after which the page draws four tabs again
+with no deploy needed. The code stays on purpose; move the date to bring the
+tab back. What it shows and why is in analysis/takeover.py.
 
 Only seasons with vlog picks are offered. The weekly awards are regular
 season only, as on the vlog.
 """
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -305,8 +308,15 @@ def render_rankings(info: dict):
         st.caption("Final standings are added when the playoffs finish.")
 
 
-tab_week, tab_season, tab_ranks, tab_all, tab_take = st.tabs(
-    ["This Week", "Season Records", "Power Rankings", "All-Time", "J’Diglett Takeover!!!"])
+# The guest tab comes down by itself: Friday 20 November 2026, 5 AM Central,
+# written in UTC so it needs no timezone data on the server. Hidden, not
+# deleted - the league may want it back, and that is this one date.
+TAKEOVER_ENDS = datetime(2026, 11, 20, 11, tzinfo=timezone.utc)
+takeover_on = datetime.now(timezone.utc) < TAKEOVER_ENDS
+
+tabs = st.tabs(["This Week"] + (["J’Diglett Takeover!!!"] if takeover_on else [])
+               + ["Season Records", "Power Rankings", "All-Time"])
+tab_week, (tab_season, tab_ranks, tab_all) = tabs[0], tabs[-3:]
 
 # ── This Week ─────────────────────────────────────────────────────────────────
 with tab_week:
@@ -461,11 +471,12 @@ with tab_all:
 # ── J’Diglett Takeover!!! ─────────────────────────────────────────────────────
 takeover_tables = st.cache_data(ttl=300)(takeover.tables)
 
-with tab_take:
-    page_header("Non-Humble Brag", sub="A Jason Kniss success story")
-    brags = takeover_tables()
-    for i in range(0, len(brags), 2):
-        for col, t in zip(st.columns(2), brags[i:i + 2]):
-            with col:
-                style.tag(t["title"])
-                style.html_table(t["columns"], t["rows"], compact=True)
+if takeover_on:
+    with tabs[1]:
+        page_header("Non-Humble Brag", sub="A Jason Kniss success story")
+        brags = takeover_tables()
+        for i in range(0, len(brags), 2):
+            for col, t in zip(st.columns(2), brags[i:i + 2]):
+                with col:
+                    style.tag(t["title"])
+                    style.html_table(t["columns"], t["rows"], compact=True)
