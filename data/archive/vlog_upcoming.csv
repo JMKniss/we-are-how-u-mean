@@ -1,12 +1,12 @@
 season,week,kind,position,team_id,opp_id,pick_id,player_id,player_name,projected
-2026,11,player,WR,1,,,4432620.0,Parker Washington,13.3
-2026,11,matchup,,2,1.0,2.0,,,
-2026,11,matchup,,4,8.0,4.0,,,
-2026,11,player,RB,5,,,4361579.0,Javonte Williams,18.21
-2026,11,player,K,5,,,4567104.0,Will Reichard,5.84
-2026,11,player,FLEX,7,,,4880281.0,Jordyn Tyson,9.03
-2026,11,matchup,,7,3.0,7.0,,,
-2026,11,player,TE,8,,,15847.0,Travis Kelce,9.49
-2026,11,player,QB,9,,,4360310.0,Trevor Lawrence,19.26
-2026,11,matchup,,9,6.0,9.0,,,
-2026,11,matchup,,10,5.0,10.0,,,
+2026,12,matchup,,1,4.0,1.0,,,
+2026,12,player,QB,2,,,14880.0,Kirk Cousins,
+2026,12,matchup,,2,8.0,2.0,,,
+2026,12,player,TE,4,,,4723086.0,Colston Loveland,8.28
+2026,12,player,K,6,,,2985659.0,Wil Lutz,4.55
+2026,12,player,RB,6,,,4685382.0,Omarion Hampton,12.78
+2026,12,matchup,,6,3.0,6.0,,,
+2026,12,player,WR,7,,,4248528.0,Christian Watson,11.24
+2026,12,matchup,,7,10.0,7.0,,,
+2026,12,player,FLEX,9,,,4870653.0,KC Concepcion,9.68
+2026,12,matchup,,9,5.0,9.0,,,
